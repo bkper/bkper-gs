@@ -1,0 +1,53 @@
+
+<html>
+
+<style>
+
+ a, body {
+   font-family:Helvetica Neue;
+   color:#999999;
+ }
+
+ a, span {
+   font-size:20pt;
+ }
+.user {
+   padding:20px;
+   font-size: 16pt;
+ }
+
+ 
+</style>
+<body>
+<table width='100%' style='margin-top:-5px'>
+  <tr>
+    <td width='50%'>
+      <div style='float:right; margin-right:-220px'>
+          <img src='https://www.bkper.com/images/appsScript.svg'/>
+      </div>
+    </td>
+    <td width='50%'>
+      <div style='margin-left:-140px; width:400px; margin-top: 95px' >
+          <img src='https://www.bkper.com/images/logo_10_degree.svg'/>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td colspan='2' align='center'>
+      <div>
+        <span>Google Apps integration authorized for user:</span>
+      </div>
+      <div class='user'>
+        <?!=Session.getEffectiveUser().getEmail();?>
+      </div>
+      <div>
+        Close this window to continue.
+      </div>      
+
+    </td>
+  </tr>
+</table>
+
+
+</body>
+</html>

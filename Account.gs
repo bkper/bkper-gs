@@ -35,7 +35,7 @@ function Account() {
 
 
   /**
-  @returns {string} The name of this Account
+  @returns {string} The name of this Account without spaces and special characters
   */
   Account.prototype.getNormalizedName = function() {
     if (this.normalizedName == null) {
@@ -114,15 +114,6 @@ Thus ---------------------> account decreases its absolute balance
   Account.prototype.isCredit = function() {
     return this.wrapped.credit;
   }
-
-
-  /**
-  @returns {number} The balance of this Account
-  */
-  Account.prototype.getCheckedBalance = function() {
-    return Utils_.round(this.wrapped.checkedBalance);
-  }
-
 
   /**
   Tell if this account is in the {@link Group}

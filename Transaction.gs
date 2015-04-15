@@ -97,10 +97,8 @@ function Transaction() {
 
   //AMOUNT
   /**
-
-according to {@link Book#getDecimalSeparator|decimal separator of book}
-
-  @returns {number} The absolute amount of this transaction
+  @param {boolean} format Formats the amount according to {@link Book#getDecimalSeparator|decimal separator of book}
+  @returns {number} The amount of this transaction
   */
   Transaction.prototype.getAmount = function(format) {
     if (format) {
@@ -134,7 +132,7 @@ according to {@link Book#getDecimalSeparator|decimal separator of book}
   }
 
   /**
-  @param {Account|string} The account object, id or name
+  @param {Account|string} account The account object, id or name
   @returns {Account} The account at the other side of the transaction given one side.
   */
   Transaction.prototype.getOtherAccount = function(account) {
@@ -150,7 +148,7 @@ according to {@link Book#getDecimalSeparator|decimal separator of book}
 
 
   /**
-  @param {Account|string} The account object, id or name
+  @param {Account|string} account The account object, id or name
   @returns {Account} The account name at the other side of the transaction given one side.
   */
   Transaction.prototype.getOtherAccountName = function(account) {

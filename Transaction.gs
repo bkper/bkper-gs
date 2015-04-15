@@ -108,7 +108,7 @@ function Transaction() {
   }
 
   /**
-  @param {Account|string} The account object, id or name
+  @param {Account|string} account The account object, id or name
   @returns {number} The absolute amount of this transaction if the given account is at the credit side, else null
   */
   Transaction.prototype.getCreditAmount = function(account) {
@@ -120,7 +120,7 @@ function Transaction() {
   }
 
   /**
-  @param {Account|string} The account object, id or name
+  @param {Account|string} account The account object, id or name
   @returns {number} The absolute amount of this transaction if the given account is at the debit side, else null
   */
   Transaction.prototype.getDebitAmount = function(account) {

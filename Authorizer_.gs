@@ -146,7 +146,7 @@ var Authorizer_ = {
     if (continueUrl != null) {
       template.continueUrl = continueUrl;
     } else {
-      template.continueUrl = "http://about.bkper.com/api_appsScript.html";
+      template.continueUrl = "http://bkper.github.io/docs/BkperApp";
     }
     if (continueText != null) {
       template.continueText = continueText;

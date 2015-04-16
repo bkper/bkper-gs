@@ -295,8 +295,8 @@ function Book(id) {
     }
   }
 
-  
-  
+
+
   Book.prototype.getSavedQueries = function() {
     if (this.savedQueries == null) {
       this.savedQueries = SavedQueryService_.getSavedQueries(this.getId());

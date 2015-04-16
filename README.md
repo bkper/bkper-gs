@@ -26,11 +26,9 @@
 
 ##BkperApp
 
-[bkper] provides a data aggregation service for collecting and manage bookkeeping info, to report accounts balances over time, in the Google Apps environment.
+[BkperApp] is a Google Apps Script library for bkper.
 
-It's usually used for financial and accounting management, but it can also be used to count any countable resources over time, like minutes, hours, users, cattle and so on.
-
-[BkperApp] works the same way your favorite [Google Apps Script] library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] etc, and it is safely authorized using [OAuth2] protocol:
+It works the same way your favorite [Google Apps Script] library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] etc, and it is safely authorized using [OAuth2] protocol:
 
 ![BkperApp overview](http://developers.bkper.com/images/docs/BkperApp-overview.png)
 

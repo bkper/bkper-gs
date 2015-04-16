@@ -177,4 +177,4 @@ Exchange the book id and the query, deploy and run the [script as a web app](htt
 
 ###Samples
 
-- [bkper things](https://github.com/oshliaer/bkper/tree/master/bkper%20things) - Custom action scripts triggered from inside bkper throwg webhooks
+- [bkper things](https://github.com/oshliaer/bkper/tree/master/bkper%20things) - Custom action scripts triggered from inside bkper through webhooks

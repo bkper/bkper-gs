@@ -151,7 +151,7 @@ var Authorizer_ = {
     if (continueText != null) {
       template.continueText = continueText;
     } else {
-      template.continueText = "Learn more in the documentation";
+      template.continueText = "Documentation";
     }
     template.revokeUrl = Authorizer_.scriptUri + "?revoke=true";
     return template.evaluate();

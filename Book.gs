@@ -225,8 +225,8 @@ function Book(id) {
   @param {string} name The name of the Account
   @param {string} description The description of the Account
   @param {boolean} permanent The {@link permanent nature|Account.isPermanent} of the Account
-  @param {boolean} permanent The {@link credit nature|Account.isCredit} of the Account
-  @returns {Account} The matching Account object
+  @param {boolean} credit The {@link credit nature|Account.isCredit} of the Account
+  @returns {Account} The created Account object
   */
   Book.prototype.createAccount = function(name, description, permanent, credit) {
     var account = AccountService_.createAccount(this.getId(), name, description, permanent, credit)
@@ -295,12 +295,8 @@ function Book(id) {
     }
   }
 
-
-
-  /**
-  Gets all SavedQueries of this Book
-  @returns {Array<Object>}
-  */
+  
+  
   Book.prototype.getSavedQueries = function() {
     if (this.savedQueries == null) {
       this.savedQueries = SavedQueryService_.getSavedQueries(this.getId());

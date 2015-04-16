@@ -1,5 +1,7 @@
-[bkper]: http://about.bkper.com/features.html
+[bkper]: http://about.bkper.com/
 [bkper.com]: https://www.bkper.com
+
+[Intercom]: https://www.intercom.io/
 
 [Google Apps Script]: https://developers.google.com/apps-script/
 [OAuth2]: http://oauth.net/
@@ -186,5 +188,7 @@ Exchange the book id and the query, deploy and run the [script as a web app](htt
 
 
 ###Samples
+
+- [IntercomBkperBridge](https://github.com/bkper/IntercomBkperBridge) - Bridge from [Intercom] to [bkper], to keep a view of user segments over time, and auto-send reports to your partners, investors, advisors, mentors and so on.
 
 - [bkper things](https://github.com/oshliaer/bkper/tree/master/bkper%20things) - Custom action scripts triggered from inside bkper through webhooks

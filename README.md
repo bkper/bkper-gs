@@ -182,6 +182,7 @@ You can easily run balance queries on your script, by calling the function [getB
 
       }
 
+
 Exchange the book id and the query, deploy and run the [script as a web app](https://developers.google.com/apps-script/execution_web_apps), and you will get a report like this [live example](https://script.google.com/macros/s/AKfycbxm2ezSE16D2pcuc3Hr-R8gFEZ7q_i8r55WHCsaFcH4ugwZ2cM/exec).
 
 

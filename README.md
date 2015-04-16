@@ -140,3 +140,41 @@ it is very easy to query balances of Accounts and #hashtags over time, getting p
 <div style="text-align:center; padding-bottom:15px">
   <img src="http://developers.bkper.com/images/docs/balanceQueries.png" alt="Search log">
 </div>
+
+You can easily run balance queries on your script, by calling the function **getBalanceReport**, like the example bellow:
+
+      /**
+      Deploy as web app to get the generated Charts
+      */
+      function doGet() {
+
+        //Open the book
+        var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgKCtg6MLDA");
+
+        //Query for balances
+        var report = book.getBalanceReport("= group:'Expenses' group:'Incomes' after:01/2014 before:02/2014");
+
+        //Create data table builder
+        var dataTableBuilder = report.createDataTable().setBalanceType(BkperApp.BalanceType.TOTAL);
+
+        //Create chart
+        var chartsDataTable = dataTableBuilder.buildChartDataTable();
+        var pieChart = Charts.newPieChart().setDataTable(chartsDataTable).build();
+        var tableChart = Charts.newTableChart().setDataTable(chartsDataTable).build();
+
+        //Add to UI
+        var ui = UiApp.createApplication();
+        ui.add(pieChart);
+        ui.add(tableChart);
+
+        return ui;
+
+      }
+
+Exchange the book id and the query, deploy and run the [script as a web app](https://developers.google.com/apps-script/execution_web_apps), and you will get a report like this [live example](https://script.google.com/macros/s/AKfycbxm2ezSE16D2pcuc3Hr-R8gFEZ7q_i8r55WHCsaFcH4ugwZ2cM/exec).
+
+
+
+###Samples
+
+- [bkper things](https://github.com/oshliaer/bkper) - Custom action scripts triggered from inside bkper throwg webhooks

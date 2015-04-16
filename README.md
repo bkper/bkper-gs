@@ -105,6 +105,38 @@ When you search transactions, the **search** method returns an iterator to let y
 
 Run the **queryTransactions** function, exchanging your bookId, with the same query, check the log output and you will see the same descriptions:
 
+<div style="text-align:center; padding-bottom:15px">
+  <img src="http://developers.bkper.com/images/docs/logSearch.png" alt="Search log">
+</div>
 
-TEST
 
+
+
+
+###List Accounts Balances
+
+You can access all Account objects, and query its balances, in a way similar to the left sidebar:
+
+      function listAccountBalances() {
+        //Open the book
+        var book = BkperApp.openById("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
+
+        var accounts = book.getAccounts();
+        for (var i=0; i < accounts.length; i++) {
+          var account = accounts[i];
+          if (account.isPermanent() && account.isActive()) {
+            Logger.log(account.getName() + ": " + account.getBalance());
+          }
+        }
+      }
+
+
+
+###Query Balances over time
+
+it is very easy to query balances of Accounts and #hashtags over time, getting period and cumulative balances. Balance queries are used in [bkper.com](https://www.bkper.com) to generate chart reports:
+
+
+<div style="text-align:center; padding-bottom:15px">
+  <img src="http://developers.bkper.com/images/docs/balanceQueries.png" alt="Search log">
+</div>

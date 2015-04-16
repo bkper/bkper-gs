@@ -1,7 +1,7 @@
 [BkperApp]: http://developers.bkper.com/docs/BkperApp
 [bkper]: http://about.bkper.com/features.html
 [transaction]: http://developers.bkper.com/docs/BkperApp/Transaction.html
-[book]:
+[book]: http://developers.bkper.com/docs/BkperApp/Book.html
 
 ##BkperApp
 
@@ -47,7 +47,7 @@ To record your first [transaction], after authorizing and setup, copy and paste 
 
       }
 
-Exchange the parameter of the function [**openById**](http://developers.bkper.com/docs/BkperApp/global.html#openById) for the id of the [**book**](http://developers.bkper.com/docs/BkperApp/Book.html) you want to record the transaction. This is the same parameter found on the URL accessed on [bkper.com](https://www.bkper.com):
+Exchange the parameter of the function [**openById**](http://developers.bkper.com/docs/BkperApp/global.html#openById) for the id of the **[book]** you want to record the transaction. This is the same parameter found on the URL accessed on [bkper.com](https://www.bkper.com):
 
 <div style="text-align:center; padding-bottom:15px">
   <img src="http://developers.bkper.com/images/docs/bookId.png" alt="BkperApp overview">

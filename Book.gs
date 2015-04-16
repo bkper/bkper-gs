@@ -116,7 +116,7 @@ function Book(id) {
   /**
   Search for transactions.
   <br/>
-  Go to <a href='https://www.bkper.com' target='_blank'>bkper.com</a> and open search wizard: <img src='../../img/wizard.png'/> to learn more about query sintax.
+  Go to <a href='https://www.bkper.com' target='_blank'>bkper.com</a> and open search wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query syntax.
 
   @param {string} query The query string.
   @return {TransactionIterator} The search result as an iterator.
@@ -219,7 +219,7 @@ function Book(id) {
 
     return account;
   }
-  
+
   /**
   Create an {@link Account} in this book
   @param {string} name The name of the Account

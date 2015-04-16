@@ -189,6 +189,6 @@ Exchange the book id and the query, deploy and run the [script as a web app](htt
 
 ###Samples
 
-- [IntercomBkperBridge](https://github.com/bkper/IntercomBkperBridge) - Bridge from [Intercom] to [bkper], to keep a view of user segments over time, and auto-send reports to your partners, investors, advisors, mentors and so on.
+- [IntercomBkperBridge](https://github.com/bkper/IntercomBkperBridge) - Bridge from [Intercom] to [bkper], to keep a view of user segments over time.
 
 - [bkper things](https://github.com/oshliaer/bkper/tree/master/bkper%20things) - Custom action scripts triggered from inside bkper through webhooks

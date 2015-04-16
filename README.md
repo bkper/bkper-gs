@@ -32,9 +32,7 @@ It's usually used for financial and accounting management, but it can also be us
 
 [BkperApp] works the same way your favorite [Google Apps Script] library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] etc, and it is safely authorized using [OAuth2] protocol:
 
-<div style="text-align:center; padding-bottom:15px">
-  <img src="http://developers.bkper.com/images/docs/BkperApp-overview.png" alt="BkperApp overview">
-</div>
+![BkperApp overview](http://developers.bkper.com/images/docs/BkperApp-overview.png)
 
 The [Sheets], [Forms] and [Docs] Add-ons were built on top of the [BkperApp] library.
 
@@ -70,15 +68,11 @@ To record your first [Transaction], after authorizing and setup, copy and paste 
 
 Exchange the parameter of the function [openById] for the id of the [Book] you want to record the [Transaction]. This is the same parameter found on the URL accessed on [bkper.com]:
 
-<div style="text-align:center; padding-bottom:15px">
-  <img src="http://developers.bkper.com/images/docs/bookId.png" alt="BkperApp overview">
-</div>
+![bookId](http://developers.bkper.com/images/docs/bookId.png)
 
 Now run the **recordATransaction** function and see the record appearing on the bkper screen:
 
-<div style="text-align:center; padding-bottom:15px">
-  <img src="http://developers.bkper.com/images/docs/recording.png" alt="Recording">
-</div>
+![Recording](http://developers.bkper.com/images/docs/recording.png)
 
 
 You can also record transactions in batch by passing an Array of strings as the [record] method parameter:
@@ -109,9 +103,7 @@ Each book is a large database and every interaction is done in terms of queries.
 
 Every query is shown in the search box on top of the page:
 
-<div style="text-align:center; padding-bottom:15px">
-  <img src="http://developers.bkper.com/images/docs/query.png" alt="Query">
-</div>
+![Query](http://developers.bkper.com/images/docs/query.png)
 
 When you search transactions, the [search] method returns an [TransactionIterator] to let you handle potentially large datasets:
 
@@ -131,11 +123,7 @@ When you search transactions, the [search] method returns an [TransactionIterato
 
 Run the **queryTransactions** function, exchanging your bookId, with the same query, check the log output and you will see the same descriptions:
 
-<div style="text-align:center; padding-bottom:15px">
-  <img src="http://developers.bkper.com/images/docs/logSearch.png" alt="Search log">
-</div>
-
-
+![Search log](http://developers.bkper.com/images/docs/logSearch.png)
 
 
 
@@ -162,10 +150,7 @@ You can access all Account objects, and query its balances, in a way similar to 
 
 it is very easy to query balances of Accounts and #hashtags over time, getting period and cumulative balances. Balance queries are used in [bkper.com] to generate chart reports:
 
-
-<div style="text-align:center; padding-bottom:15px">
-  <img src="http://developers.bkper.com/images/docs/balanceQueries.png" alt="Search log">
-</div>
+![Balance Queries](http://developers.bkper.com/images/docs/balanceQueries.png)
 
 You can easily run balance queries on your script, by calling the function [getBalanceReport], like the example bellow:
 

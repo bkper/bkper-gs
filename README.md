@@ -193,6 +193,8 @@ Exchange the book id and the query, deploy and run the [script as a web app](htt
 
 ###Samples
 
-- [IntercomBkperBridge](https://github.com/bkper/IntercomBkperBridge) - Bridge from [Intercom] to [bkper], to keep a view of user segments over time.
+- [BkperCSVExportService](https://github.com/bkper/BkperCSVExportService) - Service to export bkper transactions in CSV format.
 
 - [bkper things](https://github.com/oshliaer/bkper/tree/master/bkper%20things) - Custom action scripts triggered from inside bkper through webhooks
+
+- [IntercomBkperBridge](https://github.com/bkper/IntercomBkperBridge) - Bridge from [Intercom] to [bkper], to keep a view of user segments over time.

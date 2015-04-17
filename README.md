@@ -56,6 +56,7 @@ This library is already published as an Apps Script, making it easy to include i
 
 ###Record Transactions
 
+```javascript
 To record your first [Transaction], after authorizing and setup, copy and paste the function bellow:
 
       function recordATransaction() {
@@ -65,7 +66,7 @@ To record your first [Transaction], after authorizing and setup, copy and paste 
         book.record("#gas 63.23");
 
       }
-
+``
 Exchange the parameter of the function [openById] for the id of the [Book] you want to record the [Transaction]. This is the same parameter found on the URL accessed on [bkper.com]:
 
 ![bookId](http://developers.bkper.com/images/docs/bookId.png)
@@ -77,6 +78,7 @@ Now run the **recordATransaction** function and see the record appearing on the 
 
 You can also record transactions in batch by passing an Array of strings as the [record] method parameter:
 
+```javascript
       function batchRecordTransactions() {
 
         var book = BkperApp.openById("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
@@ -90,7 +92,7 @@ You can also record transactions in batch by passing an Array of strings as the 
         book.record(transactions);
 
       }
-
+```
 The above code will send all records in a bulk. Very useful for importing large amount of data without the risk of reaching script limits.
 
 
@@ -107,6 +109,7 @@ Every query is shown in the search box on top of the page:
 
 When you search transactions, the [search] method returns an [TransactionIterator] to let you handle potentially large datasets:
 
+```javascript
       function queryTransactions() {
 
         var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgKCtg6MLDA");
@@ -120,6 +123,7 @@ When you search transactions, the [search] method returns an [TransactionIterato
         }
 
       }
+```
 
 Run the **queryTransactions** function, exchanging your bookId, with the same query, check the log output and you will see the same descriptions:
 
@@ -130,7 +134,7 @@ Run the **queryTransactions** function, exchanging your bookId, with the same qu
 ###List Accounts Balances
 
 You can access all Account objects, and query its balances, in a way similar to the left sidebar:
-
+```javascript
       function listAccountBalances() {
         //Open the book
         var book = BkperApp.openById("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
@@ -143,7 +147,7 @@ You can access all Account objects, and query its balances, in a way similar to 
           }
         }
       }
-
+```
 
 
 ###Query Balances over time
@@ -153,7 +157,7 @@ it is very easy to query balances of Accounts and #hashtags over time, getting p
 ![Balance Queries](http://developers.bkper.com/images/docs/balanceQueries.png)
 
 You can easily run balance queries on your script, by calling the function [getBalanceReport], like the example bellow:
-
+```javascript
       /**
       Deploy as web app to get the generated Charts
       */
@@ -181,7 +185,7 @@ You can easily run balance queries on your script, by calling the function [getB
         return ui;
 
       }
-
+```
 
 Exchange the book id and the query, deploy and run the [script as a web app](https://developers.google.com/apps-script/execution_web_apps), and you will get a report like this [live example](https://script.google.com/macros/s/AKfycbxm2ezSE16D2pcuc3Hr-R8gFEZ7q_i8r55WHCsaFcH4ugwZ2cM/exec).
 

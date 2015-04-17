@@ -56,16 +56,16 @@ This library is already published as an Apps Script, making it easy to include i
 
 ###Record Transactions
 
-```javascript
 To record your first [Transaction], after authorizing and setup, copy and paste the function bellow:
 
-      function recordATransaction() {
+```javascript
+function recordATransaction() {
 
-        var book = BkperApp.openById("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
+  var book = BkperApp.openById("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
 
-        book.record("#gas 63.23");
+  book.record("#gas 63.23");
 
-      }
+}
 ```
 Exchange the parameter of the function [openById] for the id of the [Book] you want to record the [Transaction]. This is the same parameter found on the URL accessed on [bkper.com]:
 
@@ -79,19 +79,19 @@ Now run the **recordATransaction** function and see the record appearing on the 
 You can also record transactions in batch by passing an Array of strings as the [record] method parameter:
 
 ```javascript
-      function batchRecordTransactions() {
+function batchRecordTransactions() {
 
-        var book = BkperApp.openById("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
+  var book = BkperApp.openById("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
 
-        var transactions = new Array();
+  var transactions = new Array();
 
-        transactions.push("#breakfast 15.40");
-        transactions.push("#lunch 27.45");
-        transactions.push("#dinner 35.86");
+  transactions.push("#breakfast 15.40");
+  transactions.push("#lunch 27.45");
+  transactions.push("#dinner 35.86");
 
-        book.record(transactions);
+  book.record(transactions);
 
-      }
+}
 ```
 The above code will send all records in a bulk. Very useful for importing large amount of data without the risk of reaching script limits.
 
@@ -110,19 +110,19 @@ Every query is shown in the search box on top of the page:
 When you search transactions, the [search] method returns an [TransactionIterator] to let you handle potentially large datasets:
 
 ```javascript
-      function queryTransactions() {
+function queryTransactions() {
 
-        var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgKCtg6MLDA");
+  var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgKCtg6MLDA");
 
-        //Search returns an interator to deal with potencial large datasets
-        var transactionIterator = book.search("acc:'Bank' after:01/04/2014");
+  //Search returns an interator to deal with potencial large datasets
+  var transactionIterator = book.search("acc:'Bank' after:01/04/2014");
 
-        while (transactionIterator.hasNext()) {
-          var transaction = transactionIterator.next();
-          Logger.log(transaction.getDescription());
-        }
+  while (transactionIterator.hasNext()) {
+    var transaction = transactionIterator.next();
+    Logger.log(transaction.getDescription());
+  }
 
-      }
+}
 ```
 
 Run the **queryTransactions** function, exchanging your bookId, with the same query, check the log output and you will see the same descriptions:
@@ -135,18 +135,18 @@ Run the **queryTransactions** function, exchanging your bookId, with the same qu
 
 You can access all Account objects, and query its balances, in a way similar to the left sidebar:
 ```javascript
-      function listAccountBalances() {
-        //Open the book
-        var book = BkperApp.openById("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
+function listAccountBalances() {
+  //Open the book
+  var book = BkperApp.openById("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
 
-        var accounts = book.getAccounts();
-        for (var i=0; i < accounts.length; i++) {
-          var account = accounts[i];
-          if (account.isPermanent() && account.isActive()) {
-            Logger.log(account.getName() + ": " + account.getBalance());
-          }
-        }
-      }
+  var accounts = book.getAccounts();
+  for (var i=0; i < accounts.length; i++) {
+    var account = accounts[i];
+    if (account.isPermanent() && account.isActive()) {
+      Logger.log(account.getName() + ": " + account.getBalance());
+    }
+  }
+}
 ```
 
 
@@ -158,33 +158,33 @@ it is very easy to query balances of Accounts and #hashtags over time, getting p
 
 You can easily run balance queries on your script, by calling the function [getBalanceReport], like the example bellow:
 ```javascript
-      /**
-      Deploy as web app to get the generated Charts
-      */
-      function doGet() {
+/**
+Deploy as web app to get the generated Charts
+*/
+function doGet() {
 
-        //Open the book
-        var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgKCtg6MLDA");
+  //Open the book
+  var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgKCtg6MLDA");
 
-        //Query for balances
-        var report = book.getBalanceReport("= group:'Expenses' group:'Incomes' after:01/2014 before:02/2014");
+  //Query for balances
+  var report = book.getBalanceReport("= group:'Expenses' group:'Incomes' after:01/2014 before:02/2014");
 
-        //Create data table builder
-        var dataTableBuilder = report.createDataTable().setBalanceType(BkperApp.BalanceType.TOTAL);
+  //Create data table builder
+  var dataTableBuilder = report.createDataTable().setBalanceType(BkperApp.BalanceType.TOTAL);
 
-        //Create chart
-        var chartsDataTable = dataTableBuilder.buildChartDataTable();
-        var pieChart = Charts.newPieChart().setDataTable(chartsDataTable).build();
-        var tableChart = Charts.newTableChart().setDataTable(chartsDataTable).build();
+  //Create chart
+  var chartsDataTable = dataTableBuilder.buildChartDataTable();
+  var pieChart = Charts.newPieChart().setDataTable(chartsDataTable).build();
+  var tableChart = Charts.newTableChart().setDataTable(chartsDataTable).build();
 
-        //Add to UI
-        var ui = UiApp.createApplication();
-        ui.add(pieChart);
-        ui.add(tableChart);
+  //Add to UI
+  var ui = UiApp.createApplication();
+  ui.add(pieChart);
+  ui.add(tableChart);
 
-        return ui;
+  return ui;
 
-      }
+}
 ```
 
 Exchange the book id and the query, deploy and run the [script as a web app](https://developers.google.com/apps-script/execution_web_apps), and you will get a report like this [live example](https://script.google.com/macros/s/AKfycbxm2ezSE16D2pcuc3Hr-R8gFEZ7q_i8r55WHCsaFcH4ugwZ2cM/exec).

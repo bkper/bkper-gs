@@ -66,7 +66,7 @@ To record your first [Transaction], after authorizing and setup, copy and paste 
         book.record("#gas 63.23");
 
       }
-``
+```
 Exchange the parameter of the function [openById] for the id of the [Book] you want to record the [Transaction]. This is the same parameter found on the URL accessed on [bkper.com]:
 
 ![bookId](http://developers.bkper.com/images/docs/bookId.png)

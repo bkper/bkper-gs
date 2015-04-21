@@ -6,40 +6,113 @@
  a, body {
    font-family:Helvetica Neue;
    color:#999999;
- }
-
- a, span {
    font-size:20pt;
  }
-.user {
-   padding:20px;
-   font-size: 16pt;
+ 
+ .appsScriptContainer img {
+   width: 440px;
  }
+ .appsScriptContainer {
+   float: right; 
+   margin-right: -220px
+ }
+ 
+ .bkperContainer img {
+   width: 400px;
+ } 
+ .bkperContainer {
+   margin-left:-140px;
+   margin-bottom: -95px;
+ }
+ 
  .revoke {
    padding-top: 60px;
  }
+  
+ 
+@media (max-width: 750px) {
+   img {
+     width: 300px;
+   }
+   a, body {
+     font-size:16pt;
+   } 
+   .appsScriptContainer img {
+     width: 340px;
+   }
+   .appsScriptContainer {
+     margin-right: -170px
+   }
+   
+   .bkperContainer img {
+     width: 300px;
+   } 
+   .bkperContainer {
+     margin-left:-110px;
+     margin-bottom: -73px;
+   } 
+   .revoke {
+     padding-top: 45px;
+   }
+   
+}
+
+@media (max-width: 550px) {
+   img {
+     width: 200px;
+   }
+   a, body {
+     font-size:13pt;
+   }
+   
+   .appsScriptContainer img {
+     width: 240px;
+   }
+   .appsScriptContainer {
+     margin-right: -120px
+   }
+   
+   .bkperContainer img {
+     width: 200px;
+   } 
+   .bkperContainer {
+     margin-left:-80px;
+     margin-bottom: -53px;
+   }
+   .revoke {
+     padding-top: 30px;
+   }   
+} 
+ 
+.user {
+   padding:20px;
+   font-size: 80%;
+ }
+
  .revoke a {
-   font-size: 10pt;
+   font-size: 50%;
    text-decoration: none;
  }
+ 
  .revoke a:hover {
    text-decoration: underline;
  }
  
 </style>
 <body>
+
 <table width='100%' style='margin-top:-5px'>
   <tr>
     <td width='50%'>
-      <div style='float:right; margin-right:-220px'>
-        <a href='<?!=continueUrl?>'>
+      <div class="appsScriptContainer">
+        <a href='<?!=continueUrl?>' target="_top">
           <img src='https://www.bkper.com/images/appsScript.svg'/>
         </a>
       </div>
     </td>
     <td width='50%'>
-      <div style='margin-left:-140px; width:400px; margin-top: 95px' >
-        <a href='<?!=continueUrl?>'>
+      <div class="bkperContainer" >
+        <a href='<?!=continueUrl?>' target="_top">
           <img src='https://www.bkper.com/images/logo_10_degree.svg'/>
         </a>
       </div>
@@ -54,10 +127,10 @@
         <?!=Session.getEffectiveUser().getEmail();?>
       </div>
       <div>
-      <a href='<?!=continueUrl?>'><?!=continueText?></a>.
+        <a href='<?!=continueUrl?>' target="_top"><?!=continueText?></a>
       </div>      
       <div class='revoke'>
-      <a href='<?!=revokeUrl?>'>revoke authorization</a>
+        <a href='<?!=revokeUrl?>' target="_top">revoke authorization</a>
       </div>
 
     </td>

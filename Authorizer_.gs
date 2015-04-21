@@ -3,7 +3,7 @@ var API_UNAUTHORIZED = "bkper_api_unauthorized";
 var Authorizer_ = {
 
 //scriptUri: "https://script.google.com/a/macros/nimbustecnologia.com.br/s/AKfycbz5W1wM6pehcWmXa53D9jUctPHHymvFTTH05mxNdQ/dev",
-  scriptUri: "https://script.google.com/macros/s/AKfycbz8F5FGTTW72pQBfDvGjEB4eglVmOfhG_a9Qb3EXYjVo5IICg/exec",
+scriptUri: "https://script.google.com/macros/s/AKfycbz8F5FGTTW72pQBfDvGjEB4eglVmOfhG_a9Qb3EXYjVo5IICg/exec",
 
   tokenEndpoint: "https://accounts.google.com/o/oauth2/token",
   
@@ -138,12 +138,13 @@ var Authorizer_ = {
   },
   
   getAuthorizedCloseWindow: function() {
-    return HtmlService.createTemplateFromFile('AuthorizedViewClose').evaluate().setTitle('Google Apps Authorized - bkper');
+    return HtmlService.createTemplateFromFile('AuthorizedViewClose').evaluate().setTitle('BkperApp authorized');
   },
   
   createAuthorizedTemplate: function(continueUrl, continueText) {
     var template = HtmlService.createTemplateFromFile('AuthorizedView');
     if (continueUrl != null) {
+      continueUrl = continueUrl.replace(/'/g, '"');
       template.continueUrl = continueUrl;
     } else {
       template.continueUrl = "http://bkper.github.io/docs/BkperApp";
@@ -154,7 +155,7 @@ var Authorizer_ = {
       template.continueText = "Documentation";
     }
     template.revokeUrl = Authorizer_.scriptUri + "?revoke=true";
-    return template.evaluate();
+    return template.evaluate().setTitle("BkperApp authorized");
   },  
   
   createAuthorizeTemplate: function(continueUrl, continueText) {
@@ -173,7 +174,7 @@ var Authorizer_ = {
     var url1 = Authorizer_.createAuthorizationURL(redirectUri, state);
     var template = HtmlService.createTemplateFromFile('AuthorizeView');
     template.authorizeLink = url1;
-    return template.evaluate();
+    return template.evaluate().setTitle("Authorize BkperApp");
   }
 }
 

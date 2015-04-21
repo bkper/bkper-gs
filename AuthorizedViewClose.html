@@ -6,29 +6,99 @@
  a, body {
    font-family:Helvetica Neue;
    color:#999999;
- }
-
- a, span {
    font-size:20pt;
  }
+ 
+ .appsScriptContainer img {
+   width: 440px;
+ }
+ .appsScriptContainer {
+   float: right; 
+   margin-right: -220px
+ }
+ 
+ .bkperContainer img {
+   width: 400px;
+ } 
+ .bkperContainer {
+   margin-left:-140px;
+   margin-bottom: -95px;
+ }
+ 
+ 
+@media (max-width: 750px) {
+   img {
+     width: 300px;
+   }
+   a, body {
+     font-size:16pt;
+   } 
+   .appsScriptContainer img {
+     width: 340px;
+   }
+   .appsScriptContainer {
+     margin-right: -170px
+   }
+   
+   .bkperContainer img {
+     width: 300px;
+   } 
+   .bkperContainer {
+     margin-left:-110px;
+     margin-bottom: -73px;
+   } 
+
+   
+}
+
+@media (max-width: 550px) {
+   img {
+     width: 200px;
+   }
+   a, body {
+     font-size:13pt;
+   }
+   
+   .appsScriptContainer img {
+     width: 240px;
+   }
+   .appsScriptContainer {
+     margin-right: -120px
+   }
+   
+   .bkperContainer img {
+     width: 200px;
+   } 
+   .bkperContainer {
+     margin-left:-80px;
+     margin-bottom: -53px;
+   }
+
+} 
+ 
 .user {
    padding:20px;
-   font-size: 16pt;
+   font-size: 80%;
  }
-
  
+.close {
+   font-size: 60%;
+}
+
+
 </style>
 <body>
+
 <table width='100%' style='margin-top:-5px'>
   <tr>
     <td width='50%'>
-      <div style='float:right; margin-right:-220px'>
-          <img src='https://www.bkper.com/images/appsScript.svg'/>
+      <div class="appsScriptContainer">
+        <img src='https://www.bkper.com/images/appsScript.svg'/>
       </div>
     </td>
     <td width='50%'>
-      <div style='margin-left:-140px; width:400px; margin-top: 95px' >
-          <img src='https://www.bkper.com/images/logo_10_degree.svg'/>
+      <div class="bkperContainer" >
+        <img src='https://www.bkper.com/images/logo_10_degree.svg'/>
       </div>
     </td>
   </tr>
@@ -40,9 +110,9 @@
       <div class='user'>
         <?!=Session.getEffectiveUser().getEmail();?>
       </div>
-      <div>
+      <div class="close">
         Close this window to continue.
-      </div>      
+      </div>
 
     </td>
   </tr>

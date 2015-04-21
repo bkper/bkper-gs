@@ -26,7 +26,7 @@
 [Docs]: https://chrome.google.com/webstore/detail/bkper/cdialfondjmoflglobnohjcbicdhcaaj
 [Forms]: https://chrome.google.com/webstore/detail/bkper/hfhnjepoehncolldclpdddgccibbpeda
 
-##BkperApp
+##BkperApp [![GSTests status](http://gs-tests-status.appspot.com/badge.svg?project=BkperApp&organization=bkper)](https://script.google.com/macros/s/AKfycbyWJJFIwoqnNudRMGse18qVNWw5aa7g03-iLmL_rjqO8mg-MjI/exec?project=BkperApp&organization=bkper)
 
 [BkperApp] is a Google Apps Script library for bkper.
 

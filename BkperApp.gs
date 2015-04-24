@@ -72,11 +72,7 @@ It's used to match {@link Account|Accounts} names.<br/></br>
 @return {string} the name normalized
 */
 function normalizeName(name) {
-  if (name != null && typeof name == 'string') {
-    return Utils_.removeDiacritics(name.trim().toLowerCase());
-  } else {
-    return name;
-  }
+  return BkperUtils.normalizeText(name, "_");
 }
 
 

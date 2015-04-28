@@ -65,12 +65,6 @@ function getAuthorizationHtml(continueUrl, continueText) {
   return Authorizer_.createAuthorizeTemplate(continueUrl, continueText);
 }
 
-/**
-Utility function for normalizing names. <br/><br/>
-It's used to match {@link Account|Accounts} names.<br/></br>
-@param {string} name
-@return {string} the name normalized
-*/
 function normalizeName(name) {
   return BkperUtils.normalizeText(name, "_");
 }

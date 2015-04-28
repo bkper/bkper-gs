@@ -1,6 +1,5 @@
 var API = {
 
-
   /**
    @private
   */
@@ -43,16 +42,8 @@ var API = {
 
 
   /**
-  Access {@link http://about.bkper.com/api_explorer.html|REST API}.
-
-  @param {string} apiName The api to access.
-  @param {string} version The api version.
-  @param {string} path The service path.
-  @param {string} params The fetch params. The same as {@link https://developers.google.com/apps-script/reference/url-fetch/url-fetch-app|FetchUrlApp}
-
-  @example
-  var response = BkperApp.API.fetch("bkper","v2", "s");
-  */
+  @private
+ */
   fetch: function(apiName, version, path, params) {
     var apiURL = "https://bkper-hrd.appspot.com/_ah/api/" + apiName + "/" + version + "/" + path;
 

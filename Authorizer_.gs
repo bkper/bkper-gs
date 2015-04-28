@@ -169,7 +169,7 @@ scriptUri: "https://script.google.com/macros/s/AKfycbz8F5FGTTW72pQBfDvGjEB4eglVm
         continueUrl: encodeURI(continueUrl),
         continueText: encodeURI(continueText)
       };
-      state = Utilities.jsonStringify(stateObject);
+      state = JSON.stringify(stateObject);
     }
     var url1 = Authorizer_.createAuthorizationURL(redirectUri, state);
     var template = HtmlService.createTemplateFromFile('AuthorizeView');

@@ -4,8 +4,9 @@ var Report = {
   @classdesc A BalanceReport stores the balances based on an query.
   @param {Array} balanceReportPlain balances wrapped array
   @param {DecimalSeparator} decimalSeparator {@link Book#getDecimalSeparator|decimal separator of book}
+  @param {FractionDigits} fractionDigits {@link Book#getFractionDigits|Fraction digits of book}
   */
-  BalanceReport : function(balanceReportPlain, decimalSeparator, datePattern) {
+  BalanceReport : function(balanceReportPlain, decimalSeparator, datePattern, fractionDigits) {
     this.wrapped = balanceReportPlain;
     this.groupBalanceReports = null;
     this.accountBalanceReports = null;
@@ -13,6 +14,7 @@ var Report = {
 
     this.decimalSeparator = decimalSeparator;
     this.datePattern = datePattern;
+    this.fractionDigits = fractionDigits;
 
     if (this.wrapped.groupBalances != null) {
       //Configuring credit on groupBalances
@@ -168,7 +170,7 @@ var Report = {
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
       Logger.log("representative: " + balance);
       if (format) {
-        return Utils_.formatValue_(balance, this.decimalSeparator)
+        return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
       } else {
         return balance;
       }
@@ -182,7 +184,7 @@ var Report = {
       var balance = Utils_.round(this.wrapped.cumulativeBalance);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
       if (format) {
-        return Utils_.formatValue_(balance, this.decimalSeparator)
+        return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
       } else {
         return balance;
       }
@@ -230,7 +232,7 @@ var Report = {
     Report.TagBalanceReport.prototype.getPeriodBalance = function(format) {
       var balance = Utils_.round(this.wrapped.periodBalance);
       if (format) {
-        return Utils_.formatValue_(balance, this.decimalSeparator)
+        return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
       } else {
         return balance;
       }
@@ -243,7 +245,7 @@ var Report = {
     Report.TagBalanceReport.prototype.getCumulativeBalance = function(format) {
       var balance = Utils_.round(this.wrapped.cumulativeBalance);
       if (format) {
-        return Utils_.formatValue_(balance, this.decimalSeparator)
+        return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
       } else {
         return balance;
       }
@@ -294,7 +296,7 @@ var Report = {
       var balance = Utils_.round(this.wrapped.periodBalance);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
       if (format) {
-        return Utils_.formatValue_(balance, this.decimalSeparator)
+        return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
       } else {
         return balance;
       }
@@ -308,7 +310,7 @@ var Report = {
       var balance = Utils_.round(this.wrapped.cumulativeBalance);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
       if (format) {
-        return Utils_.formatValue_(balance, this.decimalSeparator)
+        return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
       } else {
         return balance;
       }

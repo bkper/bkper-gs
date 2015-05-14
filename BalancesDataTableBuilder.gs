@@ -17,12 +17,13 @@ var BalanceType = {
 @class
 A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
 */
-function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, decimalSeparator, datePattern) {
+function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, decimalSeparator, datePattern, fractionDigits) {
 
   this.balanceType = BalanceType.TOTAL;
   this.periodicity = periodicity;
   this.decimalSeparator = decimalSeparator;
   this.datePattern = datePattern;
+  this.fractionDigits = fractionDigits;
   this.balanceArray = balanceContainerReportArray;
   this.shouldFormatDate = false;
   this.shouldFormatValue = false;
@@ -245,7 +246,7 @@ function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, deci
         }  else {
           amount = Utils_.round(amount);
           if (this.shouldFormatValue) {
-            amount = Utils_.formatValue_(amount, this.decimalSeparator);
+            amount = Utils_.formatValue_(amount, this.decimalSeparator, this.fractionDigits);
           }
         }
         row.push(amount);
@@ -267,7 +268,7 @@ function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, deci
           if (cell == "null_amount") {
             var amount = 0;
             if (this.shouldFormatValue) {
-              amount = Utils_.formatValue_(amount, this.decimalSeparator);
+              amount = Utils_.formatValue_(amount, this.decimalSeparator, this.fractionDigits);
             }
             row[j] = amount;
           }
@@ -280,7 +281,7 @@ function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, deci
           } else if (cell == "null_amount") {
             var amount = 0;
             if (this.shouldFormatValue) {
-              amount = Utils_.formatValue_(amount, this.decimalSeparator);
+              amount = Utils_.formatValue_(amount, this.decimalSeparator, this.fractionDigits);
             }
             row[j] = amount;
           }

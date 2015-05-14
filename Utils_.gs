@@ -13,8 +13,7 @@ var Utils_ = {
     return Math.round(num*100)/100;
   },
   
-  formatValue_: function(value, decimalSeparator) {
-    
+  formatValue_: function(value, decimalSeparator, fractionDigits) {
     if (value == null){
         return "";
     } 
@@ -29,8 +28,12 @@ var Utils_ = {
     if (value == null){
         return "";
     }     
+
+    if(fractionDigits == null) {
+      fractionDigits = 2;
+    }
     
-    var formattedValue = (value.toFixed(2)) + "";
+    var formattedValue = (value.toFixed(fractionDigits)) + "";
     if (decimalSeparator == DecimalSeparator.DOT) {
       return formattedValue.replace(/\,/g, '.');
     } else {

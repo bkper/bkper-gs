@@ -98,7 +98,8 @@ function TransactionsDataTableBuilder(transactionIterator) {
       if (transaction.getAmount() != null) {
         if (this.shouldFormatValue) {
           var decimalSeparator = iterator.book.getDecimalSeparator();
-          line.push(Utils_.formatValue_(transaction.getAmount(), decimalSeparator));
+          var fractionDigits = iterator.book.getFractionDigits();
+          line.push(Utils_.formatValue_(transaction.getAmount(), decimalSeparator, fractionDigits));
         } else {
           line.push(transaction.getAmount());
         }
@@ -147,7 +148,7 @@ function TransactionsDataTableBuilder(transactionIterator) {
         var amount = transaction.getAmount();
 
         if (this.shouldFormatValue) {
-          amount = Utils_.formatValue_(transaction.getAmount(), iterator.book.getDecimalSeparator());
+          amount = Utils_.formatValue_(transaction.getAmount(), iterator.book.getDecimalSeparator(), iterator.book.getFractionDigits());
         };
 
         if (this.isCreditOnTransaction_(transaction, account)) {
@@ -166,7 +167,7 @@ function TransactionsDataTableBuilder(transactionIterator) {
 
           var balance = transaction.getAccountBalance();
           if (this.shouldFormatValue) {
-            balance = Utils_.formatValue_(balance, iterator.book.getDecimalSeparator());
+            balance = Utils_.formatValue_(balance, iterator.book.getDecimalSeparator(), iterator.book.getFractionDigits());
           };
           line.push(balance);
         } else{

@@ -27,6 +27,15 @@ function Book(id) {
     this.checkBookLoaded_();
     return this.wrapped.name;
   }
+  
+  /**
+  @return {string} The fraction digits of this Book
+  @method
+  */
+  Book.prototype.getFractionDigits = function() {
+    this.checkBookLoaded_();
+    return this.wrapped.fractionDigits;
+  }
 
   /**
   @return {string} The name of this Book Owner
@@ -85,10 +94,10 @@ function Book(id) {
   }
 
  /**
-  @return {string} The date formated according to {@link Book#getDecimalSeparator|decimal separator of book}
+ @return {string} The value formated according to {@link Book#getDecimalSeparator|decimal separator} and {@link Book#getFractionDigits|fraction digits} of book}
   */
   Book.prototype.formatValue = function(value) {
-    return Utils_.formatValue_(value, this.getDecimalSeparator());
+    return Utils_.formatValue_(value, this.getDecimalSeparator(), this.getFractionDigits());
   }
 
   /**

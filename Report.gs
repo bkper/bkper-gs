@@ -50,7 +50,7 @@ var Report = {
         dataTable = dataTable.concat(this.getGroupBalanceReports());
       }
 
-      return new BalancesDataTableBuilder(dataTable, this.getPeriodicity(), this.decimalSeparator, this.datePattern);
+      return new BalancesDataTableBuilder(dataTable, this.getPeriodicity(), this.decimalSeparator, this.datePattern, this.fractionDigits);
     }
 
     /**
@@ -75,7 +75,7 @@ var Report = {
         this.accountBalanceReports = new Array();
         for (var i = 0; i < this.wrapped.accountBalances.length; i++) {
           var accountBalance = this.wrapped.accountBalances[i];
-          var accountBalanceReport = new Report.AccountBalanceReport(accountBalance);
+          var accountBalanceReport = new Report.AccountBalanceReport(accountBalance, this.decimalSeparator, this.fractionDigits);
           this.accountBalanceReports.push(accountBalanceReport);
         }
       }
@@ -105,7 +105,7 @@ var Report = {
         this.groupBalanceReports = new Array();
         for (var i = 0; i < this.wrapped.groupBalances.length; i++) {
           var grouBalances = this.wrapped.groupBalances[i];
-          var accGroupBalances = new Report.GroupBalanceReport(grouBalances, this.getPeriodicity());
+          var accGroupBalances = new Report.GroupBalanceReport(grouBalances, this.getPeriodicity(), this.decimalSeparator, this.fractionDigits);
           this.groupBalanceReports.push(accGroupBalances);
         }
       }
@@ -143,8 +143,10 @@ var Report = {
   @class
   A AccountBalanceReport stores {@link Account|accounts} balances.
   */
-  AccountBalanceReport : function(balancePlain) {
+  AccountBalanceReport : function(balancePlain, decimalSeparator, fractionDigits) {
     this.wrapped = balancePlain;
+    this.decimalSeparator = decimalSeparator;
+    this.fractionDigits = fractionDigits; 
 
     /**
     @returns {string} the {@link Account|account} name
@@ -165,7 +167,7 @@ var Report = {
     @returns {number} the {@link Account|account} period balance
     */
     Report.AccountBalanceReport.prototype.getPeriodBalance = function(format) {
-      var balance = Utils_.round(this.wrapped.periodBalance);
+      var balance = Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
       Logger.log("balance: " + balance);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
       Logger.log("representative: " + balance);
@@ -181,10 +183,10 @@ var Report = {
     @returns {number} the {@link Account|account} cumulative balance
     */
     Report.AccountBalanceReport.prototype.getCumulativeBalance = function(format) {
-      var balance = Utils_.round(this.wrapped.cumulativeBalance);
+      var balance = Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
       if (format) {
-        return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
+        return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits);
       } else {
         return balance;
       }
@@ -230,7 +232,7 @@ var Report = {
     @returns {number} the #hashtag period balance
     */
     Report.TagBalanceReport.prototype.getPeriodBalance = function(format) {
-      var balance = Utils_.round(this.wrapped.periodBalance);
+      var balance = Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
       if (format) {
         return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
       } else {
@@ -243,7 +245,7 @@ var Report = {
     @returns {number} the #hashtag cumulative balance
     */
     Report.TagBalanceReport.prototype.getCumulativeBalance = function(format) {
-      var balance = Utils_.round(this.wrapped.cumulativeBalance);
+      var balance = Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
       if (format) {
         return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
       } else {
@@ -270,10 +272,10 @@ var Report = {
   @class
   A GroupBalanceReport stores {@link Group|group} balances.
   */
-  GroupBalanceReport : function(groupBalancePlain, periodicity) {
-
+  GroupBalanceReport : function(groupBalancePlain, periodicity, decimalSeparator, fractionDigits) {
     this.wrapped = groupBalancePlain;
-
+    this.decimalSeparator = decimalSeparator;
+    this.fractionDigits = fractionDigits;
     /**
     @returns {string} the {@link Group|group} name
     */
@@ -293,7 +295,7 @@ var Report = {
     @returns {number} the {@link Group|group} period balance
     */
     Report.GroupBalanceReport.prototype.getPeriodBalance = function(format) {
-      var balance = Utils_.round(this.wrapped.periodBalance);
+      var balance = Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
       if (format) {
         return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
@@ -307,7 +309,7 @@ var Report = {
     @returns {number} the {@link Group|group} period balance
     */
     Report.GroupBalanceReport.prototype.getCumulativeBalance = function(format) {
-      var balance = Utils_.round(this.wrapped.cumulativeBalance);
+      var balance = Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
       if (format) {
         return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
@@ -330,7 +332,7 @@ var Report = {
     @returns {@link BalancesDataTableBuilder}
     */
     Report.GroupBalanceReport.prototype.createDataTable = function() {
-      return new BalancesDataTableBuilder(this.getAccountBalanceReports(), this.periodicity, this.decimalSeparator, this.datePattern);
+      return new BalancesDataTableBuilder(this.getAccountBalanceReports(), this.periodicity, this.decimalSeparator, this.datePattern, this.fractionDigits);
     }
 
     /**
@@ -342,14 +344,11 @@ var Report = {
         this.accountBalanceReports = new Array();
         for (var i = 0; i < accountBalances.length; i++) {
           var accountBalance = accountBalances[i];
-          var accBalances = new Report.AccountBalanceReport(accountBalance);
+          var accBalances = new Report.AccountBalanceReport(accountBalance, this.decimalSeparator, this.fractionDigits);
           this.accountBalanceReports.push(accBalances);
         }
       }
       return this.accountBalanceReports;
     }
   },
-
-
-
 }

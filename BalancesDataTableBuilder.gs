@@ -18,7 +18,6 @@ var BalanceType = {
 A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
 */
 function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, decimalSeparator, datePattern, fractionDigits) {
-
   this.balanceType = BalanceType.TOTAL;
   this.periodicity = periodicity;
   this.decimalSeparator = decimalSeparator;

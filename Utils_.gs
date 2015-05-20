@@ -6,11 +6,15 @@ var Utils_ = {
     "dd/MM/yyyy": {YEARLY: "yyyy", MONTHLY: "MM/yyyy", DAILY: "dd/MM/yyyy"}
   },
   
-  round: function(num) {
+  round: function(num, fractionDigits) {
     if (num == null) {
       return null;
     }
-    return Math.round(num*100)/100;
+    if (fractionDigits != null) {
+      return Number(Math.round(num + 'e' + fractionDigits) + 'e-' + fractionDigits);
+    } else {
+      return Math.round(num*100)/100;
+    }
   },
   
   formatValue_: function(value, decimalSeparator, fractionDigits) {

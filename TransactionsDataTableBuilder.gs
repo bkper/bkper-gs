@@ -142,6 +142,7 @@ function TransactionsDataTableBuilder(transactionIterator) {
       } else{
         line.push("");
       }
+      
 
       if (transaction.getAmount() != null) {
 
@@ -160,11 +161,11 @@ function TransactionsDataTableBuilder(transactionIterator) {
         }
       } else{
         line.push("");
+        line.push("");
       }
 
       if (account.isPermanent()) {
         if (transaction.getAccountBalance() != null) {
-
           var balance = transaction.getAccountBalance();
           if (this.shouldFormatValue) {
             balance = Utils_.formatValue_(balance, iterator.book.getDecimalSeparator(), iterator.book.getFractionDigits());

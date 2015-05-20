@@ -345,7 +345,7 @@ function Book(id) {
   Book.prototype.getBalanceReport = function(query) {
     var balances = BalancesService_.getBalances(this.getId(), query);
 
-    return new Report.BalanceReport(balances, this.getDecimalSeparator(), this.getDatePattern());
+    return new Report.BalanceReport(balances, this.getDecimalSeparator(), this.getDatePattern(), this.getFractionDigits());
   }
 
   /**

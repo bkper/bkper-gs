@@ -87,6 +87,8 @@ function Book(id) {
 
 
   /**
+  @param {Date} date The date to format as string.
+  @param {string} timeZone The output timezone of the result
   @return {string} The date formated according to {@link Book#getDatePattern|date pattern of book}
   */
   Book.prototype.formatDate = function(date, timeZone) {
@@ -94,6 +96,7 @@ function Book(id) {
   }
 
  /**
+ @param {Number} value The value to be formatted.
  @return {string} The value formated according to {@link Book#getDecimalSeparator|decimal separator} and {@link Book#getFractionDigits|fraction digits} of book}
   */
   Book.prototype.formatValue = function(value) {

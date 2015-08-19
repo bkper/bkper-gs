@@ -1,3 +1,4 @@
+
 var API = {
 
   /**
@@ -56,22 +57,45 @@ var API = {
       params.headers = new Object();
     }
 
+    try {
+      params.headers.UsageTag = USAGE_TAG;
+    } catch (error) {
+      //OK
+    }
+    
     var accessToken = Authorizer_.getAccessToken();
     params.headers.Authorization = "Bearer " + accessToken;
     if (params.contentType == null) {
       params.contentType = "application/json; charset=UTF-8";
-    }
+    }      
 
+  var retries = 0;
+  var sleepTime = 1000;
+  while (true) {
     try {
       var response = UrlFetchApp.fetch(apiURL, params);
       return response;
     } catch (error) {
       var errorMsg = error + "";
-      if (errorMsg.indexOf("403") >= 0 || errorMsg.indexOf("forbidden") >= 0) {
-        Authorizer_.validateAccessToken();
+      if (errorMsg.indexOf("code 500") >= 0 || errorMsg.indexOf("Address unavailable") >= 0) {
+        Logger.log("Failed to execute: " + retries);
+        if (retries > 4) {
+          throw error;
+        } else {
+          Logger.log("Retrying in " + (sleepTime/1000) + " secs...");
+          Utilities.sleep(sleepTime);
+          sleepTime = sleepTime * 2;
+          retries++;
+        }
+      } else {
+        if (errorMsg.indexOf("403") >= 0 || errorMsg.indexOf("forbidden") >= 0) {
+          Authorizer_.validateAccessToken();
+        }
+        throw error;
       }
-      throw error;
     }
+  }    
+
   },
 
 

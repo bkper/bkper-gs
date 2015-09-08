@@ -17,9 +17,15 @@ scriptUri: "https://script.google.com/macros/s/AKfycbz8F5FGTTW72pQBfDvGjEB4eglVm
     var continueText = null;
     
     if (e.parameter && e.parameter.state) {
-      var state = JSON.parse(e.parameter.state);
-      continueUrl = decodeURI(state.continueUrl);
-      continueText = decodeURI(state.continueText);
+      try {
+        var decoded = Utilities.base64Decode(e.parameter.state)
+        var stateJSON = Utilities.newBlob(decoded).getDataAsString()
+        var state = JSON.parse(stateJSON);
+        continueUrl = decodeURI(state.continueUrl);
+        continueText = decodeURI(state.continueText);
+      } catch (error) {
+        Logger.log(error);
+      }
     }
     
     if (e.parameter && e.parameter.force == 'true') {
@@ -169,7 +175,8 @@ scriptUri: "https://script.google.com/macros/s/AKfycbz8F5FGTTW72pQBfDvGjEB4eglVm
         continueUrl: encodeURI(continueUrl),
         continueText: encodeURI(continueText)
       };
-      state = JSON.stringify(stateObject);
+      var stateJSON = JSON.stringify(stateObject);
+      state = Utilities.base64Encode(stateJSON);
     }
     var url1 = Authorizer_.createAuthorizationURL(redirectUri, state);
     var template = HtmlService.createTemplateFromFile('AuthorizeView');

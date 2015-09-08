@@ -77,7 +77,7 @@ var API = {
       return response;
     } catch (error) {
       var errorMsg = error + "";
-      if (errorMsg.indexOf("code 500") >= 0 || errorMsg.indexOf("Address unavailable") >= 0) {
+      if (errorMsg.indexOf("code 500") >= 0 || errorMsg.indexOf("Address unavailable") >= 0 || errorMsg.indexOf("Unexpected error") >= 0) {
         Logger.log("Failed to execute: " + retries);
         if (retries > 4) {
           throw error;

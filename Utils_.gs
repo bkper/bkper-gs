@@ -8,16 +8,22 @@ var Utils_ = {
   
   round: function(num, fractionDigits) {
     if (num == null) {
-      return null;
+      num = 0;
     }
     if (fractionDigits != null) {
-      return Number(Math.round(num + 'e' + fractionDigits) + 'e-' + fractionDigits);
+      var rounded = Number(Math.round(num + 'e' + fractionDigits) + 'e-' + fractionDigits)
+      if (isNaN(rounded)) {
+        rounded = 0;
+      }
+      return rounded;
     } else {
-      return Math.round(num*100)/100;
+      var rounded =  Math.round(num*100)/100;
+      return rounded;
     }
   },
   
   formatValue_: function(value, decimalSeparator, fractionDigits) {
+    
     if (value == null){
         return "";
     } 
@@ -72,6 +78,13 @@ var Utils_ = {
   },  
   
   getRepresentativeValue: function(value, credit) {
+    
+    Logger.log("Representative: " + value);
+
+    
+    if (value == null) {
+      return 0;
+    }
     
     if (credit != null && !credit) {
       return value *-1;

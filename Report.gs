@@ -168,9 +168,7 @@ var Report = {
     */
     Report.AccountBalanceReport.prototype.getPeriodBalance = function(format) {
       var balance = Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
-      Logger.log("balance: " + balance);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
-      Logger.log("representative: " + balance);
       if (format) {
         return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
       } else {
@@ -185,6 +183,7 @@ var Report = {
     Report.AccountBalanceReport.prototype.getCumulativeBalance = function(format) {
       var balance = Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
+
       if (format) {
         return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits);
       } else {

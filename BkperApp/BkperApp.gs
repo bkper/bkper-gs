@@ -34,7 +34,9 @@ function openById(bookId) {
 }
 
 
-
+function getUserDetails() {
+  return UserService_.getUserDetails();
+}
 
 
 /**

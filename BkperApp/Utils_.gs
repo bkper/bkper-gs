@@ -79,9 +79,6 @@ var Utils_ = {
   
   getRepresentativeValue: function(value, credit) {
     
-    Logger.log("Representative: " + value);
-
-    
     if (value == null) {
       return 0;
     }

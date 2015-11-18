@@ -33,7 +33,14 @@ function Account() {
     return this.wrapped.description;
   }
 
+ /**
+  @returns {array} The hashtags used with this Account
+  */
+  Account.prototype.getUsedTags = function() {
+    return this.wrapped.usedTags;
+  }
 
+  
   /**
   @returns {string} The name of this Account without spaces and special characters
   */

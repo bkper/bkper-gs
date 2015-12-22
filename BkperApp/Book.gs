@@ -27,7 +27,7 @@ function Book(id) {
     this.checkBookLoaded_();
     return this.wrapped.name;
   }
-  
+
   /**
   @return {string} The fraction digits of this Book
   @method
@@ -62,7 +62,7 @@ function Book(id) {
 
   /**
   @return {string} The locale of the Book
-  @deprecated Please use getDatePattern and getDecimalSeparator instead
+  @Deprecated Use {@link Book#getDatePattern} and {@link Book#getDecimalSeparator} instead
   */
   Book.prototype.getLocale = function() {
     this.checkBookLoaded_();
@@ -87,11 +87,23 @@ function Book(id) {
 
 
   /**
+  @return {string} The time zone of the book
+  @method
+  */
+  Book.prototype.getTimeZone = function() {
+    this.checkBookLoaded_();
+    return this.wrapped.timeZone;
+  }
+
+  /**
   @param {Date} date The date to format as string.
-  @param {string} timeZone The output timezone of the result
+  @param {string} [timeZone] The output timezone of the result. Default to book's timeZone
   @return {string} The date formated according to {@link Book#getDatePattern|date pattern of book}
   */
   Book.prototype.formatDate = function(date, timeZone) {
+    if (timeZone == null) {
+      timeZone = this.getTimeZone();
+    }
     return Utils_.formatDate(date, this.getDatePattern(), timeZone);
   }
 

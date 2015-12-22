@@ -10,15 +10,10 @@ function TransactionsDataTableBuilder(transactionIterator) {
 
   /**
   Defines whether the dates should be formatted based on {@link Book#getDatePattern|date pattern of book}
-  @param {string} [timeZone] The time zone to format dates.
   @returns {@link TransactionsDataTableBuilder|TransactionsDataTableBuilder} the builder with respective formatting option.
   */
-  TransactionsDataTableBuilder.prototype.formatDate = function(timeZone) {
+  TransactionsDataTableBuilder.prototype.formatDate = function() {
     this.shouldFormatDate = true;
-    if (timeZone == null) {
-      timeZone = Session.getScriptTimeZone();
-    }
-    this.timeZone = timeZone;
     return this;
   }
   /**
@@ -82,7 +77,7 @@ function TransactionsDataTableBuilder(transactionIterator) {
 
       if (this.shouldFormatDate) {
         var pattern = iterator.book.getDatePattern();
-        line.push(Utils_.formatDate(transaction.getInformedDate(), pattern, this.timeZone));
+        line.push(transaction.getInformedDateFormatted());
       } else {
         line.push(transaction.getInformedDate());
       }
@@ -121,7 +116,7 @@ function TransactionsDataTableBuilder(transactionIterator) {
       var line = new Array();
 
       if (this.shouldFormatDate) {
-        line.push(Utils_.formatDate(transaction.getInformedDate(), iterator.book.getDatePattern(), this.timeZone));
+        line.push(transaction.getInformedDateFormatted());
       } else {
         line.push(transaction.getInformedDate());
       }

@@ -52,6 +52,16 @@ var Utils_ = {
     return formattedValue;
   },
   
+  convertValueToDate: function(dateValue) {
+    if (dateValue == null) {
+      return new Date();
+    }
+    var year =  dateValue/10000;
+    var month =  (dateValue / 100) % 100;
+    var day = dateValue % 100;
+    return new Date(year, month-1, day);
+  },  
+  
   formatDate: function(date, pattern, timeZone) {
     if (date == null || !(date instanceof Date)) {
       return date;

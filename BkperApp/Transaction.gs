@@ -194,20 +194,37 @@ function Transaction() {
 
   //INFORMED DATE
   /**
-  @returns {Date} The date the user informed for this transaction
-  @param {boolean} [format] Optional format according to {@link Book#getDatePattern|date pattern of book}
+  @Deprecated Use {@link Transaction#getInformedDateValue|getInformedDateValue} and {@link Transaction#getInformedDateFormatted|getInformedDateFormatted} instead
   */
   Transaction.prototype.getInformedDate = function(format) {
     if (format) {
-      return this.book.formatDate(this.informedDate);
+      return this.getInformedDateFormatted();
+    }
+
+    if (this.informedDate == null) {
+      this.informedDate = Utils_.convertValueToDate(this.getInformedDateValue());
     }
     return this.informedDate;
   }
 
 
+  /**
+  @returns {number} The date the user informed for this transaction. The number is YYYYMMDD
+  */
+  Transaction.prototype.getInformedDateValue = function() {
+      return this.informedDateValue;
+  }
+
+  /**
+  @returns {string} The date the user informed for this transaction, formatted according to {@link Book#getDatePattern|date pattern of book}
+  */
+  Transaction.prototype.getInformedDateFormatted = function() {
+      return this.informedDateFormatted;
+  }
+
   //POST DATE
   /**
-  @returns {Date} The date the user informed for this transaction
+  @returns {Date} The date time user has recorded/posted this transaction
   */
   Transaction.prototype.getPostDate = function() {
     return this.postDate;
@@ -267,8 +284,10 @@ function Transaction() {
     var debitAccount = this.book.getAccount(this.wrapped.debitAccId);
     this.creditAccount = creditAccount;
     this.debitAccount = debitAccount;
-    this.informedDate = new Date(new Number(this.wrapped.informedDateMs));
+    this.informedDateValue = this.wrapped.informedDateValue;
+    this.informedDateFormatted = this.wrapped.informedDateFormatted;
     this.postDate = new Date(new Number(this.wrapped.postDateMs));
+
     if (this.isPosted()) {
       this.alreadyPosted = true;
     } else {

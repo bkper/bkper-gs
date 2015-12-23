@@ -77,7 +77,7 @@ function TransactionsDataTableBuilder(transactionIterator) {
 
       if (this.shouldFormatDate) {
         var pattern = iterator.book.getDatePattern();
-        line.push(transaction.getInformedDateFormatted());
+        line.push(transaction.getInformedDateText());
       } else {
         line.push(transaction.getInformedDate());
       }
@@ -116,7 +116,7 @@ function TransactionsDataTableBuilder(transactionIterator) {
       var line = new Array();
 
       if (this.shouldFormatDate) {
-        line.push(transaction.getInformedDateFormatted());
+        line.push(transaction.getInformedDateText());
       } else {
         line.push(transaction.getInformedDate());
       }
@@ -137,7 +137,7 @@ function TransactionsDataTableBuilder(transactionIterator) {
       } else{
         line.push("");
       }
-      
+
 
       if (transaction.getAmount() != null) {
 

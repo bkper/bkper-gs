@@ -194,11 +194,11 @@ function Transaction() {
 
   //INFORMED DATE
   /**
-  @Deprecated Use {@link Transaction#getInformedDateValue|getInformedDateValue} and {@link Transaction#getInformedDateFormatted|getInformedDateFormatted} instead
+  @Deprecated Use {@link Transaction#getInformedDateValue|getInformedDateValue} and {@link Transaction#getInformedDateText|getInformedDateText} instead
   */
   Transaction.prototype.getInformedDate = function(format) {
     if (format) {
-      return this.getInformedDateFormatted();
+      return this.getInformedDateText();
     }
 
     if (this.informedDate == null) {
@@ -209,7 +209,7 @@ function Transaction() {
 
 
   /**
-  @returns {number} The date the user informed for this transaction. The number is YYYYMMDD
+  @returns {number} The date the user informed for this transaction. The number format is YYYYMMDD
   */
   Transaction.prototype.getInformedDateValue = function() {
       return this.informedDateValue;
@@ -218,8 +218,8 @@ function Transaction() {
   /**
   @returns {string} The date the user informed for this transaction, formatted according to {@link Book#getDatePattern|date pattern of book}
   */
-  Transaction.prototype.getInformedDateFormatted = function() {
-      return this.informedDateFormatted;
+  Transaction.prototype.getInformedDateText = function() {
+      return this.informedDateText;
   }
 
   //POST DATE
@@ -285,7 +285,7 @@ function Transaction() {
     this.creditAccount = creditAccount;
     this.debitAccount = debitAccount;
     this.informedDateValue = this.wrapped.informedDateValue;
-    this.informedDateFormatted = this.wrapped.informedDateFormatted;
+    this.informedDateText = this.wrapped.informedDateText;
     this.postDate = new Date(new Number(this.wrapped.postDateMs));
 
     if (this.isPosted()) {

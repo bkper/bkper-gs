@@ -17,7 +17,7 @@ var BalanceType = {
 @class
 A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
 */
-function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, decimalSeparator, datePattern, fractionDigits) {
+function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, decimalSeparator, datePattern, fractionDigits, offsetInMinutes) {
   this.balanceType = BalanceType.TOTAL;
   this.periodicity = periodicity;
   this.decimalSeparator = decimalSeparator;
@@ -26,19 +26,14 @@ function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, deci
   this.balanceArray = balanceContainerReportArray;
   this.shouldFormatDate = false;
   this.shouldFormatValue = false;
-  this.timeZone;
+  this.offsetInMinutes = offsetInMinutes;
 
   /**
   Defines whether the dates should be formatted based on {@link Book#getDatePattern|date pattern of book} and periodicity.
-  @param {string} [timeZone] The time zone to format dates.
   @returns {@link BalancesDataTableBuilder|BalancesDataTableBuilder} the builder with respective formatting option.
   */
-  BalancesDataTableBuilder.prototype.formatDate = function(timeZone) {
+  BalancesDataTableBuilder.prototype.formatDate = function() {
     this.shouldFormatDate = true;
-    if (timeZone == null) {
-      timeZone = Session.getScriptTimeZone();
-    }
-    this.timeZone = timeZone;
     return this;
   }
   /**
@@ -207,7 +202,7 @@ function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, deci
         //Create a fake zero balance in a previous date if it has only one balance
         if (balances.length == 1) {
           var onlyOneBalance = balances[0];
-          var balanceDate = this.getBalanceDate_(onlyOneBalance);
+          var balanceDate = this.getBalanceDate_(onlyOneBalance, this.offsetInMinutes);
           var daysToSubtract = this.getDaysToBasedOnPeriodicity_(this.periodicity);
           balanceDate.setDate(balanceDate.getDate()-daysToSubtract);
           var previousFakeBalance = this.createFakeTimeBalance_(balanceDate, this.periodicity);
@@ -220,7 +215,7 @@ function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, deci
           var indexEntry = dataIndexMap[fuzzyDate];
           if (indexEntry == null) {
             indexEntry = new Object();
-            indexEntry.date = this.getBalanceDate_(balance);
+            indexEntry.date = this.getBalanceDate_(balance, this.offsetInMinutes);
             dataIndexMap[fuzzyDate] = indexEntry;
           }
           var bal = cumulativeBalance ? balance.cumulativeBalance : balance.periodBalance;
@@ -297,7 +292,7 @@ function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, deci
         var row = table[j];
           if (row.length > 0) {
             //first column
-            row[0] = Utils_.formatDate(row[0], pattern, this.timeZone);
+            row[0] = Utils_.formatDate(row[0], pattern);
           }
       }
 
@@ -306,11 +301,20 @@ function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, deci
     return table;
   }
 
-  BalancesDataTableBuilder.prototype.getBalanceDate_ = function(balance) {
+  BalancesDataTableBuilder.prototype.getBalanceDate_ = function(balance, offsetInMinutes) {
     var year = balance.year;
     var month = balance.month;
     var day = balance.day;
-    var date = BkperUtils.getDate(year, month, day);
+
+    if (month == null || month == 0) {
+      year ++;
+    }
+    if (day == null || day == 0) {
+      month++;
+    }
+    
+    var date = Utils_.createDate(year, month, day, offsetInMinutes);
+    
     return date;
   }
 

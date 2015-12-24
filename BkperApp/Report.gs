@@ -6,7 +6,7 @@ var Report = {
   @param {DecimalSeparator} decimalSeparator {@link Book#getDecimalSeparator|decimal separator of book}
   @param {FractionDigits} fractionDigits {@link Book#getFractionDigits|Fraction digits of book}
   */
-  BalanceReport : function(balanceReportPlain, decimalSeparator, datePattern, fractionDigits) {
+  BalanceReport : function(balanceReportPlain, decimalSeparator, datePattern, fractionDigits, offsetInMinutes) {
     this.wrapped = balanceReportPlain;
     this.groupBalanceReports = null;
     this.accountBalanceReports = null;
@@ -15,6 +15,7 @@ var Report = {
     this.decimalSeparator = decimalSeparator;
     this.datePattern = datePattern;
     this.fractionDigits = fractionDigits;
+    this.offsetInMinutes = offsetInMinutes;
 
     if (this.wrapped.groupBalances != null) {
       //Configuring credit on groupBalances
@@ -50,7 +51,7 @@ var Report = {
         dataTable = dataTable.concat(this.getGroupBalanceReports());
       }
 
-      return new BalancesDataTableBuilder(dataTable, this.getPeriodicity(), this.decimalSeparator, this.datePattern, this.fractionDigits);
+      return new BalancesDataTableBuilder(dataTable, this.getPeriodicity(), this.decimalSeparator, this.datePattern, this.fractionDigits, this.offsetInMinutes);
     }
 
     /**
@@ -331,7 +332,7 @@ var Report = {
     @returns {@link BalancesDataTableBuilder}
     */
     Report.GroupBalanceReport.prototype.createDataTable = function() {
-      return new BalancesDataTableBuilder(this.getAccountBalanceReports(), this.periodicity, this.decimalSeparator, this.datePattern, this.fractionDigits);
+      return new BalancesDataTableBuilder(this.getAccountBalanceReports(), this.periodicity, this.decimalSeparator, this.datePattern, this.fractionDigits, this.offsetInMinutes);
     }
 
     /**

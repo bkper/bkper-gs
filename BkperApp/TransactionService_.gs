@@ -28,9 +28,6 @@ var TransactionService_ = {
   },
 
   record: function(book, transactions, timezone) {
-    if (timezone == null) {
-      timezone = Session.getScriptTimeZone();
-    }
     var text = "";
     if (transactions instanceof Array) {
       var hasManyRows = false;
@@ -50,7 +47,6 @@ var TransactionService_ = {
       text = transactions;
     }
     var body = "text=" +  encodeURIComponent(text);
-    body += "&timezone=" + encodeURIComponent(timezone);
 
     var response = API.call_("post", "drafts", book.getId(), null, body, "application/x-www-form-urlencoded; charset=UTF-8");
     return response;

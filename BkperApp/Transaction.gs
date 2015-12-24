@@ -194,15 +194,11 @@ function Transaction() {
 
   //INFORMED DATE
   /**
-  @Deprecated Use {@link Transaction#getInformedDateValue|getInformedDateValue} and {@link Transaction#getInformedDateText|getInformedDateText} instead
+  @returns {Date} The date the user informed for this transaction, on book's timezone's offset
   */
-  Transaction.prototype.getInformedDate = function(format) {
-    if (format) {
-      return this.getInformedDateText();
-    }
-
+  Transaction.prototype.getInformedDate = function() {
     if (this.informedDate == null) {
-      this.informedDate = Utils_.convertValueToDate(this.getInformedDateValue());
+      this.informedDate = Utils_.convertValueToDate(this.getInformedDateValue(), this.book.getTimeZoneOffset());
     }
     return this.informedDate;
   }

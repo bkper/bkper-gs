@@ -6,7 +6,6 @@ function TransactionsDataTableBuilder(transactionIterator) {
   this.transactionIterator = transactionIterator;
   this.shouldFormatDate = false;
   this.shouldFormatValue = false;
-  this.timeZone;
 
   /**
   Defines whether the dates should be formatted based on {@link Book#getDatePattern|date pattern of book}
@@ -76,7 +75,6 @@ function TransactionsDataTableBuilder(transactionIterator) {
       var line = new Array();
 
       if (this.shouldFormatDate) {
-        var pattern = iterator.book.getDatePattern();
         line.push(transaction.getInformedDateText());
       } else {
         line.push(transaction.getInformedDate());

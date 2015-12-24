@@ -94,16 +94,22 @@ function Book(id) {
     this.checkBookLoaded_();
     return this.wrapped.timeZone;
   }
+  
+  /**
+  @return {number} The time zone offset of the book, in minutes
+  @method
+  */
+  Book.prototype.getTimeZoneOffset = function() {
+    this.checkBookLoaded_();
+    return this.wrapped.timeZoneOffset;
+  }
 
   /**
   @param {Date} date The date to format as string.
-  @param {string} [timeZone] The output timezone of the result. Default to book's timeZone
+  @param {string} [timeZone] The output timezone of the result. Default to script's timeZone
   @return {string} The date formated according to {@link Book#getDatePattern|date pattern of book}
   */
   Book.prototype.formatDate = function(date, timeZone) {
-    if (timeZone == null) {
-      timeZone = this.getTimeZone();
-    }
     return Utils_.formatDate(date, this.getDatePattern(), timeZone);
   }
 
@@ -360,7 +366,7 @@ function Book(id) {
   Book.prototype.getBalanceReport = function(query) {
     var balances = BalancesService_.getBalances(this.getId(), query);
 
-    return new Report.BalanceReport(balances, this.getDecimalSeparator(), this.getDatePattern(), this.getFractionDigits());
+    return new Report.BalanceReport(balances, this.getDecimalSeparator(), this.getDatePattern(), this.getFractionDigits(), this.getTimeZoneOffset());
   }
 
   /**

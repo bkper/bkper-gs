@@ -194,7 +194,7 @@ function Transaction() {
 
   //INFORMED DATE
   /**
-  @returns {Date} The date the user informed for this transaction, on book's timezone's offset
+  @returns {Date} The date the user informed for this transaction, adjusted to book's time zone
   */
   Transaction.prototype.getInformedDate = function() {
     if (this.informedDate == null) {

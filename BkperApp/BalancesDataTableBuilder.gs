@@ -17,7 +17,7 @@ var BalanceType = {
 @class
 A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
 */
-function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, decimalSeparator, datePattern, fractionDigits, offsetInMinutes) {
+function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, decimalSeparator, datePattern, fractionDigits, offsetInMinutes, timeZone) {
   this.balanceType = BalanceType.TOTAL;
   this.periodicity = periodicity;
   this.decimalSeparator = decimalSeparator;
@@ -27,6 +27,9 @@ function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, deci
   this.shouldFormatDate = false;
   this.shouldFormatValue = false;
   this.offsetInMinutes = offsetInMinutes;
+  this.timeZone = timeZone;
+
+  Logger.log(this.timeZone);
 
   /**
   Defines whether the dates should be formatted based on {@link Book#getDatePattern|date pattern of book} and periodicity.
@@ -292,7 +295,7 @@ function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, deci
         var row = table[j];
           if (row.length > 0) {
             //first column
-            row[0] = Utils_.formatDate(row[0], pattern);
+            row[0] = Utils_.formatDate(row[0], pattern, this.timeZone);
           }
       }
 
@@ -314,7 +317,6 @@ function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, deci
     }
     
     var date = Utils_.createDate(year, month, day, offsetInMinutes);
-    
     return date;
   }
 

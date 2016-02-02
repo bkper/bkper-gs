@@ -13,10 +13,12 @@ var API = {
     if (contentType != null) {
       options.contentType = contentType;
     }
+    
 
     if (requestBody != null) {
       options.payload = requestBody;
     }
+    
     var queryParams = null;
     if (params != null) {
       queryParams = BkperUtils.buildURLParams(params);

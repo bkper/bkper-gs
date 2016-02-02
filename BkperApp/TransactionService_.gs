@@ -55,9 +55,10 @@ var TransactionService_ = {
   arrayToTransaction_: function(row, book, timezone) {
     for (var j = 0; j < row.length; j++) {
       var cell = row[j];
-      if (cell instanceof Date) {
+      if (typeof cell == "string") {
+        row[j] = cell;
+      } else if (cell instanceof Date) {
         row[j] = book.formatDate(cell, timezone);
-
       } else if (!isNaN(cell)) {
         row[j] = Utils_.formatValue_(cell, book.getDecimalSeparator(), book.getFractionDigits());
       }

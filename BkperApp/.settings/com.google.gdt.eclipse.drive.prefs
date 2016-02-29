@@ -81,5 +81,5 @@ driveScriptType.TransactionService_.gs=server_js
 driveScriptType.TransactionsDataTableBuilder.gs=server_js
 driveScriptType.UserService_.gs=server_js
 driveScriptType.Utils_.gs=server_js
-driveVersionFingerprint=dd8c643214c4c17989ad672d552edd6e
+driveVersionFingerprint=9066872f7bcd37d125841be0d7c51b92
 eclipse.preferences.version=1

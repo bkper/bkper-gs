@@ -32,6 +32,13 @@ function Transaction() {
   Transaction.prototype.getTags = function() {
     return this.wrapped.tags;
   }
+  
+  /**
+  @returns {Array<String>} All urls used on this transaction
+  */
+  Transaction.prototype.getUrls = function() {
+    return this.wrapped.urls;
+  }  
 
   /**
   @param {string} tag The #hashtag to check

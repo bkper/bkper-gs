@@ -129,8 +129,9 @@ function TransactionIterator(book, query) {
         var query = this.query.toLowerCase();
 
         var indexOfAcc = query.indexOf("acc:");
+        var lastIndexOf = query.lastIndexOf("acc:");
 
-        if (indexOfAcc >= 0 && query.length > (indexOfAcc + 5)) {
+        if (indexOfAcc >= 0 && query.length > (indexOfAcc + 5) && indexOfAcc == lastIndexOf) {
 
           query = query.substring(indexOfAcc + "acc:".length);
           query = query.trim();

@@ -47,6 +47,7 @@ function TransactionsDataTableBuilder(transactionIterator) {
         numOfCoulmns = 6;
         headerLine.push("Balance");
       }
+      headerLine.push("Attachment");
       header.push(headerLine);
     } else {
       headerLine.push("Date");
@@ -54,12 +55,15 @@ function TransactionsDataTableBuilder(transactionIterator) {
       headerLine.push("Destination");
       headerLine.push("Description");
       headerLine.push("Amount");
+      headerLine.push("Attachment");
       transactions = this.get2DArray_(transactionIterator);
       header.push(headerLine);
     }
 
     if (transactions.length > 0) {
       transactions.splice(0, 0, headerLine);
+      transactions = BkperUtils.convertInMatrix(transactions);
+      Logger.log(transactions)
       return transactions;
     } else {
       return [headerLine];
@@ -99,6 +103,13 @@ function TransactionsDataTableBuilder(transactionIterator) {
       } else{
         line.push("");
       }
+      
+      var urls = transaction.getUrls();
+      if (urls != null && urls.length > 0) {
+        for (var i = 0; i < urls.length; i++) {
+          line.push(urls[i]);
+        }
+      }      
 
       transactions.push(line);
     }
@@ -169,9 +180,15 @@ function TransactionsDataTableBuilder(transactionIterator) {
         }
       }
 
+      var urls = transaction.getUrls();
+      if (urls != null && urls.length > 0) {
+        for (var i = 0; i < urls.length; i++) {
+          line.push(urls[i]);
+        }
+      }     
+      
       transactions.push(line);
     }
-
     return transactions;
   }
 

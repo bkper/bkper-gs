@@ -103,6 +103,14 @@ function Book(id) {
     this.checkBookLoaded_();
     return this.wrapped.timeZoneOffset;
   }
+  
+  /**
+  @return {number} The last update date of the book, in in milliseconds
+  */
+  Book.prototype.getLastUpdateMs = function() {
+    this.checkBookLoaded_();
+    return this.wrapped.lastUpdateMs;
+  }  
 
   /**
   @param {Date} date The date to format as string.

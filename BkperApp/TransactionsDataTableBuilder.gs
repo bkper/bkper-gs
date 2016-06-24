@@ -63,7 +63,6 @@ function TransactionsDataTableBuilder(transactionIterator) {
     if (transactions.length > 0) {
       transactions.splice(0, 0, headerLine);
       transactions = BkperUtils.convertInMatrix(transactions);
-      Logger.log(transactions)
       return transactions;
     } else {
       return [headerLine];

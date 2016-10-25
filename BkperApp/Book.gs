@@ -135,6 +135,12 @@ function Book(id) {
   @param {string} [timeZone] The time zone to format dates.
   */
   Book.prototype.record = function(transactions, timeZone) {
+    
+    if (timeZone == null || (Utils_.isString(timeZone) && timeZone.trim() == "")) {
+      Logger.log("Fallback to book timezone!")
+      timeZone = this.getTimeZone();
+    }   
+    
     TransactionService_.record(this, transactions, timeZone);
   }
 

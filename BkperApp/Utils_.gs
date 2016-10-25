@@ -63,6 +63,17 @@ var Utils_ = {
     return date;
   },
   
+  isString: function(obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (typeof obj === 'string' || obj instanceof String) {
+      return true;
+    } else {
+      return false;
+    }
+  },    
+  
   createDate: function(year, month, day, offsetInMinutes) {
     var date = new Date(year, month - 1, day);
     date.setTime(date.getTime() + offsetInMinutes*60*1000 );    
@@ -76,7 +87,7 @@ var Utils_ = {
       return date;
     }
     
-    if (timeZone == null) {
+    if (timeZone == null || timeZone == "") {
       timeZone = Session.getScriptTimeZone();
     }    
     

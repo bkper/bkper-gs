@@ -202,16 +202,6 @@ function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, deci
 
       if (balances != null) {
 
-        //Create a fake zero balance in a previous date if it has only one balance
-        if (balances.length == 1) {
-          var onlyOneBalance = balances[0];
-          var balanceDate = this.getBalanceDate_(onlyOneBalance, this.offsetInMinutes);
-          var daysToSubtract = this.getDaysToBasedOnPeriodicity_(this.periodicity);
-          balanceDate.setDate(balanceDate.getDate()-daysToSubtract);
-          var previousFakeBalance = this.createFakeTimeBalance_(balanceDate, this.periodicity);
-          balances.push(previousFakeBalance);
-        }
-
         for (var j = 0; j < balances.length; j++) {
           var balance = balances[j];
           var fuzzyDate = this.getFuzzyDate_(balance);
@@ -339,24 +329,4 @@ function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, deci
   }
 
 
-  BalancesDataTableBuilder.prototype.createFakeTimeBalance_ = function(date, periodicity) {
-    var balance = new Object();
-    balance.totalCredit = 0;
-    balance.totalDebit = 0;
-    balance.periodBalance = 0;
-    balance.cumulativeBalance = 0;
-
-    balance.year = date.getFullYear();
-    balance.month = 0;
-    balance.day = 0;
-
-    if (periodicity ==  "MONTHLY" || periodicity ==  "DAYLY") {
-      balance.month = date.getMonth() + 1;
-    }
-
-    if (periodicity == "DAYLY") {
-      balance.day = date.getDate();
-    }
-    return balance;
-  }
 }

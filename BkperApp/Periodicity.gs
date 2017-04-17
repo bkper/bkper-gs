@@ -2,7 +2,7 @@
   The Periodicity of the query. It depends the way you write the range params. You can use {@link Variables|variables}.
   <br/>
   <br/>
-  Go to <a href='https://www.bkper.com' target='_blank'>bkper.com</a> and open report wizard: <img src='../../img/wizard.png'/> to learn more about query sintax.
+  Go to <a href='https://app.bkper.com' target='_blank'>bkper.com</a> and open report wizard: <img src='../../img/wizard.png'/> to learn more about query sintax.
   @enum {string}
   @readonly
   @property {string} DAILY - Ex: after:25/01/1983, before:04/mar/2013, after:$d-30, before:$d, after:$d-15/$m

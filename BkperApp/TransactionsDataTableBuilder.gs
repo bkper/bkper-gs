@@ -6,6 +6,7 @@ function TransactionsDataTableBuilder(transactionIterator) {
   this.transactionIterator = transactionIterator;
   this.shouldFormatDate = false;
   this.shouldFormatValue = false;
+  this.shouldAddUrls = false;
 
   /**
   Defines whether the dates should be formatted based on {@link Book#getDatePattern|date pattern of book}
@@ -23,6 +24,16 @@ function TransactionsDataTableBuilder(transactionIterator) {
     this.shouldFormatValue = true;
     return this;
   }
+  
+  /**
+  Defines whether the value should add Attachments links
+  @returns {@link TransactionsDataTableBuilder|TransactionsDataTableBuilder} the builder with respective add attachment option.
+  */
+  TransactionsDataTableBuilder.prototype.addUrls = function() {
+    this.shouldAddUrls = true;
+    return this;
+  }  
+  
   /**
   @returns {Array} an two-dimensional array containing all {@link Transaction|transactions}.
   */
@@ -44,10 +55,11 @@ function TransactionsDataTableBuilder(transactionIterator) {
 
       transactions = this.getExtract2DArray_(transactionIterator, filteredByAccount);
       if (filteredByAccount.isPermanent()) {
-        numOfCoulmns = 6;
         headerLine.push("Balance");
       }
-      headerLine.push("Attachment");
+      if (this.shouldAddUrls) {
+        headerLine.push("Attachment");
+      }
       header.push(headerLine);
     } else {
       headerLine.push("Date");
@@ -55,7 +67,10 @@ function TransactionsDataTableBuilder(transactionIterator) {
       headerLine.push("Destination");
       headerLine.push("Description");
       headerLine.push("Amount");
-      headerLine.push("Attachment");
+      
+      if (this.shouldAddUrls) {
+        headerLine.push("Attachment");
+      }
       transactions = this.get2DArray_(transactionIterator);
       header.push(headerLine);
     }
@@ -99,15 +114,18 @@ function TransactionsDataTableBuilder(transactionIterator) {
         } else {
           line.push(transaction.getAmount());
         }
-      } else{
+      } else {
         line.push("");
       }
       
       var urls = transaction.getUrls();
-      if (urls != null && urls.length > 0) {
+      
+      if (this.shouldAddUrls && urls != null && urls.length > 0) {
         for (var i = 0; i < urls.length; i++) {
           line.push(urls[i]);
         }
+      } else if (this.shouldAddUrls) {
+        line.push("");
       }      
 
       transactions.push(line);
@@ -180,11 +198,13 @@ function TransactionsDataTableBuilder(transactionIterator) {
       }
 
       var urls = transaction.getUrls();
-      if (urls != null && urls.length > 0) {
+      if (this.shouldAddUrls && urls != null && urls.length > 0) {
         for (var i = 0; i < urls.length; i++) {
           line.push(urls[i]);
         }
-      }     
+      } else if (this.shouldAddUrls){
+        line.push("");
+      }      
       
       transactions.push(line);
     }

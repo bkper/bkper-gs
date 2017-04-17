@@ -10,25 +10,17 @@ var AccountService_ = {
     return accounts;
   },
   
-  createAccount: function(bookId, name, description, permanent, credit) {
+  createAccount: function(bookId, name, group, description) {
     
     var accountUpdate = new Object();
     
     accountUpdate.name = name;
+    accountUpdate.group = group;
     accountUpdate.description = description;
-    
-    if (permanent == true || permanent == false) {
-      accountUpdate.permanent = permanent;
-    }
-    
-    if (credit == true || credit == false) {
-      accountUpdate.credit = credit;
-    }
     
     var accountUpdateJSON = JSON.stringify(accountUpdate);
     
     var responseJSON = API.call_("post", "accounts", bookId, null, accountUpdateJSON);
-    
     
     var accountPlain = JSON.parse(responseJSON);
     var account = Utils_.wrapObject(new Account(), accountPlain);

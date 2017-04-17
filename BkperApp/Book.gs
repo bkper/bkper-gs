@@ -160,7 +160,7 @@ function Book(id) {
   /**
   Search for transactions.
   <br/>
-  Go to <a href='https://www.bkper.com' target='_blank'>bkper.com</a> and open search wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query syntax.
+  Go to <a href='https://app.bkper.com' target='_blank'>bkper.com</a> and open search wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query syntax.
 
   @param {string} query The query string.
   @return {TransactionIterator} The search result as an iterator.
@@ -252,28 +252,23 @@ function Book(id) {
       account = this.nameAccountMap[normalizedIdOfName];
     }
 
-
-    for (var i = 0; i < this.accounts.length; i++) {
-      var currentAcc = this.accounts[i];
-      if (currentAcc.getNormalizedName().indexOf(normalizedIdOfName) > -1) {
-        account = currentAcc;
-        break;
-      }
-    }
-
     return account;
   }
 
   /**
-  Create an {@link Account} in this book
+  Create an {@link Account} in this book. 
+  
+  The type of account will be determined by the type of others Accounts in same group. If not specified, the type ASSET (permanent=true/credit=false) will be set.
+  
+  If all other accounts in same group is in another group, the account will also be added to the other group.
+  
   @param {string} name The name of the Account
-  @param {string} description The description of the Account
-  @param {boolean} permanent The {@link permanent nature|Account.isPermanent} of the Account
-  @param {boolean} credit The {@link credit nature|Account.isCredit} of the Account
+  @param {string} [group] The group of the Account. 
+  @param {string} [description] The description of the Account
   @returns {Account} The created Account object
   */
-  Book.prototype.createAccount = function(name, description, permanent, credit) {
-    var account = AccountService_.createAccount(this.getId(), name, description, permanent, credit)
+  Book.prototype.createAccount = function(name, group, description) {
+    var account = AccountService_.createAccount(this.getId(), name, group, description);
     account.book = this;
     this.accounts = null;
     return account;
@@ -357,7 +352,7 @@ function Book(id) {
   </br>
   Usually balances are used to populate data tables for charts with <a href='https://developers.google.com/apps-script/reference/charts/' target='_blank'>Chart Services</a> and create great user interfaces, dashboards or insert in documents to report it for users.
   <br/><br/>
-  Go to <a href='https://www.bkper.com' target='_blank'>bkper.com</a> and open report wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query sintax.
+  Go to <a href='https://app.bkper.com' target='_blank'>bkper.com</a> and open report wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query sintax.
 
   @param {string} query The report query (starting with '=')
   @return {Report.BalanceReport} A Balance Report representation
@@ -387,7 +382,7 @@ function Book(id) {
   <br/><br/>
   This method gives a {@link TransactionsDataTableBuilder|TransactionsDataTableBuilder} to create two dimensional Array representations of transactions dataset.
   <br/><br/>
-  Go to <a href='https://www.bkper.com' target='_blank'>bkper.com</a> and open report wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query sintax.
+  Go to <a href='https://app.bkper.com' target='_blank'>bkper.com</a> and open report wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query sintax.
 
   @param {string} query The flter query.
   @return {TransactionsDataTableBuilder} the Transactions list builder.

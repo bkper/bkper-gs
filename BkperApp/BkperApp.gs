@@ -93,7 +93,7 @@ function listLedgers() {
   /**
   A variable represents a moment on time. Useful to keep queries and expressions updated on time.
   <br/>
-  Go to <a href='https://www.bkper.com' target='_blank'>bkper.com</a> and open report wizard: <img src='../../img/wizard.png'/> to learn more about variables.
+  Go to <a href='https://app.bkper.com' target='_blank'>bkper.com</a> and open report wizard: <img src='../../img/wizard.png'/> to learn more about variables.
   <br/>
   The sintax is ($y|$m|$d)(-|+)(1-999). See more bellow.
 

@@ -20,9 +20,18 @@ var API = {
     }
     
     var queryParams = null;
-    if (params != null) {
-      queryParams = BkperUtils.buildURLParams(params);
+    
+    if (params == null) {
+      params = new Object();
     }
+    
+    try {
+      params.key = APP_KEY;
+    } catch (error) {
+      //APP_KEY not defined. Fallback.
+    }
+    
+    queryParams = BkperUtils.buildURLParams(params);
 
     var serviceFullPath = "ledgers";
 
@@ -34,7 +43,7 @@ var API = {
       serviceFullPath += "/" + service;
     }
 
-    if (queryParams != null) {
+    if (queryParams != null && queryParams != "") {
       serviceFullPath += "?" +queryParams;
     }
 
@@ -58,13 +67,8 @@ var API = {
     if (params.headers == null) {
       params.headers = new Object();
     }
-
-    try {
-      params.headers["x-bkper-app-id"] = APP_ID;
-    } catch (error) {
-      //APP_ID not defined. Fallback.
-      params.headers["x-bkper-app-id"] = "bkper-gas";
-    }
+    
+    params.headers["x-bkper-app-id"] = "bkper-gas";
     
     var accessToken = Authorizer_.getAccessToken();
     params.headers.Authorization = "Bearer " + accessToken;
@@ -76,6 +80,7 @@ var API = {
   var sleepTime = 1000;
   while (true) {
     try {
+      Logger.log(apiURL)
       var response = UrlFetchApp.fetch(apiURL, params);
       return response;
     } catch (error) {

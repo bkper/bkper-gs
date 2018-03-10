@@ -2,6 +2,11 @@ var BookService_ = {
 
   listBooks: function() {
     var responseJSON = API.call_("get");
+    
+    if (responseJSON == null || responseJSON == "") {
+      return new Array();
+    }
+    
     var bookListPlain = JSON.parse(responseJSON);
 
 

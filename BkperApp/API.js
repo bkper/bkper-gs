@@ -60,9 +60,10 @@ var API = {
     }
 
     try {
-      params.headers.UsageTag = USAGE_TAG;
+      params.headers["x-bkper-app-id"] = APP_ID;
     } catch (error) {
-      //OK
+      //APP_ID not defined. Fallback.
+      params.headers["x-bkper-app-id"] = "bkper-gas";
     }
     
     var accessToken = Authorizer_.getAccessToken();

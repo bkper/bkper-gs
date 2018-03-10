@@ -14,10 +14,16 @@ var TransactionService_ = {
       params.cursor = cursor;
     }
     var responseJSON = API.call_("get", "transactions", book.getId(), params);
-    var transactionsPlain = JSON.parse(responseJSON);
+    
     var transactionResponse = {
       items: new Array()
     };
+    
+    if (responseJSON == null || responseJSON == "") {
+      transactionResponse;
+    }    
+    var transactionsPlain = JSON.parse(responseJSON);
+
     if (transactionsPlain == null) {
       return transactionResponse;
     }

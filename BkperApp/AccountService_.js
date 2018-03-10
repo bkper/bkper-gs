@@ -2,6 +2,9 @@ var AccountService_ = {
 
   getAccounts: function(bookId) {
     var responseJSON = API.call_("get", "accounts", bookId);
+    if (responseJSON == null || responseJSON == "") {
+      return new Array();
+    }
     var accountsPlain = JSON.parse(responseJSON).items;
     if (accountsPlain == null) {
       return new Array();

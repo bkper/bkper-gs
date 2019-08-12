@@ -18,24 +18,6 @@ var Report = {
     this.offsetInMinutes = offsetInMinutes;
     this.timeZone = timeZone;
 
-    if (this.wrapped.groupBalances != null) {
-      //Configuring credit on groupBalances
-      for (var i = 0; i < this.wrapped.groupBalances.length; i++) {
-        var groupBalance = this.wrapped.groupBalances[i];
-        groupBalance.credit = false;
-        var accountBalances = groupBalance.accountBalances;
-
-        if (accountBalances != null) {
-          for (var j = 0; j < accountBalances.length; j++) {
-            if (accountBalances[j].credit == true) {
-              groupBalance.credit = true;
-              break;
-            }
-          }
-        }
-
-      }
-    }
 
     /**
     @returns {BalancesDataTableBuilder}

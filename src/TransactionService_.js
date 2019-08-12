@@ -9,11 +9,14 @@ var TransactionService_ = {
           "query" : query,
           "limit" : limit
         };
+    
+    var headers = null;
 
     if (cursor != null) {
-      params.cursor = cursor;
+      headers = {"cursor" : cursor};
     }
-    var responseJSON = API.call_("get", "transactions", book.getId(), params);
+    
+    var responseJSON = API.call_("get", "transactions", book.getId(), params, null, null, headers);
     
     var transactionResponse = {
       items: new Array()
@@ -61,9 +64,10 @@ var TransactionService_ = {
   arrayToTransaction_: function(row, book, timezone) {
     for (var j = 0; j < row.length; j++) {
       var cell = row[j];
-      if (typeof cell == "string") {
+      if (typeof cell == "string" || typeof cell == "boolean") {
         row[j] = cell;
-      } else if (cell instanceof Date) {
+      }
+      else if (cell instanceof Date) {
         row[j] = book.formatDate(cell, timezone);
       } else if (!isNaN(cell)) {
         row[j] = Utils_.formatValue_(cell, book.getDecimalSeparator(), book.getFractionDigits());

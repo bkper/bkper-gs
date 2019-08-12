@@ -232,6 +232,14 @@ function Transaction() {
   Transaction.prototype.getPostDate = function() {
     return this.postDate;
   }
+  
+  /**
+  @returns {string} The date time user has recorded/posted this transaction, formatted according to {@link Book#getDatePattern|date pattern of book}
+  */
+  Transaction.prototype.getPostDateText = function() {
+    return Utilities.formatDate(this.getPostDate(), this.book.getLocale(), this.book.getDatePattern() + " HH:mm:ss")
+    return this.informedDateText;
+  }  
 
 
   //EVOLVED BALANCES

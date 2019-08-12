@@ -2,3 +2,4 @@
 /.project
 /.history
 .DS_Store
+node_modules

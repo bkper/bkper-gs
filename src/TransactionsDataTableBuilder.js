@@ -57,6 +57,8 @@ function TransactionsDataTableBuilder(transactionIterator) {
       if (filteredByAccount.isPermanent()) {
         headerLine.push("Balance");
       }
+      
+      headerLine.push("Recorded at");
       if (this.shouldAddUrls) {
         headerLine.push("Attachment");
       }
@@ -67,6 +69,7 @@ function TransactionsDataTableBuilder(transactionIterator) {
       headerLine.push("Destination");
       headerLine.push("Description");
       headerLine.push("Amount");
+      headerLine.push("Recorded at");
       
       if (this.shouldAddUrls) {
         headerLine.push("Attachment");
@@ -116,6 +119,12 @@ function TransactionsDataTableBuilder(transactionIterator) {
         }
       } else {
         line.push("");
+      }
+      
+      if (this.shouldFormatDate) {
+        line.push(transaction.getPostDateText());
+      } else {
+        line.push(transaction.getPostDate());      
       }
       
       var urls = transaction.getUrls();
@@ -195,6 +204,12 @@ function TransactionsDataTableBuilder(transactionIterator) {
         } else{
           line.push("");
         }
+      }
+      
+      if (this.shouldFormatDate) {
+        line.push(transaction.getPostDateText());
+      } else {
+        line.push(transaction.getPostDate());      
       }
 
       var urls = transaction.getUrls();

@@ -1,0 +1,11 @@
+{
+  "name": "bkper-app-gs",
+  "version": "1",
+  "description": "BkperApp Google Script library",
+  "repository": "https://github.com/bkper/BkperApp",
+  "author": "Bkper Inc.",
+  "private": true,
+  "devDependencies": {
+    "jsdoc": "^3.6.3"
+  }
+}

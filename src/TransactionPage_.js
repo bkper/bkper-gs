@@ -7,7 +7,7 @@ function TransactionPage_(book, query, lastCursor) {
   this.cursor = transactionResponse.cursor;
   this.index = 0;
 
-  if (this.transactions == null || this.transactions.length == 0 || this.cursor == null) {
+  if (this.transactions == null || this.transactions.length == 0 || this.cursor == null || this.cursor == "") {
     this.reachEnd = true;
   } else {
     this.reachEnd = false;

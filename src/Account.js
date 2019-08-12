@@ -69,8 +69,26 @@ function Account() {
     } else {
       return Utils_.getRepresentativeValue(balance, this.isCredit());
     }
-
   }
+  
+  /**
+  Gets the checked balance based on {@link Account#isCredit|credit nature} of this Account
+
+  @param {boolean} [strict] True to strict get the balance, no matter the {@link Account#isCredit|credit nature} of this Account.
+  @returns {number} The checked balance of this Account
+  */
+  Account.prototype.getCheckedBalance = function(strict) {
+    var balance = 0;
+    if (this.wrapped.balance != null) {
+      balance = Utils_.round(this.wrapped.checkedBalance)
+    }
+
+    if (strict) {
+      return balance;
+    } else {
+      return Utils_.getRepresentativeValue(balance, this.isCredit());
+    }
+  }  
 
   /**
   @returns {boolean} Check if this account is active

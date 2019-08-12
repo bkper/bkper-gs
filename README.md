@@ -26,7 +26,7 @@
 [Docs]: https://chrome.google.com/webstore/detail/bkper/cdialfondjmoflglobnohjcbicdhcaaj
 [Forms]: https://chrome.google.com/webstore/detail/bkper/hfhnjepoehncolldclpdddgccibbpeda
 
-##BkperApp  [![GSTests status](https://gs-tests-status.appspot.com/badge.svg?suite=BkperApp&namespace=bkper)](https://script.google.com/macros/s/AKfycbyWJJFIwoqnNudRMGse18qVNWw5aa7g03-iLmL_rjqO8mg-MjI/exec?suite=BkperApp&namespace=bkper)
+## BkperApp  [![GSTests status](https://gs-tests-status.appspot.com/badge.svg?suite=BkperApp&namespace=bkper)](https://script.google.com/macros/s/AKfycbyWJJFIwoqnNudRMGse18qVNWw5aa7g03-iLmL_rjqO8mg-MjI/exec?suite=BkperApp&namespace=bkper)
 
 [BkperApp] is a Google Apps Script library for bkper.
 
@@ -38,13 +38,13 @@ The [Sheets], [Forms] and [Docs] Add-ons were built on top of the [BkperApp] lib
 
 
 
-###Authorization
+### Authorization
 
 To authorize the library, you just need to run the OAuth2 flow only once per account. This can be easily done when you install any Add-ons, or by clicking and running this [authorization script]
 
 
 
-###Setup
+### Setup
 This library is already published as an Apps Script, making it easy to include in your project. To add it to your script, do the following in the Apps Script code editor:
 
 1. Click on the menu item "Resources > Libraries..."
@@ -54,7 +54,7 @@ This library is already published as an Apps Script, making it easy to include i
 
 
 
-###Record Transactions
+### Record Transactions
 
 To record your first [Transaction], after authorizing and setup, copy and paste the function bellow:
 
@@ -99,7 +99,7 @@ The above code will send all records in a bulk. Very useful for importing large 
 
 
 
-###Query Transactions
+### Query Transactions
 
 Each book is a large database and every interaction is done in terms of queries. Everytime you "select" an [Account] by clicking on left menu at [bkper.com], you are actually filtering transactions by that [Account].
 
@@ -131,7 +131,7 @@ Run the **queryTransactions** function, exchanging your bookId, with the same qu
 
 
 
-###List Accounts Balances
+### List Accounts Balances
 
 You can access all Account objects, and query its balances, in a way similar to the left sidebar:
 ```javascript
@@ -150,7 +150,7 @@ function listAccountBalances() {
 ```
 
 
-###Query Balances over time
+### Query Balances over time
 
 it is very easy to query balances of Accounts and #hashtags over time, getting period and cumulative balances. Balance queries are used in [bkper.com] to generate chart reports:
 
@@ -191,7 +191,7 @@ Exchange the book id and the query, deploy and run the [script as a web app](htt
 
 
 
-###Samples
+### Samples
 
 - [BkperCSVExportService](https://github.com/bkper/BkperCSVExportService) - Service to export bkper transactions in CSV format.
 

@@ -34,7 +34,7 @@ With BkperApp you can create many solutions on G Suite, such as the [Sheets] and
 
 It works the same way your favorite Google Apps Script library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] etc, and it is safely authorized using [OAuth2] protocol:
 
-![BkperApp overview](https://developers.bkper.com/images/docs/BkperApp-overview.png)
+![BkperApp overview](images/BkperApp-overview.png)
 
 
 
@@ -70,12 +70,11 @@ function recordATransaction() {
 ```
 Exchange the parameter of the function [openById] for the id of the [Book] you want to record the [Transaction]. This is the same parameter found on the URL accessed on [bkper.com]:
 
-![bookId](https://developers.bkper.com/images/docs/bookId.png)
+![bookId](images/bookId.png)
 
 Now run the **recordATransaction** function and see the record appearing on the bkper screen:
 
-![Recording](https://developers.bkper.com/images/docs/recording.png)
-
+![Recording](images/recording.png)
 
 You can also record transactions in batch by passing an Array of strings as the [record] method parameter:
 
@@ -106,7 +105,7 @@ Each book is a large database and every interaction is done in terms of queries.
 
 Every query is shown in the search box on top of the page:
 
-![Query](https://developers.bkper.com/images/docs/query.png)
+![Query](images/query.png)
 
 When you search transactions, the [search] method returns an [TransactionIterator] to let you handle potentially large datasets:
 
@@ -128,7 +127,7 @@ function queryTransactions() {
 
 Run the **queryTransactions** function, exchanging your bookId, with the same query, check the log output and you will see the same descriptions:
 
-![Search log](https://developers.bkper.com/images/docs/logSearch.png)
+![Search log](images/logSearch.png)
 
 
 
@@ -155,7 +154,7 @@ function listAccountBalances() {
 
 it is very easy to query balances of Accounts and #hashtags over time, getting period and cumulative balances. Balance queries are used in [bkper.com] to generate chart reports:
 
-![Balance Queries](https://developers.bkper.com/images/docs/balanceQueries.png)
+![Balance Queries](images/balanceQueries.png)
 
 You can easily run balance queries on your script, by calling the function [getBalanceReport], like the example bellow:
 ```javascript

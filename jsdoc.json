@@ -1,4 +1,5 @@
 {
+  "title": "Bkper Developers",
   "tags": {
     "allowUnknownTags": true
   },
@@ -10,7 +11,7 @@
   "plugins": [],
   "opts": {
     "encoding": "utf8",
-    "destination": "docs/",
+    "destination": "dist/docs",
     "readme": "README.md",
     "recurse": true,
     "template": "./node_modules/better-docs"
@@ -18,18 +19,15 @@
   "templates": {
     "dateFormat": "MMM DD, YYYY",
     "systemName": "BkperApp",
-    "footer": "Library key: <b>My8jgp9C1MEeWVxuYNppyFgoOxUd2qb-3</b> <br/><br/> <a href='https://github.com/bkper/BkperApp'><img src='http://developers.bkper.com/images/docs/github.png'/> Source Code</a> on GitHub",
-    "copyright": "The content of this page is licensed under the <a href='http://creativecommons.org/licenses/by/3.0/'>Creative Commons Attribution 3.0 License</a>, and code samples are licensed under the <a href='http://www.apache.org/licenses/LICENSE-2.0'>Apache 2.0 License</a>.",
-    "theme": "bkper",
     "linenums": true,
     "default": {
       "outputSourceFiles": false
     },
     "better-docs": {
-      "name": "Google Apps Script library",
+      "name": "Developers",
       "outputSourceFiles": false,
       "logo": "https://bkper.com/images/bkper-logo.png",
-      "trackingCode": "<style> .navbar-brand img {max-height: 80px}</style>",
+      "trackingCode": "<link type='text/css' rel='stylesheet' href='styles/custom.css'><meta name='description' content='Bkper Google Apps Script developers portal'><link rel='icon' sizes='192x192' href='https://bkper.com/images/fav/touch-icon-192x192.png'><link rel='apple-touch-icon-precomposed' href='https://bkper.com/images/fav/apple-touch-icon-precomposed.png'><link rel='apple-touch-icon-precomposed' sizes='72x72' href='https://bkper.com/images/fav/apple-touch-icon-72x72-precomposed.png'><link rel='apple-touch-icon-precomposed' sizes='76x76' href='https://bkper.com/images/fav/apple-touch-icon-76x76-precomposed.png'><link rel='apple-touch-icon-precomposed' sizes='114x114' href='https://bkper.com/images/fav/apple-touch-icon-114x114-precomposed.png'><link rel='apple-touch-icon-precomposed' sizes='120x120' href='https://bkper.com/images/fav/apple-touch-icon-120x120-precomposed.png'><link rel='apple-touch-icon-precomposed' sizes='144x144' href='https://bkper.com/images/fav/apple-touch-icon-144x144-precomposed.png'><link rel='apple-touch-icon-precomposed' sizes='152x152' href='https://bkper.com/images/fav/apple-touch-icon-152x152-precomposed.png'><link rel='apple-touch-icon-precomposed' sizes='180x180' href='https://bkper.com/images/fav/apple-touch-icon-180x180-precomposed.png'>",
       "navigation": [
         {
           "label": "Dashboard",

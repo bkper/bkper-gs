@@ -1,0 +1,11 @@
+.navbar-brand img {
+  max-height: 80px
+}
+
+.page-title {
+  display: none;
+}
+
+.footer {
+  display: none;
+}

@@ -1,5 +1,5 @@
-[bkper]: http://about.bkper.com/
-[bkper.com]: https://www.bkper.com
+[Bkper]: https://bkper.com/
+[bkper.com]: https://bkper.com
 
 [Intercom]: https://www.intercom.io/
 
@@ -8,16 +8,16 @@
 [authorization script]: https://script.google.com/macros/s/AKfycbz8F5FGTTW72pQBfDvGjEB4eglVmOfhG_a9Qb3EXYjVo5IICg/exec
 
 [Dashboard]: https://script.google.com/home
-[Book]: http://developers.bkper.com/docs/BkperApp/Book.html
-[Account]: http://developers.bkper.com/docs/BkperApp/Account.html
-[Transaction]: http://developers.bkper.com/docs/BkperApp/Transaction.html
-[TransactionIterator]: http://developers.bkper.com/docs/BkperApp/TransactionIterator.html
+[Book]: https://developers.bkper.com/Book.html
+[Account]: https://developers.bkper.com/Account.html
+[Transaction]: https://developers.bkper.com/Transaction.html
+[TransactionIterator]: https://developers.bkper.com/TransactionIterator.html
 [Google Apps Script API]: https://developers.google.com/apps-script/api/concepts/
 
-[record]: http://developers.bkper.com/docs/BkperApp/Book.html#record
-[search]: http://developers.bkper.com/docs/BkperApp/Book.html#search
-[openById]: http://developers.bkper.com/docs/BkperApp/global.html#openById
-[getBalanceReport]: http://developers.bkper.com/docs/BkperApp/Book.html#getBalanceReport
+[record]: https://developers.bkper.com/Book.html#record
+[search]: https://developers.bkper.com/Book.html#search
+[openById]: https://developers.bkper.com/global.html#openById
+[getBalanceReport]: https://developers.bkper.com/Book.html#getBalanceReport
 
 [CalendarApp]: https://developers.google.com/apps-script/reference/calendar/calendar-app
 [DocumentApp]: https://developers.google.com/apps-script/reference/document/document-app
@@ -28,13 +28,13 @@
 
 ## BkperApp  [![GSTests status](https://gs-tests-status.appspot.com/badge.svg?suite=BkperApp&namespace=bkper)](https://script.google.com/macros/s/AKfycbyWJJFIwoqnNudRMGse18qVNWw5aa7g03-iLmL_rjqO8mg-MjI/exec?suite=BkperApp&namespace=bkper)
 
-BkperApp is a [Google Apps Script] library for Bkper. 
+BkperApp is a [Google Apps Script] library for [Bkper]. 
 
 With BkperApp you can create many solutions on G Suite, such as the [Sheets] and [Forms] Add-ons, simple automations or advanced solutions with [Google Apps Script API], and you can manage your scripts in the [Dashboard].
 
 It works the same way your favorite Google Apps Script library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] etc, and it is safely authorized using [OAuth2] protocol:
 
-![BkperApp overview](http://developers.bkper.com/images/docs/BkperApp-overview.png)
+![BkperApp overview](https://developers.bkper.com/images/docs/BkperApp-overview.png)
 
 
 
@@ -70,11 +70,11 @@ function recordATransaction() {
 ```
 Exchange the parameter of the function [openById] for the id of the [Book] you want to record the [Transaction]. This is the same parameter found on the URL accessed on [bkper.com]:
 
-![bookId](http://developers.bkper.com/images/docs/bookId.png)
+![bookId](https://developers.bkper.com/images/docs/bookId.png)
 
 Now run the **recordATransaction** function and see the record appearing on the bkper screen:
 
-![Recording](http://developers.bkper.com/images/docs/recording.png)
+![Recording](https://developers.bkper.com/images/docs/recording.png)
 
 
 You can also record transactions in batch by passing an Array of strings as the [record] method parameter:
@@ -106,7 +106,7 @@ Each book is a large database and every interaction is done in terms of queries.
 
 Every query is shown in the search box on top of the page:
 
-![Query](http://developers.bkper.com/images/docs/query.png)
+![Query](https://developers.bkper.com/images/docs/query.png)
 
 When you search transactions, the [search] method returns an [TransactionIterator] to let you handle potentially large datasets:
 
@@ -128,7 +128,7 @@ function queryTransactions() {
 
 Run the **queryTransactions** function, exchanging your bookId, with the same query, check the log output and you will see the same descriptions:
 
-![Search log](http://developers.bkper.com/images/docs/logSearch.png)
+![Search log](https://developers.bkper.com/images/docs/logSearch.png)
 
 
 
@@ -155,7 +155,7 @@ function listAccountBalances() {
 
 it is very easy to query balances of Accounts and #hashtags over time, getting period and cumulative balances. Balance queries are used in [bkper.com] to generate chart reports:
 
-![Balance Queries](http://developers.bkper.com/images/docs/balanceQueries.png)
+![Balance Queries](https://developers.bkper.com/images/docs/balanceQueries.png)
 
 You can easily run balance queries on your script, by calling the function [getBalanceReport], like the example bellow:
 ```javascript
@@ -198,4 +198,4 @@ Exchange the book id and the query, deploy and run the [script as a web app](htt
 
 - [bkper things](https://github.com/oshliaer/bkper/tree/master/bkper%20things) - Custom action scripts triggered from inside bkper through webhooks
 
-- [IntercomBkperBridge](https://github.com/bkper/IntercomBkperBridge) - Bridge from [Intercom] to [bkper], to keep a view of user segments over time.
+- [IntercomBkperBridge](https://github.com/bkper/IntercomBkperBridge) - Bridge from [Intercom] to [Bkper], to keep a view of user segments over time.

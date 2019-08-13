@@ -28,14 +28,6 @@
       "trackingCode": "<style> .navbar-brand img {max-height: 80px}</style>",
       "navigation": [
         {
-          "label": "Bkper",
-          "href": "https://bkper.com"
-        },
-        {
-          "label": "Help Center",
-          "href": "https://help.bkper.com"
-        },
-        {
           "label": "Dashboard",
           "href": "https://script.google.com/home"
         }

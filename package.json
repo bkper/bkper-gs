@@ -7,16 +7,17 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf ./docs",
-    "docs": "./node_modules/.bin/jsdoc -c jsdoc.json && yarn docs:images",
+    "docs": "./node_modules/.bin/jsdoc -c jsdoc.json",
     "docs:images": "cp -rf ./images ./docs",
-    "docs:publish": "cp -rf ./docs/* ../bkper.github.io/",
+    "docs:publish": "yarn docs:images && cp -rf ./docs/* ../bkper.github.io/",
     "copy": "yarn copy:images && yarn copy:docs",
     "clasp": "./node_modules/.bin/clasp",
-    "start": "watch 'yarn run jsdoc' ./ --ignoreDirectoryPattern=/docs/" 
+    "start": "watch 'yarn run jsdoc' ./ --ignoreDirectoryPattern=/docs/"
   },
   "devDependencies": {
     "@google/clasp": "^2.2.1",
     "better-docs": "^1.1.6",
+    "copyfiles": "^2.1.1",
     "jsdoc": "^3.6.3",
     "watch": "^1.0.2"
   }

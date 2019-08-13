@@ -22,8 +22,12 @@
     "copyright": "The content of this page is licensed under the <a href='http://creativecommons.org/licenses/by/3.0/'>Creative Commons Attribution 3.0 License</a>, and code samples are licensed under the <a href='http://www.apache.org/licenses/LICENSE-2.0'>Apache 2.0 License</a>.",
     "theme": "bkper",
     "linenums": true,
+    "default": {
+      "outputSourceFiles": false
+    },
     "better-docs": {
       "name": "Google Apps Script library",
+      "outputSourceFiles": false,
       "logo": "https://bkper.com/images/bkper-logo.png",
       "trackingCode": "<style> .navbar-brand img {max-height: 80px}</style>",
       "navigation": [

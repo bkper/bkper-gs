@@ -3,15 +3,16 @@
 
 [Intercom]: https://www.intercom.io/
 
-[Google Apps Script]: https://developers.google.com/apps-script/
+[Google Apps Script]: https://developers.google.com/apps-script/reference/
 [OAuth2]: http://oauth.net/
 [authorization script]: https://script.google.com/macros/s/AKfycbz8F5FGTTW72pQBfDvGjEB4eglVmOfhG_a9Qb3EXYjVo5IICg/exec
 
-[BkperApp]: http://developers.bkper.com/docs/BkperApp
+[Dashboard]: https://script.google.com/home
 [Book]: http://developers.bkper.com/docs/BkperApp/Book.html
 [Account]: http://developers.bkper.com/docs/BkperApp/Account.html
 [Transaction]: http://developers.bkper.com/docs/BkperApp/Transaction.html
 [TransactionIterator]: http://developers.bkper.com/docs/BkperApp/TransactionIterator.html
+[Google Apps Script API]: https://developers.google.com/apps-script/api/concepts/
 
 [record]: http://developers.bkper.com/docs/BkperApp/Book.html#record
 [search]: http://developers.bkper.com/docs/BkperApp/Book.html#search
@@ -22,19 +23,19 @@
 [DocumentApp]: https://developers.google.com/apps-script/reference/document/document-app
 [SpreadsheetApp]: https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app
 
-[Sheets]: https://chrome.google.com/webstore/detail/bkper/cgjnibofbefehaeeadeomaffglgfpkfl
-[Docs]: https://chrome.google.com/webstore/detail/bkper/cdialfondjmoflglobnohjcbicdhcaaj
-[Forms]: https://chrome.google.com/webstore/detail/bkper/hfhnjepoehncolldclpdddgccibbpeda
+[Sheets]: https://gsuite.google.com/marketplace/app/bkper_sheets/75894855272
+[Forms]: https://gsuite.google.com/marketplace/app/bkper_forms/588203895124
 
 ## BkperApp  [![GSTests status](https://gs-tests-status.appspot.com/badge.svg?suite=BkperApp&namespace=bkper)](https://script.google.com/macros/s/AKfycbyWJJFIwoqnNudRMGse18qVNWw5aa7g03-iLmL_rjqO8mg-MjI/exec?suite=BkperApp&namespace=bkper)
 
-[BkperApp] is a Google Apps Script library for bkper.
+BkperApp is a [Google Apps Script] library for Bkper. 
 
-It works the same way your favorite [Google Apps Script] library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] etc, and it is safely authorized using [OAuth2] protocol:
+With BkperApp you can create many solutions on G Suite, such as the [Sheets] and [Forms] Add-ons, simple automations or advanced solutions with [Google Apps Script API], and you can manage your scripts in the [Dashboard].
+
+It works the same way your favorite Google Apps Script library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] etc, and it is safely authorized using [OAuth2] protocol:
 
 ![BkperApp overview](http://developers.bkper.com/images/docs/BkperApp-overview.png)
 
-The [Sheets], [Forms] and [Docs] Add-ons were built on top of the [BkperApp] library.
 
 
 

@@ -1,0 +1,518 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style> .navbar-brand img {max-height: 80px}</style>
+    <meta charset="utf-8">
+    <title>JSDoc: Book.js</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Muli:100,400,700|Oswald:300|Inconsolata,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+</head>
+
+<body>
+    <div id="stickyNavbarOverlay"></div>
+    <div class="top-navbar">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                     
+                        <img src="https://bkper.com/images/bkper-logo.png" alt="logo">
+                    
+                     
+                        <h1 class="navbar-item">Google Apps Script library</h1>
+                    
+                    <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                 
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                    
+                        <div class="navbar-item">
+                            <a href="https://bkper.com" target="_blank">Bkper</a>
+                        </div>
+                    
+                        <div class="navbar-item">
+                            <a href="https://help.bkper.com" target="_blank">Help Center</a>
+                        </div>
+                    
+                        <div class="navbar-item">
+                            <a href="https://script.google.com/home" target="_blank">Dashboard</a>
+                        </div>
+                    
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-3" id="sidebarNav">
+                <div class="sidebar">
+                    <nav>
+                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="Account.html">Account</a></li><li><a href="BalancesDataTableBuilder.html">BalancesDataTableBuilder</a></li><li><a href="Book.html">Book</a></li><li><a href="Group.html">Group</a></li><li><a href="Report.AccountBalanceReport.html">AccountBalanceReport</a></li><li><a href="Report.BalanceReport.html">BalanceReport</a></li><li><a href="Report.GroupBalanceReport.html">GroupBalanceReport</a></li><li><a href="Report.TagBalanceReport.html">TagBalanceReport</a></li><li><a href="Transaction.html">Transaction</a></li><li><a href="TransactionIterator.html">TransactionIterator</a></li><li><a href="TransactionsDataTableBuilder.html">TransactionsDataTableBuilder</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BalanceType">BalanceType</a></li><li><a href="global.html#DecimalSeparator">DecimalSeparator</a></li><li><a href="global.html#getAuthorizationHtml">getAuthorizationHtml</a></li><li><a href="global.html#isUserAuthorized">isUserAuthorized</a></li><li><a href="global.html#listBooks">listBooks</a></li><li><a href="global.html#listLedgers">listLedgers</a></li><li><a href="global.html#openById">openById</a></li><li><a href="global.html#openLedgerById">openLedgerById</a></li><li><a href="global.html#Periodicity">Periodicity</a></li><li><a href="global.html#Permission">Permission</a></li></ul></div>
+                    </nav>
+                </div>
+            </div>
+            <div class="column is-9-desktop">
+                <div class="content" id="main-content-wrapper">
+                    <header class="page-title">
+                        <p>Source</p>
+                        <h1>Book.js</h1>
+                    </header>
+                    
+                    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+@classdesc
+This class defines a Book.
+&lt;br/>
+A  is an abstraction of a structure that you want to control, like a business, project, or personal expenses and so forth.
+&lt;br/>
+It contains all {@link Account|Accounts} where {@link Transaction|Transactions} are recorded/posted;
+@constructor
+*/
+function Book(id) {
+
+  this.id = id;
+
+  /**
+  @return {string} The id of this Book
+  @method
+  */
+  Book.prototype.getId = function() {
+    return this.id;
+  }
+
+  /**
+  @return {string} The name of this Book
+  @method
+  */
+  Book.prototype.getName = function() {
+    this.checkBookLoaded_();
+    return this.wrapped.name;
+  }
+
+  /**
+  @return {string} The fraction digits of this Book
+  @method
+  */
+  Book.prototype.getFractionDigits = function() {
+    this.checkBookLoaded_();
+    return this.wrapped.fractionDigits;
+  }
+
+  /**
+  @return {string} The name of this Book Owner
+  @method
+  */
+  Book.prototype.getOwnerName = function() {
+    this.checkBookLoaded_();
+    return this.wrapped.ownerName;
+  }
+
+  Book.prototype.checkBookLoaded_ = function() {
+    if (this.wrapped == null) {
+      this.wrapped = BookService_.loadBookWrapped(this.getId());
+    }
+  }
+
+  /**
+  @return {Permission} The permission of the current user
+  */
+  Book.prototype.getPermission = function() {
+    this.checkBookLoaded_();
+    return this.wrapped.permission;
+  }
+
+  /**
+  @return {string} The locale of the Book
+  @Deprecated Use {@link Book#getDatePattern} and {@link Book#getDecimalSeparator} instead
+  */
+  Book.prototype.getLocale = function() {
+    this.checkBookLoaded_();
+    return this.wrapped.locale;
+  }
+
+  /**
+  @return {string} The date pattern of the Book
+  */
+  Book.prototype.getDatePattern = function() {
+    this.checkBookLoaded_();
+    return this.wrapped.datePattern;
+  }
+
+  /**
+  @return {DecimalSeparator} The decimal separator of the Book
+  */
+  Book.prototype.getDecimalSeparator = function() {
+    this.checkBookLoaded_();
+    return this.wrapped.decimalSeparator;
+  }
+
+
+  /**
+  @return {string} The time zone of the book
+  @method
+  */
+  Book.prototype.getTimeZone = function() {
+    this.checkBookLoaded_();
+    return this.wrapped.timeZone;
+  }
+  
+  /**
+  @return {number} The time zone offset of the book, in minutes
+  @method
+  */
+  Book.prototype.getTimeZoneOffset = function() {
+    this.checkBookLoaded_();
+    return this.wrapped.timeZoneOffset;
+  }
+  
+  /**
+  @return {number} The last update date of the book, in in milliseconds
+  */
+  Book.prototype.getLastUpdateMs = function() {
+    this.checkBookLoaded_();
+    return this.wrapped.lastUpdateMs;
+  }  
+
+  /**
+  @param {Date} date The date to format as string.
+  @param {string} [timeZone] The output timezone of the result. Default to script's timeZone
+  @return {string} The date formated according to {@link Book#getDatePattern|date pattern of book}
+  */
+  Book.prototype.formatDate = function(date, timeZone) {
+    return Utils_.formatDate(date, this.getDatePattern(), timeZone);
+  }
+
+ /**
+ @param {Number} value The value to be formatted.
+ @return {string} The value formated according to {@link Book#getDecimalSeparator|decimal separator} and {@link Book#getFractionDigits|fraction digits} of book}
+  */
+  Book.prototype.formatValue = function(value) {
+    return Utils_.formatValue_(value, this.getDecimalSeparator(), this.getFractionDigits());
+  }
+
+  /**
+  Records {@link Transaction|Transactions} a on the Book. The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
+  @param {string|Array&lt;string>|Array&lt;Array>} transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
+  @param {string} [timeZone] The time zone to format dates.
+  */
+  Book.prototype.record = function(transactions, timeZone) {
+    
+    if (timeZone == null || (Utils_.isString(timeZone) &amp;&amp; timeZone.trim() == "")) {
+      Logger.log("Fallback to book timezone!")
+      timeZone = this.getTimeZone();
+    }   
+    
+    TransactionService_.record(this, transactions, timeZone);
+  }
+
+  /**
+  Resumes a transaction iteration using a continuation token from a previous iterator.
+  @param {string} continuationToken continuation token from a previous folder iterator
+  @return {TransactionIterator} a collection of transactions that remained in a previous iterator when the continuation token was generated
+  */
+  Book.prototype.continueTransactionIterator = function(query, continuationToken) {
+    var transactionIterator = new TransactionIterator(this, query);
+    transactionIterator.setContinuationToken(continuationToken);
+    return transactionIterator;
+  }
+
+  //TRANSACTIONS
+
+  /**
+  Search for transactions.
+  &lt;br/>
+  Go to &lt;a href='https://app.bkper.com' target='_blank'>bkper.com&lt;/a> and open search wizard: &lt;img src='http://about.bkper.com/img/wizard.png'/> to learn more about query syntax.
+
+  @param {string} query The query string.
+  @return {TransactionIterator} The search result as an iterator.
+
+  @example
+  var book = BkperApp.loadBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+  var transactions = book.search("acc:CreditCard after:28/01/2013 before:29/01/2013");
+  ...
+  transactions = book.search("#fuel");
+  ...
+  transactions = book.search("#fuel after:$d-4");
+  ...
+  transactions = book.search("after:23/01/2013 before:29/01/2013 using:postDate");
+  ...
+  while (transactions.hasNext()) {
+    var transaction = transactions.next();
+    Logger.log(transaction.getDescription());
+  }
+
+  */
+  Book.prototype.search = function(query) {
+    return new TransactionIterator(this, query);
+  }
+
+
+  /**
+  @private
+  */
+  Book.prototype.configureTransactions_ = function(transactions) {
+    for (var i = 0; i &lt; transactions.length; i++) {
+      this.configureTransaction_(transactions[i]);
+    }
+    return transactions;
+  }
+
+
+  /**
+  @private
+  */
+  Book.prototype.configureTransaction_ = function(transaction) {
+    transaction.book = this;
+    transaction.configure_();
+    return transaction;
+  }
+
+
+  Book.prototype.transactionPosted_ = function(transaction) {
+    var creditAccount = this.getAccount(transaction.wrapped.creditAccId);
+    creditAccount.wrapped.balance = transaction.wrapped.caBal;
+    creditAccount.hasTransactionPosted = true;
+
+    var debitAccount = this.getAccount(transaction.wrapped.debitAccId);
+    debitAccount.wrapped.balance = transaction.wrapped.daBal;
+    debitAccount.hasTransactionPosted = true;
+    transaction.configure_();
+  }
+
+
+  /**
+  Gets all {@link Account|Accounts} of this Book
+  @returns {Array&lt;Account>}
+  */
+  Book.prototype.getAccounts = function() {
+    if (this.accounts == null) {
+      this.configureAccounts_(AccountService_.getAccounts(this.getId()));
+    }
+    return this.accounts;
+  }
+
+
+  /**
+  Gets an {@link Account} object
+  @param {number|string} idOrName The id or name of the Account
+  @returns {Account} The matching Account object
+  */
+  Book.prototype.getAccount = function(idOrName) {
+
+    if (idOrName == null) {
+      return null;
+    }
+
+    if (this.accounts == null) {
+      this.getAccounts();
+    }
+
+    var account = this.idAccountMap[idOrName];
+    var normalizedIdOfName = normalizeName(idOrName);
+    if (account == null) {
+      account = this.nameAccountMap[normalizedIdOfName];
+    }
+
+    return account;
+  }
+
+  /**
+  Create an {@link Account} in this book. 
+  
+  The type of account will be determined by the type of others Accounts in same group. If not specified, the type ASSET (permanent=true/credit=false) will be set.
+  
+  If all other accounts in same group is in another group, the account will also be added to the other group.
+  
+  @param {string} name The name of the Account
+  @param {string} [group] The group of the Account. 
+  @param {string} [description] The description of the Account
+  @returns {Account} The created Account object
+  */
+  Book.prototype.createAccount = function(name, group, description) {
+    var account = AccountService_.createAccount(this.getId(), name, group, description);
+    account.book = this;
+    this.accounts = null;
+    return account;
+  }
+
+
+
+  Book.prototype.configureAccounts_ = function(accounts) {
+    this.accounts = accounts;
+    this.idAccountMap = new Object();
+    this.nameAccountMap = new Object();
+    for (var i = 0; i &lt; this.accounts.length; i++) {
+      var account = this.accounts[i];
+      account.book = this;
+      this.idAccountMap[account.getId()] = account;
+      this.nameAccountMap[account.getNormalizedName()] = account;
+    }
+  }
+
+  /**
+  Gets all @{link Group|Groups} of this Book
+  @returns {Array&lt;Group>}
+  */
+  Book.prototype.getGroups = function() {
+    if (this.groups == null) {
+      this.configureGroups_(GroupService_.getGroups(this.getId()));
+    }
+    return this.groups;
+  }
+
+  /**
+  Gets an {@link Group} object
+  @param {number|string} idOrName The id or name of the Group
+  @returns {Group} The matching Group object
+  */
+  Book.prototype.getGroup = function(idOrName) {
+
+    if (idOrName == null) {
+      return null;
+    }
+
+    if (this.groups == null) {
+      this.getGroups();
+    }
+
+    var group = this.idGroupMap[idOrName];
+    if (group == null) {
+      group = this.nameGroupMap[normalizeName(idOrName)];
+    }
+
+    return group;
+  }
+
+  Book.prototype.configureGroups_ = function(groups) {
+    this.groups = groups;
+    this.idGroupMap = new Object();
+    this.nameGroupMap = new Object();
+    for (var i = 0; i &lt; this.groups.length; i++) {
+      var group = this.groups[i];
+      group.book = this;
+      this.idGroupMap[group.getId()] = Group;
+      this.nameGroupMap[normalizeName(group.getName())] = group;
+    }
+  }
+
+
+
+  Book.prototype.getSavedQueries = function() {
+    if (this.savedQueries == null) {
+      this.savedQueries = SavedQueryService_.getSavedQueries(this.getId());
+    }
+    return this.savedQueries;
+  }
+
+
+
+  /**
+  Get balances reports given a query. Balance queries starts with "=".
+  &lt;br/>&lt;br/>
+  This method gives a {@link BalanceReport|Report.BalanceReport}.
+  &lt;/br>
+  Usually balances are used to populate data tables for charts with &lt;a href='https://developers.google.com/apps-script/reference/charts/' target='_blank'>Chart Services&lt;/a> and create great user interfaces, dashboards or insert in documents to report it for users.
+  &lt;br/>&lt;br/>
+  Go to &lt;a href='https://app.bkper.com' target='_blank'>bkper.com&lt;/a> and open report wizard: &lt;img src='http://about.bkper.com/img/wizard.png'/> to learn more about query sintax.
+
+  @param {string} query The report query (starting with '=')
+  @return {Report.BalanceReport} A Balance Report representation
+
+  @example
+
+
+  var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+
+
+
+  book.getBalanceReport("=#rental #energy after:8/2013 before:9/2013");
+  ...
+  book.getBalanceReport("=group:'Expenses' after:$m before:$m+1");
+  ...
+  book.getBalanceReport("=acc:'Home' acc:'Transport' #medicines after:8/2013 before:12/2013");
+
+  @see Variables
+  */
+  Book.prototype.getBalanceReport = function(query) {
+    var balances = BalancesService_.getBalances(this.getId(), query);
+    return new Report.BalanceReport(balances, this.getDecimalSeparator(), this.getDatePattern(), this.getFractionDigits(), this.getTimeZoneOffset(), this.getTimeZone());
+  }
+
+  /**
+  Create a {@link TransactionsDataTableBuilder|TransactionsDataTableBuilder} based on a query.
+  &lt;br/>&lt;br/>
+  This method gives a {@link TransactionsDataTableBuilder|TransactionsDataTableBuilder} to create two dimensional Array representations of transactions dataset.
+  &lt;br/>&lt;br/>
+  Go to &lt;a href='https://app.bkper.com' target='_blank'>bkper.com&lt;/a> and open report wizard: &lt;img src='http://about.bkper.com/img/wizard.png'/> to learn more about query sintax.
+
+  @param {string} query The flter query.
+  @return {TransactionsDataTableBuilder} the Transactions list builder.
+
+  @example
+
+  var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+
+
+  book.createTransactionsDataTable("acc:'Bank' after:8/2013 before:9/2013");
+  ...
+  book.createTransactionsDataTable("after:$m before:$m+1");
+  ...
+  book.createTransactionsDataTable("#gas");
+
+  @see Variables
+  */
+  Book.prototype.createTransactionsDataTable = function(query) {
+    var transactionIterator = this.search(query);
+    return new TransactionsDataTableBuilder(transactionIterator);
+  }
+
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Tue Aug 13 2019 12:03:50 GMT-0300 (Brasilia Standard Time)</p>
+        <p class="sidebar-created-by">
+            <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+            <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers</a>
+        </p>
+    </div>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/app.min.js"></script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

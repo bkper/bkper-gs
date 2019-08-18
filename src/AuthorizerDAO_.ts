@@ -1,7 +1,7 @@
-var AuthorizerDAO_ = {
+namespace AuthorizerDAO_ {
   
-  storeTokenData: function(tokenData) {
-    var userData = new Object();
+  export function storeTokenData(tokenData: TokenData): UserData {
+    var userData = new UserData();
     if (tokenData.refresh_token != null) {
       userData.refreshToken = tokenData.refresh_token;
     }
@@ -11,23 +11,35 @@ var AuthorizerDAO_ = {
     userData.expiresOn = expiresOn;
     PropertiesService.getUserProperties().setProperties(userData);
     return userData;
-  },
+  }
   
-  getAuthorizedUserData: function() {
+  export function getAuthorizedUserData(): UserData {
     var userData = PropertiesService.getUserProperties().getProperties();
     if (userData != null && userData.refreshToken != null) {
       return userData;
     } else {
       return null;
     }
-  },
+  }
   
-  isTokenExpired: function(userData) {
+  export function isTokenExpired(userData: UserData): boolean {
     var now = Date.now();
     return  now > userData.expiresOn;
-  },
+  }
 
-  unauthorize: function() {
+  export function unauthorize(): void {
     PropertiesService.getUserProperties().deleteAllProperties();
+  }
+
+  export class TokenData {
+    refresh_token: string
+    access_token: string
+    expires_in: number
+  }
+
+  class UserData {
+    refreshToken: string
+    accessToken: string
+    expiresOn: number
   }
 }

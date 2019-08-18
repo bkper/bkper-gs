@@ -6,17 +6,23 @@
   "author": "Bkper Inc.",
   "private": true,
   "scripts": {
-    "clean": "rm -rf ./docs",
-    "docs": "./node_modules/.bin/jsdoc -c jsdoc.json && cp -rf ./docs/* ./dist/docs",
+    "clean": "rm -rf ./dist",
+    "docs": "./node_modules/.bin/typedoc ./src --ignoreCompilerErrors --excludeExternals --includeDeclarations",
+    "docs:md": "yarn docs --out dist/docs --theme markdown && cp -rf ./docs/* ./dist/docs",
+    "docs:html": "yarn docs --out dist/docs  && cp -rf ./docs/* ./dist/docs",
+    "docs:json": "yarn docs --json dist/apidocs.json --mode modules",
     "docs:publish": "yarn docs && cp -rf ./dist/docs/* ../bkper.github.io/",
     "clasp": "./node_modules/.bin/clasp",
-    "start": "watch 'yarn run docs' ./ --ignoreDirectoryPattern=/dist/"
+    "start": "watch 'yarn run docs' ./ --ignoreDirectoryPattern=/dist/",
+    "api": "yarn --cwd ../bkper-pwa/api-typings-generator build --url http://app.bkper.com/_ah/api/discovery/v1/apis/bkper/v2/rest --out /Users/maelcaldas/git/bkper-app/@types"
   },
   "devDependencies": {
     "@google/clasp": "^2.2.1",
-    "better-docs": "^1.1.6",
+    "@types/google-apps-script": "^0.0.56",
+    "@types/node": "^12.7.2",
     "copyfiles": "^2.1.1",
-    "jsdoc": "^3.6.3",
+    "ts-node": "^8.3.0",
+    "typedoc": "^0.15.0",
     "watch": "^1.0.2"
   }
 }

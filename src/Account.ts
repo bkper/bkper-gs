@@ -10,41 +10,37 @@ An {@link http://en.wikipedia.org/wiki/Account_(accountancy)|Account} has a lowe
 @see {@link Book#createAccount} for examples.
 
 */
-function Account() {
+class Account {
+
+  wrapped: Bkper.AccountV2Payload
+  normalizedName: string
 
   /**
-  @returns {number} The id of this Account
+  @returns The id of this Account
   */
-  Account.prototype.getId = function() {
+  getId(): string {
     return this.wrapped.id;
   }
 
   /**
-  @returns {string} The name of this Account
+  @returns The name of this Account
   */
-  Account.prototype.getName = function() {
+  getName(): string {
     return this.wrapped.name;
   }
 
   /**
-  @returns {string} The description of this Account
+  @returns The description of this Account
   */
-  Account.prototype.getDescription = function() {
+  getDescription(): string {
     return this.wrapped.description;
-  }
-
- /**
-  @returns {array} The hashtags used with this Account
-  */
-  Account.prototype.getUsedTags = function() {
-    return this.wrapped.usedTags;
   }
 
   
   /**
-  @returns {string} The name of this Account without spaces and special characters
+  @returns The name of this Account without spaces and special characters
   */
-  Account.prototype.getNormalizedName = function() {
+  getNormalizedName(): string {
     if (this.normalizedName == null) {
       this.normalizedName = normalizeName(this.getName());
     }
@@ -55,10 +51,10 @@ function Account() {
   /**
   Gets the balance based on {@link Account#isCredit|credit nature} of this Account
 
-  @param {boolean} [strict] True to strict get the balance, no matter the {@link Account#isCredit|credit nature} of this Account.
-  @returns {number} The balance of this Account
+  @param True to strict get the balance, no matter the {@link Account#isCredit|credit nature} of this Account.
+  @returns The balance of this Account
   */
-  Account.prototype.getBalance = function(strict) {
+  getBalance(strict: boolean): number {
     var balance = 0;
     if (this.wrapped.balance != null) {
       balance = Utils_.round(this.wrapped.balance)
@@ -74,10 +70,10 @@ function Account() {
   /**
   Gets the checked balance based on {@link Account#isCredit|credit nature} of this Account
 
-  @param {boolean} [strict] True to strict get the balance, no matter the {@link Account#isCredit|credit nature} of this Account.
+  @param  [strict] True to strict get the balance, no matter the {@link Account#isCredit|credit nature} of this Account.
   @returns {number} The checked balance of this Account
   */
-  Account.prototype.getCheckedBalance = function(strict) {
+  getCheckedBalance(strict: boolean): number {
     var balance = 0;
     if (this.wrapped.balance != null) {
       balance = Utils_.round(this.wrapped.checkedBalance)
@@ -91,9 +87,9 @@ function Account() {
   }  
 
   /**
-  @returns {boolean} Check if this account is active
+  @returns Check if this account is active
   */
-  Account.prototype.isActive = function() {
+  isActive = function(): boolean {
     return this.wrapped.active;
   }
 

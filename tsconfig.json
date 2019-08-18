@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "esnext"
+    ],
+    "noImplicitUseStrict": true,
+    "noImplicitAny": true,
+    "experimentalDecorators": true,
+  },
+  "include": [
+    "src/**/*.ts",
+    "@types/**/*.d.ts",
+  ],
+  "exclude": [
+    "node_modules",
+    "@types/**/*-tests.ts",
+    "**/*.spec.ts"
+  ]
+}

@@ -1,6 +1,7 @@
-var AccountService_ = {
 
-  getAccounts: function(bookId) {
+namespace AccountService_ {
+
+  export function getAccounts(bookId: string) {
     var responseJSON = API.call_("get", "accounts", bookId);
     if (responseJSON == null || responseJSON == "") {
       return new Array();
@@ -11,11 +12,11 @@ var AccountService_ = {
     }
     var accounts = Utils_.wrapObjects(new Account(), accountsPlain);
     return accounts;
-  },
+  }
   
-  createAccount: function(bookId, name, group, description) {
+  export function createAccount(bookId: string, name: string, group?: string, description?: string) {
     
-    var accountUpdate = new Object();
+    var accountUpdate = new Object() as Bkper.AccountCreationV2Payload
     
     accountUpdate.name = name;
     accountUpdate.group = group;

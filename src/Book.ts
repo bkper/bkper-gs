@@ -7,7 +7,7 @@ A  is an abstraction of a structure that you want to control, like a business, p
 It contains all {@link Account|Accounts} where {@link Transaction|Transactions} are recorded/posted;
 @constructor
 */
-function Book(id) {
+class Book(id) {
 
   this.id = id;
 

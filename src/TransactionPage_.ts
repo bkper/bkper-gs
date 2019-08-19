@@ -1,7 +1,7 @@
 
 class TransactionPage_ {
 
-  private transactions: Array<Transaction>
+  private transactions: Transaction[]
   private cursor: string
   private index: number
   private reachEnd: boolean

@@ -1,28 +1,37 @@
-var Report = {
+namespace Report {
   /**
-  @class
-  @classdesc A BalanceReport stores the balances based on an query.
-  @param {Array} balanceReportPlain balances wrapped array
-  @param {DecimalSeparator} decimalSeparator {@link Book#getDecimalSeparator|decimal separator of book}
-  @param {FractionDigits} fractionDigits {@link Book#getFractionDigits|Fraction digits of book}
+  * @class
+  * @classdesc A BalanceReport stores the balances based on an query.
+  * @param {Array} balanceReportPlain balances wrapped array
+  * @param {DecimalSeparator} decimalSeparator {@link Book#getDecimalSeparator|decimal separator of book}
+  * @param {FractionDigits} fractionDigits {@link Book#getFractionDigits|Fraction digits of book}
   */
-  BalanceReport : function(balanceReportPlain, decimalSeparator, datePattern, fractionDigits, offsetInMinutes, timeZone) {
-    this.wrapped = balanceReportPlain;
-    this.groupBalanceReports = null;
-    this.accountBalanceReports = null;
-    this.tagBalanceReports = null;
+  export class BalanceReport {
 
-    this.decimalSeparator = decimalSeparator;
-    this.datePattern = datePattern;
-    this.fractionDigits = fractionDigits;
-    this.offsetInMinutes = offsetInMinutes;
-    this.timeZone = timeZone;
+    private wrapped: Bkper.BalancesV2Payload;
+    private decimalSeparator: Enums.DecimalSeparator;
+    private datePattern: string;
+    private fractionDigits: number;
+    private offsetInMinutes: number;
+    private timeZone: string;
+    private groupBalanceReports: GroupBalanceReport[];
+    private accountBalanceReports: AccountBalanceReport[];
+    private tagBalanceReports: TagBalanceReport[];
 
+    constructor(balanceReportPlain: Bkper.BalancesV2Payload, decimalSeparator: Enums.DecimalSeparator, datePattern: string, fractionDigits: number, offsetInMinutes: number, timeZone: string) {
+      this.wrapped = balanceReportPlain;
+      this.groupBalanceReports = null;
+      this.accountBalanceReports = null;
+      this.tagBalanceReports = null;
 
-    /**
-    @returns {BalancesDataTableBuilder}
-    */
-    Report.BalanceReport.prototype.createDataTable = function() {
+      this.decimalSeparator = decimalSeparator;
+      this.datePattern = datePattern;
+      this.fractionDigits = fractionDigits;
+      this.offsetInMinutes = offsetInMinutes;
+      this.timeZone = timeZone;
+    }
+
+    public createDataTable(): BalancesDataTableBuilder {
       var dataTable = new Array();
       if (this.getAccountBalanceReports() != null) {
         dataTable = dataTable.concat(this.getAccountBalanceReports());
@@ -38,25 +47,25 @@ var Report = {
     }
 
     /**
-    @returns {string} the balance periodicity.
+    * @returns The balance periodicity.
     */
-    Report.BalanceReport.prototype.getPeriodicity = function() {
+    public getPeriodicity(): Enums.Periodicity {
       return this.wrapped.periodicity;
     }
 
     /**
-    @returns {boolean} Check if {@link Report.BalanceReport|report} has only one group balance.
+    * @returns Check if {@link Report.BalanceReport|report} has only one group balance.
     */
-    Report.BalanceReport.prototype.hasOnlyOneGroupBalance = function() {
-      return this.getGroupBalanceReports() != null && this.getGroupBalanceReports().length == 1 && this.wrapped.groupBalances.length;
+    public hasOnlyOneGroupBalance(): boolean {
+      return this.getGroupBalanceReports() != null && this.getGroupBalanceReports().length == 1;
     }
 
     /**
-    @returns {Array<Report.AccountBalanceReport>} all {@link Report.AccountBalanceReport|account balances} of this query
+    * @returns All {@link Report.AccountBalanceReport|account balances} of this query
     */
-    Report.BalanceReport.prototype.getAccountBalanceReports = function() {
+    public getAccountBalanceReports(): AccountBalanceReport[] {
       if (this.accountBalanceReports == null && this.wrapped.accountBalances != null) {
-        this.accountBalanceReports = new Array();
+        this.accountBalanceReports = [];
         for (var i = 0; i < this.wrapped.accountBalances.length; i++) {
           var accountBalance = this.wrapped.accountBalances[i];
           var accountBalanceReport = new Report.AccountBalanceReport(accountBalance, this.decimalSeparator, this.fractionDigits);
@@ -67,14 +76,14 @@ var Report = {
     }
 
     /**
-    @returns {Array<Report.TagBalanceReport>} all {@link Report.TagBalanceReport|hashtags balances} of this query
+    * @returns All {@link Report.TagBalanceReport|hashtags balances} of this query
     */
-    Report.BalanceReport.prototype.getTagBalanceReports = function() {
+    public getTagBalanceReports(): TagBalanceReport[] {
       if (this.tagBalanceReports == null && this.wrapped.tagBalances != null) {
-        this.tagBalanceReports = new Array();
+        this.tagBalanceReports = [];
         for (var i = 0; i < this.wrapped.tagBalances.length; i++) {
           var tagBalance = this.wrapped.tagBalances[i];
-          var tagBalanceReport = new Report.TagBalanceReport(tagBalance);
+          var tagBalanceReport = new Report.TagBalanceReport(tagBalance, this.decimalSeparator, this.fractionDigits);
           this.tagBalanceReports.push(tagBalanceReport);
         }
       }
@@ -82,14 +91,14 @@ var Report = {
     }
 
     /**
-    @returns {Array<Report.GroupBalanceReport>} all {@link Report.GroupBalanceReport|group balances} of this query
+    * @returns All {@link Report.GroupBalanceReport|group balances} of this query
     */
-    Report.BalanceReport.prototype.getGroupBalanceReports = function() {
+    public getGroupBalanceReports(): GroupBalanceReport[] {
       if (this.groupBalanceReports == null && this.wrapped.groupBalances != null) {
-        this.groupBalanceReports = new Array();
+        this.groupBalanceReports = [];
         for (var i = 0; i < this.wrapped.groupBalances.length; i++) {
           var grouBalances = this.wrapped.groupBalances[i];
-          var accGroupBalances = new Report.GroupBalanceReport(grouBalances, this.getPeriodicity(), this.decimalSeparator, this.fractionDigits);
+          var accGroupBalances = new GroupBalanceReport(grouBalances, this.getPeriodicity(), this.decimalSeparator, this.datePattern, this.fractionDigits, this.offsetInMinutes, this.timeZone);
           this.groupBalanceReports.push(accGroupBalances);
         }
       }
@@ -97,12 +106,11 @@ var Report = {
     }
 
     /**
-    @returns {Report.GroupBalanceReport} an specific {@link Report.GroupBalanceReport} of this query
-  	@param {string} groupName The name of the group filtered on query
+    * @returns A specific {@link Report.GroupBalanceReport} of this query
+  	* @param groupName The name of the group filtered on query
     */
-    Report.BalanceReport.prototype.getGroupBalanceReport = function(groupName) {
+    public getGroupBalanceReport(groupName: string): GroupBalanceReport {
       var groupBalances = this.getGroupBalanceReports();
-
       if (groupBalances == null) {
         return null;
       }
@@ -114,43 +122,48 @@ var Report = {
       }
     }
 
-    Report.BalanceReport.prototype.getBalanceReportPlain = function() {
+    public getBalanceReportPlain(): Bkper.BalancesV2Payload {
       return this.wrapped;
     }
-  },
-
+  }
 
 
 
   //###################### ACCOUNT BALANCE REPORT ######################
   /**
-  @class
+  * @class
   A AccountBalanceReport stores {@link Account|accounts} balances.
   */
-  AccountBalanceReport : function(balancePlain, decimalSeparator, fractionDigits) {
-    this.wrapped = balancePlain;
-    this.decimalSeparator = decimalSeparator;
-    this.fractionDigits = fractionDigits; 
+  export class AccountBalanceReport {
+    private wrapped: Bkper.AccountBalancesV2Payload;
+    private decimalSeparator: Enums.DecimalSeparator;
+    private fractionDigits: number;
+
+    constructor(balancePlain: Bkper.AccountBalancesV2Payload, decimalSeparator: Enums.DecimalSeparator, fractionDigits: number) {
+      this.wrapped = balancePlain;
+      this.decimalSeparator = decimalSeparator;
+      this.fractionDigits = fractionDigits;
+    }
 
     /**
-    @returns {string} the {@link Account|account} name
+    * @returns the {@link Account|account} name
     */
-    Report.AccountBalanceReport.prototype.getName = function() {
+    public getName(): string {
       return this.wrapped.name;
     }
 
     /**
-    @returns {boolean} Check if {@link Account|account} is credit
+    * @returns Check if {@link Account|account} is credit
     */
-    Report.AccountBalanceReport.prototype.isCredit = function() {
+    public isCredit() {
       return this.wrapped.credit;
     }
 
     /**
-    @param {boolean} [format] If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-    @returns {number} the {@link Account|account} period balance
+    * @param format If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+    * @returns the {@link Account|account} period balance
     */
-    Report.AccountBalanceReport.prototype.getPeriodBalance = function(format) {
+    public getPeriodBalance(format?: boolean): number | string {
       var balance = Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
       if (format) {
@@ -161,10 +174,10 @@ var Report = {
     }
 
     /**
-    @param {boolean} [format] If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-    @returns {number} the {@link Account|account} cumulative balance
+    * @param {boolean} [format] If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+    * @returns {number} the {@link Account|account} cumulative balance
     */
-    Report.AccountBalanceReport.prototype.getCumulativeBalance = function(format) {
+    public getCumulativeBalance(format: boolean): number | string {
       var balance = Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
 
@@ -176,45 +189,50 @@ var Report = {
     }
 
     /**
-    @returns the {@link Account|account} balances
+    * @returns the {@link Account|account} balances
     */
-    Report.AccountBalanceReport.prototype.getBalances = function() {
+    public getBalances(): Bkper.BalanceV2Payload[] {
       return this.wrapped.balances;
     }
-  },
-
-
-
-
+  }
 
 
 
 
   //###################### TAG BALANCE REPORT ######################
   /**
-  @class
-  A TagBalanceReport stores #hashtags balances.
+  * @class
+  * A TagBalanceReport stores #hashtags balances.
   */
-  TagBalanceReport : function(balancePlain) {
-    this.wrapped = balancePlain;
+  export class TagBalanceReport {
+
+    private wrapped: Bkper.TagBalancesV2Payload;
+    private decimalSeparator: Enums.DecimalSeparator;
+    private fractionDigits: number;
+
+    constructor(balancePlain: Bkper.TagBalancesV2Payload, decimalSeparator: Enums.DecimalSeparator, fractionDigits: number) {
+      this.wrapped = balancePlain;
+      this.decimalSeparator = decimalSeparator;
+      this.fractionDigits = fractionDigits;
+    }
 
     /**
-    @returns {string} the #hashtag
+    * @returns {string} the #hashtag
     */
-    Report.TagBalanceReport.prototype.getName = function() {
+    public getName(): string {
       return this.wrapped.name;
     }
 
-    Report.TagBalanceReport.prototype.isCredit = function() {
+    public isCredit(): boolean {
       return true;
     }
 
 
     /**
-    @param {boolean} [format] If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-    @returns {number} the #hashtag period balance
+    * @param format If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+    * @returns the #hashtag period balance
     */
-    Report.TagBalanceReport.prototype.getPeriodBalance = function(format) {
+    public getPeriodBalance(format: boolean): number | string {
       var balance = Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
       if (format) {
         return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
@@ -224,10 +242,10 @@ var Report = {
     }
 
     /**
-    @param {boolean} [format] If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-    @returns {number} the #hashtag cumulative balance
+    * @param format If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+    * @returns the #hashtag cumulative balance
     */
-    Report.TagBalanceReport.prototype.getCumulativeBalance = function(format) {
+    public getCumulativeBalance(format: boolean): number | string {
       var balance = Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
       if (format) {
         return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
@@ -239,45 +257,58 @@ var Report = {
     /**
     @returns the #hashtag balances
     */
-    Report.TagBalanceReport.prototype.getBalances = function() {
+    public getBalances(): Bkper.BalanceV2Payload[] {
       return this.wrapped.balances;
     }
-  },
-
-
-
+  }
 
 
 
 
   //###################### GROUP BALANCE REPORT ######################
   /**
-  @class
-  A GroupBalanceReport stores {@link Group|group} balances.
+  * @class
+  * A GroupBalanceReport stores {@link Group|group} balances.
   */
-  GroupBalanceReport : function(groupBalancePlain, periodicity, decimalSeparator, fractionDigits) {
-    this.wrapped = groupBalancePlain;
-    this.decimalSeparator = decimalSeparator;
-    this.fractionDigits = fractionDigits;
+  export class GroupBalanceReport {
+
+    private wrapped: Bkper.GroupBalancesV2Payload
+    private decimalSeparator: Enums.DecimalSeparator;
+    private fractionDigits: number;
+    private periodicity: Enums.Periodicity;
+    private accountBalanceReports: AccountBalanceReport[];
+    private timeZone: string;
+    private datePattern: string;
+    private offsetInMinutes: number;
+
+    constructor(groupBalancesPlain: Bkper.GroupBalancesV2Payload, periodicity: Enums.Periodicity, decimalSeparator: Enums.DecimalSeparator, datePattern: string, fractionDigits: number, offsetInMinutes: number, timeZone: string) {
+      this.wrapped = groupBalancesPlain;
+      this.periodicity = periodicity;
+      this.datePattern = datePattern;
+      this.offsetInMinutes = offsetInMinutes;
+      this.decimalSeparator = decimalSeparator;
+      this.fractionDigits = fractionDigits;
+      this.timeZone = timeZone;
+    }
     /**
     @returns {string} the {@link Group|group} name
     */
-    Report.GroupBalanceReport.prototype.getName = function() {
+    public getName(): string {
       return this.wrapped.name;
     }
 
     /**
-    @returns {boolean} Check if {@link Group|group} has credit {@link Account|accounts}
+    * @returns Check if {@link Group|group} has credit {@link Account|accounts}
     */
-    Report.GroupBalanceReport.prototype.isCredit = function() {
+    public isCredit = function (): boolean {
       return this.wrapped.credit;
     }
 
     /**
-    @param {boolean} [format] If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-    @returns {number} the {@link Group|group} period balance
+    @param format If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+    @returns the {@link Group|group} period balance
     */
-    Report.GroupBalanceReport.prototype.getPeriodBalance = function(format) {
+    public getPeriodBalance(format?: boolean): number | string {
       var balance = Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
       if (format) {
@@ -288,10 +319,10 @@ var Report = {
     }
 
     /**
-    @param {boolean} [format] If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-    @returns {number} the {@link Group|group} period balance
+    * @param {boolean} [format] If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+    * @returns {number} the {@link Group|group} period balance
     */
-    Report.GroupBalanceReport.prototype.getCumulativeBalance = function(format) {
+    public getCumulativeBalance(format?: boolean): number | string {
       var balance = Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
       if (format) {
@@ -302,36 +333,33 @@ var Report = {
     }
 
     /**
-    @returns the {@link Group|group} balances
+    * @returns the {@link Group|group} balances
     */
-    Report.GroupBalanceReport.prototype.getBalances = function() {
+    public getBalances(): Bkper.GroupBalancesV2Payload[] {
       return this.wrapped.balances;
     }
 
-    this.periodicity = periodicity;
-    this.accountBalanceReports = null;
-
     /**
-    @returns {@link BalancesDataTableBuilder}
+    * @returns {@link BalancesDataTableBuilder}
     */
-    Report.GroupBalanceReport.prototype.createDataTable = function() {
+    public createDataTable() {
       return new BalancesDataTableBuilder(this.getAccountBalanceReports(), this.periodicity, this.decimalSeparator, this.datePattern, this.fractionDigits, this.offsetInMinutes, this.timeZone);
     }
 
     /**
     @returns {Array<AccountBalanceReport>} all {@link Report.AccountBalanceReport|account balances} of this {@link Group|group}
     */
-    Report.GroupBalanceReport.prototype.getAccountBalanceReports = function() {
+    public getAccountBalanceReports(): AccountBalanceReport[] {
       var accountBalances = this.wrapped.accountBalances;
       if (this.accountBalanceReports == null && accountBalances != null) {
-        this.accountBalanceReports = new Array();
+        this.accountBalanceReports = [];
         for (var i = 0; i < accountBalances.length; i++) {
           var accountBalance = accountBalances[i];
-          var accBalances = new Report.AccountBalanceReport(accountBalance, this.decimalSeparator, this.fractionDigits);
+          var accBalances = new AccountBalanceReport(accountBalance, this.decimalSeparator, this.fractionDigits);
           this.accountBalanceReports.push(accBalances);
         }
       }
       return this.accountBalanceReports;
     }
-  },
+  }
 }

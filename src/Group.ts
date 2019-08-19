@@ -38,8 +38,8 @@ class Group {
   /**
   @returns {Array<Account>} All Accounts this Group is has.
   */
-  getAccounts(): Array<Account> {
-    var accounts = new Array();
+  getAccounts(): Account[] {
+    var accounts = [];
     var accs = this.book.getAccounts();
     for (var i = 0; i < accs.length; i++) {
       if (accs[i].isInGroup(this)) {

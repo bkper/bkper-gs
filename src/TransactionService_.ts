@@ -1,7 +1,7 @@
 namespace TransactionService_ {
 
   export interface TransactionResponse {
-    items: Array<Transaction>
+    items: Transaction[]
     cursor: string
   }
 
@@ -24,7 +24,7 @@ namespace TransactionService_ {
     var responseJSON = API.call_("get", "transactions", book.getId(), params, null, null, headers);
     
     var transactionResponse: TransactionResponse = {
-      items: new Array<Transaction>(),
+      items: [],
       cursor: null
     };
     
@@ -42,7 +42,7 @@ namespace TransactionService_ {
     return transactionResponse;
   }
 
-  export function record(book: Book, transactions: string | Array<any> | Array<Array<any>>, timezone?: string): string {
+  export function record(book: Book, transactions: string | any[] | any[][], timezone?: string): string {
     var text = "";
     if (transactions instanceof Array) {
       var hasManyRows = false;
@@ -67,7 +67,7 @@ namespace TransactionService_ {
     return response;
   }
 
-  function arrayToTransaction_(row: Array<any>, book: Book, timezone?: string) {
+  function arrayToTransaction_(row: any[], book: Book, timezone?: string) {
     for (var j = 0; j < row.length; j++) {
       var cell = row[j];
       if (typeof cell == "string" || typeof cell == "boolean") {

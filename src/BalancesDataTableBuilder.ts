@@ -4,7 +4,8 @@
 @class
 A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
 */
-function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, decimalSeparator, datePattern, fractionDigits, offsetInMinutes, timeZone) {
+class BalancesDataTableBuilder {
+constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePattern, fractionDigits, offsetInMinutes, timeZone) {
   this.balanceType = BalanceType.TOTAL;
   this.periodicity = periodicity;
   this.decimalSeparator = decimalSeparator;
@@ -16,7 +17,7 @@ function BalancesDataTableBuilder(balanceContainerReportArray, periodicity, deci
   this.offsetInMinutes = offsetInMinutes;
   this.timeZone = timeZone;
 
-  Logger.log(this.timeZone);
+}
 
   /**
   Defines whether the dates should be formatted based on {@link Book#getDatePattern|date pattern of book} and periodicity.

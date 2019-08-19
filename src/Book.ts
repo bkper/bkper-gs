@@ -11,13 +11,13 @@ class Book {
 
   private id: string
   private wrapped: Bkper.BookV2Payload
-  private accounts: Array<Account>;
-  private groups: Array<Group>;
+  private accounts: Account[];
+  private groups: Group[];
   private idAccountMap: Map<string, Account>;
   private nameAccountMap: Map<string, Account>;
   private idGroupMap: Map<string, Group>;
   private nameGroupMap: Map<string, Group>;
-  private savedQueries: Array<Bkper.SavedQueryV2Payload>;
+  private savedQueries: Bkper.SavedQueryV2Payload[];
 
   constructor(id: string) {
     this.id = id;
@@ -140,7 +140,7 @@ class Book {
   * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
   * @param timeZone The time zone to format dates.
   */
-  public record(transactions: string | Array<any> | Array<Array<any>>, timeZone?: string) {
+  public record(transactions: string | any[] | any[][], timeZone?: string) {
 
     if (timeZone == null || timeZone.trim() == "") {
       Logger.log("Fallback to book timezone!")
@@ -196,7 +196,7 @@ class Book {
   /**
   * @private
   */
-  public configureTransactions_(transactions: Array<Transaction>) {
+  public configureTransactions_(transactions: Transaction[]) {
     for (var i = 0; i < transactions.length; i++) {
       this.configureTransaction_(transactions[i]);
     }
@@ -227,7 +227,7 @@ class Book {
   /**
   * Gets all {@link Account|Accounts} of this Book
   */
-  public getAccounts(): Array<Account> {
+  public getAccounts(): Account[] {
     if (this.accounts == null) {
       this.configureAccounts_(AccountService_.getAccounts(this.getId()));
     }
@@ -280,7 +280,7 @@ class Book {
 
 
 
-  private configureAccounts_(accounts: Array<Account>): void {
+  private configureAccounts_(accounts: Account[]): void {
     this.accounts = accounts;
     this.idAccountMap = new Map<string, Account>();
     this.nameAccountMap = new Map<string, Account>();
@@ -294,9 +294,8 @@ class Book {
 
   /**
   Gets all @{link Group|Groups} of this Book
-  * @returns {Array<Group>}
   */
-  public getGroups(): Array<Group> {
+  public getGroups(): Group[] {
     if (this.groups == null) {
       this.configureGroups_(GroupService_.getGroups(this.getId()));
     }
@@ -326,7 +325,7 @@ class Book {
     return group;
   }
 
-  private configureGroups_(groups: Array<Group>): void {
+  private configureGroups_(groups: Group[]): void {
     this.groups = groups;
     this.idGroupMap = new Map<string, Group>();
     this.nameGroupMap = new Map<string, Group>();
@@ -338,7 +337,7 @@ class Book {
     }
   }
 
-  public getSavedQueries(): Array<Bkper.SavedQueryV2Payload> {
+  public getSavedQueries(): Bkper.SavedQueryV2Payload[] {
     if (this.savedQueries == null) {
       this.savedQueries = SavedQueryService_.getSavedQueries(this.getId());
     }
@@ -379,29 +378,28 @@ class Book {
   }
 
   /**
-  Create a {@link TransactionsDataTableBuilder|TransactionsDataTableBuilder} based on a query.
-  <br/><br/>
-  This method gives a {@link TransactionsDataTableBuilder|TransactionsDataTableBuilder} to create two dimensional Array representations of transactions dataset.
-  <br/><br/>
-  Go to <a href='https://app.bkper.com' target='_blank'>bkper.com</a> and open report wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query sintax.
-
-  @param {string} query The flter query.
-  @return {TransactionsDataTableBuilder} the Transactions list builder.
-
-  @example
-
-  var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-
-
-  book.createTransactionsDataTable("acc:'Bank' after:8/2013 before:9/2013");
-  ...
-  book.createTransactionsDataTable("after:$m before:$m+1");
-  ...
-  book.createTransactionsDataTable("#gas");
-
-  @see Variables
+  * Create a {@link TransactionsDataTableBuilder|TransactionsDataTableBuilder} based on a query.
+  * <br/><br/>
+  * This method gives a {@link TransactionsDataTableBuilder|TransactionsDataTableBuilder} to create two dimensional Array representations of transactions dataset.
+  * <br/><br/>
+  * Go to <a href='https://app.bkper.com' target='_blank'>bkper.com</a> and open report wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query sintax.
+  * 
+  * @param {string} query The flter query.
+  * @return {TransactionsDataTableBuilder} the Transactions list builder.
+  * 
+  * @example
+  * 
+  * var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+  * 
+  * book.createTransactionsDataTable("acc:'Bank' after:8/2013 before:9/2013");
+  * ...
+  * book.createTransactionsDataTable("after:$m before:$m+1");
+  * ...
+  * book.createTransactionsDataTable("#gas");
+  * 
+  * @see Variables
   */
-  Book.prototype.createTransactionsDataTable = function (query) {
+  public createTransactionsDataTable(query: string) {
     var transactionIterator = this.search(query);
     return new TransactionsDataTableBuilder(transactionIterator);
   }

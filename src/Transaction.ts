@@ -39,14 +39,14 @@ class Transaction {
   /**
   * @returns All #hashtags used on this transaction
   */
-  public getTags(): Array<String>{
+  public getTags(): string[] {
     return this.wrapped.tags;
   }
   
   /**
   * @returns All urls used on this transaction
   */
-  public getUrls(): Array<String> {
+  public getUrls(): string[] {
     return this.wrapped.urls;
   }  
 

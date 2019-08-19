@@ -1,14 +1,15 @@
-var GroupService_ = {
-  getGroups: function(bookId) {
+namespace GroupService_ {
+  function getGroups(bookId: string): Group[] {
+
     var responseJSON = API.call_("get", "groups", bookId);
     
     if (responseJSON == null || responseJSON == "") {
-      return new Array();
+      return [];
     }
     
     var groupsPlain = JSON.parse(responseJSON).items;
     if (groupsPlain == null) {
-      return new Array();
+      return [];
     }
     var groups = Utils_.wrapObjects(new Group(), groupsPlain);
     return groups;

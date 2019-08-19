@@ -1,10 +1,10 @@
 namespace BookService_ {
 
-  export function listBooks(): Array<Bkper.BookV2Payload> {
+  export function listBooks(): Bkper.BookV2Payload[] {
     var responseJSON = API.call_("get");
     
     if (responseJSON == null || responseJSON == "") {
-      return new Array();
+      return [];
     }
     
     var bookListPlain: Bkper.BookThinCollection = JSON.parse(responseJSON);
@@ -13,7 +13,7 @@ namespace BookService_ {
     var booksJson = bookListPlain.items;
 
     if (booksJson == null) {
-      return new Array<Bkper.BookV2Payload>();
+      return [];
     }
 
     booksJson.sort(function(a,b){

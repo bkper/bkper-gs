@@ -111,7 +111,7 @@ namespace Utils_ {
   }
 
   export function wrapObjects<E extends Object>(wrapper: E, wrappeds: Array<E>): Array<E> {
-    var newObjects = new Array<E>();
+    var newObjects = [];
     if (wrappeds != null) {
       for (var i = 0; i < wrappeds.length; i++) {
         var newObject = wrapObject(wrapper, wrappeds[i]);

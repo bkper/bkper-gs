@@ -1,19 +1,19 @@
-var BookService_ = {
+namespace BookService_ {
 
-  listBooks: function() {
+  export function listBooks(): Array<Bkper.BookV2Payload> {
     var responseJSON = API.call_("get");
     
     if (responseJSON == null || responseJSON == "") {
       return new Array();
     }
     
-    var bookListPlain = JSON.parse(responseJSON);
+    var bookListPlain: Bkper.BookThinCollection = JSON.parse(responseJSON);
 
 
     var booksJson = bookListPlain.items;
 
     if (booksJson == null) {
-      return new Array();
+      return new Array<Bkper.BookV2Payload>();
     }
 
     booksJson.sort(function(a,b){
@@ -30,9 +30,9 @@ var BookService_ = {
       }
     });
     return booksJson;
-  },
+  }
 
-  loadBookWrapped: function(bookId) {
+  export function loadBookWrapped(bookId: string): Bkper.BookV2Payload {
 
     if (bookId == null) {
       throw new Error("Book id null!");

@@ -1,16 +1,3 @@
-/**
- * Enum that represents balance types.
- * @readonly
- * @enum {string}
- */
-var BalanceType = {
-  /** Total balance */
-  TOTAL: "total",
-  /** Period balance */
-  PERIOD: "period",
-  /** Cumulative balance */
-  CUMULATIVE: "cumulative"
-}
 
 
 /**

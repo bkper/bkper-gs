@@ -1,6 +1,6 @@
-var SavedQueryService_ = {
+namespace SavedQueryService_ {
 
-  getSavedQueries: function(bookId) {
+  export function getSavedQueries(bookId: string): Array<Bkper.SavedQueryV2Payload> {
     var responseJSON = API.call_("get", "savedqueries", bookId);
     var savedQueriesPlain = JSON.parse(responseJSON);
     if (savedQueriesPlain == null) {

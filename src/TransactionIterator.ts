@@ -9,17 +9,27 @@ An iterator that allows scripts to iterate over a potentially large collection o
 @constructor
 
 */
-function TransactionIterator(book, query) {
+class TransactionIterator {
 
-  this.book = book;
-  this.query = query;
-  if (this.query == null) {
-    this.query = "";
-  }
-  this.currentPage = null;
-  this.nextPage = null;
-  this.lastCursor = null;
-  this.filteredByAccount = "NOT_PROCESSED"
+  private book: Book
+  private query: string
+  private currentPage: TransactionPage_
+  private nextPage: TransactionPage_
+  private lastCursor: string
+  private filteredByAccount: string | Account   
+
+  constructor(book: Book, query: string) {
+    this.book = book
+    this.query = query
+    if (this.query == null) {
+      this.query = "";
+    }
+    this.currentPage = null;
+    this.nextPage = null;
+    this.lastCursor = null;
+    this.filteredByAccount = "NOT_PROCESSED"    
+  } 
+
 
   /**
   Gets a token that can be used to resume this iteration at a later time.
@@ -28,9 +38,9 @@ function TransactionIterator(book, query) {
   This method is useful if processing an iterator in one execution would exceed the maximum execution time.
   Continuation tokens are generally valid short period of time.
 
-  @returns {string} a continuation token that can be used to resume this iteration with the items that remained in the iterator when the token was generated
+  @returns a continuation token that can be used to resume this iteration with the items that remained in the iterator when the token was generated
   */
-  TransactionIterator.prototype.getContinuationToken = function() {
+  public getContinuationToken(): string {
 
     if (this.currentPage == null) {
       return null;
@@ -46,7 +56,7 @@ function TransactionIterator(book, query) {
     return continuationToken;
   }
 
-  TransactionIterator.prototype.setContinuationToken = function(continuationToken) {
+  public setContinuationToken(continuationToken: string): void {
 
     if (continuationToken == null) {
       return;
@@ -57,22 +67,22 @@ function TransactionIterator(book, query) {
       return;
     }
 
-    var cursor = cursorIndexArray[0];
-    var index = cursorIndexArray[1];
+    var cursor = cursorIndexArray[0]
+    var index = cursorIndexArray[1]
     if ("null" != cursor) {
-      this.lastCursor = cursor;
+      this.lastCursor = cursor
     }
-
-    this.currentPage = new TransactionPage_(this.book, this.query, this.lastCursor);
-    this.currentPage.setIndex(index);
+    let indexNum = new Number(index).valueOf()
+    this.currentPage = new TransactionPage_(this.book, this.query, this.lastCursor)
+    this.currentPage.setIndex(indexNum);
   }
 
   /**
   Determines whether calling next() will return a transaction.
 
-  @returns {boolean} true if next() will return an item; false if not
+  @returns true if next() will return an item; false if not
   */
-  TransactionIterator.prototype.hasNext = function() {
+ public hasNext(): boolean {
 
     if (this.currentPage == null) {
       this.currentPage = new TransactionPage_(this.book, this.query, this.lastCursor);
@@ -94,9 +104,9 @@ function TransactionIterator(book, query) {
   /**
   Gets the next transaction in the collection of transactions.
 
-  @returns {Transaction} the next transaction in the collection
+  @returns the next transaction in the collection
   */
-  TransactionIterator.prototype.next = function() {
+ public next(): Transaction {
 
     if (this.currentPage == null) {
       this.currentPage = new TransactionPage_(this.book, this.query, this.lastCursor);
@@ -118,8 +128,7 @@ function TransactionIterator(book, query) {
     }
   }
 
-
-  TransactionIterator.prototype.getFilteredByAccount = function() {
+  public getFilteredByAccount(): string | Account {
 
     if (this.filteredByAccount == "NOT_PROCESSED") {
 
@@ -160,7 +169,7 @@ function TransactionIterator(book, query) {
 
   }
 
-  TransactionIterator.prototype.matchFromIndex_ = function(start, source, target) {
+  private matchFromIndex_(start: number, source: string, target: string) {
 
     if (start >= source.length) {
       return false;

@@ -1,32 +1,39 @@
 
-function TransactionPage_(book, query, lastCursor) {
+class TransactionPage_ {
 
-  var transactionResponse = TransactionService_.searchTransactions(book, query, 800, lastCursor);
+  private transactions: Array<Transaction>
+  private cursor: string
+  private index: number
+  private reachEnd: boolean
 
-  this.transactions = transactionResponse.items;
-  this.cursor = transactionResponse.cursor;
-  this.index = 0;
+  constructor(book: Book, query: string, lastCursor: string) {
 
-  if (this.transactions == null || this.transactions.length == 0 || this.cursor == null || this.cursor == "") {
-    this.reachEnd = true;
-  } else {
-    this.reachEnd = false;
-  }
+    var transactionResponse = TransactionService_.searchTransactions(book, query, 800, lastCursor);
 
+    this.transactions = transactionResponse.items;
+    this.cursor = transactionResponse.cursor;
+    this.index = 0;
+  
+    if (this.transactions == null || this.transactions.length == 0 || this.cursor == null || this.cursor == "") {
+      this.reachEnd = true;
+    } else {
+      this.reachEnd = false;
+    }
+  } 
 
-  TransactionPage_.prototype.getCursor = function() {
+  public getCursor(): string {
     return this.cursor;
   }
 
-  TransactionPage_.prototype.hasNext = function() {
+  public hasNext(): boolean {
     return this.index < this.transactions.length;
   }
 
-  TransactionPage_.prototype.hasReachEnd = function() {
+  public hasReachEnd(): boolean {
     return this.reachEnd;
   }
 
-  TransactionPage_.prototype.getIndex = function() {
+  public getIndex(): number {
     if (this.index >= this.transactions.length) {
       return 0;
     } else {
@@ -35,11 +42,11 @@ function TransactionPage_(book, query, lastCursor) {
 
   }
 
-  TransactionPage_.prototype.setIndex = function(index) {
+  public setIndex(index: number) {
     this.index = index;
   }
 
-  TransactionPage_.prototype.next = function() {
+  public next(): Transaction {
     if (this.index < this.transactions.length) {
       var transaction = this.transactions[this.index];
       this.index++;

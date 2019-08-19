@@ -7,149 +7,155 @@ A  is an abstraction of a structure that you want to control, like a business, p
 It contains all {@link Account|Accounts} where {@link Transaction|Transactions} are recorded/posted;
 @constructor
 */
-class Book(id) {
+class Book {
 
-  this.id = id;
+  private id: string
+  private wrapped: Bkper.BookV2Payload
+  private accounts: Array<Account>;
+  private groups: Array<Group>;
+  private idAccountMap: Map<string, Account>;
+  private nameAccountMap: Map<string, Account>;
+  private idGroupMap: Map<string, Group>;
+  private nameGroupMap: Map<string, Group>;
+  private savedQueries: Array<Bkper.SavedQueryV2Payload>;
+
+  constructor(id: string) {
+    this.id = id;
+  }
 
   /**
-  @return {string} The id of this Book
-  @method
+  * @return The id of this Book
   */
-  Book.prototype.getId = function() {
+  public getId(): string {
     return this.id;
   }
 
   /**
-  @return {string} The name of this Book
-  @method
+  * @return The name of this Book
   */
-  Book.prototype.getName = function() {
+  public getName(): string {
     this.checkBookLoaded_();
     return this.wrapped.name;
   }
 
   /**
-  @return {string} The fraction digits of this Book
-  @method
+  * @return The fraction digits of this Book
   */
-  Book.prototype.getFractionDigits = function() {
+  public getFractionDigits(): number {
     this.checkBookLoaded_();
     return this.wrapped.fractionDigits;
   }
 
   /**
-  @return {string} The name of this Book Owner
-  @method
+  * @return The name of this Book Owner
   */
-  Book.prototype.getOwnerName = function() {
+  public getOwnerName(): string {
     this.checkBookLoaded_();
     return this.wrapped.ownerName;
   }
 
-  Book.prototype.checkBookLoaded_ = function() {
+  private checkBookLoaded_(): void {
     if (this.wrapped == null) {
       this.wrapped = BookService_.loadBookWrapped(this.getId());
     }
   }
 
   /**
-  @return {Permission} The permission of the current user
+  * @return The permission of the current user
   */
-  Book.prototype.getPermission = function() {
+ public getPermission(): Enums.Permission {
     this.checkBookLoaded_();
     return this.wrapped.permission;
   }
 
   /**
-  @return {string} The locale of the Book
-  @Deprecated Use {@link Book#getDatePattern} and {@link Book#getDecimalSeparator} instead
+  * @return The locale of the Book
+  * @Deprecated Use {@link Book#getDatePattern} and {@link Book#getDecimalSeparator} instead
   */
-  Book.prototype.getLocale = function() {
+ public getLocale(): string {
     this.checkBookLoaded_();
     return this.wrapped.locale;
   }
 
   /**
-  @return {string} The date pattern of the Book
+  * @return The date pattern of the Book
   */
-  Book.prototype.getDatePattern = function() {
+ public getDatePattern(): string {
     this.checkBookLoaded_();
     return this.wrapped.datePattern;
   }
 
   /**
-  @return {DecimalSeparator} The decimal separator of the Book
+  * @return {DecimalSeparator} The decimal separator of the Book
   */
-  Book.prototype.getDecimalSeparator = function() {
+ public getDecimalSeparator(): Enums.DecimalSeparator {
     this.checkBookLoaded_();
-    return this.wrapped.decimalSeparator;
+    return this.wrapped.decimalSeparator as Enums.DecimalSeparator;
   }
 
 
   /**
-  @return {string} The time zone of the book
-  @method
+  * @return The time zone of the book
   */
-  Book.prototype.getTimeZone = function() {
+ public getTimeZone = function (): string {
     this.checkBookLoaded_();
     return this.wrapped.timeZone;
   }
-  
+
   /**
-  @return {number} The time zone offset of the book, in minutes
-  @method
+  * @return The time zone offset of the book, in minutes
   */
-  Book.prototype.getTimeZoneOffset = function() {
+ public getTimeZoneOffset(): number {
     this.checkBookLoaded_();
     return this.wrapped.timeZoneOffset;
   }
-  
-  /**
-  @return {number} The last update date of the book, in in milliseconds
-  */
-  Book.prototype.getLastUpdateMs = function() {
-    this.checkBookLoaded_();
-    return this.wrapped.lastUpdateMs;
-  }  
 
   /**
-  @param {Date} date The date to format as string.
-  @param {string} [timeZone] The output timezone of the result. Default to script's timeZone
-  @return {string} The date formated according to {@link Book#getDatePattern|date pattern of book}
+  * @return The last update date of the book, in in milliseconds
   */
-  Book.prototype.formatDate = function(date, timeZone) {
+ public getLastUpdateMs(): string {
+    this.checkBookLoaded_();
+    return this.wrapped.lastUpdateMs;
+  }
+
+  /**
+  * @param  date The date to format as string.
+  * @param  timeZone The output timezone of the result. Default to script's timeZone
+  * @return The date formated according to {@link Book#getDatePattern|date pattern of book}
+  */
+ public formatDate(date: Date, timeZone?: string): string {
     return Utils_.formatDate(date, this.getDatePattern(), timeZone);
   }
 
- /**
- @param {Number} value The value to be formatted.
- @return {string} The value formated according to {@link Book#getDecimalSeparator|decimal separator} and {@link Book#getFractionDigits|fraction digits} of book}
-  */
-  Book.prototype.formatValue = function(value) {
+  /**
+  * @param value The value to be formatted.
+  * @return The value formated according to {@link Book#getDecimalSeparator|decimal separator} and {@link Book#getFractionDigits|fraction digits} of book}
+   */
+  public formatValue(value: number): string {
     return Utils_.formatValue_(value, this.getDecimalSeparator(), this.getFractionDigits());
   }
 
   /**
-  Records {@link Transaction|Transactions} a on the Book. The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
-  @param {string|Array<string>|Array<Array>} transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
-  @param {string} [timeZone] The time zone to format dates.
+  * Record {@link Transaction|Transactions} a on the Book. The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
+  * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
+  * @param timeZone The time zone to format dates.
   */
-  Book.prototype.record = function(transactions, timeZone) {
-    
-    if (timeZone == null || (Utils_.isString(timeZone) && timeZone.trim() == "")) {
+  public record(transactions: string | Array<any> | Array<Array<any>>, timeZone?: string) {
+
+    if (timeZone == null || timeZone.trim() == "") {
       Logger.log("Fallback to book timezone!")
       timeZone = this.getTimeZone();
-    }   
-    
+    }
+
     TransactionService_.record(this, transactions, timeZone);
   }
 
   /**
-  Resumes a transaction iteration using a continuation token from a previous iterator.
-  @param {string} continuationToken continuation token from a previous folder iterator
-  @return {TransactionIterator} a collection of transactions that remained in a previous iterator when the continuation token was generated
+  * Resumes a transaction iteration using a continuation token from a previous iterator.
+  * @param continuationToken continuation token from a previous folder iterator
+  * @return a collection of transactions that remained in a previous iterator when the continuation token was generated
   */
-  Book.prototype.continueTransactionIterator = function(query, continuationToken) {
+  public continueTransactionIterator(query: string, continuationToken: string): TransactionIterator {
     var transactionIterator = new TransactionIterator(this, query);
     transactionIterator.setContinuationToken(continuationToken);
     return transactionIterator;
@@ -158,38 +164,39 @@ class Book(id) {
   //TRANSACTIONS
 
   /**
-  Search for transactions.
-  <br/>
-  Go to <a href='https://app.bkper.com' target='_blank'>bkper.com</a> and open search wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query syntax.
-
-  @param {string} query The query string.
-  @return {TransactionIterator} The search result as an iterator.
-
-  @example
-  var book = BkperApp.loadBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-  var transactions = book.search("acc:CreditCard after:28/01/2013 before:29/01/2013");
-  ...
-  transactions = book.search("#fuel");
-  ...
-  transactions = book.search("#fuel after:$d-4");
-  ...
-  transactions = book.search("after:23/01/2013 before:29/01/2013 using:postDate");
-  ...
-  while (transactions.hasNext()) {
-    var transaction = transactions.next();
-    Logger.log(transaction.getDescription());
-  }
-
+  * Search for transactions.
+  * <br/>
+  * Go to <a href='https://app.bkper.com' target='_blank'>bkper.com</a> and open search wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query syntax.
+  *  
+  * @param query The query string.
+  * @return The search result as an iterator.
+  * 
+  * @example
+  * ```
+  * var book = BkperApp.loadBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+  * var transactions = book.search("acc:CreditCard after:28/01/2013 before:29/01/2013");
+  * ...
+  * transactions = book.search("#fuel");
+  * ...
+  * transactions = book.search("#fuel after:$d-4");
+  * ...
+  * transactions = book.search("after:23/01/2013 before:29/01/2013 using:postDate");
+  * ...
+  * while (transactions.hasNext()) {
+  *  var transaction = transactions.next();
+  *  Logger.log(transaction.getDescription());
+  * }
+  * ```
   */
-  Book.prototype.search = function(query) {
+  public search(query: string): TransactionIterator {
     return new TransactionIterator(this, query);
   }
 
 
   /**
-  @private
+  * @private
   */
-  Book.prototype.configureTransactions_ = function(transactions) {
+  public configureTransactions_(transactions: Array<Transaction>) {
     for (var i = 0; i < transactions.length; i++) {
       this.configureTransaction_(transactions[i]);
     }
@@ -198,32 +205,29 @@ class Book(id) {
 
 
   /**
-  @private
+  * @private
   */
-  Book.prototype.configureTransaction_ = function(transaction) {
+  private configureTransaction_(transaction: Transaction) {
     transaction.book = this;
     transaction.configure_();
     return transaction;
   }
 
 
-  Book.prototype.transactionPosted_ = function(transaction) {
+  public transactionPosted_(transaction: Transaction) {
     var creditAccount = this.getAccount(transaction.wrapped.creditAccId);
     creditAccount.wrapped.balance = transaction.wrapped.caBal;
-    creditAccount.hasTransactionPosted = true;
 
     var debitAccount = this.getAccount(transaction.wrapped.debitAccId);
     debitAccount.wrapped.balance = transaction.wrapped.daBal;
-    debitAccount.hasTransactionPosted = true;
     transaction.configure_();
   }
 
 
   /**
-  Gets all {@link Account|Accounts} of this Book
-  @returns {Array<Account>}
+  * Gets all {@link Account|Accounts} of this Book
   */
-  Book.prototype.getAccounts = function() {
+  public getAccounts(): Array<Account> {
     if (this.accounts == null) {
       this.configureAccounts_(AccountService_.getAccounts(this.getId()));
     }
@@ -233,10 +237,10 @@ class Book(id) {
 
   /**
   Gets an {@link Account} object
-  @param {number|string} idOrName The id or name of the Account
-  @returns {Account} The matching Account object
+  * @param idOrName The id or name of the Account
+  * @returns The matching Account object
   */
-  Book.prototype.getAccount = function(idOrName) {
+  public getAccount(idOrName: string): Account {
 
     if (idOrName == null) {
       return null;
@@ -246,28 +250,28 @@ class Book(id) {
       this.getAccounts();
     }
 
-    var account = this.idAccountMap[idOrName];
-    var normalizedIdOfName = normalizeName(idOrName);
+    var account = this.idAccountMap.get(idOrName);
     if (account == null) {
-      account = this.nameAccountMap[normalizedIdOfName];
+      var normalizedIdOfName = normalizeName(idOrName);
+      account = this.nameAccountMap.get(normalizedIdOfName);
     }
 
     return account;
   }
 
   /**
-  Create an {@link Account} in this book. 
-  
-  The type of account will be determined by the type of others Accounts in same group. If not specified, the type ASSET (permanent=true/credit=false) will be set.
-  
-  If all other accounts in same group is in another group, the account will also be added to the other group.
-  
-  @param {string} name The name of the Account
-  @param {string} [group] The group of the Account. 
-  @param {string} [description] The description of the Account
-  @returns {Account} The created Account object
+  * Create an {@link Account} in this book. 
+  * 
+  * The type of account will be determined by the type of others Accounts in same group. If not specified, the type ASSET (permanent=true/credit=false) will be set.
+  * 
+  * If all other accounts in same group is in another group, the account will also be added to the other group.
+  * 
+  * @param name The name of the Account
+  * @param group The group of the Account. 
+  * @param description The description of the Account
+  * @returns The created Account object
   */
-  Book.prototype.createAccount = function(name, group, description) {
+  public createAccount(name: string, group?: string, description?: string): Account {
     var account = AccountService_.createAccount(this.getId(), name, group, description);
     account.book = this;
     this.accounts = null;
@@ -276,23 +280,23 @@ class Book(id) {
 
 
 
-  Book.prototype.configureAccounts_ = function(accounts) {
+  private configureAccounts_(accounts: Array<Account>): void {
     this.accounts = accounts;
-    this.idAccountMap = new Object();
-    this.nameAccountMap = new Object();
+    this.idAccountMap = new Map<string, Account>();
+    this.nameAccountMap = new Map<string, Account>();
     for (var i = 0; i < this.accounts.length; i++) {
       var account = this.accounts[i];
       account.book = this;
-      this.idAccountMap[account.getId()] = account;
-      this.nameAccountMap[account.getNormalizedName()] = account;
+      this.idAccountMap.set(account.getId(), account);
+      this.nameAccountMap.set(account.getNormalizedName(), account);
     }
   }
 
   /**
   Gets all @{link Group|Groups} of this Book
-  @returns {Array<Group>}
+  * @returns {Array<Group>}
   */
-  Book.prototype.getGroups = function() {
+  public getGroups(): Array<Group> {
     if (this.groups == null) {
       this.configureGroups_(GroupService_.getGroups(this.getId()));
     }
@@ -301,10 +305,10 @@ class Book(id) {
 
   /**
   Gets an {@link Group} object
-  @param {number|string} idOrName The id or name of the Group
+  @param idOrName The id or name of the Group
   @returns {Group} The matching Group object
   */
-  Book.prototype.getGroup = function(idOrName) {
+  public getGroup(idOrName: string): Group {
 
     if (idOrName == null) {
       return null;
@@ -314,29 +318,27 @@ class Book(id) {
       this.getGroups();
     }
 
-    var group = this.idGroupMap[idOrName];
+    var group = this.idGroupMap.get(idOrName);
     if (group == null) {
-      group = this.nameGroupMap[normalizeName(idOrName)];
+      group = this.nameGroupMap.get(normalizeName(idOrName));
     }
 
     return group;
   }
 
-  Book.prototype.configureGroups_ = function(groups) {
+  private configureGroups_(groups: Array<Group>): void {
     this.groups = groups;
-    this.idGroupMap = new Object();
-    this.nameGroupMap = new Object();
+    this.idGroupMap = new Map<string, Group>();
+    this.nameGroupMap = new Map<string, Group>();
     for (var i = 0; i < this.groups.length; i++) {
       var group = this.groups[i];
       group.book = this;
-      this.idGroupMap[group.getId()] = Group;
-      this.nameGroupMap[normalizeName(group.getName())] = group;
+      this.idGroupMap.set(group.getId(), group);
+      this.nameGroupMap.set(normalizeName(group.getName()), group);
     }
   }
 
-
-
-  Book.prototype.getSavedQueries = function() {
+  public getSavedQueries(): Array<Bkper.SavedQueryV2Payload> {
     if (this.savedQueries == null) {
       this.savedQueries = SavedQueryService_.getSavedQueries(this.getId());
     }
@@ -346,33 +348,32 @@ class Book(id) {
 
 
   /**
-  Get balances reports given a query. Balance queries starts with "=".
-  <br/><br/>
-  This method gives a {@link BalanceReport|Report.BalanceReport}.
-  </br>
-  Usually balances are used to populate data tables for charts with <a href='https://developers.google.com/apps-script/reference/charts/' target='_blank'>Chart Services</a> and create great user interfaces, dashboards or insert in documents to report it for users.
-  <br/><br/>
-  Go to <a href='https://app.bkper.com' target='_blank'>bkper.com</a> and open report wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query sintax.
-
-  @param {string} query The report query (starting with '=')
-  @return {Report.BalanceReport} A Balance Report representation
-
-  @example
-
-
-  var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-
-
-
-  book.getBalanceReport("=#rental #energy after:8/2013 before:9/2013");
-  ...
-  book.getBalanceReport("=group:'Expenses' after:$m before:$m+1");
-  ...
-  book.getBalanceReport("=acc:'Home' acc:'Transport' #medicines after:8/2013 before:12/2013");
-
-  @see Variables
+  * Get balances reports given a query. Balance queries starts with "=".
+  * <br/><br/>
+  * This method gives a {@link BalanceReport|Report.BalanceReport}.
+  * </br>
+  * Usually balances are used to populate data tables for charts with <a href='https://developers.google.com/apps-script/reference/charts/' target='_blank'>Chart Services</a> and create great user interfaces, dashboards or insert in documents to report it for users.
+  * <br/><br/>
+  * Go to <a href='https://app.bkper.com' target='_blank'>bkper.com</a> and open report wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query sintax.
+  * 
+  * @param {string} query The report query (starting with '=')
+  * @return {Report.BalanceReport} A Balance Report representation
+  * 
+  * @example
+  * 
+  * ```
+  * var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+  * 
+  * book.getBalanceReport("=#rental #energy after:8/2013 before:9/2013");
+  * ...
+  * book.getBalanceReport("=group:'Expenses' after:$m before:$m+1");
+  * ...
+  * book.getBalanceReport("=acc:'Home' acc:'Transport' #medicines after:8/2013 before:12/2013");
+  * 
+  * ```
+  * @see Variables
   */
-  Book.prototype.getBalanceReport = function(query) {
+  public getBalanceReport(query: string): {
     var balances = BalancesService_.getBalances(this.getId(), query);
     return new Report.BalanceReport(balances, this.getDecimalSeparator(), this.getDatePattern(), this.getFractionDigits(), this.getTimeZoneOffset(), this.getTimeZone());
   }
@@ -400,7 +401,7 @@ class Book(id) {
 
   @see Variables
   */
-  Book.prototype.createTransactionsDataTable = function(query) {
+  Book.prototype.createTransactionsDataTable = function (query) {
     var transactionIterator = this.search(query);
     return new TransactionsDataTableBuilder(transactionIterator);
   }

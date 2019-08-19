@@ -25,4 +25,26 @@ namespace Enums {
     COMMA = "COMMA",
     DOT = "DOT"
   }
+
+  export enum Permission {
+    NONE = "NONE",
+    VIEWER = "VIEWER",
+    POST = "POST",
+    EDITOR = "EDITOR",
+    OWNER = "OWNER"
+  };
+
+  /**
+ * Enum that represents balance types.
+ * @readonly
+ * @enum {string}
+ */
+export enum BalanceType {
+  /** Total balance */
+  TOTAL = "total",
+  /** Period balance */
+  PERIOD = "period",
+  /** Cumulative balance */
+  CUMULATIVE = "cumulative"
+}
 }

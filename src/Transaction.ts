@@ -10,41 +10,51 @@ Transactions are also used for {@link http://en.wikipedia.org/wiki/Single-entry_
 @constructor
 
 */
-function Transaction() {
+class Transaction {
+
+  wrapped: Bkper.TransactionV2Payload
+  book: Book;
+  private creditAccount: Account;
+  private debitAccount: Account;
+  private informedDate: Date;
+  private informedDateValue: number;
+  private informedDateText: string;
+  private postDate: Date;
+  private alreadyPosted: boolean;
 
   /**
-  @returns {string} The id of this Transaction
+  * @returns The id of this Transaction
   */
-  Transaction.prototype.getId = function() {
+  public getId(): string {
     return this.wrapped.id;
   }
 
   /**
-  @returns {boolean} True if transaction is already posted. False otherwise.
+  * @returns True if transaction is already posted. False otherwise.
   */
-  Transaction.prototype.isPosted = function() {
+  public isPosted(): boolean {
     return this.wrapped.posted;
   }
 
   /**
-  @returns {Array<String>} All #hashtags used on this transaction
+  * @returns All #hashtags used on this transaction
   */
-  Transaction.prototype.getTags = function() {
+  public getTags(): Array<String>{
     return this.wrapped.tags;
   }
   
   /**
-  @returns {Array<String>} All urls used on this transaction
+  * @returns All urls used on this transaction
   */
-  Transaction.prototype.getUrls = function() {
+  public getUrls(): Array<String> {
     return this.wrapped.urls;
   }  
 
   /**
-  @param {string} tag The #hashtag to check
-  @returns {boolean} true if has this tag
+  * @param tag The #hashtag to check
+  * @returns true if has this tag
   */
-  Transaction.prototype.hasTag = function(tag) {
+  public hasTag(tag: string): boolean {
 
     var tags = this.getTags();
 
@@ -63,16 +73,16 @@ function Transaction() {
 
   //ORIGIN ACCOUNT
   /**
-  @returns {Account} The credit account. The same as origin account.
+  @returns The credit account. The same as origin account.
   */
-  Transaction.prototype.getCreditAccount = function() {
+ public getCreditAccount(): Account {
     return this.creditAccount;
   }
 
   /**
-  @returns {string} The credit account name.
+  @returns The credit account name.
   */
-  Transaction.prototype.getCreditAccountName = function() {
+ public getCreditAccountName(): string {
     if (this.getCreditAccount() != null) {
       return this.getCreditAccount().getName();
     } else{
@@ -80,20 +90,18 @@ function Transaction() {
     }
   }
 
-
-
   //DESTINATION ACCOUNT
   /**
-  @returns {Account} The debit account. The same as destination account.
+  @returns The debit account. The same as destination account.
   */
-  Transaction.prototype.getDebitAccount = function() {
+ public getDebitAccount(): Account {
     return this.debitAccount;
   }
 
   /**
-  @returns {string} The debit account name.
+  @returns The debit account name.
   */
-  Transaction.prototype.getDebitAccountName = function() {
+ public getDebitAccountName(): string {
     if (this.getDebitAccount() != null) {
       return this.getDebitAccount().getName();
     } else{
@@ -104,61 +112,56 @@ function Transaction() {
 
   //AMOUNT
   /**
-  @param {boolean} format Formats the amount according to {@link Book#getDecimalSeparator|decimal separator of book}
-  @returns {number} The amount of this transaction
+  @returns The amount of this transaction
   */
-  Transaction.prototype.getAmount = function(format) {
-    if (format) {
-      return this.book.formatValue(this.wrapped.amount);
-    }
+ public getAmount(): number {
     return this.wrapped.amount;
   }
 
   /**
-  @param {Account|string} account The account object, id or name
-  @returns {number} The absolute amount of this transaction if the given account is at the credit side, else null
+  @param account The account object, id or name
+  @returns The absolute amount of this transaction if the given account is at the credit side, else null
   */
-  Transaction.prototype.getCreditAmount = function(account) {
-    account = this.getAccount_(account);
-    if (this.isCreditOnTransaction_(account)) {
+ public getCreditAmount(account: Account | string): number {
+    let accountObject = this.getAccount_(account);
+    if (this.isCreditOnTransaction_(accountObject)) {
       return this.getAmount();
     }
     return null;
   }
 
   /**
-  @param {Account|string} account The account object, id or name
-  @returns {number} The absolute amount of this transaction if the given account is at the debit side, else null
+  @param account The account object, id or name
+  @returns The absolute amount of this transaction if the given account is at the debit side, else null
   */
-  Transaction.prototype.getDebitAmount = function(account) {
-    account = this.getAccount_(account);
-    if (this.isDebitOnTransaction_(account)) {
+ public getDebitAmount(account: Account | string): number {
+    let accountObject = this.getAccount_(account);
+    if (this.isDebitOnTransaction_(accountObject)) {
       return this.getAmount();
     }
     return null;
   }
 
   /**
-  @param {Account|string} account The account object, id or name
-  @returns {Account} The account at the other side of the transaction given one side.
+  @param account The account object, id or name
+  @returns The account at the other side of the transaction given one side.
   */
-  Transaction.prototype.getOtherAccount = function(account) {
-    account = this.getAccount_(account);
-    if (this.isCreditOnTransaction_(account)) {
+ public getOtherAccount(account: Account|string): Account {
+    let accountObject = this.getAccount_(account);
+    if (this.isCreditOnTransaction_(accountObject)) {
       return this.getDebitAccount();
     }
-    if (this.isDebitOnTransaction_(account)) {
+    if (this.isDebitOnTransaction_(accountObject)) {
       return this.getCreditAccount();
     }
     return null;
   }
 
-
   /**
-  @param {Account|string} account The account object, id or name
-  @returns {Account} The account name at the other side of the transaction given one side.
+  * @param account The account object, id or name
+  * @returns The account name at the other side of the transaction given one side.
   */
-  Transaction.prototype.getOtherAccountName = function(account) {
+  public getOtherAccountName(account: string | Account): string {
     var otherAccount = this.getOtherAccount(account);
     if (otherAccount != null) {
       return otherAccount.getName();
@@ -167,30 +170,27 @@ function Transaction() {
     }
   }
 
-  Transaction.prototype.getAccount_ = function(account) {
-    if (account == null || account.getId) {
-      return account;
+  private getAccount_(account: Account | string): Account {
+    if (account == null || account instanceof Account) {
+      return account as Account;
     }
     return this.book.getAccount(account);
   }
 
-  Transaction.prototype.isCreditOnTransaction_ = function(account) {
+  private isCreditOnTransaction_(account: Account) {
     return this.getCreditAccount() != null && account != null && this.getCreditAccount().getId() == account.getId();
   }
 
-  Transaction.prototype.isDebitOnTransaction_ = function(account) {
+  private isDebitOnTransaction_(account: Account) {
     return this.getDebitAccount() != null && account != null && this.getDebitAccount().getId() == account.getId();
   }
 
 
-
-
   //DESCRIPTION
   /**
-  @returns {string} The description of this transaction
-  @see {Transaction#setDescription}
+  @returns  The description of this transaction
   */
-  Transaction.prototype.getDescription = function() {
+ public getDescription(): string {
     if (this.wrapped.description == null) {
       return "";
     }
@@ -198,12 +198,11 @@ function Transaction() {
   }
 
 
-
   //INFORMED DATE
   /**
-  @returns {Date} The date the user informed for this transaction, adjusted to book's time zone
+  @returns The date the user informed for this transaction, adjusted to book's time zone
   */
-  Transaction.prototype.getInformedDate = function() {
+  public getInformedDate(): Date {
     if (this.informedDate == null) {
       this.informedDate = Utils_.convertValueToDate(this.getInformedDateValue(), this.book.getTimeZoneOffset());
     }
@@ -212,16 +211,16 @@ function Transaction() {
 
 
   /**
-  @returns {number} The date the user informed for this transaction. The number format is YYYYMMDD
+  @returns The date the user informed for this transaction. The number format is YYYYMMDD
   */
-  Transaction.prototype.getInformedDateValue = function() {
+ public getInformedDateValue(): number {
       return this.informedDateValue;
   }
 
   /**
-  @returns {string} The date the user informed for this transaction, formatted according to {@link Book#getDatePattern|date pattern of book}
+  @returns The date the user informed for this transaction, formatted according to {@link Book#getDatePattern|date pattern of book}
   */
-  Transaction.prototype.getInformedDateText = function() {
+ public getInformedDateText(): string {
       return this.informedDateText;
   }
 
@@ -229,16 +228,15 @@ function Transaction() {
   /**
   @returns {Date} The date time user has recorded/posted this transaction
   */
-  Transaction.prototype.getPostDate = function() {
+ public getPostDate(): Date {
     return this.postDate;
   }
   
   /**
-  @returns {string} The date time user has recorded/posted this transaction, formatted according to {@link Book#getDatePattern|date pattern of book}
+  @returns The date time user has recorded/posted this transaction, formatted according to {@link Book#getDatePattern|date pattern of book}
   */
-  Transaction.prototype.getPostDateText = function() {
+ public getPostDateText(): string {
     return Utilities.formatDate(this.getPostDate(), this.book.getLocale(), this.book.getDatePattern() + " HH:mm:ss")
-    return this.informedDateText;
   }  
 
 
@@ -246,14 +244,14 @@ function Transaction() {
   /**
   @private
   */
-  Transaction.prototype.getCaEvolvedBalance_ = function() {
+  private getCaEvolvedBalance_(): number {
     return this.wrapped.caBal;
   }
 
   /**
   @private
   */
-  Transaction.prototype.getDaEvolvedBalance_ = function() {
+ private getDaEvolvedBalance_(): number {
     return this.wrapped.daBal;
   }
 
@@ -271,7 +269,7 @@ function Transaction() {
   @see {@link Book#search}
   @see {@link Transaction#getInformedDate}
   */
-  Transaction.prototype.getAccountBalance = function(strict) {
+ public getAccountBalance(strict: boolean): number {
     var accountBalance = this.getCaEvolvedBalance_();
     var isCa = true;
     if (accountBalance == null) {
@@ -289,15 +287,14 @@ function Transaction() {
     }
   }
 
-
-  Transaction.prototype.configure_ = function() {
+  public configure_(): void {
     var creditAccount = this.book.getAccount(this.wrapped.creditAccId);
     var debitAccount = this.book.getAccount(this.wrapped.debitAccId);
     this.creditAccount = creditAccount;
     this.debitAccount = debitAccount;
     this.informedDateValue = this.wrapped.informedDateValue;
     this.informedDateText = this.wrapped.informedDateText;
-    this.postDate = new Date(new Number(this.wrapped.postDateMs));
+    this.postDate = new Date(new Number(this.wrapped.postDateMs).valueOf());
 
     if (this.isPosted()) {
       this.alreadyPosted = true;

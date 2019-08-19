@@ -8,26 +8,29 @@ This class defines a Group of {@link Account|Accounts}.
 Its useful to keep {@link Account|Accounts} organized and for high level analysis.
 @constructor
 */
-function Group() {
+class Group {
+
+  wrapped: Bkper.GroupV2Payload
+  book: Book
 
   /**
-  @returns {number} The id of this Group
+  @returns The id of this Group
   */
-  Group.prototype.getId = function() {
+  getId(): string {
     return this.wrapped.id;
   }
 
   /**
-  @returns {string} The name of this Group
+  @returns The name of this Group
   */
-  Group.prototype.getName = function() {
+  getName(): string {
     return this.wrapped.name;
   }
 
   /**
-  @returns {boolean} Check if this group has accounts
+  @returns Check if this group has accounts
   */
-  Group.prototype.hasAccounts = function() {
+  hasAccounts(): boolean {
     return this.getAccounts().length > 0;
   }
 
@@ -35,7 +38,7 @@ function Group() {
   /**
   @returns {Array<Account>} All Accounts this Group is has.
   */
-  Group.prototype.getAccounts = function() {
+  getAccounts(): Array<Account> {
     var accounts = new Array();
     var accs = this.book.getAccounts();
     for (var i = 0; i < accs.length; i++) {

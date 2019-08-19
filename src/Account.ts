@@ -12,52 +12,51 @@ An {@link http://en.wikipedia.org/wiki/Account_(accountancy)|Account} has a lowe
 */
 class Account {
 
-  wrapped: Bkper.AccountV2Payload
-  normalizedName: string
+  wrapped: Bkper.AccountV2Payload;
+  book: Book;
+  private normalizedName: string;
 
   /**
-  @returns The id of this Account
+  * @returns The id of this Account
   */
-  getId(): string {
+  public getId(): string {
     return this.wrapped.id;
   }
 
   /**
-  @returns The name of this Account
+  * @returns The name of this Account
   */
-  getName(): string {
+  public getName(): string {
     return this.wrapped.name;
   }
 
   /**
-  @returns The description of this Account
+  * @returns The description of this Account
   */
-  getDescription(): string {
+  public getDescription(): string {
     return this.wrapped.description;
   }
 
-  
   /**
-  @returns The name of this Account without spaces and special characters
+  * @returns The name of this Account without spaces and special characters
   */
-  getNormalizedName(): string {
+  public getNormalizedName(): string {
     if (this.normalizedName == null) {
       this.normalizedName = normalizeName(this.getName());
     }
     return this.normalizedName;
   }
 
-
   /**
-  Gets the balance based on {@link Account#isCredit|credit nature} of this Account
-
-  @param True to strict get the balance, no matter the {@link Account#isCredit|credit nature} of this Account.
-  @returns The balance of this Account
+  * Gets the balance based on {@link Account#isCredit|credit nature} of this Account
+  *  
+  * @param True to strict get the balance, no matter the {@link Account#isCredit|credit nature} of this Account.
+  * @returns The balance of this Account
   */
-  getBalance(strict: boolean): number {
+  public getBalance(strict: boolean): number {
     var balance = 0;
     if (this.wrapped.balance != null) {
-      balance = Utils_.round(this.wrapped.balance)
+      balance = Utils_.round(this.wrapped.balance);
     }
 
     if (strict) {
@@ -66,17 +65,17 @@ class Account {
       return Utils_.getRepresentativeValue(balance, this.isCredit());
     }
   }
-  
-  /**
-  Gets the checked balance based on {@link Account#isCredit|credit nature} of this Account
 
-  @param  [strict] True to strict get the balance, no matter the {@link Account#isCredit|credit nature} of this Account.
-  @returns {number} The checked balance of this Account
+  /**
+  * Gets the checked balance based on {@link Account#isCredit|credit nature} of this Account
+  * 
+  * @param  [strict] True to strict get the balance, no matter the {@link Account#isCredit|credit nature} of this Account.
+  * @returns {number} The checked balance of this Account
   */
-  getCheckedBalance(strict: boolean): number {
+  public getCheckedBalance(strict: boolean): number {
     var balance = 0;
     if (this.wrapped.balance != null) {
-      balance = Utils_.round(this.wrapped.checkedBalance)
+      balance = Utils_.round(this.wrapped.checkedBalance);
     }
 
     if (strict) {
@@ -84,64 +83,61 @@ class Account {
     } else {
       return Utils_.getRepresentativeValue(balance, this.isCredit());
     }
-  }  
+  }
 
   /**
-  @returns Check if this account is active
+  * @returns Check if this account is active
   */
-  isActive = function(): boolean {
+  public isActive = function (): boolean {
     return this.wrapped.active;
-  }
-
+  };
 
   /**
-  Tell if the account is permanent.
-  <br/><br/>
-  Permanent Accounts are the ones which final balance is relevant and keep its balances over time. They are also called <a href='http://en.wikipedia.org/wiki/Account_(accountancy)#Based_on_periodicity_of_flow'>Real Accounts</a>.
-  <br/><br/>
-  Usually represents assets or tangibles, capable of being perceived by the senses or the mind, like bank accounts, money, debts and so on.
-  @returns {boolean} True if its a permanent Account
-  @see {@link Transaction#getAccountBalance}
+  * Tell if the account is permanent.
+  * <br/><br/>
+  * Permanent Accounts are the ones which final balance is relevant and keep its balances over time. They are also called <a href='http://en.wikipedia.org/wiki/Account_(accountancy)#Based_on_periodicity_of_flow'>Real Accounts</a>.
+  * <br/><br/>
+  * Usually represents assets or tangibles, capable of being perceived by the senses or the mind, like bank accounts, money, debts and so on.
+  * @returns True if its a permanent Account
+  * @see {@link Transaction#getAccountBalance}
   */
-  Account.prototype.isPermanent = function() {
+  public isPermanent(): boolean {
     return this.wrapped.permanent;
   }
 
-
   /**
-  Tell if the account has a credit or debit nature.
-  <br/><br/>
-  Credit accounts are just for representation purposes. It increase or decrease the absolute balance. It doesn't affect the overall balance or the behavior of the system.
-  <br/><br/>
-  The absolute balance of credit accounts increase when it participate as a credit/origin in a transaction. Its usually for Accounts that increase the balance of the assets, like revenue accounts.
-  <br/><br/>
+  * Tell if the account has a credit or debit nature.
+  * <br/><br/>
+  * Credit accounts are just for representation purposes. It increase or decrease the absolute balance. It doesn't affect the overall balance or the behavior of the system.
+  * <br/><br/>
+  * The absolute balance of credit accounts increase when it participate as a credit/origin in a transaction. Its usually for Accounts that increase the balance of the assets, like revenue accounts.
+  * <br/><br/>
   <pre>
-       Crediting a credit
-Thus ---------------------> account increases its absolute balance
-       Debiting a debit
+          Crediting a credit
+    Thus ---------------------> account increases its absolute balance
+          Debiting a debit
 
 
-       Debiting a credit
-Thus ---------------------> account decreases its absolute balance
-       Crediting a debit
+          Debiting a credit
+    Thus ---------------------> account decreases its absolute balance
+          Crediting a debit
   </pre>
-
-  <br/>
-
-  As a rule of thumb, and for simple understanding, almost all accounts are Debit nature (NOT credit), except the ones that "offers" amount for the books, like revenue accounts.
-
-  @returns {boolean} true if its a credit nature {@link Account}, false if its debit
+  * 
+  * <br/>
+  * 
+  * As a rule of thumb, and for simple understanding, almost all accounts are Debit nature (NOT credit), except the ones that "offers" amount for the books, like revenue accounts.
+  * 
+  * @returns true if its a credit nature {@link Account}, false if its debit
   */
-  Account.prototype.isCredit = function() {
+  public isCredit(): boolean {
     return this.wrapped.credit;
   }
 
   /**
-  Tell if this account is in the {@link Group}
-  @param {string|number|Group} Group The Group name, id or object
-  @returns {boolean}
+  * Tell if this account is in the {@link Group}
+  * @param  group The Group name, id or object
   */
-  Account.prototype.isInGroup = function(group) {
+  public isInGroup(group: string | Group): boolean {
     if (group == null) {
       return false;
     }
@@ -159,11 +155,7 @@ Thus ---------------------> account decreases its absolute balance
     return this.isInGroupObject_(foundGroup);
   }
 
-  /**
-  @private
-  */
-  Account.prototype.isInGroupObject_ = function(group) {
-
+  private isInGroupObject_(group: Group): boolean {
     if (this.wrapped.groupsIds == null) {
       return false;
     }
@@ -175,6 +167,4 @@ Thus ---------------------> account decreases its absolute balance
     }
     return false;
   }
-
-
 }

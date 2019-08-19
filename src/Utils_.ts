@@ -67,15 +67,15 @@ namespace Utils_ {
     }
   }
   
-  function createDate(year: number, month: number, day:number, offsetInMinutes: number): Date {
+  export function createDate(year: number, month: number, day:number, offsetInMinutes: number): Date {
     var date = new Date(year, month - 1, day);
     date.setTime(date.getTime() + offsetInMinutes*60*1000 );    
     return date;
   } 
   
-  export function formatDate(date: Date, pattern: string, timeZone: string): string | Date {
+  export function formatDate(date: Date, pattern: string, timeZone: string): string {
     if (date == null || !(date instanceof Date)) {
-      return date;
+      return '';
     }
     
     if (timeZone == null || timeZone == "") {

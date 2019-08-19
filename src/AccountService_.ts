@@ -1,7 +1,7 @@
 
 namespace AccountService_ {
 
-  export function getAccounts(bookId: string) {
+  export function getAccounts(bookId: string): Array<Account> {
     var responseJSON = API.call_("get", "accounts", bookId);
     if (responseJSON == null || responseJSON == "") {
       return new Array();
@@ -14,7 +14,7 @@ namespace AccountService_ {
     return accounts;
   }
   
-  export function createAccount(bookId: string, name: string, group?: string, description?: string) {
+  export function createAccount(bookId: string, name: string, group?: string, description?: string): Account {
     
     var accountUpdate = new Object() as Bkper.AccountCreationV2Payload
     

@@ -188,7 +188,7 @@ constructor(balanceContainerReportArray: Report.BalanceContainerReport[], period
 
   private buildTimeDataTable_() {
     var table = new Array<Array<any>>();
-    var dataIndexMap = new Map<string, any>();
+    var dataIndexMap: any = new Object();
     var cumulativeBalance = this.balanceType == Enums.BalanceType.CUMULATIVE;
 
     var header = new Array();
@@ -205,11 +205,11 @@ constructor(balanceContainerReportArray: Report.BalanceContainerReport[], period
         for (var j = 0; j < balances.length; j++) {
           var balance = balances[j];
           var fuzzyDate = this.getFuzzyDate_(balance);
-          var indexEntry = dataIndexMap.get(fuzzyDate);
+          var indexEntry = dataIndexMap[fuzzyDate];
           if (indexEntry == null) {
             indexEntry = new Object();
             indexEntry.date = this.getBalanceDate_(balance, this.offsetInMinutes);
-            dataIndexMap.set(fuzzyDate, indexEntry);
+            dataIndexMap[fuzzyDate] = indexEntry;
           }
           var bal = cumulativeBalance ? balance.cumulativeBalance : balance.periodBalance;
           indexEntry[balanceReport.getName()] = Utils_.getRepresentativeValue(bal, balanceReport.isCredit());
@@ -221,8 +221,8 @@ constructor(balanceContainerReportArray: Report.BalanceContainerReport[], period
     table.push(header);
 
     var rows = new Array<Array<any>>();
-    for (var fuzzy in dataIndexMap.keys()) {
-      var rowObject = dataIndexMap.get(fuzzy);
+    for (var fuzzy in dataIndexMap) {
+      var rowObject = dataIndexMap[fuzzy];
       var row = new Array();
       row.push(rowObject.date);
       for (var i = 0; i < this.balanceArray.length; i++) {

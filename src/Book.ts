@@ -1,11 +1,9 @@
 /**
-@classdesc
 This class defines a Book.
 <br/>
 A  is an abstraction of a structure that you want to control, like a business, project, or personal expenses and so forth.
 <br/>
 It contains all {@link Account|Accounts} where {@link Transaction|Transactions} are recorded/posted;
-@constructor
 */
 class Book {
 
@@ -13,10 +11,10 @@ class Book {
   private wrapped: Bkper.BookV2Payload
   private accounts: Account[];
   private groups: Group[];
-  private idAccountMap: Map<string, Account>;
-  private nameAccountMap: Map<string, Account>;
-  private idGroupMap: Map<string, Group>;
-  private nameGroupMap: Map<string, Group>;
+  private idAccountMap: any;
+  private nameAccountMap: any;
+  private idGroupMap: any;
+  private nameGroupMap: any;
   private savedQueries: Bkper.SavedQueryV2Payload[];
 
   constructor(id: string) {
@@ -61,12 +59,13 @@ class Book {
   }
 
   /**
-  * @return The permission of the current user
+  * @return The permission of the current users
   */
  public getPermission(): Enums.Permission {
     this.checkBookLoaded_();
     return this.wrapped.permission;
   }
+
 
   /**
   * @return The locale of the Book
@@ -250,10 +249,10 @@ class Book {
       this.getAccounts();
     }
 
-    var account = this.idAccountMap.get(idOrName);
+    var account = this.idAccountMap[idOrName];
     if (account == null) {
       var normalizedIdOfName = normalizeName(idOrName);
-      account = this.nameAccountMap.get(normalizedIdOfName);
+      account = this.nameAccountMap[normalizedIdOfName];
     }
 
     return account;
@@ -282,13 +281,13 @@ class Book {
 
   private configureAccounts_(accounts: Account[]): void {
     this.accounts = accounts;
-    this.idAccountMap = new Map<string, Account>();
-    this.nameAccountMap = new Map<string, Account>();
+    this.idAccountMap = new Object();
+    this.nameAccountMap = new Object();
     for (var i = 0; i < this.accounts.length; i++) {
       var account = this.accounts[i];
       account.book = this;
-      this.idAccountMap.set(account.getId(), account);
-      this.nameAccountMap.set(account.getNormalizedName(), account);
+      this.idAccountMap[account.getId()] = account;
+      this.nameAccountMap[account.getNormalizedName()] = account;
     }
   }
 
@@ -317,9 +316,9 @@ class Book {
       this.getGroups();
     }
 
-    var group = this.idGroupMap.get(idOrName);
+    var group = this.idGroupMap[idOrName];
     if (group == null) {
-      group = this.nameGroupMap.get(normalizeName(idOrName));
+      group = this.nameGroupMap[normalizeName(idOrName)];
     }
 
     return group;
@@ -327,13 +326,13 @@ class Book {
 
   private configureGroups_(groups: Group[]): void {
     this.groups = groups;
-    this.idGroupMap = new Map<string, Group>();
-    this.nameGroupMap = new Map<string, Group>();
+    this.idGroupMap = new Object();
+    this.nameGroupMap = new Object();
     for (var i = 0; i < this.groups.length; i++) {
       var group = this.groups[i];
       group.book = this;
-      this.idGroupMap.set(group.getId(), group);
-      this.nameGroupMap.set(normalizeName(group.getName()), group);
+      this.idGroupMap[group.getId()] = group;
+      this.nameGroupMap[normalizeName(group.getName())] = group;
     }
   }
 

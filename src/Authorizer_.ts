@@ -1,17 +1,17 @@
 
 namespace Authorizer_ {
 
-  var API_UNAUTHORIZED = "bkper_api_unauthorized";
+  const API_UNAUTHORIZED = "bkper_api_unauthorized";
 
   //scriptUri: "https://script.google.com/a/macros/nimbustecnologia.com.br/s/AKfycbz5W1wM6pehcWmXa53D9jUctPHHymvFTTH05mxNdQ/dev",
-  let scriptUri: "https://script.google.com/macros/s/AKfycbz8F5FGTTW72pQBfDvGjEB4eglVmOfhG_a9Qb3EXYjVo5IICg/exec"
+  const scriptUri = "https://script.google.com/macros/s/AKfycbz8F5FGTTW72pQBfDvGjEB4eglVmOfhG_a9Qb3EXYjVo5IICg/exec"
 
-  let tokenEndpoint: "https://accounts.google.com/o/oauth2/token"
+  const tokenEndpoint = "https://accounts.google.com/o/oauth2/token"
   
-  let scope: "https://www.googleapis.com/auth/userinfo.email"
+  const scope = "https://www.googleapis.com/auth/userinfo.email"
   
-  let clientIdKey: "CLIENT_ID"
-  let clientSecretKey: "CLIENT_SECRET"
+  const clientIdKey = "CLIENT_ID"
+  const clientSecretKey = "CLIENT_SECRET"
   
   export function processGetRequest(e: any): GoogleAppsScript.HTML.HtmlOutput {
     var continueUrl = null;

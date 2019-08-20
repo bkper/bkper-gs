@@ -39,12 +39,12 @@ namespace Enums {
  * @readonly
  * @enum {string}
  */
-export enum BalanceType {
-  /** Total balance */
-  TOTAL = "total",
-  /** Period balance */
-  PERIOD = "period",
-  /** Cumulative balance */
-  CUMULATIVE = "cumulative"
-}
+  export enum BalanceType {
+    /** Total balance */
+    TOTAL = "TOTAL",
+    /** Period balance */
+    PERIOD = "PERIOD",
+    /** Cumulative balance */
+    CUMULATIVE = "CUMULATIVE"
+  }
 }

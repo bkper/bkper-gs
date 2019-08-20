@@ -3,6 +3,8 @@
     "lib": [
       "esnext"
     ],
+    "target": "ES3",
+    "module": "none",
     "noImplicitUseStrict": true,
     "noImplicitAny": true,
     "experimentalDecorators": true,

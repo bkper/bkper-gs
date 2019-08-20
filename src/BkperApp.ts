@@ -1,5 +1,5 @@
 /**
-@private
+* @private
 */
 function doGet(e: any) {
   return Authorizer_.processGetRequest(e);
@@ -21,15 +21,18 @@ function getAuthorizedCloseWindow() {
 * Returns the {@link Book} with the specified ID.
 * 
 * @example
+* 
+* ```
 * var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
 * book.record("#fuel for my Land Rover 126.50 28/01/2013");
+* ```
 * 
 * @param {string} bookId - The universal book id - The same bookId param of URL you access at bkper.com
 * 
 * @returns {Book}
 */
 
-function openById(bookId: string): Book {
+function openById(bookId: string): Book  {
   return new Book(bookId);
 }
 

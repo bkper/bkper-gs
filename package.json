@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf ./dist",
-    "docs": "./node_modules/.bin/typedoc ./src --ignoreCompilerErrors --excludeExternals --includeDeclarations",
+    "docs": "yarn clean && ./node_modules/.bin/typedoc ./src --ignoreCompilerErrors --excludeExternals --includeDeclarations --mode file",
     "docs:md": "yarn docs --out dist/docs --theme markdown && cp -rf ./docs/* ./dist/docs",
     "docs:html": "yarn docs --out dist/docs  && cp -rf ./docs/* ./dist/docs",
     "docs:json": "yarn docs --json dist/apidocs.json --mode modules",

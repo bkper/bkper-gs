@@ -2,44 +2,54 @@
 @class
 A TransactionsDataTableBuilder is used to setup and build two-dimensional arrays containing transactions.
 */
-function TransactionsDataTableBuilder(transactionIterator) {
-  this.transactionIterator = transactionIterator;
-  this.shouldFormatDate = false;
-  this.shouldFormatValue = false;
-  this.shouldAddUrls = false;
+class TransactionsDataTableBuilder {
+
+  private transactionIterator: TransactionIterator;
+  private shouldFormatDate: boolean;
+  private shouldFormatValue: boolean;
+  private shouldAddUrls: boolean;
+
+  constructor(transactionIterator: TransactionIterator) {
+    this.transactionIterator = transactionIterator;
+    this.shouldFormatDate = false;
+    this.shouldFormatValue = false;
+    this.shouldAddUrls = false;
+  }
 
   /**
-  Defines whether the dates should be formatted based on {@link Book#getDatePattern|date pattern of book}
-  @returns {@link TransactionsDataTableBuilder|TransactionsDataTableBuilder} the builder with respective formatting option.
+  * Defines whether the dates should be formatted based on {@link Book#getDatePattern|date pattern of book}
+  * @returns This builder with respective formatting option.
   */
-  TransactionsDataTableBuilder.prototype.formatDate = function() {
+  public formatDate(): TransactionsDataTableBuilder {
     this.shouldFormatDate = true;
     return this;
   }
+
   /**
-  Defines whether the value should be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}
-  @returns {@link TransactionsDataTableBuilder|TransactionsDataTableBuilder} the builder with respective formatting option.
+  * Defines whether the value should be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}
+  *
+  * @returns This builder with respective formatting option.
   */
-  TransactionsDataTableBuilder.prototype.formatValue = function() {
+  public formatValue(): TransactionsDataTableBuilder {
     this.shouldFormatValue = true;
     return this;
   }
   
   /**
-  Defines whether the value should add Attachments links
-  @returns {@link TransactionsDataTableBuilder|TransactionsDataTableBuilder} the builder with respective add attachment option.
+  * Defines whether the value should add Attachments links
+  * 
+  * @returns This builder with respective add attachment option.
   */
-  TransactionsDataTableBuilder.prototype.addUrls = function() {
+  public addUrls(): TransactionsDataTableBuilder {
     this.shouldAddUrls = true;
     return this;
   }  
   
   /**
-  @returns {Array} an two-dimensional array containing all {@link Transaction|transactions}.
+  @returns A two-dimensional array containing all {@link Transaction|transactions}.
   */
-  TransactionsDataTableBuilder.prototype.build = function() {
-    var filteredByAccount = transactionIterator.getFilteredByAccount();
-
+  public build(): any[][] {
+    var filteredByAccount = this.transactionIterator.getFilteredByAccount();
     var header = new Array();
     var transactions = new Array();
     var finalArray = new Array();
@@ -53,7 +63,7 @@ function TransactionsDataTableBuilder(transactionIterator) {
       headerLine.push("Debit");
       headerLine.push("Credit");
 
-      transactions = this.getExtract2DArray_(transactionIterator, filteredByAccount);
+      transactions = this.getExtract2DArray_(this.transactionIterator, filteredByAccount);
       if (filteredByAccount.isPermanent()) {
         headerLine.push("Balance");
       }
@@ -74,12 +84,13 @@ function TransactionsDataTableBuilder(transactionIterator) {
       if (this.shouldAddUrls) {
         headerLine.push("Attachment");
       }
-      transactions = this.get2DArray_(transactionIterator);
+      transactions = this.get2DArray_(this.transactionIterator);
       header.push(headerLine);
     }
 
     if (transactions.length > 0) {
       transactions.splice(0, 0, headerLine);
+      //@ts-ignore
       transactions = BkperUtils.convertInMatrix(transactions);
       return transactions;
     } else {
@@ -87,7 +98,7 @@ function TransactionsDataTableBuilder(transactionIterator) {
     }
   }
 
-  TransactionsDataTableBuilder.prototype.get2DArray_ = function(iterator) {
+  private get2DArray_(iterator: TransactionIterator) {
     var transactions = new Array();
 
     while (iterator.hasNext()) {
@@ -111,8 +122,8 @@ function TransactionsDataTableBuilder(transactionIterator) {
       }
       if (transaction.getAmount() != null) {
         if (this.shouldFormatValue) {
-          var decimalSeparator = iterator.book.getDecimalSeparator();
-          var fractionDigits = iterator.book.getFractionDigits();
+          var decimalSeparator = iterator.getBook().getDecimalSeparator();
+          var fractionDigits = iterator.getBook().getFractionDigits();
           line.push(Utils_.formatValue_(transaction.getAmount(), decimalSeparator, fractionDigits));
         } else {
           line.push(transaction.getAmount());
@@ -143,8 +154,8 @@ function TransactionsDataTableBuilder(transactionIterator) {
     return transactions;
   }
 
-  TransactionsDataTableBuilder.prototype.getExtract2DArray_ = function(iterator, account) {
-    var transactions = new Array();
+  private getExtract2DArray_(iterator: TransactionIterator, account: Account): any[][] {
+    var transactions = new Array<Array<any>>();
 
     while (iterator.hasNext()) {
       var transaction = iterator.next();
@@ -176,10 +187,10 @@ function TransactionsDataTableBuilder(transactionIterator) {
 
       if (transaction.getAmount() != null) {
 
-        var amount = transaction.getAmount();
+        var amount: string | number = transaction.getAmount();
 
         if (this.shouldFormatValue) {
-          amount = Utils_.formatValue_(transaction.getAmount(), iterator.book.getDecimalSeparator(), iterator.book.getFractionDigits());
+          amount = Utils_.formatValue_(transaction.getAmount(), iterator.getBook().getDecimalSeparator(), iterator.getBook().getFractionDigits());
         };
 
         if (this.isCreditOnTransaction_(transaction, account)) {
@@ -196,9 +207,9 @@ function TransactionsDataTableBuilder(transactionIterator) {
 
       if (account.isPermanent()) {
         if (transaction.getAccountBalance() != null) {
-          var balance = transaction.getAccountBalance();
+          var balance: string | number = transaction.getAccountBalance();
           if (this.shouldFormatValue) {
-            balance = Utils_.formatValue_(balance, iterator.book.getDecimalSeparator(), iterator.book.getFractionDigits());
+            balance = Utils_.formatValue_(balance, iterator.getBook().getDecimalSeparator(), iterator.getBook().getFractionDigits());
           };
           line.push(balance);
         } else{
@@ -226,7 +237,7 @@ function TransactionsDataTableBuilder(transactionIterator) {
     return transactions;
   }
 
-  TransactionsDataTableBuilder.prototype.isCreditOnTransaction_ = function(transaction, account) {
+  private isCreditOnTransaction_(transaction: Transaction, account: Account) {
     if (transaction.getCreditAccount() == null) {
       return false;
     }

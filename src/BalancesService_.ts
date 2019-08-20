@@ -1,6 +1,6 @@
-var BalancesService_ = {
+namespace BalancesService_ {
 
-  getBalances: function(bookId, query) {
+  export function getBalances(bookId: string, query: string) {
     var params =
         {
           "query" : query,
@@ -10,5 +10,6 @@ var BalancesService_ = {
     var report = JSON.parse(responseJSON);
     return report;
   }
+  
 }
 

@@ -269,7 +269,7 @@ class Transaction {
   @see {@link Book#search}
   @see {@link Transaction#getInformedDate}
   */
- public getAccountBalance(strict: boolean): number {
+ public getAccountBalance(strict?: boolean): number {
     var accountBalance = this.getCaEvolvedBalance_();
     var isCa = true;
     if (accountBalance == null) {

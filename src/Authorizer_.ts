@@ -129,7 +129,7 @@ namespace Authorizer_ {
     }
   }
   
-  function createAuthorizationURL(redirectUri: string, state: string): string {
+  export function createAuthorizationURL(redirectUri: string, state: string): string {
     var authorizationURL = "https://accounts.google.com/o/oauth2/auth?client_id=" + PropertiesService.getScriptProperties().getProperty(clientIdKey) +
       "&response_type=code" +
         "&scope=" + scope +
@@ -143,11 +143,11 @@ namespace Authorizer_ {
     return authorizationURL;
   }
   
-  function getAuthorizedCloseWindow(): GoogleAppsScript.HTML.HtmlOutput {
+  export function getAuthorizedCloseWindow(): GoogleAppsScript.HTML.HtmlOutput {
     return HtmlService.createTemplateFromFile('AuthorizedViewClose').evaluate().setTitle('BkperApp authorized');
   }
   
-  function createAuthorizedTemplate(continueUrl: string, continueText: string): GoogleAppsScript.HTML.HtmlOutput {
+  export function createAuthorizedTemplate(continueUrl: string, continueText: string): GoogleAppsScript.HTML.HtmlOutput {
     var template = HtmlService.createTemplateFromFile('AuthorizedView');
     if (continueUrl != null) {
       continueUrl = continueUrl.replace(/'/g, '"');
@@ -164,7 +164,7 @@ namespace Authorizer_ {
     return template.evaluate().setTitle("BkperApp authorized");
   }
   
-  function createAuthorizeTemplate(continueUrl?: string, continueText?: string): GoogleAppsScript.HTML.HtmlOutput {
+  export function createAuthorizeTemplate(continueUrl?: string, continueText?: string): GoogleAppsScript.HTML.HtmlOutput {
     if (continueUrl != null && continueText == null) {
       throw "If continueUrl provided, continueText must be provided too.";
     }

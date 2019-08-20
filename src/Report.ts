@@ -1,4 +1,15 @@
 namespace Report {
+
+  export interface BalanceContainerReport {
+    getName(): string
+    getBalances(): Bkper.BalanceV2Payload[]
+    isCredit(): boolean
+    getCumulativeBalance(): number
+    getCumulativeBalanceText(): string
+    getPeriodBalance(): number
+    getPeriodBalanceText(): string
+  }
+
   /**
   * @class
   * @classdesc A BalanceReport stores the balances based on an query.
@@ -134,7 +145,7 @@ namespace Report {
   * @class
   A AccountBalanceReport stores {@link Account|accounts} balances.
   */
-  export class AccountBalanceReport {
+  export class AccountBalanceReport implements BalanceContainerReport {
     private wrapped: Bkper.AccountBalancesV2Payload;
     private decimalSeparator: Enums.DecimalSeparator;
     private fractionDigits: number;
@@ -160,32 +171,34 @@ namespace Report {
     }
 
     /**
-    * @param format If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
     * @returns the {@link Account|account} period balance
     */
-    public getPeriodBalance(format?: boolean): number | string {
+    public getPeriodBalance(): number {
       var balance = Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
-      balance = Utils_.getRepresentativeValue(balance, this.isCredit());
-      if (format) {
-        return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
-      } else {
-        return balance;
-      }
+      return Utils_.getRepresentativeValue(balance, this.isCredit());
     }
 
     /**
-    * @param {boolean} [format] If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-    * @returns {number} the {@link Account|account} cumulative balance
+    * @returns the {@link Account|account} period balance formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
     */
-    public getCumulativeBalance(format: boolean): number | string {
+    public getPeriodBalanceText(): string {
+      return Utils_.formatValue_(this.getPeriodBalance(), this.decimalSeparator, this.fractionDigits)
+    }
+
+    /**
+    * @returns The {@link Account|account} cumulative balance
+    */
+    public getCumulativeBalance(): number {
       var balance = Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
+      return balance;
+    }
 
-      if (format) {
-        return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits);
-      } else {
-        return balance;
-      }
+    /**
+    * @returns The {@link Account|account} cumulative balance formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+    */
+    public getCumulativeBalanceText(): string {
+      return Utils_.formatValue_(this.getCumulativeBalance(), this.decimalSeparator, this.fractionDigits);
     }
 
     /**
@@ -204,7 +217,7 @@ namespace Report {
   * @class
   * A TagBalanceReport stores #hashtags balances.
   */
-  export class TagBalanceReport {
+  export class TagBalanceReport implements BalanceContainerReport{
 
     private wrapped: Bkper.TagBalancesV2Payload;
     private decimalSeparator: Enums.DecimalSeparator;
@@ -227,35 +240,36 @@ namespace Report {
       return true;
     }
 
-
     /**
-    * @param format If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
     * @returns the #hashtag period balance
     */
-    public getPeriodBalance(format: boolean): number | string {
-      var balance = Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
-      if (format) {
-        return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
-      } else {
-        return balance;
-      }
+    public getPeriodBalance(): number {
+      return Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
     }
 
     /**
-    * @param format If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+    * @returns the #hashtag period balance formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+    */
+    public getPeriodBalanceText(): string {
+      return Utils_.formatValue_(this.getPeriodBalance(), this.decimalSeparator, this.fractionDigits)
+    }
+
+    /**
     * @returns the #hashtag cumulative balance
     */
-    public getCumulativeBalance(format: boolean): number | string {
-      var balance = Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
-      if (format) {
-        return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
-      } else {
-        return balance;
-      }
+    public getCumulativeBalance(): number {
+      return Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
     }
 
     /**
-    @returns the #hashtag balances
+    * @returns the #hashtag cumulative balance formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+    */
+    public getCumulativeBalanceText(): string {
+      return Utils_.formatValue_(this.getCumulativeBalance(), this.decimalSeparator, this.fractionDigits)
+    }
+
+    /**
+    * @returns the #hashtag balances
     */
     public getBalances(): Bkper.BalanceV2Payload[] {
       return this.wrapped.balances;
@@ -263,14 +277,12 @@ namespace Report {
   }
 
 
-
-
   //###################### GROUP BALANCE REPORT ######################
   /**
   * @class
   * A GroupBalanceReport stores {@link Group|group} balances.
   */
-  export class GroupBalanceReport {
+  export class GroupBalanceReport implements BalanceContainerReport {
 
     private wrapped: Bkper.GroupBalancesV2Payload
     private decimalSeparator: Enums.DecimalSeparator;
@@ -290,8 +302,9 @@ namespace Report {
       this.fractionDigits = fractionDigits;
       this.timeZone = timeZone;
     }
+
     /**
-    @returns {string} the {@link Group|group} name
+    * @returns {string} the {@link Group|group} name
     */
     public getName(): string {
       return this.wrapped.name;
@@ -305,31 +318,33 @@ namespace Report {
     }
 
     /**
-    @param format If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-    @returns the {@link Group|group} period balance
+    * @returns The {@link Group|group} period balance
     */
-    public getPeriodBalance(format?: boolean): number | string {
+    public getPeriodBalance(): number {
       var balance = Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
-      balance = Utils_.getRepresentativeValue(balance, this.isCredit());
-      if (format) {
-        return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
-      } else {
-        return balance;
-      }
+      return Utils_.getRepresentativeValue(balance, this.isCredit());
     }
 
     /**
-    * @param {boolean} [format] If true, balance will be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+    * @returns The {@link Group|group} period balance formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+    */
+    public getPeriodBalanceText(): string {
+      return Utils_.formatValue_(this.getPeriodBalance(), this.decimalSeparator, this.fractionDigits)
+    }
+
+    /**
     * @returns {number} the {@link Group|group} period balance
     */
-    public getCumulativeBalance(format?: boolean): number | string {
+    public getCumulativeBalance(): number {
       var balance = Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
-      balance = Utils_.getRepresentativeValue(balance, this.isCredit());
-      if (format) {
-        return Utils_.formatValue_(balance, this.decimalSeparator, this.fractionDigits)
-      } else {
-        return balance;
-      }
+      return Utils_.getRepresentativeValue(balance, this.isCredit());
+    }
+
+    /**
+    * @returns {number} the {@link Group|group} period balance formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+    */
+    public getCumulativeBalanceText(): string {
+        return Utils_.formatValue_(this.getCumulativeBalance(), this.decimalSeparator, this.fractionDigits)
     }
 
     /**
@@ -347,7 +362,7 @@ namespace Report {
     }
 
     /**
-    @returns {Array<AccountBalanceReport>} all {@link Report.AccountBalanceReport|account balances} of this {@link Group|group}
+    * @returns {Array<AccountBalanceReport>} all {@link Report.AccountBalanceReport|account balances} of this {@link Group|group}
     */
     public getAccountBalanceReports(): AccountBalanceReport[] {
       var accountBalances = this.wrapped.accountBalances;

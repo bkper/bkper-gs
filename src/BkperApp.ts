@@ -1,15 +1,15 @@
 /**
 @private
 */
-function doGet(e) {
+function doGet(e: any) {
   return Authorizer_.processGetRequest(e);
 }
 
-function storeTokenData(code, redirectUri) {
+function storeTokenData(code: string, redirectUri: string): void {
   Authorizer_.storeTokenData(code, redirectUri);
 }
 
-function createAuthorizationURL(redirectUri, state) {
+function createAuthorizationURL(redirectUri: string, state: string) {
   return Authorizer_.createAuthorizationURL(redirectUri, state);
 }
 
@@ -18,56 +18,57 @@ function getAuthorizedCloseWindow() {
 }
 
 /**
-Returns the {@link Book} with the specified ID.
-
-@example
-  var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-  book.record("#fuel for my Land Rover 126.50 28/01/2013");
-
-@param {string} bookId - The universal book id - The same bookId param of URL you access at bkper.com
-
-@returns {Book}
+* Returns the {@link Book} with the specified ID.
+* 
+* @example
+* var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+* book.record("#fuel for my Land Rover 126.50 28/01/2013");
+* 
+* @param {string} bookId - The universal book id - The same bookId param of URL you access at bkper.com
+* 
+* @returns {Book}
 */
 
-function openById(bookId) {
+function openById(bookId: string): Book {
   return new Book(bookId);
 }
 
 
-function getUserDetails() {
+function getUserDetails(): Bkper.UserDetailsV2Payload {
   return UserService_.getUserDetails();
 }
 
 
 /**
-Gets the books of the user.
-@return {Array} All books the user has access
+* Gets the books of the user.
+* @return All books the user has access
 */
-function listBooks() {
+function listBooks(): Bkper.BookV2Payload[]  {
   return BookService_.listBooks();
 }
 
 
 
 /**
-Check if the user is already althorized with OAuth2 to the bkper API
-@returns {boolean} true if the user is already authorized, false otherwise
+* Check if the user is already althorized with OAuth2 to the bkper API
+* @returns {boolean} true if the user is already authorized, false otherwise
 */
-function isUserAuthorized() {
+function isUserAuthorized(): boolean {
   return Authorizer_.isUserAuthorized();
 }
 
 /**
-Gets the authorization screen html template for the user to authorize the API
-
-@param {string} [continueUrl] The url to continue the action after authorization
-@param {string} [continueText] The link text to show the user the action after authorization
+* Gets the authorization screen html template for the user to authorize the API
+* 
+* @param {string} [continueUrl] The url to continue the action after authorization
+* @param {string} [continueText] The link text to show the user the action after authorization
 */
-function getAuthorizationHtml(continueUrl, continueText) {
+function getAuthorizationHtml(continueUrl: string, continueText: string) {
   return Authorizer_.createAuthorizeTemplate(continueUrl, continueText);
 }
 
-function normalizeName(name) {
+function normalizeName(name: string) {
+  //@ts-ignore
   return BkperUtils.normalizeText(name, "_");
 }
 
@@ -77,14 +78,14 @@ function normalizeName(name) {
 /**
  * @Deprecated Use {@link openById}
  */
-function openLedgerById(ledgerId) {
+function openLedgerById(ledgerId: string) {
 	  return openById(ledgerId);
 }
 
 /**
 @Deprecated Use {@link listBooks}
 */
-function listLedgers() {
+function listLedgers(): Bkper.BookV2Payload[] {
   return listBooks();
 }
 

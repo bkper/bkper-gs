@@ -5,8 +5,20 @@
 A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
 */
 class BalancesDataTableBuilder {
-constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePattern, fractionDigits, offsetInMinutes, timeZone) {
-  this.balanceType = BalanceType.TOTAL;
+
+  private balanceType: Enums.BalanceType;
+  private periodicity: Enums.Periodicity;
+  private decimalSeparator: Enums.DecimalSeparator;
+  private datePattern: string;
+  private fractionDigits: number;
+  private balanceArray: Report.BalanceContainerReport[];
+  private shouldFormatDate: boolean;
+  private offsetInMinutes: number;
+  private timeZone: string;
+  private shouldFormatValue: boolean;
+  
+constructor(balanceContainerReportArray: Report.BalanceContainerReport[], periodicity: Enums.Periodicity, decimalSeparator: Enums.DecimalSeparator, datePattern: string, fractionDigits: number, offsetInMinutes: number, timeZone: string) {
+  this.balanceType = Enums.BalanceType.TOTAL;
   this.periodicity = periodicity;
   this.decimalSeparator = decimalSeparator;
   this.datePattern = datePattern;
@@ -16,22 +28,23 @@ constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePatt
   this.shouldFormatValue = false;
   this.offsetInMinutes = offsetInMinutes;
   this.timeZone = timeZone;
-
 }
 
   /**
-  Defines whether the dates should be formatted based on {@link Book#getDatePattern|date pattern of book} and periodicity.
-  @returns {@link BalancesDataTableBuilder|BalancesDataTableBuilder} the builder with respective formatting option.
+  * Defines whether the dates should be formatted based on {@link Book#getDatePattern|date pattern of book} and periodicity.
+  *
+  * @returns This builder with respective formatting option.
   */
-  BalancesDataTableBuilder.prototype.formatDate = function() {
+  public formatDate(): BalancesDataTableBuilder {
     this.shouldFormatDate = true;
     return this;
   }
   /**
-  Defines whether the value should be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-  @returns {@link BalancesDataTableBuilder|BalancesDataTableBuilder} the builder with respective formatting option.
+  * Defines whether the value should be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+  * 
+  * @returns This builder with respective formatting option.
   */
-  BalancesDataTableBuilder.prototype.formatValue = function() {
+ public formatValue(): BalancesDataTableBuilder {
     this.shouldFormatValue = true;
     return this;
   }
@@ -39,51 +52,51 @@ constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePatt
   /**
   Sets the {@link BalanceType|BalanceType}.
   @param {BalanceType}
-  @returns {@link BalancesDataTableBuilder|BalancesDataTableBuilder} the builder with respective balance type.
+  @returns This builder with respective balance type.
   */
-  BalancesDataTableBuilder.prototype.setBalanceType = function(balanceType) {
+ public setBalanceType(balanceType: Enums.BalanceType): BalancesDataTableBuilder {
     this.balanceType = balanceType;
     return this;
   }
 
 
   /**
-  Gets an two-dimensional array with the balances.
-  <br/>
-  For {@link BalanceType.TOTAL|BalanceType.TOTAL}, the table format looks like:
-
-  <pre>
-    _____________________
-   |    NAME   | AMOUNT  |
-   | Expenses  | 4568.23 |
-   | Incomes   | 5678.93 |
-   |    ...    |   ...   |
-   |___________|_________|
-
-   </pre>
-   Two columns, and Each Group|Account|Tag per line.
-   <br/>
-   <br/>
-
-   For {@link BalanceType.PERIOD|BalanceType.PERIOD},  {@link BalanceType.CUMULATIVE|BalanceType.CUMULATIVE}, the table will be a time table, and the format looks like:
-
-  <pre>
-    _____________________________________________
-   |    DATE    | Expenses | Incomes |    ...   |
-   | 15/01/2014 | 2345.23  | 3452.93 |    ...   |
-   | 15/02/2014 | 2345.93  | 3456.46 |    ...   |
-   | 15/03/2014 | 2456.45  | 3567.87 |    ...   |
-   |    ...     |   ...    |   ...   |    ...   |
-   |___________ |__________|_________|__________|
-
-  </pre>
-
-	First column will be the Date column, and one column for each Group|Account|Tag.
-
-    @returns Array[][]
+  * Gets an two-dimensional array with the balances.
+  * <br/>
+  * For {@link BalanceType.TOTAL|BalanceType.TOTAL}, the table format looks like:
+  * 
+  * <pre>
+  *   _____________________
+  *  |    NAME   | AMOUNT  |
+  *  | Expenses  | 4568.23 |
+  *  | Incomes   | 5678.93 |
+  *  |    ...    |   ...   |
+  *  |___________|_________|
+  * 
+  * </pre>
+  * Two columns, and Each Group|Account|Tag per line.
+  * <br/>
+  * <br/>
+  * 
+  * For {@link BalanceType.PERIOD|BalanceType.PERIOD},  {@link BalanceType.CUMULATIVE|BalanceType.CUMULATIVE}, the table will be a time table, and the format looks like:
+  * 
+  * <pre>
+  *  _____________________________________________
+  *  |    DATE    | Expenses | Incomes |    ...   |
+  *  | 15/01/2014 | 2345.23  | 3452.93 |    ...   |
+  *  | 15/02/2014 | 2345.93  | 3456.46 |    ...   |
+  *  | 15/03/2014 | 2456.45  | 3567.87 |    ...   |
+  *  |    ...     |   ...    |   ...   |    ...   |
+  *  |___________ |__________|_________|__________|
+  * 
+  * </pre>
+  * 
+	* First column will be the Date column, and one column for each Group|Account|Tag.
+  * 
+  *  @returns Array<string | number>
   */
-  BalancesDataTableBuilder.prototype.build = function() {
-    if (this.balanceType == BalanceType.TOTAL) {
+  public build(): any[][] {
+    if (this.balanceType == Enums.BalanceType.TOTAL) {
       return this.buildTotalDataTable_();
     } else {
       return this.buildTimeDataTable_();
@@ -91,19 +104,19 @@ constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePatt
   }
 
   /**
-  Builds a {@link https://developers.google.com/apps-script/reference/charts/|Chart Services} data table
-  <br/>
-  The internal structure is the same of {@link BalancesDataTableBuilder#build|build}
-
-  @returns DataTable a Chart Services {@link https://developers.google.com/apps-script/reference/charts/data-table|DataTable}
+  * Builds a {@link https://developers.google.com/apps-script/reference/charts/|Chart Services} data table
+  * <br/>
+  * The internal structure is the same of {@link BalancesDataTableBuilder#build|build}
+  * 
+  * @returns DataTable a Chart Services {@link https://developers.google.com/apps-script/reference/charts/data-table|DataTable}
   */
-  BalancesDataTableBuilder.prototype.buildChartDataTable = function() {
+  public buildChartDataTable(): GoogleAppsScript.Charts.DataTable {
     var tempShouldFormatValue = this.shouldFormatValue;
     var tempShouldFormatDate = this.shouldFormatDate;
     this.shouldFormatDate = false;
     this.shouldFormatValue = false;
     var chartDataTable = null;
-    if (this.balanceType == BalanceType.TOTAL) {
+    if (this.balanceType == Enums.BalanceType.TOTAL) {
        chartDataTable = this.buildTotalChartDataTable_(this.buildTotalDataTable_());
     } else {
       chartDataTable = this.buildTimeChartDataTable_(this.buildTimeDataTable_());
@@ -113,7 +126,7 @@ constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePatt
     return chartDataTable;
   }
 
-  BalancesDataTableBuilder.prototype.buildTotalChartDataTable_ = function(balancesDataTable) {
+  private buildTotalChartDataTable_(balancesDataTable: any[][]): GoogleAppsScript.Charts.DataTable {
     var data = Charts.newDataTable();
     data.addColumn(Charts.ColumnType.STRING, balancesDataTable[0][0]);
     data.addColumn(Charts.ColumnType.NUMBER, balancesDataTable[0][1]);
@@ -125,7 +138,7 @@ constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePatt
     return data.build();
   }
 
-  BalancesDataTableBuilder.prototype.buildTimeChartDataTable_ = function(balancesTimeTable) {
+  private buildTimeChartDataTable_(balancesTimeTable: any[][]): GoogleAppsScript.Charts.DataTable {
     var data = Charts.newDataTable();
     data.addColumn(Charts.ColumnType.DATE, "Date");
     //header
@@ -144,7 +157,7 @@ constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePatt
   ///////////////////////
 
 
-  BalancesDataTableBuilder.prototype.buildTotalDataTable_ = function() {
+  private buildTotalDataTable_() {
     var table = new Array();
     var header = ["Name", "Amount"]
     table.push(header);
@@ -163,21 +176,20 @@ constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePatt
           var line = new Array();
           var name = balanceReport.getName();
           line.push(name);
-          var balance = balanceReport.getCumulativeBalance(this.shouldFormatValue);
+          var balance = this.shouldFormatValue ? balanceReport.getCumulativeBalanceText() : balanceReport.getCumulativeBalance();
           line.push(balance);
           table.push(line);
         }
       }
     }
 
-
     return table;
   }
 
-  BalancesDataTableBuilder.prototype.buildTimeDataTable_ = function() {
-    var table = new Array();
-    var dataIndexMap = new Object();
-    var cumulativeBalance = this.balanceType == BalanceType.CUMULATIVE;
+  private buildTimeDataTable_() {
+    var table = new Array<Array<any>>();
+    var dataIndexMap = new Map<string, any>();
+    var cumulativeBalance = this.balanceType == Enums.BalanceType.CUMULATIVE;
 
     var header = new Array();
     header.push("Date");
@@ -193,11 +205,11 @@ constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePatt
         for (var j = 0; j < balances.length; j++) {
           var balance = balances[j];
           var fuzzyDate = this.getFuzzyDate_(balance);
-          var indexEntry = dataIndexMap[fuzzyDate];
+          var indexEntry = dataIndexMap.get(fuzzyDate);
           if (indexEntry == null) {
             indexEntry = new Object();
             indexEntry.date = this.getBalanceDate_(balance, this.offsetInMinutes);
-            dataIndexMap[fuzzyDate] = indexEntry;
+            dataIndexMap.set(fuzzyDate, indexEntry);
           }
           var bal = cumulativeBalance ? balance.cumulativeBalance : balance.periodBalance;
           indexEntry[balanceReport.getName()] = Utils_.getRepresentativeValue(bal, balanceReport.isCredit());
@@ -208,9 +220,9 @@ constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePatt
 
     table.push(header);
 
-    var rows = new Array();
-    for (var fuzzy in dataIndexMap) {
-      var rowObject = dataIndexMap[fuzzy];
+    var rows = new Array<Array<any>>();
+    for (var fuzzy in dataIndexMap.keys()) {
+      var rowObject = dataIndexMap.get(fuzzy);
       var row = new Array();
       row.push(rowObject.date);
       for (var i = 0; i < this.balanceArray.length; i++) {
@@ -233,7 +245,7 @@ constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePatt
     rows.sort(function(a,b){return a[0].getTime() - b[0].getTime()});
 
 
-    var lastRow = null;
+    var lastRow: any[] = null;
     for (var i = 0; i < rows.length; i++) {
       var row = rows[i];
       if (i == 0) {
@@ -241,7 +253,7 @@ constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePatt
         for (var j = 1; j < row.length; j++) {
           var cell = row[j];
           if (cell == "null_amount") {
-            var amount = 0;
+            var amount: any = 0;
             if (this.shouldFormatValue) {
               amount = Utils_.formatValue_(amount, this.decimalSeparator, this.fractionDigits);
             }
@@ -254,7 +266,7 @@ constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePatt
           if (cell == "null_amount" && cumulativeBalance) {
             row[j] = lastRow[j];
           } else if (cell == "null_amount") {
-            var amount = 0;
+            var amount: any = 0;
             if (this.shouldFormatValue) {
               amount = Utils_.formatValue_(amount, this.decimalSeparator, this.fractionDigits);
             }
@@ -282,7 +294,7 @@ constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePatt
     return table;
   }
 
-  BalancesDataTableBuilder.prototype.getBalanceDate_ = function(balance, offsetInMinutes) {
+  private getBalanceDate_(balance: Bkper.BalanceV2Payload, offsetInMinutes: number) {
     var year = balance.year;
     var month = balance.month;
     var day = balance.day;
@@ -298,22 +310,12 @@ constructor(balanceContainerReportArray, periodicity, decimalSeparator, datePatt
     return date;
   }
 
-  BalancesDataTableBuilder.prototype.getFuzzyDate_ = function(balance) {
+  private getFuzzyDate_(balance: Bkper.BalanceV2Payload): string {
     var year = balance.year * 10000;
     var month = balance.month * 100;
     var day = balance.day;
     var fuzzyDate = year + month + day;
     return fuzzyDate + "";
-  }
-
-  BalancesDataTableBuilder.prototype.getDaysToBasedOnPeriodicity_ = function(periodicity) {
-    if (periodicity == "DAYLY") {
-      return 1;
-    } else if (periodicity ==  "MONTHLY") {
-      return 32;
-    } else {
-      return 367;
-    }
   }
 
 

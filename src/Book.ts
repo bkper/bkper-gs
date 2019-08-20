@@ -372,7 +372,7 @@ class Book {
   * ```
   * @see Variables
   */
-  public getBalanceReport(query: string): {
+  public getBalanceReport(query: string): Report.BalanceReport{
     var balances = BalancesService_.getBalances(this.getId(), query);
     return new Report.BalanceReport(balances, this.getDecimalSeparator(), this.getDatePattern(), this.getFractionDigits(), this.getTimeZoneOffset(), this.getTimeZone());
   }

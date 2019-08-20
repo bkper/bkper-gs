@@ -16,7 +16,8 @@ class TransactionIterator {
   private currentPage: TransactionPage_
   private nextPage: TransactionPage_
   private lastCursor: string
-  private filteredByAccount: string | Account   
+  private filteredByAccount: Account  
+  private alreadyProcessedAccountFilter: boolean
 
   constructor(book: Book, query: string) {
     this.book = book
@@ -27,8 +28,13 @@ class TransactionIterator {
     this.currentPage = null;
     this.nextPage = null;
     this.lastCursor = null;
-    this.filteredByAccount = "NOT_PROCESSED"    
+    this.filteredByAccount = null
+    this.alreadyProcessedAccountFilter = false
   } 
+
+  public getBook(): Book {
+    return this.book;
+  }
 
 
   /**
@@ -128,9 +134,9 @@ class TransactionIterator {
     }
   }
 
-  public getFilteredByAccount(): string | Account {
+  public getFilteredByAccount(): Account {
 
-    if (this.filteredByAccount == "NOT_PROCESSED") {
+    if (!this.alreadyProcessedAccountFilter) {
 
       this.filteredByAccount = null;
 
@@ -162,6 +168,8 @@ class TransactionIterator {
       } catch (e) {
         //OK. Any error, the filteredByAccount will be null
         Logger.log(e);
+      } finally {
+        this.alreadyProcessedAccountFilter = true;
       }
     }
 

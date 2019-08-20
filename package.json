@@ -19,9 +19,6 @@
   "devDependencies": {
     "@google/clasp": "^2.2.1",
     "@types/google-apps-script": "^0.0.56",
-    "@types/node": "^12.7.2",
-    "copyfiles": "^2.1.1",
-    "ts-node": "^8.3.0",
     "typedoc": "^0.15.0",
     "watch": "^1.0.2"
   }

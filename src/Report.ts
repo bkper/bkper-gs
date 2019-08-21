@@ -14,8 +14,8 @@ namespace Report {
   * @class
   * @classdesc A BalanceReport stores the balances based on an query.
   * @param {Array} balanceReportPlain balances wrapped array
-  * @param {DecimalSeparator} decimalSeparator {@link Book#getDecimalSeparator|decimal separator of book}
-  * @param {FractionDigits} fractionDigits {@link Book#getFractionDigits|Fraction digits of book}
+  * @param {DecimalSeparator} decimalSeparator {@link Book.getDecimalSeparator|decimal separator of book}
+  * @param {FractionDigits} fractionDigits {@link Book.getFractionDigits|Fraction digits of book}
   */
   export class BalanceReport {
 
@@ -139,12 +139,11 @@ namespace Report {
   }
 
 
-
   //###################### ACCOUNT BALANCE REPORT ######################
+
   /**
-  * @class
-  A AccountBalanceReport stores {@link Account|accounts} balances.
-  */
+   * An AccountBalanceReport stores {@link Account|accounts} balances.
+   */
   export class AccountBalanceReport implements BalanceContainerReport {
     private wrapped: Bkper.AccountBalancesV2Payload;
     private decimalSeparator: Enums.DecimalSeparator;

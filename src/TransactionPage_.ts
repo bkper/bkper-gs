@@ -1,4 +1,6 @@
-
+/**
+ * @ignore
+ */
 class TransactionPage_ {
 
   private transactions: Transaction[]

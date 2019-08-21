@@ -1,8 +1,8 @@
 /**
 This class defines a Book.
-<br/>
+
 A  is an abstraction of a structure that you want to control, like a business, project, or personal expenses and so forth.
-<br/>
+
 It contains all {@link Account|Accounts} where {@link Transaction|Transactions} are recorded/posted;
 */
 class Book {
@@ -17,6 +17,9 @@ class Book {
   private nameGroupMap: any;
   private savedQueries: Bkper.SavedQueryV2Payload[];
 
+  /**
+   * @ignore
+   */
   constructor(id: string) {
     this.id = id;
   }
@@ -69,7 +72,7 @@ class Book {
 
   /**
   * @return The locale of the Book
-  * @Deprecated Use {@link Book#getDatePattern} and {@link Book#getDecimalSeparator} instead
+  * @Deprecated Use {@link Book.getDatePattern} and {@link Book.getDecimalSeparator} instead
   */
  public getLocale(): string {
     this.checkBookLoaded_();
@@ -128,7 +131,7 @@ class Book {
 
   /**
   * @param value The value to be formatted.
-  * @return The value formated according to {@link Book#getDecimalSeparator|decimal separator} and {@link Book#getFractionDigits|fraction digits} of book}
+  * @return The value formated according to {@link Book.getDecimalSeparator|decimal separator} and {@link Book.getFractionDigits|fraction digits} of book}
    */
   public formatValue(value: number): string {
     return Utils_.formatValue_(value, this.getDecimalSeparator(), this.getFractionDigits());
@@ -151,7 +154,7 @@ class Book {
 
   /**
   * Resumes a transaction iteration using a continuation token from a previous iterator.
-  * @param continuationToken continuation token from a previous folder iterator
+  * @param continuationToken continuation token from a previous transaction iterator
   * @return a collection of transactions that remained in a previous iterator when the continuation token was generated
   */
   public continueTransactionIterator(query: string, continuationToken: string): TransactionIterator {
@@ -164,14 +167,14 @@ class Book {
 
   /**
   * Search for transactions.
-  * <br/>
-  * Go to <a href='https://app.bkper.com' target='_blank'>bkper.com</a> and open search wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query syntax.
+  * 
+  * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
   *  
   * @param query The query string.
+  * 
   * @return The search result as an iterator.
   * 
-  * @example
-  * ```
+  * ```javascript
   * var book = BkperApp.loadBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
   * var transactions = book.search("acc:CreditCard after:28/01/2013 before:29/01/2013");
   * ...
@@ -193,7 +196,7 @@ class Book {
 
 
   /**
-  * @private
+  * @ignore
   */
   public configureTransactions_(transactions: Transaction[]) {
     for (var i = 0; i < transactions.length; i++) {
@@ -213,14 +216,14 @@ class Book {
   }
 
 
-  public transactionPosted_(transaction: Transaction) {
-    var creditAccount = this.getAccount(transaction.wrapped.creditAccId);
-    creditAccount.wrapped.balance = transaction.wrapped.caBal;
+  // private transactionPosted_(transaction: Transaction) {
+  //   var creditAccount = this.getAccount(transaction.wrapped.creditAccId);
+  //   creditAccount.wrapped.balance = transaction.wrapped.caBal;
 
-    var debitAccount = this.getAccount(transaction.wrapped.debitAccId);
-    debitAccount.wrapped.balance = transaction.wrapped.daBal;
-    transaction.configure_();
-  }
+  //   var debitAccount = this.getAccount(transaction.wrapped.debitAccId);
+  //   debitAccount.wrapped.balance = transaction.wrapped.daBal;
+  //   transaction.configure_();
+  // }
 
 
   /**
@@ -268,6 +271,7 @@ class Book {
   * @param name The name of the Account
   * @param group The group of the Account. 
   * @param description The description of the Account
+  * 
   * @returns The created Account object
   */
   public createAccount(name: string, group?: string, description?: string): Account {
@@ -292,7 +296,7 @@ class Book {
   }
 
   /**
-  Gets all @{link Group|Groups} of this Book
+  Gets all {@link Group|Groups} of this Book
   */
   public getGroups(): Group[] {
     if (this.groups == null) {
@@ -302,9 +306,9 @@ class Book {
   }
 
   /**
-  Gets an {@link Group} object
+  Gets a {@link Group} object
   @param idOrName The id or name of the Group
-  @returns {Group} The matching Group object
+  @returns The matching Group object
   */
   public getGroup(idOrName: string): Group {
 
@@ -346,30 +350,29 @@ class Book {
 
 
   /**
-  * Get balances reports given a query. Balance queries starts with "=".
-  * <br/><br/>
-  * This method gives a {@link BalanceReport|Report.BalanceReport}.
-  * </br>
-  * Usually balances are used to populate data tables for charts with <a href='https://developers.google.com/apps-script/reference/charts/' target='_blank'>Chart Services</a> and create great user interfaces, dashboards or insert in documents to report it for users.
-  * <br/><br/>
-  * Go to <a href='https://app.bkper.com' target='_blank'>bkper.com</a> and open report wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query sintax.
+  * Get balances reports given a query.
   * 
-  * @param {string} query The report query (starting with '=')
+  * This method gives a {@link BalanceReport|Report.BalanceReport}.
+  * 
+  * Usually balances are used to populate data tables for charts with <a href='https://developers.google.com/apps-script/reference/charts/' target='_blank'>Chart Services</a> and create great user interfaces, dashboards or insert in documents to report it for users.
+  * 
+  * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
+  * 
+  * @param {string} query The report query
   * @return {Report.BalanceReport} A Balance Report representation
   * 
-  * @example
+  * Example:
   * 
-  * ```
+  * ```javascript
   * var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
   * 
-  * book.getBalanceReport("=#rental #energy after:8/2013 before:9/2013");
+  * book.getBalanceReport("#rental #energy after:8/2013 before:9/2013");
   * ...
-  * book.getBalanceReport("=group:'Expenses' after:$m before:$m+1");
+  * book.getBalanceReport("group:'Expenses' after:$m before:$m+1");
   * ...
-  * book.getBalanceReport("=acc:'Home' acc:'Transport' #medicines after:8/2013 before:12/2013");
+  * book.getBalanceReport("acc:'Home' acc:'Transport' #medicines after:8/2013 before:12/2013");
   * 
   * ```
-  * @see Variables
   */
   public getBalanceReport(query: string): Report.BalanceReport{
     var balances = BalancesService_.getBalances(this.getId(), query);
@@ -378,16 +381,15 @@ class Book {
 
   /**
   * Create a {@link TransactionsDataTableBuilder|TransactionsDataTableBuilder} based on a query.
-  * <br/><br/>
+  * 
   * This method gives a {@link TransactionsDataTableBuilder|TransactionsDataTableBuilder} to create two dimensional Array representations of transactions dataset.
-  * <br/><br/>
-  * Go to <a href='https://app.bkper.com' target='_blank'>bkper.com</a> and open report wizard: <img src='http://about.bkper.com/img/wizard.png'/> to learn more about query sintax.
   * 
-  * @param {string} query The flter query.
-  * @return {TransactionsDataTableBuilder} the Transactions list builder.
+  * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
   * 
-  * @example
+  * @param query The flter query.
+  * @return Transactions data table builder.
   * 
+  * ```javascript
   * var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
   * 
   * book.createTransactionsDataTable("acc:'Bank' after:8/2013 before:9/2013");
@@ -396,7 +398,7 @@ class Book {
   * ...
   * book.createTransactionsDataTable("#gas");
   * 
-  * @see Variables
+  * ```
   */
   public createTransactionsDataTable(query: string) {
     var transactionIterator = this.search(query);

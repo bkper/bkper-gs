@@ -1,7 +1,6 @@
 /**
-@class
-A TransactionsDataTableBuilder is used to setup and build two-dimensional arrays containing transactions.
-*/
+ * A TransactionsDataTableBuilder is used to setup and build two-dimensional arrays containing transactions.
+ */
 class TransactionsDataTableBuilder {
 
   private transactionIterator: TransactionIterator;
@@ -9,6 +8,9 @@ class TransactionsDataTableBuilder {
   private shouldFormatValue: boolean;
   private shouldAddUrls: boolean;
 
+  /**
+   * @ignore
+   */
   constructor(transactionIterator: TransactionIterator) {
     this.transactionIterator = transactionIterator;
     this.shouldFormatDate = false;
@@ -17,7 +19,8 @@ class TransactionsDataTableBuilder {
   }
 
   /**
-  * Defines whether the dates should be formatted based on {@link Book#getDatePattern|date pattern of book}
+  * Defines whether the dates should be formatted based on {@link Book.getDatePattern|date pattern of book}
+  * 
   * @returns This builder with respective formatting option.
   */
   public formatDate(): TransactionsDataTableBuilder {
@@ -26,7 +29,7 @@ class TransactionsDataTableBuilder {
   }
 
   /**
-  * Defines whether the value should be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}
+  * Defines whether the value should be formatted based on {@link Book.getDecimalSeparator|decimal separator of book}
   *
   * @returns This builder with respective formatting option.
   */
@@ -34,7 +37,7 @@ class TransactionsDataTableBuilder {
     this.shouldFormatValue = true;
     return this;
   }
-  
+
   /**
   * Defines whether the value should add Attachments links
   * 
@@ -43,11 +46,11 @@ class TransactionsDataTableBuilder {
   public addUrls(): TransactionsDataTableBuilder {
     this.shouldAddUrls = true;
     return this;
-  }  
-  
+  }
+
   /**
-  @returns A two-dimensional array containing all {@link Transaction|transactions}.
-  */
+   * @returns A two-dimensional array containing all {@link Transaction|transactions}.
+   */
   public build(): any[][] {
     var filteredByAccount = this.transactionIterator.getFilteredByAccount();
     var header = new Array();
@@ -67,7 +70,7 @@ class TransactionsDataTableBuilder {
       if (filteredByAccount.isPermanent()) {
         headerLine.push("Balance");
       }
-      
+
       headerLine.push("Recorded at");
       if (this.shouldAddUrls) {
         headerLine.push("Attachment");
@@ -80,7 +83,7 @@ class TransactionsDataTableBuilder {
       headerLine.push("Description");
       headerLine.push("Amount");
       headerLine.push("Recorded at");
-      
+
       if (this.shouldAddUrls) {
         headerLine.push("Attachment");
       }
@@ -117,7 +120,7 @@ class TransactionsDataTableBuilder {
 
       if (transaction.getDescription() != null) {
         line.push(transaction.getDescription());
-      } else{
+      } else {
         line.push("");
       }
       if (transaction.getAmount() != null) {
@@ -131,22 +134,22 @@ class TransactionsDataTableBuilder {
       } else {
         line.push("");
       }
-      
+
       if (this.shouldFormatDate) {
         line.push(transaction.getPostDateText());
       } else {
-        line.push(transaction.getPostDate());      
+        line.push(transaction.getPostDate());
       }
-      
+
       var urls = transaction.getUrls();
-      
+
       if (this.shouldAddUrls && urls != null && urls.length > 0) {
         for (var i = 0; i < urls.length; i++) {
           line.push(urls[i]);
         }
       } else if (this.shouldAddUrls) {
         line.push("");
-      }      
+      }
 
       transactions.push(line);
     }
@@ -175,12 +178,12 @@ class TransactionsDataTableBuilder {
           line.push(transaction.getCreditAccount().getName());
         }
 
-      } else{
+      } else {
         line.push("");
       }
       if (transaction.getDescription() != null) {
         line.push(transaction.getDescription());
-      } else{
+      } else {
         line.push("");
       }
 
@@ -200,7 +203,7 @@ class TransactionsDataTableBuilder {
           line.push(amount);
           line.push("");
         }
-      } else{
+      } else {
         line.push("");
         line.push("");
       }
@@ -212,15 +215,15 @@ class TransactionsDataTableBuilder {
             balance = Utils_.formatValue_(balance, iterator.getBook().getDecimalSeparator(), iterator.getBook().getFractionDigits());
           };
           line.push(balance);
-        } else{
+        } else {
           line.push("");
         }
       }
-      
+
       if (this.shouldFormatDate) {
         line.push(transaction.getPostDateText());
       } else {
-        line.push(transaction.getPostDate());      
+        line.push(transaction.getPostDate());
       }
 
       var urls = transaction.getUrls();
@@ -228,10 +231,10 @@ class TransactionsDataTableBuilder {
         for (var i = 0; i < urls.length; i++) {
           line.push(urls[i]);
         }
-      } else if (this.shouldAddUrls){
+      } else if (this.shouldAddUrls) {
         line.push("");
-      }      
-      
+      }
+
       transactions.push(line);
     }
     return transactions;

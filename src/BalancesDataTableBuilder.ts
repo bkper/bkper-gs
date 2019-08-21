@@ -1,8 +1,7 @@
 
 
 /**
-@class
-A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
+* A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
 */
 class BalancesDataTableBuilder {
 
@@ -17,6 +16,9 @@ class BalancesDataTableBuilder {
   private timeZone: string;
   private shouldFormatValue: boolean;
   
+/**
+ * @ignore
+ */
 constructor(balanceContainerReportArray: Report.BalanceContainerReport[], periodicity: Enums.Periodicity, decimalSeparator: Enums.DecimalSeparator, datePattern: string, fractionDigits: number, offsetInMinutes: number, timeZone: string) {
   this.balanceType = Enums.BalanceType.TOTAL;
   this.periodicity = periodicity;
@@ -31,7 +33,7 @@ constructor(balanceContainerReportArray: Report.BalanceContainerReport[], period
 }
 
   /**
-  * Defines whether the dates should be formatted based on {@link Book#getDatePattern|date pattern of book} and periodicity.
+  * Defines whether the dates should be formatted based on {@link Book.getDatePattern|date pattern of book} and periodicity.
   *
   * @returns This builder with respective formatting option.
   */
@@ -40,7 +42,7 @@ constructor(balanceContainerReportArray: Report.BalanceContainerReport[], period
     return this;
   }
   /**
-  * Defines whether the value should be formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
+  * Defines whether the value should be formatted based on {@link Book.getDecimalSeparator|decimal separator of book}.
   * 
   * @returns This builder with respective formatting option.
   */
@@ -106,7 +108,7 @@ constructor(balanceContainerReportArray: Report.BalanceContainerReport[], period
   /**
   * Builds a {@link https://developers.google.com/apps-script/reference/charts/|Chart Services} data table
   * <br/>
-  * The internal structure is the same of {@link BalancesDataTableBuilder#build|build}
+  * The internal structure is the same of {@link BalancesDataTableBuilder.build|build}
   * 
   * @returns DataTable a Chart Services {@link https://developers.google.com/apps-script/reference/charts/data-table|DataTable}
   */

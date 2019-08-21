@@ -1,4 +1,7 @@
 
+/**
+ * @ignore
+ */
 namespace API {
 
   export function call_(httpMethod: 'get' | 'delete' | 'patch' | 'post' | 'put', service?: string, Id?: string | number, params?: object, requestBody?: string, contentType?: string, headers?: object): string {

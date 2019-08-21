@@ -1,3 +1,6 @@
+/**
+ * @ignore
+ */
 namespace BalancesService_ {
 
   export function getBalances(bookId: string, query: string) {

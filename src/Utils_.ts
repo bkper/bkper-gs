@@ -1,3 +1,6 @@
+/**
+ * @ignore
+ */
 namespace Utils_ {
   
   export function round(num: number, fractionDigits?: number): number {

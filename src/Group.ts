@@ -1,34 +1,37 @@
 /**
-@classdesc
-This class defines a Group of {@link Account|Accounts}.
-<br/>
-<br/>
-{@link Account|Accounts} can be grouped by different meaning, like Expenses, Revenue, Assets, Liabilities and so on.
-<br/>
-Its useful to keep {@link Account|Accounts} organized and for high level analysis.
-@constructor
+* This class defines a Group of {@link Account|Accounts}.
+*
+* {@link Account|Accounts} can be grouped by different meaning, like Expenses, Revenue, Assets, Liabilities and so on.
+* 
+* Its useful to keep {@link Account|Accounts} organized and for high level analysis.
 */
 class Group {
 
+  /**
+   * @ignore
+   */
   wrapped: Bkper.GroupV2Payload
+  /**
+   * @ignore
+   */
   book: Book
 
   /**
-  @returns The id of this Group
+  * @returns The id of this Group
   */
   getId(): string {
     return this.wrapped.id;
   }
 
   /**
-  @returns The name of this Group
+  * @returns The name of this Group
   */
   getName(): string {
     return this.wrapped.name;
   }
 
   /**
-  @returns Check if this group has accounts
+  * @returns Check if this group has accounts
   */
   hasAccounts(): boolean {
     return this.getAccounts().length > 0;
@@ -36,7 +39,7 @@ class Group {
 
 
   /**
-  @returns {Array<Account>} All Accounts this Group is has.
+  * @returns {Array<Account>} All Accounts this Group is has.
   */
   getAccounts(): Account[] {
     var accounts = [];

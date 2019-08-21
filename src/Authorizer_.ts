@@ -1,4 +1,6 @@
-
+/**
+ * @ignore
+ */
 namespace Authorizer_ {
 
   const API_UNAUTHORIZED = "bkper_api_unauthorized";

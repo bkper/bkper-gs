@@ -1,13 +1,9 @@
 /**
-
-@classdesc
-
-An iterator that allows scripts to iterate over a potentially large collection of transactions.
-
-@see {@link Book#search}
-
-@constructor
-
+ * 
+ * An iterator that allows scripts to iterate over a potentially large collection of transactions.
+ * 
+ * @see {@link Book.search}
+ *
 */
 class TransactionIterator {
 
@@ -16,9 +12,12 @@ class TransactionIterator {
   private currentPage: TransactionPage_
   private nextPage: TransactionPage_
   private lastCursor: string
-  private filteredByAccount: Account  
+  private filteredByAccount: Account
   private alreadyProcessedAccountFilter: boolean
 
+  /**
+   * @ignore
+   */
   constructor(book: Book, query: string) {
     this.book = book
     this.query = query
@@ -30,7 +29,7 @@ class TransactionIterator {
     this.lastCursor = null;
     this.filteredByAccount = null
     this.alreadyProcessedAccountFilter = false
-  } 
+  }
 
   public getBook(): Book {
     return this.book;
@@ -38,13 +37,12 @@ class TransactionIterator {
 
 
   /**
-  Gets a token that can be used to resume this iteration at a later time.
-  <br/>
-  <br/>
-  This method is useful if processing an iterator in one execution would exceed the maximum execution time.
-  Continuation tokens are generally valid short period of time.
-
-  @returns a continuation token that can be used to resume this iteration with the items that remained in the iterator when the token was generated
+  * Gets a token that can be used to resume this iteration at a later time.
+  * 
+  * This method is useful if processing an iterator in one execution would exceed the maximum execution time.
+  * 
+  * Continuation tokens are generally valid short period of time.
+  * 
   */
   public getContinuationToken(): string {
 
@@ -62,6 +60,11 @@ class TransactionIterator {
     return continuationToken;
   }
 
+  /**
+   * Sets a continuation token from previous paused iteration
+   * 
+   * @param continuationToken 
+   */
   public setContinuationToken(continuationToken: string): void {
 
     if (continuationToken == null) {
@@ -84,11 +87,9 @@ class TransactionIterator {
   }
 
   /**
-  Determines whether calling next() will return a transaction.
-
-  @returns true if next() will return an item; false if not
+  * Determines whether calling next() will return a transaction.
   */
- public hasNext(): boolean {
+  public hasNext(): boolean {
 
     if (this.currentPage == null) {
       this.currentPage = new TransactionPage_(this.book, this.query, this.lastCursor);
@@ -108,11 +109,9 @@ class TransactionIterator {
   }
 
   /**
-  Gets the next transaction in the collection of transactions.
-
-  @returns the next transaction in the collection
+  * Gets the next transaction in the collection of transactions.
   */
- public next(): Transaction {
+  public next(): Transaction {
 
     if (this.currentPage == null) {
       this.currentPage = new TransactionPage_(this.book, this.query, this.lastCursor);
@@ -134,6 +133,9 @@ class TransactionIterator {
     }
   }
 
+  /**
+   * Return an account if query is filtering by a single account
+   */
   public getFilteredByAccount(): Account {
 
     if (!this.alreadyProcessedAccountFilter) {

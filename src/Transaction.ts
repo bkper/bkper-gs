@@ -1,19 +1,24 @@
 /**
-
-@classdesc
-This class defines a Transaction between {@link http://en.wikipedia.org/wiki/Debits_and_credits|credit and debit} {@link Account|Accounts}.
-<br/>
-<br/>
-A Transaction is the main entity on the {@link http://en.wikipedia.org/wiki/Double-entry_bookkeeping_system|Double Entry} {@link http://en.wikipedia.org/wiki/Bookkeeping|Bookkeeping} system.
-<br/>
-Transactions are also used for {@link http://en.wikipedia.org/wiki/Single-entry_bookkeeping_system|Single Entry process} when using {@link http://en.wikipedia.org/wiki/Hashtag|#hashtags} in its {@link Transaction#setDescription|description}.
-@constructor
-
-*/
+ * 
+ * This class defines a Transaction between {@link http://en.wikipedia.org/wiki/Debits_and_credits|credit and debit} {@link Account|Accounts}.
+ *
+ * A Transaction is the main entity on the {@link http://en.wikipedia.org/wiki/Double-entry_bookkeeping_system|Double Entry} {@link http://en.wikipedia.org/wiki/Bookkeeping|Bookkeeping} system.
+ *
+ * Transactions are also used for {@link http://en.wikipedia.org/wiki/Single-entry_bookkeeping_system|Single Entry process} when using {@link http://en.wikipedia.org/wiki/Hashtag|#hashtags} in its {@link Transaction.getDescription|description}.
+ * 
+ */
 class Transaction {
 
+  /**
+   * @ignore
+   */
   wrapped: Bkper.TransactionV2Payload
+
+  /**
+   * @ignore
+   */
   book: Book;
+
   private creditAccount: Account;
   private debitAccount: Account;
   private informedDate: Date;
@@ -42,17 +47,16 @@ class Transaction {
   public getTags(): string[] {
     return this.wrapped.tags;
   }
-  
+
   /**
   * @returns All urls used on this transaction
   */
   public getUrls(): string[] {
     return this.wrapped.urls;
-  }  
+  }
 
   /**
-  * @param tag The #hashtag to check
-  * @returns true if has this tag
+  * Check if the transaction has the specified tag
   */
   public hasTag(tag: string): boolean {
 
@@ -68,43 +72,40 @@ class Transaction {
   }
 
 
-
-
-
   //ORIGIN ACCOUNT
   /**
-  @returns The credit account. The same as origin account.
-  */
- public getCreditAccount(): Account {
+   * @returns The credit account. The same as origin account.
+   */
+  public getCreditAccount(): Account {
     return this.creditAccount;
   }
 
   /**
-  @returns The credit account name.
-  */
- public getCreditAccountName(): string {
+   * @returns The credit account name.
+   */
+  public getCreditAccountName(): string {
     if (this.getCreditAccount() != null) {
       return this.getCreditAccount().getName();
-    } else{
+    } else {
       return "";
     }
   }
 
   //DESTINATION ACCOUNT
   /**
-  @returns The debit account. The same as destination account.
-  */
- public getDebitAccount(): Account {
+   * @returns The debit account. The same as destination account.
+   */
+  public getDebitAccount(): Account {
     return this.debitAccount;
   }
 
   /**
-  @returns The debit account name.
-  */
- public getDebitAccountName(): string {
+   * @returns The debit account name.
+   */
+  public getDebitAccountName(): string {
     if (this.getDebitAccount() != null) {
       return this.getDebitAccount().getName();
-    } else{
+    } else {
       return "";
     }
   }
@@ -112,17 +113,18 @@ class Transaction {
 
   //AMOUNT
   /**
-  @returns The amount of this transaction
-  */
- public getAmount(): number {
+   * @returns The amount of this transaction
+   */
+  public getAmount(): number {
     return this.wrapped.amount;
   }
 
   /**
-  @param account The account object, id or name
-  @returns The absolute amount of this transaction if the given account is at the credit side, else null
-  */
- public getCreditAmount(account: Account | string): number {
+   * Get the absolute amount of this transaction if the given account is at the credit side, else null
+   * 
+   * @param account The account object, id or name
+   */
+  public getCreditAmount(account: Account | string): number {
     let accountObject = this.getAccount_(account);
     if (this.isCreditOnTransaction_(accountObject)) {
       return this.getAmount();
@@ -131,10 +133,11 @@ class Transaction {
   }
 
   /**
-  @param account The account object, id or name
-  @returns The absolute amount of this transaction if the given account is at the debit side, else null
-  */
- public getDebitAmount(account: Account | string): number {
+   * Gets the absolute amount of this transaction if the given account is at the debit side, else null
+   * 
+   * @param account The account object, id or name
+   */
+  public getDebitAmount(account: Account | string): number {
     let accountObject = this.getAccount_(account);
     if (this.isDebitOnTransaction_(accountObject)) {
       return this.getAmount();
@@ -143,10 +146,11 @@ class Transaction {
   }
 
   /**
-  @param account The account object, id or name
-  @returns The account at the other side of the transaction given one side.
+   * Gets the account at the other side of the transaction given the one in one side.
+   * 
+   * @param account The account object, id or name
   */
- public getOtherAccount(account: Account|string): Account {
+  public getOtherAccount(account: Account | string): Account {
     let accountObject = this.getAccount_(account);
     if (this.isCreditOnTransaction_(accountObject)) {
       return this.getDebitAccount();
@@ -158,8 +162,10 @@ class Transaction {
   }
 
   /**
+   * 
+   * The account name at the other side of the transaction given the one in one side.
+   * 
   * @param account The account object, id or name
-  * @returns The account name at the other side of the transaction given one side.
   */
   public getOtherAccountName(account: string | Account): string {
     var otherAccount = this.getOtherAccount(account);
@@ -188,9 +194,9 @@ class Transaction {
 
   //DESCRIPTION
   /**
-  @returns  The description of this transaction
+  * @returns  The description of this transaction
   */
- public getDescription(): string {
+  public getDescription(): string {
     if (this.wrapped.description == null) {
       return "";
     }
@@ -213,31 +219,31 @@ class Transaction {
   /**
   @returns The date the user informed for this transaction. The number format is YYYYMMDD
   */
- public getInformedDateValue(): number {
-      return this.informedDateValue;
+  public getInformedDateValue(): number {
+    return this.informedDateValue;
   }
 
   /**
-  @returns The date the user informed for this transaction, formatted according to {@link Book#getDatePattern|date pattern of book}
+  @returns The date the user informed for this transaction, formatted according to {@link Book.getDatePattern|date pattern of book}
   */
- public getInformedDateText(): string {
-      return this.informedDateText;
+  public getInformedDateText(): string {
+    return this.informedDateText;
   }
 
   //POST DATE
   /**
   @returns {Date} The date time user has recorded/posted this transaction
   */
- public getPostDate(): Date {
+  public getPostDate(): Date {
     return this.postDate;
   }
-  
+
   /**
-  @returns The date time user has recorded/posted this transaction, formatted according to {@link Book#getDatePattern|date pattern of book}
+  @returns The date time user has recorded/posted this transaction, formatted according to {@link Book.getDatePattern|date pattern of book}
   */
- public getPostDateText(): string {
+  public getPostDateText(): string {
     return Utilities.formatDate(this.getPostDate(), this.book.getLocale(), this.book.getDatePattern() + " HH:mm:ss")
-  }  
+  }
 
 
   //EVOLVED BALANCES
@@ -251,25 +257,25 @@ class Transaction {
   /**
   @private
   */
- private getDaEvolvedBalance_(): number {
+  private getDaEvolvedBalance_(): number {
     return this.wrapped.daBal;
   }
 
   /**
-  Gets the balance that the {@link Account} has at that {@link Transaction#getInformedDate|informed date}, when listing transactions of that {@link Account}.
+  Gets the balance that the {@link Account} has at that {@link Transaction.getInformedDate|informed date}, when listing transactions of that {@link Account}.
   <br/><br/>
-  Evolved balances is returned when {@link Book#search|searching for transactions} of a permanent {@link Account}.
+  Evolved balances is returned when {@link Book.search|searching for transactions} of a permanent {@link Account}.
   <br/><br/>
   Only comes with the last posted transaction of the day.
 
-  @param {boolean} [strict] True to strict get the balance, no matter the {@link Account#isCredit|credit nature} of this Account.
+  @param {boolean} [strict] True to strict get the balance, no matter the {@link Account.isCredit|credit nature} of this Account.
 
-  @see {@link Account#isCredit}
-  @see {@link Account#isPermanent}
-  @see {@link Book#search}
-  @see {@link Transaction#getInformedDate}
+  @see {@link Account.isCredit}
+  @see {@link Account.isPermanent}
+  @see {@link Book.search}
+  @see {@link Transaction.getInformedDate}
   */
- public getAccountBalance(strict?: boolean): number {
+  public getAccountBalance(strict?: boolean): number {
     var accountBalance = this.getCaEvolvedBalance_();
     var isCa = true;
     if (accountBalance == null) {
@@ -287,6 +293,9 @@ class Transaction {
     }
   }
 
+  /**
+   * @ignore
+   */
   public configure_(): void {
     var creditAccount = this.book.getAccount(this.wrapped.creditAccId);
     var debitAccount = this.book.getAccount(this.wrapped.debitAccId);

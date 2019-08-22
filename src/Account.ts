@@ -142,7 +142,8 @@ class Account {
   }
 
   /**
-   * Tell if this account is in the {@link Group}
+   * Tell if this account is in the [[Group]]
+   * 
    * @param  group The Group name, id or object
    */
   public isInGroup(group: string | Group): boolean {

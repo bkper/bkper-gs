@@ -52,8 +52,10 @@ class BalancesDataTableBuilder {
   }
 
   /**
-   * Sets the {@link BalanceType|BalanceType}.
-   * @param {BalanceType}
+   * Fluent method to set the [[Enums.BalanceType]]
+   * 
+   * @param balanceType The type of balance for this data table
+   * 
    * @returns This builder with respective balance type.
    */
   public setBalanceType(balanceType: Enums.BalanceType): BalancesDataTableBuilder {

@@ -19,37 +19,37 @@ class TransactionsDataTableBuilder {
   }
 
   /**
-  * Defines whether the dates should be formatted based on {@link Book.getDatePattern|date pattern of book}
-  * 
-  * @returns This builder with respective formatting option.
-  */
+   * Defines whether the dates should be formatted, based on date patter of the [[Book]]
+   * 
+   * @returns This builder with respective formatting option.
+   */
   public formatDate(): TransactionsDataTableBuilder {
     this.shouldFormatDate = true;
     return this;
   }
 
   /**
-  * Defines whether the value should be formatted based on {@link Book.getDecimalSeparator|decimal separator of book}
-  *
-  * @returns This builder with respective formatting option.
-  */
+   * Defines whether the value should be formatted based on [[Enums.DecimalSeparator]] of the [[Book]]
+   *
+   * @returns This builder with respective formatting option.
+   */
   public formatValue(): TransactionsDataTableBuilder {
     this.shouldFormatValue = true;
     return this;
   }
 
   /**
-  * Defines whether the value should add Attachments links
-  * 
-  * @returns This builder with respective add attachment option.
-  */
+   * Defines whether the value should add Attachments links
+   * 
+   * @returns This builder with respective add attachment option.
+   */
   public addUrls(): TransactionsDataTableBuilder {
     this.shouldAddUrls = true;
     return this;
   }
 
   /**
-   * @returns A two-dimensional array containing all {@link Transaction|transactions}.
+   * @returns A two-dimensional array containing all [[Transaction]]s.
    */
   public build(): any[][] {
     var filteredByAccount = this.transactionIterator.getFilteredByAccount();

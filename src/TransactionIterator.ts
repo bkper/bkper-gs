@@ -2,7 +2,7 @@
  * 
  * An iterator that allows scripts to iterate over a potentially large collection of transactions.
  * 
- * @see {@link Book.search}
+ * @see [[Book.search]]
  *
 */
 class TransactionIterator {

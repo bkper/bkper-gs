@@ -1,9 +1,9 @@
 /**
-* This class defines a Group of {@link Account|Accounts}.
+* This class defines a Group of [[Account]]s.
 *
-* {@link Account|Accounts} can be grouped by different meaning, like Expenses, Revenue, Assets, Liabilities and so on.
+* Accounts can be grouped by different meaning, like Expenses, Revenue, Assets, Liabilities and so on
 * 
-* Its useful to keep {@link Account|Accounts} organized and for high level analysis.
+* Its useful to keep organized and for high level analysis.
 */
 class Group {
 

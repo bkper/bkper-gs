@@ -8,6 +8,9 @@
     "noImplicitUseStrict": true,
     "noImplicitAny": true,
     "experimentalDecorators": true,
+    "declaration": true,
+    "outDir": "dist",
+    "outFile": "BkperApp"
   },
   "include": [
     "src/**/*.ts",

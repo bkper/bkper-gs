@@ -7,18 +7,21 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf ./dist",
-    "docs": "./node_modules/.bin/typedoc ./src --ignoreCompilerErrors --excludeExternals --includeDeclarations --excludePrivate   --mode file",
+    "build": "tsc",
+    "docs": "./node_modules/.bin/typedoc ./src --ignoreCompilerErrors --excludeExternals --includeDeclarations --excludePrivate --hideGenerator  --mode file",
     "docs:md": "yarn docs --out dist/docs --theme markdown && cp -rf ./docs/* ./dist/docs",
     "docs:html": "yarn docs --out dist/docs --theme minimal  && cp -rf ./docs/* ./dist/docs",
     "docs:json": "yarn docs --json dist/apidocs.json --mode modules",
     "docs:publish": "yarn docs && cp -rf ./dist/docs/* ../bkper.github.io/",
     "clasp": "./node_modules/.bin/clasp",
+    "types": "dts-generator --project . --exclude 'node_modules/**/*.d.ts' --exclude 'src/*_.ts' --exclude '@types/*' --out dist/@types/google-apps-script.bkper.d.ts",
     "push": "yarn run clasp push",
     "api": "yarn --cwd ../bkper-pwa/api-typings-generator build --url http://app.bkper.com/_ah/api/discovery/v1/apis/bkper/v2/rest --out /Users/maelcaldas/git/bkper-app/@types"
   },
   "devDependencies": {
     "@google/clasp": "^2.2.1",
     "@types/google-apps-script": "^0.0.56",
+    "dts-generator": "^3.0.0",
     "typedoc": "^0.15.0"
   }
 }

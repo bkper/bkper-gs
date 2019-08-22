@@ -1,10 +1,11 @@
 /**
-This class defines a Book.
-
-A  is an abstraction of a structure that you want to control, like a business, project, or personal expenses and so forth.
-
-It contains all {@link Account|Accounts} where {@link Transaction|Transactions} are recorded/posted;
-*/
+ * 
+ * This class defines a Book
+ *
+ * It usually used as the [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
+ *
+ * It contains all [[Account]]s where [[Transaction]]s are recorded/posted;
+ */
 class Book {
 
   private id: string
@@ -88,7 +89,7 @@ class Book {
   }
 
   /**
-  * @return {DecimalSeparator} The decimal separator of the Book
+  * @return The decimal separator of the Book
   */
  public getDecimalSeparator(): Enums.DecimalSeparator {
     this.checkBookLoaded_();
@@ -123,7 +124,7 @@ class Book {
   /**
   * @param  date The date to format as string.
   * @param  timeZone The output timezone of the result. Default to script's timeZone
-  * @return The date formated according to {@link Book#getDatePattern|date pattern of book}
+  * @return The date formated according to {@link Book.getDatePattern|date pattern of book}
   */
  public formatDate(date: Date, timeZone?: string): string {
     return Utils_.formatDate(date, this.getDatePattern(), timeZone);

@@ -2,6 +2,33 @@
 # yarn lockfile v1
 
 
+"@gerrit0/typedoc-default-themes@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@gerrit0/typedoc-default-themes/-/typedoc-default-themes-0.6.1.tgz#26e914d2cff36aa08e81385cdcd7e3bac7638509"
+  integrity sha512-x03+VQjuomFypK9mAHXlAP8xC5N9XRv67w7M2Np4OEPO42CWJI0Q3POHCxcbSYkRZROlY7isEZW/gmCXeOqfqQ==
+  dependencies:
+    backbone "^1.4.0"
+    jquery "^3.4.1"
+    lunr "^2.3.6"
+    underscore "^1.9.1"
+
+"@gerrit0/typedoc@^0.15.0":
+  version "0.15.5"
+  resolved "https://registry.yarnpkg.com/@gerrit0/typedoc/-/typedoc-0.15.5.tgz#5efde868fbdadaf24c38c4083b8d0f21d74fd91c"
+  integrity sha512-V5XZKIJdnhbMeS9pXLYWfk1cSUd5iYIDP9Lll0yfYjwHblpO8eVYwhTudHljWsis3x+J9HfXf5eXYGX4KtDNLA==
+  dependencies:
+    "@gerrit0/typedoc-default-themes" "^0.6.1"
+    "@types/minimatch" "3.0.3"
+    fs-extra "^8.1.0"
+    handlebars "^4.1.2"
+    highlight.js "^9.15.8"
+    lodash "^4.17.15"
+    marked "^0.7.0"
+    minimatch "^3.0.0"
+    progress "^2.0.3"
+    shelljs "^0.8.3"
+    typescript "3.5.x"
+
 "@google/clasp@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@google/clasp/-/clasp-2.2.1.tgz#1b7841f75ff0eb169bd978964d963fa85af8bb87"
@@ -1646,6 +1673,13 @@ typedoc-default-themes@^0.6.0:
     jquery "^3.4.1"
     lunr "^2.3.6"
     underscore "^1.9.1"
+
+typedoc-neo-theme@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/typedoc-neo-theme/-/typedoc-neo-theme-1.0.2.tgz#6db34f232545c4d42b9a987aea6b9151b1546889"
+  integrity sha512-Jlcr9AMxifOF7LQabD+I8auOVp0uinqgEfhYfoflIuDfzmn17FIu9kUmrIf9Ihf7Sq6tENouqe0kqTBbefCXnA==
+  dependencies:
+    "@gerrit0/typedoc" "^0.15.0"
 
 typedoc@^0.15.0:
   version "0.15.0"

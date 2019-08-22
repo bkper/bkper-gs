@@ -1,4 +1,9 @@
+
+/**
+ * @ignore
+ */
 namespace Report {
+
 
   export interface BalanceContainerReport {
     getName(): string
@@ -10,13 +15,6 @@ namespace Report {
     getPeriodBalanceText(): string
   }
 
-  /**
-  * @class
-  * @classdesc A BalanceReport stores the balances based on an query.
-  * @param {Array} balanceReportPlain balances wrapped array
-  * @param {DecimalSeparator} decimalSeparator {@link Book.getDecimalSeparator|decimal separator of book}
-  * @param {FractionDigits} fractionDigits {@link Book.getFractionDigits|Fraction digits of book}
-  */
   export class BalanceReport {
 
     private wrapped: Bkper.BalancesV2Payload;
@@ -28,6 +26,7 @@ namespace Report {
     private groupBalanceReports: GroupBalanceReport[];
     private accountBalanceReports: AccountBalanceReport[];
     private tagBalanceReports: TagBalanceReport[];
+
 
     constructor(balanceReportPlain: Bkper.BalancesV2Payload, decimalSeparator: Enums.DecimalSeparator, datePattern: string, fractionDigits: number, offsetInMinutes: number, timeZone: string) {
       this.wrapped = balanceReportPlain;
@@ -57,23 +56,15 @@ namespace Report {
       return new BalancesDataTableBuilder(dataTable, this.getPeriodicity(), this.decimalSeparator, this.datePattern, this.fractionDigits, this.offsetInMinutes, this.timeZone);
     }
 
-    /**
-    * @returns The balance periodicity.
-    */
+
     public getPeriodicity(): Enums.Periodicity {
       return this.wrapped.periodicity;
     }
 
-    /**
-    * @returns Check if {@link Report.BalanceReport|report} has only one group balance.
-    */
     public hasOnlyOneGroupBalance(): boolean {
       return this.getGroupBalanceReports() != null && this.getGroupBalanceReports().length == 1;
     }
 
-    /**
-    * @returns All {@link Report.AccountBalanceReport|account balances} of this query
-    */
     public getAccountBalanceReports(): AccountBalanceReport[] {
       if (this.accountBalanceReports == null && this.wrapped.accountBalances != null) {
         this.accountBalanceReports = [];
@@ -86,9 +77,6 @@ namespace Report {
       return this.accountBalanceReports;
     }
 
-    /**
-    * @returns All {@link Report.TagBalanceReport|hashtags balances} of this query
-    */
     public getTagBalanceReports(): TagBalanceReport[] {
       if (this.tagBalanceReports == null && this.wrapped.tagBalances != null) {
         this.tagBalanceReports = [];
@@ -101,9 +89,7 @@ namespace Report {
       return this.tagBalanceReports;
     }
 
-    /**
-    * @returns All {@link Report.GroupBalanceReport|group balances} of this query
-    */
+
     public getGroupBalanceReports(): GroupBalanceReport[] {
       if (this.groupBalanceReports == null && this.wrapped.groupBalances != null) {
         this.groupBalanceReports = [];
@@ -116,10 +102,6 @@ namespace Report {
       return this.groupBalanceReports;
     }
 
-    /**
-    * @returns A specific {@link Report.GroupBalanceReport} of this query
-  	* @param groupName The name of the group filtered on query
-    */
     public getGroupBalanceReport(groupName: string): GroupBalanceReport {
       var groupBalances = this.getGroupBalanceReports();
       if (groupBalances == null) {
@@ -141,9 +123,7 @@ namespace Report {
 
   //###################### ACCOUNT BALANCE REPORT ######################
 
-  /**
-   * An AccountBalanceReport stores {@link Account|accounts} balances.
-   */
+
   export class AccountBalanceReport implements BalanceContainerReport {
     private wrapped: Bkper.AccountBalancesV2Payload;
     private decimalSeparator: Enums.DecimalSeparator;
@@ -155,54 +135,33 @@ namespace Report {
       this.fractionDigits = fractionDigits;
     }
 
-    /**
-    * @returns the {@link Account|account} name
-    */
     public getName(): string {
       return this.wrapped.name;
     }
 
-    /**
-    * @returns Check if {@link Account|account} is credit
-    */
     public isCredit() {
       return this.wrapped.credit;
     }
 
-    /**
-    * @returns the {@link Account|account} period balance
-    */
     public getPeriodBalance(): number {
       var balance = Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
       return Utils_.getRepresentativeValue(balance, this.isCredit());
     }
 
-    /**
-    * @returns the {@link Account|account} period balance formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-    */
     public getPeriodBalanceText(): string {
       return Utils_.formatValue_(this.getPeriodBalance(), this.decimalSeparator, this.fractionDigits)
     }
 
-    /**
-    * @returns The {@link Account|account} cumulative balance
-    */
     public getCumulativeBalance(): number {
       var balance = Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
       return balance;
     }
 
-    /**
-    * @returns The {@link Account|account} cumulative balance formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-    */
     public getCumulativeBalanceText(): string {
       return Utils_.formatValue_(this.getCumulativeBalance(), this.decimalSeparator, this.fractionDigits);
     }
 
-    /**
-    * @returns the {@link Account|account} balances
-    */
     public getBalances(): Bkper.BalanceV2Payload[] {
       return this.wrapped.balances;
     }
@@ -212,11 +171,8 @@ namespace Report {
 
 
   //###################### TAG BALANCE REPORT ######################
-  /**
-  * @class
-  * A TagBalanceReport stores #hashtags balances.
-  */
-  export class TagBalanceReport implements BalanceContainerReport{
+
+  export class TagBalanceReport implements BalanceContainerReport {
 
     private wrapped: Bkper.TagBalancesV2Payload;
     private decimalSeparator: Enums.DecimalSeparator;
@@ -228,9 +184,6 @@ namespace Report {
       this.fractionDigits = fractionDigits;
     }
 
-    /**
-    * @returns {string} the #hashtag
-    */
     public getName(): string {
       return this.wrapped.name;
     }
@@ -239,37 +192,22 @@ namespace Report {
       return true;
     }
 
-    /**
-    * @returns the #hashtag period balance
-    */
     public getPeriodBalance(): number {
       return Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
     }
 
-    /**
-    * @returns the #hashtag period balance formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-    */
     public getPeriodBalanceText(): string {
       return Utils_.formatValue_(this.getPeriodBalance(), this.decimalSeparator, this.fractionDigits)
     }
 
-    /**
-    * @returns the #hashtag cumulative balance
-    */
     public getCumulativeBalance(): number {
       return Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
     }
 
-    /**
-    * @returns the #hashtag cumulative balance formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-    */
     public getCumulativeBalanceText(): string {
       return Utils_.formatValue_(this.getCumulativeBalance(), this.decimalSeparator, this.fractionDigits)
     }
 
-    /**
-    * @returns the #hashtag balances
-    */
     public getBalances(): Bkper.BalanceV2Payload[] {
       return this.wrapped.balances;
     }
@@ -277,10 +215,7 @@ namespace Report {
 
 
   //###################### GROUP BALANCE REPORT ######################
-  /**
-  * @class
-  * A GroupBalanceReport stores {@link Group|group} balances.
-  */
+
   export class GroupBalanceReport implements BalanceContainerReport {
 
     private wrapped: Bkper.GroupBalancesV2Payload
@@ -302,67 +237,41 @@ namespace Report {
       this.timeZone = timeZone;
     }
 
-    /**
-    * @returns {string} the {@link Group|group} name
-    */
     public getName(): string {
       return this.wrapped.name;
     }
 
-    /**
-    * @returns Check if {@link Group|group} has credit {@link Account|accounts}
-    */
     public isCredit = function (): boolean {
       return this.wrapped.credit;
     }
 
-    /**
-    * @returns The {@link Group|group} period balance
-    */
     public getPeriodBalance(): number {
       var balance = Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
       return Utils_.getRepresentativeValue(balance, this.isCredit());
     }
 
-    /**
-    * @returns The {@link Group|group} period balance formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-    */
     public getPeriodBalanceText(): string {
       return Utils_.formatValue_(this.getPeriodBalance(), this.decimalSeparator, this.fractionDigits)
     }
 
-    /**
-    * @returns {number} the {@link Group|group} period balance
-    */
     public getCumulativeBalance(): number {
       var balance = Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
       return Utils_.getRepresentativeValue(balance, this.isCredit());
     }
 
-    /**
-    * @returns {number} the {@link Group|group} period balance formatted based on {@link Book#getDecimalSeparator|decimal separator of book}.
-    */
     public getCumulativeBalanceText(): string {
-        return Utils_.formatValue_(this.getCumulativeBalance(), this.decimalSeparator, this.fractionDigits)
+      return Utils_.formatValue_(this.getCumulativeBalance(), this.decimalSeparator, this.fractionDigits)
     }
 
-    /**
-    * @returns the {@link Group|group} balances
-    */
     public getBalances(): Bkper.GroupBalancesV2Payload[] {
       return this.wrapped.balances;
     }
 
-    /**
-    * @returns {@link BalancesDataTableBuilder}
-    */
+
     public createDataTable() {
       return new BalancesDataTableBuilder(this.getAccountBalanceReports(), this.periodicity, this.decimalSeparator, this.datePattern, this.fractionDigits, this.offsetInMinutes, this.timeZone);
     }
 
-    /**
-    * @returns {Array<AccountBalanceReport>} all {@link Report.AccountBalanceReport|account balances} of this {@link Group|group}
-    */
     public getAccountBalanceReports(): AccountBalanceReport[] {
       var accountBalances = this.wrapped.accountBalances;
       if (this.accountBalanceReports == null && accountBalances != null) {

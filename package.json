@@ -7,8 +7,8 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf ./dist",
-    "build": "tsc",
-    "docs": "./node_modules/.bin/typedoc ./src --ignoreCompilerErrors --excludeExternals --includeDeclarations --excludePrivate --hideGenerator --name 'BkperApp' ",
+    "build": "cp -rf src/BkperApp/index.ts ../bkper-app-samples/bkper-auth/@types/bkper-app/index.d.ts",
+    "docs": "./node_modules/.bin/typedoc ./src --ignoreCompilerErrors --excludeExternals --includeDeclarations --excludePrivate --hideGenerator --name  'BkperApp' ",
     "docs:html": "yarn docs --out dist/docs --theme minimal --mode file  && cp -rf ./docs/* ./dist/docs",
     "docs:json": "yarn docs --json dist/apidocs.json --mode modules",
     "docs:publish": "yarn docs && cp -rf ./dist/docs/* ../bkper.github.io/",

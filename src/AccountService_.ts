@@ -18,7 +18,7 @@ namespace AccountService_ {
   
   export function createAccount(bookId: string, name: string, group?: string, description?: string): Account {
     
-    var accountUpdate = new Object() as Bkper.AccountCreationV2Payload
+    var accountUpdate = new Object() as bkper.AccountCreationV2Payload
     
     accountUpdate.name = name;
     accountUpdate.group = group;

@@ -1,5 +1,5 @@
 
-declare namespace Bkper {
+declare namespace bkper {
   interface AccountBalancesV2Payload {
     balances?: BalanceV2Payload[];
     checkedCumulativeBalance?: number;

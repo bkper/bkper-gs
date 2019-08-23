@@ -5,9 +5,9 @@
 */
 class BalancesDataTableBuilder {
 
-  private balanceType: Enums.BalanceType;
-  private periodicity: Enums.Periodicity;
-  private decimalSeparator: Enums.DecimalSeparator;
+  private balanceType: BalanceType;
+  private periodicity: Periodicity;
+  private decimalSeparator: DecimalSeparator;
   private datePattern: string;
   private fractionDigits: number;
   private balanceArray: Report.BalanceContainerReport[];
@@ -19,8 +19,8 @@ class BalancesDataTableBuilder {
   /**
    * @ignore
    */
-  constructor(balanceContainerReportArray: Report.BalanceContainerReport[], periodicity: Enums.Periodicity, decimalSeparator: Enums.DecimalSeparator, datePattern: string, fractionDigits: number, offsetInMinutes: number, timeZone: string) {
-    this.balanceType = Enums.BalanceType.TOTAL;
+  constructor(balanceContainerReportArray: Report.BalanceContainerReport[], periodicity: Periodicity, decimalSeparator: DecimalSeparator, datePattern: string, fractionDigits: number, offsetInMinutes: number, timeZone: string) {
+    this.balanceType = BalanceType.TOTAL;
     this.periodicity = periodicity;
     this.decimalSeparator = decimalSeparator;
     this.datePattern = datePattern;
@@ -58,7 +58,7 @@ class BalancesDataTableBuilder {
    * 
    * @returns This builder with respective balance type.
    */
-  public setBalanceType(balanceType: Enums.BalanceType): BalancesDataTableBuilder {
+  public setBalanceType(balanceType: BalanceType): BalancesDataTableBuilder {
     this.balanceType = balanceType;
     return this;
   }
@@ -98,7 +98,7 @@ class BalancesDataTableBuilder {
    *  @returns
    */
   public build(): any[][] {
-    if (this.balanceType == Enums.BalanceType.TOTAL) {
+    if (this.balanceType == BalanceType.TOTAL) {
       return this.buildTotalDataTable_();
     } else {
       return this.buildTimeDataTable_();
@@ -141,7 +141,7 @@ class BalancesDataTableBuilder {
   private buildTimeDataTable_() {
     var table = new Array<Array<any>>();
     var dataIndexMap: any = new Object();
-    var cumulativeBalance = this.balanceType == Enums.BalanceType.CUMULATIVE;
+    var cumulativeBalance = this.balanceType == BalanceType.CUMULATIVE;
 
     var header = new Array();
     header.push("Date");
@@ -246,7 +246,7 @@ class BalancesDataTableBuilder {
     return table;
   }
 
-  private getBalanceDate_(balance: Bkper.BalanceV2Payload, offsetInMinutes: number) {
+  private getBalanceDate_(balance: bkper.BalanceV2Payload, offsetInMinutes: number) {
     var year = balance.year;
     var month = balance.month;
     var day = balance.day;
@@ -262,7 +262,7 @@ class BalancesDataTableBuilder {
     return date;
   }
 
-  private getFuzzyDate_(balance: Bkper.BalanceV2Payload): string {
+  private getFuzzyDate_(balance: bkper.BalanceV2Payload): string {
     var year = balance.year * 10000;
     var month = balance.month * 100;
     var day = balance.day;

@@ -6,10 +6,18 @@
 
 /// <reference types="google-apps-script" />
 
-declare namespace Bkper {
+declare namespace bkper {
 
-
+  /**
+   * The main class to interact with Bkper Books
+   */
   export interface BkperApp {
+
+    Permission: typeof Permission
+    DecimalSeparator: typeof DecimalSeparator
+    Periodicity: typeof Periodicity
+    BalanceType: typeof BalanceType
+
 
     /**
      * Returns the [[Book]] with the specified bookId from url param.
@@ -42,6 +50,7 @@ declare namespace Bkper {
      */
     getAuthorizationHtml(continueUrl?: string, continueText?: string): GoogleAppsScript.HTML.HtmlOutput;
 
+
   }
 
   /**
@@ -69,9 +78,50 @@ declare namespace Bkper {
     getFractionDigits(): number;
 
     /**
+     * @return The name of the owner of the Book
+     */
+    getOwnerName(): string;
+
+    /**
      * @return The permission for the current user
      */
-    getPermission(): Enums.Permission
+    getPermission(): Permission;
+
+    /**
+     * @return The date pattern of the Book. Example: dd/MM/yyyy
+     */
+    getDatePattern(): string
+
+    /**
+     * @return The decimal separator of the Book
+     */
+    getDecimalSeparator(): DecimalSeparator;
+
+    /**
+     * @return The time zone of the book
+     */
+    getTimeZone(): string;
+
+    /**
+     * @return The time zone offset of the book, in minutes
+     */
+    getTimeZoneOffset(): number;
+
+    /**
+     * @return The last update date of the book, in in milliseconds
+     */
+    getLastUpdateMs(): string;
+
+    /**
+     * @param  date The date to format as string.
+     * @param  timeZone The output timezone of the result. Default to script's timeZone
+     * 
+     * @return The date formated according to date pattern of book
+     */
+    formatDate(date: Date, timeZone?: string): string;
+
+
+
 
   }
 
@@ -155,7 +205,62 @@ declare namespace Bkper {
     isInGroup(group: string | Group): boolean;
 
   }
+
+  export interface Group {
+
+  }
+
+
+  /**
+   * The Periodicity of the query. It may depend on the way you write the range params.
+   */
+  export enum Periodicity {
+
+    /**
+     *Example: after:25/01/1983, before:04/03/2013, after:$d-30, before:$d, after:$d-15/$m 
+     */
+    DAILY = "DAILY",
+
+    /**
+     * Example: after:jan/2013, before:mar/2013, after:$m-1, before:$m
+     */
+    MONTHLY = "MONTHLY",
+
+    /**
+     * Example: on:2013, after:2013, $y
+     */
+    YARLY = "YARLY"
+  }
+
+  export enum DecimalSeparator {
+    COMMA = "COMMA",
+    DOT = "DOT"
+  }
+
+  export enum Permission {
+    NONE = "NONE",
+    VIEWER = "VIEWER",
+    POST = "POST",
+    EDITOR = "EDITOR",
+    OWNER = "OWNER"
+  }
+
+  /**
+   * Enum that represents balance types.
+   */
+  export enum BalanceType {
+    /** Total balance */
+    TOTAL = "TOTAL",
+    /** Period balance */
+    PERIOD = "PERIOD",
+    /** Cumulative balance */
+    CUMULATIVE = "CUMULATIVE"
+  }
 }
 
-declare var BkperApp: Bkper.BkperApp;
+/**
+ * The main entry point to interact with Bkper Books
+ * @hidden
+ */
+declare var BkperApp: bkper.BkperApp;
 

@@ -5,17 +5,17 @@
  * It contains all [[Account]]s where [[Transaction]]s are recorded/posted;
  * 
  */
-class Book {
+class Book implements bkper.Book {
 
   private id: string
-  private wrapped: Bkper.BookV2Payload
+  private wrapped: bkper.BookV2Payload
   private accounts: Account[];
   private groups: Group[];
   private idAccountMap: any;
   private nameAccountMap: any;
   private idGroupMap: any;
   private nameGroupMap: any;
-  private savedQueries: Bkper.SavedQueryV2Payload[];
+  private savedQueries: bkper.SavedQueryV2Payload[];
 
   /**
    * @ignore
@@ -30,7 +30,7 @@ class Book {
   public getId(): string {
     return this.id;
   }
-  
+
   /**
    * @inheritdoc
    */
@@ -40,7 +40,7 @@ class Book {
   }
 
   /**
-   * @return The number of fraction digits (decimal places) supported by this Book
+   * @inheritdoc
    */
   public getFractionDigits(): number {
     this.checkBookLoaded_();
@@ -48,7 +48,7 @@ class Book {
   }
 
   /**
-   * @return The name of this Book Owner
+   * @inheritdoc
    */
   public getOwnerName(): string {
     this.checkBookLoaded_();
@@ -62,9 +62,9 @@ class Book {
   }
 
   /**
-   * @return The permission for the current user
+   * @inheritdoc
    */
-  public getPermission(): Enums.Permission {
+  public getPermission(): Permission {
     this.checkBookLoaded_();
     return this.wrapped.permission;
   }
@@ -79,7 +79,7 @@ class Book {
   }
 
   /**
-   * @return The date pattern of the Book
+   * @inheritdoc
    */
   public getDatePattern(): string {
     this.checkBookLoaded_();
@@ -87,24 +87,24 @@ class Book {
   }
 
   /**
-   * @return The decimal separator of the Book
+   * @inheritdoc
    */
-  public getDecimalSeparator(): Enums.DecimalSeparator {
+  public getDecimalSeparator(): DecimalSeparator {
     this.checkBookLoaded_();
-    return this.wrapped.decimalSeparator as Enums.DecimalSeparator;
+    return this.wrapped.decimalSeparator as DecimalSeparator;
   }
 
 
   /**
-   * @return The time zone of the book
+   * @inheritdoc
    */
-  public getTimeZone = function(): string {
+  public getTimeZone(): string {
     this.checkBookLoaded_();
     return this.wrapped.timeZone;
   }
 
   /**
-   * @return The time zone offset of the book, in minutes
+   * @inheritdoc
    */
   public getTimeZoneOffset(): number {
     this.checkBookLoaded_();
@@ -112,7 +112,7 @@ class Book {
   }
 
   /**
-   * @return The last update date of the book, in in milliseconds
+   * @inheritdoc
    */
   public getLastUpdateMs(): string {
     this.checkBookLoaded_();
@@ -120,10 +120,7 @@ class Book {
   }
 
   /**
-   * @param  date The date to format as string.
-   * @param  timeZone The output timezone of the result. Default to script's timeZone
-   * 
-   * @return The date formated according to date pattern of book
+   * @inheritdoc
    */
   public formatDate(date: Date, timeZone?: string): string {
     return Utils_.formatDate(date, this.getDatePattern(), timeZone);
@@ -132,7 +129,7 @@ class Book {
   /**
    * @param value The value to be formatted.
    * 
-   * @return The value formated according to [[Enums.DecimalSeparator]] and [[Enums.FractionDigits]] of Book
+   * @return The value formated according to [[DecimalSeparator]] and [[FractionDigits]] of Book
    */
   public formatValue(value: number): string {
     return Utils_.formatValue_(value, this.getDecimalSeparator(), this.getFractionDigits());
@@ -319,7 +316,7 @@ class Book {
   /**
    * @ignore
    */
-  public getSavedQueries(): Bkper.SavedQueryV2Payload[] {
+  public getSavedQueries(): bkper.SavedQueryV2Payload[] {
     if (this.savedQueries == null) {
       this.savedQueries = SavedQueryService_.getSavedQueries(this.getId());
     }

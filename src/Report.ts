@@ -7,7 +7,7 @@ namespace Report {
 
   export interface BalanceContainerReport {
     getName(): string
-    getBalances(): Bkper.BalanceV2Payload[]
+    getBalances(): bkper.BalanceV2Payload[]
     isCredit(): boolean
     getCumulativeBalance(): number
     getCumulativeBalanceText(): string
@@ -17,8 +17,8 @@ namespace Report {
 
   export class BalanceReport {
 
-    private wrapped: Bkper.BalancesV2Payload;
-    private decimalSeparator: Enums.DecimalSeparator;
+    private wrapped: bkper.BalancesV2Payload;
+    private decimalSeparator: DecimalSeparator;
     private datePattern: string;
     private fractionDigits: number;
     private offsetInMinutes: number;
@@ -28,7 +28,7 @@ namespace Report {
     private tagBalanceReports: TagBalanceReport[];
 
 
-    constructor(balanceReportPlain: Bkper.BalancesV2Payload, decimalSeparator: Enums.DecimalSeparator, datePattern: string, fractionDigits: number, offsetInMinutes: number, timeZone: string) {
+    constructor(balanceReportPlain: bkper.BalancesV2Payload, decimalSeparator: DecimalSeparator, datePattern: string, fractionDigits: number, offsetInMinutes: number, timeZone: string) {
       this.wrapped = balanceReportPlain;
       this.groupBalanceReports = null;
       this.accountBalanceReports = null;
@@ -57,7 +57,7 @@ namespace Report {
     }
 
 
-    public getPeriodicity(): Enums.Periodicity {
+    public getPeriodicity(): Periodicity {
       return this.wrapped.periodicity;
     }
 
@@ -115,7 +115,7 @@ namespace Report {
       }
     }
 
-    public getBalanceReportPlain(): Bkper.BalancesV2Payload {
+    public getBalanceReportPlain(): bkper.BalancesV2Payload {
       return this.wrapped;
     }
   }
@@ -125,11 +125,11 @@ namespace Report {
 
 
   export class AccountBalanceReport implements BalanceContainerReport {
-    private wrapped: Bkper.AccountBalancesV2Payload;
-    private decimalSeparator: Enums.DecimalSeparator;
+    private wrapped: bkper.AccountBalancesV2Payload;
+    private decimalSeparator: DecimalSeparator;
     private fractionDigits: number;
 
-    constructor(balancePlain: Bkper.AccountBalancesV2Payload, decimalSeparator: Enums.DecimalSeparator, fractionDigits: number) {
+    constructor(balancePlain: bkper.AccountBalancesV2Payload, decimalSeparator: DecimalSeparator, fractionDigits: number) {
       this.wrapped = balancePlain;
       this.decimalSeparator = decimalSeparator;
       this.fractionDigits = fractionDigits;
@@ -162,7 +162,7 @@ namespace Report {
       return Utils_.formatValue_(this.getCumulativeBalance(), this.decimalSeparator, this.fractionDigits);
     }
 
-    public getBalances(): Bkper.BalanceV2Payload[] {
+    public getBalances(): bkper.BalanceV2Payload[] {
       return this.wrapped.balances;
     }
   }
@@ -174,11 +174,11 @@ namespace Report {
 
   export class TagBalanceReport implements BalanceContainerReport {
 
-    private wrapped: Bkper.TagBalancesV2Payload;
-    private decimalSeparator: Enums.DecimalSeparator;
+    private wrapped: bkper.TagBalancesV2Payload;
+    private decimalSeparator: DecimalSeparator;
     private fractionDigits: number;
 
-    constructor(balancePlain: Bkper.TagBalancesV2Payload, decimalSeparator: Enums.DecimalSeparator, fractionDigits: number) {
+    constructor(balancePlain: bkper.TagBalancesV2Payload, decimalSeparator: DecimalSeparator, fractionDigits: number) {
       this.wrapped = balancePlain;
       this.decimalSeparator = decimalSeparator;
       this.fractionDigits = fractionDigits;
@@ -208,7 +208,7 @@ namespace Report {
       return Utils_.formatValue_(this.getCumulativeBalance(), this.decimalSeparator, this.fractionDigits)
     }
 
-    public getBalances(): Bkper.BalanceV2Payload[] {
+    public getBalances(): bkper.BalanceV2Payload[] {
       return this.wrapped.balances;
     }
   }
@@ -218,16 +218,16 @@ namespace Report {
 
   export class GroupBalanceReport implements BalanceContainerReport {
 
-    private wrapped: Bkper.GroupBalancesV2Payload
-    private decimalSeparator: Enums.DecimalSeparator;
+    private wrapped: bkper.GroupBalancesV2Payload
+    private decimalSeparator: DecimalSeparator;
     private fractionDigits: number;
-    private periodicity: Enums.Periodicity;
+    private periodicity: Periodicity;
     private accountBalanceReports: AccountBalanceReport[];
     private timeZone: string;
     private datePattern: string;
     private offsetInMinutes: number;
 
-    constructor(groupBalancesPlain: Bkper.GroupBalancesV2Payload, periodicity: Enums.Periodicity, decimalSeparator: Enums.DecimalSeparator, datePattern: string, fractionDigits: number, offsetInMinutes: number, timeZone: string) {
+    constructor(groupBalancesPlain: bkper.GroupBalancesV2Payload, periodicity: Periodicity, decimalSeparator: DecimalSeparator, datePattern: string, fractionDigits: number, offsetInMinutes: number, timeZone: string) {
       this.wrapped = groupBalancesPlain;
       this.periodicity = periodicity;
       this.datePattern = datePattern;
@@ -263,7 +263,7 @@ namespace Report {
       return Utils_.formatValue_(this.getCumulativeBalance(), this.decimalSeparator, this.fractionDigits)
     }
 
-    public getBalances(): Bkper.GroupBalancesV2Payload[] {
+    public getBalances(): bkper.GroupBalancesV2Payload[] {
       return this.wrapped.balances;
     }
 

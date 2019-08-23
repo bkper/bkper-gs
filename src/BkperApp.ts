@@ -66,7 +66,7 @@ function openById(bookId: string): Book  {
 /**
  * @ignore
  */
-function getUserDetails(): Bkper.UserDetailsV2Payload {
+function getUserDetails(): bkper.UserDetailsV2Payload {
   return UserService_.getUserDetails();
 }
 
@@ -74,7 +74,7 @@ function getUserDetails(): Bkper.UserDetailsV2Payload {
  * Gets the books of the user.
  * @ignore
  */
-function listBooks(): Bkper.BookV2Payload[]  {
+function listBooks(): bkper.BookV2Payload[]  {
   return BookService_.listBooks();
 }
 
@@ -98,7 +98,7 @@ function openLedgerById(ledgerId: string): Book {
 /**
  * @ignore
  */
-function listLedgers(): Bkper.BookV2Payload[] {
+function listLedgers(): bkper.BookV2Payload[] {
   return listBooks();
 }
 

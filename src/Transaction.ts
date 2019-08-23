@@ -10,7 +10,7 @@ class Transaction {
   /**
    * @ignore
    */
-  wrapped: Bkper.TransactionV2Payload
+  wrapped: bkper.TransactionV2Payload
 
   /**
    * @ignore

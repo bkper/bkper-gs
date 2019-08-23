@@ -19,7 +19,7 @@ namespace Utils_ {
     }
   }
   
-  export function formatValue_(value: number | string, decimalSeparator: Enums.DecimalSeparator, fractionDigits:number): string {
+  export function formatValue_(value: number | string, decimalSeparator: DecimalSeparator, fractionDigits:number): string {
     
     if (value == null){
         return "";
@@ -41,7 +41,7 @@ namespace Utils_ {
     }
     
     var formattedValue = (value.toFixed(fractionDigits)) + "";
-    if (decimalSeparator == Enums.DecimalSeparator.DOT) {
+    if (decimalSeparator == DecimalSeparator.DOT) {
       return formattedValue.replace(/\,/g, '.');
     } else {
       return formattedValue.replace(/\./g, ',');
@@ -89,13 +89,13 @@ namespace Utils_ {
     return formatedDate;
   }
 
-  export function getDateFormatterPattern(datePattern: string, periodicity: Enums.Periodicity): string {
+  export function getDateFormatterPattern(datePattern: string, periodicity: Periodicity): string {
     var pattern = datePattern;
 
-    if (periodicity == Enums.Periodicity.MONTHLY) {
+    if (periodicity == Periodicity.MONTHLY) {
       pattern = "MM/yyyy"
     }
-    if (periodicity == Enums.Periodicity.YARLY) {
+    if (periodicity == Periodicity.YARLY) {
       pattern = "yyyy"
     }
     return pattern;

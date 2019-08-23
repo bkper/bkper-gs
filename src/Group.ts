@@ -10,7 +10,7 @@ class Group {
   /**
    * @ignore
    */
-  wrapped: Bkper.GroupV2Payload
+  wrapped: bkper.GroupV2Payload
   /**
    * @ignore
    */

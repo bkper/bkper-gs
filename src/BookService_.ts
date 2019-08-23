@@ -3,14 +3,14 @@
  */
 namespace BookService_ {
 
-  export function listBooks(): Bkper.BookV2Payload[] {
+  export function listBooks(): bkper.BookV2Payload[] {
     var responseJSON = API.call_("get");
     
     if (responseJSON == null || responseJSON == "") {
       return [];
     }
     
-    var bookListPlain: Bkper.BookThinCollection = JSON.parse(responseJSON);
+    var bookListPlain: bkper.BookThinCollection = JSON.parse(responseJSON);
 
 
     var booksJson = bookListPlain.items;
@@ -35,7 +35,7 @@ namespace BookService_ {
     return booksJson;
   }
 
-  export function loadBookWrapped(bookId: string): Bkper.BookV2Payload {
+  export function loadBookWrapped(bookId: string): bkper.BookV2Payload {
 
     if (bookId == null) {
       throw new Error("Book id null!");

@@ -8,12 +8,12 @@
  * An Account can be grouped by [[Group]]s.
  * 
  */
-class Account implements Bkper.Account {
+class Account implements bkper.Account {
 
   /**
    * @ignore
    */
-  wrapped: Bkper.AccountV2Payload;
+  wrapped: bkper.AccountV2Payload;
 
   /**
    * @ignore

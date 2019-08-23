@@ -45,9 +45,9 @@ function getAuthorizationHtml(continueUrl?: string, continueText?: string) {
 }
 
 /**
- * Returns the [[Book]] with the specified ID. 
+ * Returns the [[Book]] with the specified bookId from url param. 
  * 
- * This is the main Entry Point to start interacting with the Book
+ * This is the main Entry Point to start interacting with BkperApp
  * 
  * Example:
  * 

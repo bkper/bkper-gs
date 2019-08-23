@@ -1,10 +1,9 @@
 /**
- * 
- * This class defines a Book
  *
- * It usually used as the [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
+ * A Book represents [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
  *
  * It contains all [[Account]]s where [[Transaction]]s are recorded/posted;
+ * 
  */
 class Book {
 
@@ -26,14 +25,14 @@ class Book {
   }
 
   /**
-   * @return The id of this Book
+   * @inheritdoc
    */
   public getId(): string {
     return this.id;
   }
-
+  
   /**
-   * @return The name of this Book
+   * @inheritdoc
    */
   public getName(): string {
     this.checkBookLoaded_();
@@ -41,7 +40,7 @@ class Book {
   }
 
   /**
-   * @return The fraction digits of this Book
+   * @return The number of fraction digits (decimal places) supported by this Book
    */
   public getFractionDigits(): number {
     this.checkBookLoaded_();

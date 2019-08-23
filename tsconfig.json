@@ -7,18 +7,16 @@
     "module": "none",
     "noImplicitUseStrict": true,
     "noImplicitAny": true,
-    "experimentalDecorators": true,
-    "declaration": true,
-    "outDir": "dist",
-    "outFile": "BkperApp"
+    "experimentalDecorators": true
   },
   "include": [
     "src/**/*.ts",
-    "@types/**/*.d.ts",
+    "@types/**/*.d.ts", "BkperApp/GoogleAppsScript.ts", "@types/bkper-app/index.ts",
   ],
   "exclude": [
     "node_modules",
     "@types/**/*-tests.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "dist/**/*"
   ]
 }

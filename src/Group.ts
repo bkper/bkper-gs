@@ -5,42 +5,43 @@
 * 
 * Its useful to keep organized and for high level analysis.
 */
-class Group {
+class Group implements bkper.Group {
 
   /**
    * @ignore
    */
   wrapped: bkper.GroupV2Payload
+
   /**
    * @ignore
    */
   book: Book
 
   /**
-  * @returns The id of this Group
-  */
+   * @inheritdoc
+   */
   getId(): string {
     return this.wrapped.id;
   }
 
   /**
-  * @returns The name of this Group
-  */
+   * @inheritdoc
+   */
   getName(): string {
     return this.wrapped.name;
   }
 
   /**
-  * @returns Check if this group has accounts
-  */
+   * @inheritdoc
+   */
   hasAccounts(): boolean {
     return this.getAccounts().length > 0;
   }
 
 
   /**
-  * @returns {Array<Account>} All Accounts this Group is has.
-  */
+   * @inheritdoc
+   */
   getAccounts(): Account[] {
     var accounts = [];
     var accs = this.book.getAccounts();

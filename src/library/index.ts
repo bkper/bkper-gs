@@ -118,9 +118,132 @@ declare namespace bkper {
      * 
      * @return The date formated according to date pattern of book
      */
-    formatDate(date: Date, timeZone?: string): string;
+    formatDate(date: Date, timeZone?: string): string; 
+
+    /**
+     * @param value The value to be formatted.
+     * 
+     * @return The value formated according to [[DecimalSeparator]] and [[FractionDigits]] of Book
+     */
+    formatValue(value: number): string;
+
+    /**
+     * Record [[Transaction]]s a on the Book. 
+     * 
+     * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
+     * 
+     * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
+     * @param timeZone The time zone to format dates.
+     */
+    record(transactions: string | any[] | any[][], timeZone?: string): void;
+
+    /**
+     * Resumes a transaction iteration using a continuation token from a previous iterator.
+     * 
+     * @param continuationToken continuation token from a previous transaction iterator
+     * 
+     * @return a collection of transactions that remained in a previous iterator when the continuation token was generated
+     */
+    continueTransactionIterator(query: string, continuationToken: string): TransactionIterator;
+
+    /**
+     * Gets all [[Account]]s of this Book
+     */
+    getAccounts(): Account[];
+
+    /**
+     * Create an [[Account]] in this book. 
+     * 
+     * The type of account will be determined by the type of others Accounts in same group. 
+     * 
+     * If not specified, the type ASSET (permanent=true/credit=false) will be set.
+     * 
+     * If all other accounts in same group is in another group, the account will also be added to the other group.
+     * 
+     * @param name The name of the Account
+     * @param group The group of the Account. 
+     * @param description The description of the Account
+     * 
+     * @returns The created Account object
+     */
+    createAccount(name: string, group?: string, description?: string): Account;
+
+    /**
+     * Gets all [[Group]]s of this Book
+     */
+    getGroups(): Group[]
+
+    /**
+     * Gets a [[Group]] object
+     * 
+     * @param idOrName The id or name of the Group
+     * 
+     * @returns The matching Group object
+     */
+    getGroup(idOrName: string): Group
+
+    /**
+     * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]], [[Group]] or **#hashtag**
+     * 
+     * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
+     * 
+     * @param query The report balance query
+     * 
+     * @return The balance data table builder
+     * 
+     * Example:
+     * 
+     * ```javascript
+     * var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+     * 
+     * var balancesDataTable = book.createBalancesDataTable("#rental #energy after:8/2013 before:9/2013").build();
+     * ```
+     */
+    createBalancesDataTable(query: string): BalancesDataTableBuilder;
+
+    /**
+     * Create a [[TransactionsDataTableBuilder]] based on a query, to create two dimensional Array representations of [[Transaction]]s dataset.
+     * 
+     * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
+     * 
+     * @param query The flter query.
+     * 
+     * @return Transactions data table builder.
+     * 
+     * Example: 
+     * 
+     * ```javascript
+     * var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+     * 
+     * var transactionsDataTable = book.createTransactionsDataTable("acc:'Bank' after:8/2013 before:9/2013").build();
+     * ```
+     */
+    createTransactionsDataTable(query: string): TransactionsDataTableBuilder;
 
 
+    /**
+     * Search for transactions.
+     * 
+     * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
+     *  
+     * @param query The query string.
+     * 
+     * @return The search result as an iterator.
+     * 
+     * Example:
+     * 
+     * ```javascript
+     * var book = BkperApp.loadBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+     * 
+     * var transactions = book.search("acc:CreditCard after:28/01/2013 before:29/01/2013");
+     * 
+     * while (transactions.hasNext()) {
+     *  var transaction = transactions.next();
+     *  Logger.log(transaction.getDescription());
+     * }
+     * ```
+     */
+    search(query: string): TransactionIterator;
 
 
   }
@@ -206,7 +329,86 @@ declare namespace bkper {
 
   }
 
-  export interface Group {
+
+  /**
+   * 
+   * This class defines a Transaction between [credit and debit](http://en.wikipedia.org/wiki/Debits_and_credits) [[Account]]s.
+   *
+   * A Transaction is the main entity on the [Double Entry](http://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) [Bookkeeping](http://en.wikipedia.org/wiki/Bookkeeping) system.
+   * 
+   */
+  export interface Transaction {
+
+    /**
+     * @returns The id of the Transaction
+     */
+    getId(): string;
+
+    /**
+     * @returns True if transaction was already posted to the accounts. False if is still a Draft.
+     */
+    isPosted(): boolean;
+
+    /**
+     * @returns All #hashtags used on the transaction
+     */
+    getTags(): string[];
+
+    /**
+     * @returns All urls of the transaction
+     */
+    getUrls(): string[];
+
+    /**
+     * Check if the transaction has the specified tag
+     */
+    hasTag(tag: string): boolean;
+
+    /**
+     * @returns The credit account. The same as origin account.
+     */
+    getCreditAccount(): Account;
+
+    /**
+     * @returns The credit account name.
+     */
+    getCreditAccountName(): string;
+
+    /**
+     * @returns The debit account. The same as destination account.
+     */
+    getDebitAccount(): Account;
+
+    /**
+     * @returns The debit account name.
+     */
+    getDebitAccountName(): string;
+
+    /**
+     * @returns The amount of the transaction
+     */
+    getAmount(): number;
+
+    /**
+     * Get the absolute amount of this transaction if the given account is at the credit side, else null
+     * 
+     * @param account The account object, id or name
+     */
+    getCreditAmount(account: Account | string): number;
+
+    /**
+     * Gets the absolute amount of this transaction if the given account is at the debit side, else null
+     * 
+     * @param account The account object, id or name
+     */
+    getDebitAmount(account: Account | string): number;
+
+    /**
+     * Gets the [[Account]] at the other side of the transaction given the one in one side.
+     * 
+     * @param account The account object, id or name
+     */
+    getOtherAccount(account: Account | string): Account;
 
   }
 

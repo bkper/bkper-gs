@@ -7,11 +7,11 @@
     "module": "none",
     "noImplicitUseStrict": true,
     "noImplicitAny": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
   },
   "include": [
     "src/**/*.ts",
-    "@types/**/*.d.ts", "BkperApp/GoogleAppsScript.ts", "@types/bkper-app/index.ts",
+    "@types/**/*.d.ts",
   ],
   "exclude": [
     "node_modules",

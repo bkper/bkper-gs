@@ -127,23 +127,16 @@ class Book implements bkper.Book {
   }
 
   /**
-   * @param value The value to be formatted.
-   * 
-   * @return The value formated according to [[DecimalSeparator]] and [[FractionDigits]] of Book
+   * @inheritdoc
    */
   public formatValue(value: number): string {
     return Utils_.formatValue_(value, this.getDecimalSeparator(), this.getFractionDigits());
   }
 
   /**
-   * Record [[Transaction]]s a on the Book. 
-   * 
-   * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
-   * 
-   * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
-   * @param timeZone The time zone to format dates.
+   * @inheritdoc
    */
-  public record(transactions: string | any[] | any[][], timeZone?: string) {
+  public record(transactions: string | any[] | any[][], timeZone?: string): void {
     if (timeZone == null || timeZone.trim() == "") {
       Logger.log("Fallback to book timezone!")
       timeZone = this.getTimeZone();
@@ -152,11 +145,7 @@ class Book implements bkper.Book {
   }
 
   /**
-   * Resumes a transaction iteration using a continuation token from a previous iterator.
-   * 
-   * @param continuationToken continuation token from a previous transaction iterator
-   * 
-   * @return a collection of transactions that remained in a previous iterator when the continuation token was generated
+   * @inheritdoc
    */
   public continueTransactionIterator(query: string, continuationToken: string): TransactionIterator {
     var transactionIterator = new TransactionIterator(this, query);
@@ -173,7 +162,6 @@ class Book implements bkper.Book {
     }
     return transactions;
   }
-
 
   /**
    * @private
@@ -194,9 +182,8 @@ class Book implements bkper.Book {
   //   transaction.configure_();
   // }
 
-
   /**
-   * Gets all [[Account]]s of this Book
+   * @inheritdoc
    */
   public getAccounts(): Account[] {
     if (this.accounts == null) {
@@ -233,19 +220,7 @@ class Book implements bkper.Book {
   }
 
   /**
-   * Create an [[Account]] in this book. 
-   * 
-   * The type of account will be determined by the type of others Accounts in same group. 
-   * 
-   * If not specified, the type ASSET (permanent=true/credit=false) will be set.
-   * 
-   * If all other accounts in same group is in another group, the account will also be added to the other group.
-   * 
-   * @param name The name of the Account
-   * @param group The group of the Account. 
-   * @param description The description of the Account
-   * 
-   * @returns The created Account object
+   * @inheritdoc
    */
   public createAccount(name: string, group?: string, description?: string): Account {
     var account = AccountService_.createAccount(this.getId(), name, group, description);
@@ -267,7 +242,7 @@ class Book implements bkper.Book {
   }
 
   /**
-   * Gets all [[Group]]s of this Book
+   * @inheritdoc
    */
   public getGroups(): Group[] {
     if (this.groups == null) {
@@ -277,11 +252,7 @@ class Book implements bkper.Book {
   }
 
   /**
-   * Gets a [[Group]] object
-   * 
-   * @param idOrName The id or name of the Group
-   * 
-   * @returns The matching Group object
+   * @inheritdoc
    */
   public getGroup(idOrName: string): Group {
 
@@ -332,21 +303,7 @@ class Book implements bkper.Book {
   }
 
   /**
-   * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]], [[Group]] or **#hashtag**
-   * 
-   * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
-   * 
-   * @param query The report balance query
-   * 
-   * @return The balance data table builder
-   * 
-   * Example:
-   * 
-   * ```javascript
-   * var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-   * 
-   * var balancesDataTable = book.createBalancesDataTable("#rental #energy after:8/2013 before:9/2013").build();
-   * ```
+   * @inheritdoc
    */
   public createBalancesDataTable(query: string): BalancesDataTableBuilder {
     var balances = BalancesService_.getBalances(this.getId(), query);
@@ -355,21 +312,7 @@ class Book implements bkper.Book {
 
 
   /**
-   * Create a [[TransactionsDataTableBuilder]] based on a query, to create two dimensional Array representations of [[Transaction]]s dataset.
-   * 
-   * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
-   * 
-   * @param query The flter query.
-   * 
-   * @return Transactions data table builder.
-   * 
-   * Example: 
-   * 
-   * ```javascript
-   * var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-   * 
-   * var transactionsDataTable = book.createTransactionsDataTable("acc:'Bank' after:8/2013 before:9/2013").build();
-   * ```
+   * @inheritdoc
    */
   public createTransactionsDataTable(query: string): TransactionsDataTableBuilder {
     var transactionIterator = this.search(query);
@@ -377,26 +320,7 @@ class Book implements bkper.Book {
   }
 
   /**
-   * Search for transactions.
-   * 
-   * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
-   *  
-   * @param query The query string.
-   * 
-   * @return The search result as an iterator.
-   * 
-   * Example:
-   * 
-   * ```javascript
-   * var book = BkperApp.loadBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-   * 
-   * var transactions = book.search("acc:CreditCard after:28/01/2013 before:29/01/2013");
-   * 
-   * while (transactions.hasNext()) {
-   *  var transaction = transactions.next();
-   *  Logger.log(transaction.getDescription());
-   * }
-   * ```
+   * @inheritdoc
    */
   public search(query: string): TransactionIterator {
     return new TransactionIterator(this, query);

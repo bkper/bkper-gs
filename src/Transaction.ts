@@ -5,7 +5,7 @@
  * A Transaction is the main entity on the [Double Entry](http://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) [Bookkeeping](http://en.wikipedia.org/wiki/Bookkeeping) system.
  * 
  */
-class Transaction {
+class Transaction implements bkper.Transaction {
 
   /**
    * @ignore
@@ -26,35 +26,35 @@ class Transaction {
   private alreadyPosted: boolean;
 
   /**
-   * @returns The id of the Transaction
+   * @inheritdoc
    */
   public getId(): string {
     return this.wrapped.id;
   }
 
   /**
-   * @returns True if transaction is already posted on accounts. False otherwise.
+   * @inheritdoc
    */
   public isPosted(): boolean {
     return this.wrapped.posted;
   }
 
   /**
-   * @returns All #hashtags used on this transaction
+   * @inheritdoc
    */
   public getTags(): string[] {
     return this.wrapped.tags;
   }
 
   /**
-   * @returns All urls used on this transaction
+   * @inheritdoc
    */
   public getUrls(): string[] {
     return this.wrapped.urls;
   }
 
   /**
-   * Check if the transaction has the specified tag
+   * @inheritdoc
    */
   public hasTag(tag: string): boolean {
 
@@ -69,17 +69,16 @@ class Transaction {
     return false;
   }
 
-
   //ORIGIN ACCOUNT
   /**
-   * @returns The credit account. The same as origin account.
+   * @inheritdoc
    */
   public getCreditAccount(): Account {
     return this.creditAccount;
   }
 
   /**
-   * @returns The credit account name.
+   * @inheritdoc
    */
   public getCreditAccountName(): string {
     if (this.getCreditAccount() != null) {
@@ -91,14 +90,14 @@ class Transaction {
 
   //DESTINATION ACCOUNT
   /**
-   * @returns The debit account. The same as destination account.
+   * @inheritdoc
    */
   public getDebitAccount(): Account {
     return this.debitAccount;
   }
 
   /**
-   * @returns The debit account name.
+   * @inheritdoc
    */
   public getDebitAccountName(): string {
     if (this.getDebitAccount() != null) {
@@ -111,16 +110,14 @@ class Transaction {
 
   //AMOUNT
   /**
-   * @returns The amount of this transaction
+   * @inheritdoc
    */
   public getAmount(): number {
     return this.wrapped.amount;
   }
 
   /**
-   * Get the absolute amount of this transaction if the given account is at the credit side, else null
-   * 
-   * @param account The account object, id or name
+   * @inheritdoc
    */
   public getCreditAmount(account: Account | string): number {
     let accountObject = this.getAccount_(account);
@@ -131,9 +128,7 @@ class Transaction {
   }
 
   /**
-   * Gets the absolute amount of this transaction if the given account is at the debit side, else null
-   * 
-   * @param account The account object, id or name
+   * @inheritdoc
    */
   public getDebitAmount(account: Account | string): number {
     let accountObject = this.getAccount_(account);

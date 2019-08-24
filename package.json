@@ -13,6 +13,7 @@
     "docs:json": "yarn docs --json dist/apidocs.json --mode modules",
     "docs:publish": "yarn docs && cp -rf ./dist/docs/* ../bkper.github.io/",
     "clasp": "./node_modules/.bin/clasp",
+    "types": "tsc src/library/* --declaration --declarationDir 'dist/types' --emitDeclarationOnly ",
     "push": "yarn run clasp push",
     "api": "yarn --cwd ../bkper-pwa/api-typings-generator build --url http://app.bkper.com/_ah/api/discovery/v1/apis/bkper/v2/rest --out /Users/maelcaldas/git/bkper-app/@types"
   },

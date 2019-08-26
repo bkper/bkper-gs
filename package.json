@@ -7,8 +7,10 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf ./dist",
-    "build": "yarn run docs && yarn run types",
-    "docs": "./node_modules/.bin/typedoc ./src --ignoreCompilerErrors --excludeExternals --includeDeclarations --excludePrivate --hideGenerator --name  'BkperApp' --out dist/docs --theme minimal --mode file  && cp -rf ./docs/* ./dist/docs",
+    "build": "yarn run docs:json && yarn run types",
+    "docs": "./node_modules/.bin/typedoc ./src --ignoreCompilerErrors --excludeExternals --includeDeclarations --excludePrivate --name 'BkperApp' --mode file",
+    "docs:html": "yarn docs --out dist/docs --theme minimal --hideGenerator && cp -rf ./docs/* ./dist/docs",
+    "docs:json": "yarn docs --json dist/apidocs.json ",
     "docs:publish": "yarn docs && cp -rf ./dist/docs/* ../bkper.github.io/",
     "clasp": "./node_modules/.bin/clasp",
     "types": "mkdir -p dist && mkdir -p dist/bkper-app && cp src/library/index.ts dist/bkper-app/index.d.ts",

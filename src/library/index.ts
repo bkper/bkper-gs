@@ -132,6 +132,11 @@ declare namespace bkper {
      * 
      * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
      * 
+     * Example: 
+     * ```javascript
+     *   book.record("#gas 63.23");
+     * ```
+     * 
      * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
      * @param timeZone The time zone to format dates.
      */

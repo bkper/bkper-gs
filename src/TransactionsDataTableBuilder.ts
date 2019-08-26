@@ -1,7 +1,7 @@
 /**
  * A TransactionsDataTableBuilder is used to setup and build two-dimensional arrays containing transactions.
  */
-class TransactionsDataTableBuilder {
+class TransactionsDataTableBuilder implements bkper.TransactionsDataTableBuilder {
 
   private transactionIterator: TransactionIterator;
   private shouldFormatDate: boolean;
@@ -19,9 +19,7 @@ class TransactionsDataTableBuilder {
   }
 
   /**
-   * Defines whether the dates should be formatted, based on date patter of the [[Book]]
-   * 
-   * @returns This builder with respective formatting option.
+   * @inheritdoc
    */
   public formatDate(): TransactionsDataTableBuilder {
     this.shouldFormatDate = true;
@@ -29,9 +27,7 @@ class TransactionsDataTableBuilder {
   }
 
   /**
-   * Defines whether the value should be formatted based on [[Enums.DecimalSeparator]] of the [[Book]]
-   *
-   * @returns This builder with respective formatting option.
+   * @inheritdoc
    */
   public formatValue(): TransactionsDataTableBuilder {
     this.shouldFormatValue = true;
@@ -39,9 +35,7 @@ class TransactionsDataTableBuilder {
   }
 
   /**
-   * Defines whether the value should add Attachments links
-   * 
-   * @returns This builder with respective add attachment option.
+   * @inheritdoc
    */
   public addUrls(): TransactionsDataTableBuilder {
     this.shouldAddUrls = true;
@@ -49,7 +43,7 @@ class TransactionsDataTableBuilder {
   }
 
   /**
-   * @returns A two-dimensional array containing all [[Transaction]]s.
+   * @inheritdoc
    */
   public build(): any[][] {
     var filteredByAccount = this.transactionIterator.getFilteredByAccount();

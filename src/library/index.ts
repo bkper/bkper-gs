@@ -118,7 +118,7 @@ declare namespace bkper {
      * 
      * @return The date formated according to date pattern of book
      */
-    formatDate(date: Date, timeZone?: string): string; 
+    formatDate(date: Date, timeZone?: string): string;
 
     /**
      * @param value The value to be formatted.
@@ -329,6 +329,37 @@ declare namespace bkper {
 
   }
 
+  /**
+  * This class defines a Group of [[Account]]s.
+  *
+  * Accounts can be grouped by different meaning, like Expenses, Revenue, Assets, Liabilities and so on
+  * 
+  * Its useful to keep organized and for high level analysis.
+  */
+  export interface Group {
+
+    /**
+     * @returns The id of this Group
+     */
+    getId(): string;
+
+    /**
+     * @returns The name of this Group
+     */
+    getName(): string;
+
+    /**
+     * @returns True if this group has any account in it
+     */
+    hasAccounts(): boolean;
+
+    /**
+     * @returns All Accounts of this group.
+     */
+    getAccounts(): Account[];
+
+  }
+
 
   /**
    * 
@@ -409,6 +440,202 @@ declare namespace bkper {
      * @param account The account object, id or name
      */
     getOtherAccount(account: Account | string): Account;
+
+    /**
+     * 
+     * The account name at the other side of the transaction given the one in one side.
+     * 
+     * @param account The account object, id or name
+     */
+    getOtherAccountName(account: string | Account): string;
+
+    /**
+     * @returns The description of this transaction
+     */
+    getDescription(): string;
+
+    /**
+     * @returns The date the user informed for this transaction, adjusted to book's time zone
+     */
+    getInformedDate(): Date;
+
+    /**
+     * @returns The date the user informed for this transaction. The number format is YYYYMMDD
+     */
+    getInformedDateValue(): number;
+
+    /**
+     * @returns The date the user informed for this transaction, formatted according to the date pattern of [[Book]].
+     */
+    getInformedDateText(): string;
+
+    /**
+     * @returns {Date} The date time user has recorded/posted this transaction
+     */
+    getPostDate(): Date;
+
+    /**
+     * @returns The date time user has recorded/posted this transaction, formatted according to the date pattern of [[Book]].
+     */
+    getPostDateText(): string;
+
+    /**
+     * Gets the balance that the [[Account]] has at that day, when listing transactions of that Account.
+     * 
+     * Evolved balances is returned when searching for transactions of a permanent [[Account]].
+     * 
+     * Only comes with the last posted transaction of the day.
+     * 
+     * @param raw True to get the raw balance, no matter the credit nature of the [[Account]].
+     * 
+     */
+    getAccountBalance(raw?: boolean): number;
+
+  }
+
+  /**
+   *
+   * An iterator that allows scripts to iterate over a potentially large collection of transactions.
+   *
+   */
+  export interface TransactionIterator {
+
+    /**
+     * Gets the Book that originate the iterator
+     */
+    getBook(): Book;
+
+    /**
+     * Gets a token that can be used to resume this iteration at a later time.
+     * 
+     * This method is useful if processing an iterator in one execution would exceed the maximum execution time.
+     * 
+     * Continuation tokens are generally valid short period of time.
+     * 
+     */
+    getContinuationToken(): string;
+
+    /**
+     * Sets a continuation token from previous paused iteration
+     * 
+     * @param continuationToken 
+     */
+    setContinuationToken(continuationToken: string): void;
+
+    /**
+     * Determines whether calling next() will return a transaction.
+     */
+    hasNext(): boolean;
+
+    /**
+     * Gets the next transaction in the collection of transactions.
+     */
+    next(): Transaction;
+
+    /**
+     * Return an account if query is filtering by a single account
+     */
+    getFilteredByAccount(): Account;
+
+  }
+
+  /**
+   * A TransactionsDataTableBuilder is used to setup and build two-dimensional arrays containing transactions.
+   */
+  export interface TransactionsDataTableBuilder {
+
+    /**
+     * Defines whether the dates should be formatted, based on date patter of the [[Book]]
+     * 
+     * @returns This builder with respective formatting option.
+     */
+    formatDate(): TransactionsDataTableBuilder;
+
+    /**
+     * Defines whether the value should be formatted based on [[DecimalSeparator]] of the [[Book]]
+     *
+     * @returns This builder with respective formatting option.
+     */
+    formatValue(): TransactionsDataTableBuilder;
+
+    /**
+     * Defines whether the value should add Attachments links
+     * 
+     * @returns This builder with respective add attachment option.
+     */
+    addUrls(): TransactionsDataTableBuilder;
+
+    /**
+     * @returns A two-dimensional array containing all [[Transaction]]s.
+     */
+    build(): any[][];
+
+  }
+
+  /**
+   * A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
+   */
+  export interface BalancesDataTableBuilder {
+
+    /**
+     * Defines whether the dates should be formatted based on date pattern and periodicity of the [[Book]].
+     *
+     * @returns This builder with respective formatting option.
+     */
+    formatDate(): BalancesDataTableBuilder;
+
+    /**
+     * Defines whether the value should be formatted based on decimal separator of the [[Book]].
+     * 
+     * @returns This builder with respective formatting option.
+     */
+    formatValue(): BalancesDataTableBuilder;
+
+    /**
+     * Fluent method to set the [[BalanceType]]
+     * 
+     * For [[BalanceType.TOTAL]] balance type, the table format looks like:
+     * 
+     * ```
+     *   _____________________
+     *  |    NAME   | AMOUNT  |
+     *  | Expenses  | 4568.23 |
+     *  | Incomes   | 5678.93 |
+     *  |    ...    |   ...   |
+     *  |___________|_________|
+     * 
+     * ```
+     * Two columns, and Each Group | Account | Tag per line.
+     * 
+     * For [[BalanceType.PERIOD]] or  [[BalanceType.CUMULATIVE]], the table will be a time table, and the format looks like:
+     * 
+     * ```
+     *  _____________________________________________
+     *  |    DATE    | Expenses | Incomes |    ...   |
+     *  | 15/01/2014 | 2345.23  | 3452.93 |    ...   |
+     *  | 15/02/2014 | 2345.93  | 3456.46 |    ...   |
+     *  | 15/03/2014 | 2456.45  | 3567.87 |    ...   |
+     *  |    ...     |   ...    |   ...   |    ...   |
+     *  |___________ |__________|_________|__________|
+     * 
+     * ```
+     * 
+     * First column will be the Date column, and one column for each Group | Account | Tag.
+     * 
+     * 
+     * @param balanceType The type of balance for this data table
+     * 
+     * @returns This builder with respective balance type.
+     */
+    setBalanceType(balanceType: BalanceType): BalancesDataTableBuilder;
+
+    /**
+     * 
+     * Gets an two-dimensional array with the balances.
+     * 
+     *  @returns
+     */
+    build(): any[][];
 
   }
 

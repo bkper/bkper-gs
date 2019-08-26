@@ -4,8 +4,8 @@
  * 
  * @see [[Book.search]]
  *
-*/
-class TransactionIterator {
+ */
+class TransactionIterator implements bkper.TransactionIterator {
 
   private book: Book
   private query: string
@@ -31,19 +31,17 @@ class TransactionIterator {
     this.alreadyProcessedAccountFilter = false
   }
 
+  /**
+   * @inheritdoc
+   */
   public getBook(): Book {
     return this.book;
   }
 
 
   /**
-  * Gets a token that can be used to resume this iteration at a later time.
-  * 
-  * This method is useful if processing an iterator in one execution would exceed the maximum execution time.
-  * 
-  * Continuation tokens are generally valid short period of time.
-  * 
-  */
+   * @inheritdoc
+   */
   public getContinuationToken(): string {
 
     if (this.currentPage == null) {
@@ -61,9 +59,7 @@ class TransactionIterator {
   }
 
   /**
-   * Sets a continuation token from previous paused iteration
-   * 
-   * @param continuationToken 
+   * @inheritdoc
    */
   public setContinuationToken(continuationToken: string): void {
 
@@ -87,8 +83,8 @@ class TransactionIterator {
   }
 
   /**
-  * Determines whether calling next() will return a transaction.
-  */
+   * Determines whether calling next() will return a transaction.
+   */
   public hasNext(): boolean {
 
     if (this.currentPage == null) {
@@ -109,8 +105,8 @@ class TransactionIterator {
   }
 
   /**
-  * Gets the next transaction in the collection of transactions.
-  */
+   * @inheritdoc
+   */
   public next(): Transaction {
 
     if (this.currentPage == null) {
@@ -134,7 +130,7 @@ class TransactionIterator {
   }
 
   /**
-   * Return an account if query is filtering by a single account
+   * @inheritdoc
    */
   public getFilteredByAccount(): Account {
 

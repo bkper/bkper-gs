@@ -1,9 +1,9 @@
 
 
 /**
-* A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
-*/
-class BalancesDataTableBuilder {
+ * A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
+ */
+class BalancesDataTableBuilder implements bkper.BalancesDataTableBuilder {
 
   private balanceType: BalanceType;
   private periodicity: Periodicity;
@@ -33,18 +33,15 @@ class BalancesDataTableBuilder {
   }
 
   /**
-   * Defines whether the dates should be formatted based on date pattern and periodicity of the [[Book]].
-   *
-   * @returns This builder with respective formatting option.
+   * @inheritdoc
    */
   public formatDate(): BalancesDataTableBuilder {
     this.shouldFormatDate = true;
     return this;
   }
+
   /**
-   * Defines whether the value should be formatted based on decimal separator of the [[Book]].
-   * 
-   * @returns This builder with respective formatting option.
+   * @inheritdoc
    */
   public formatValue(): BalancesDataTableBuilder {
     this.shouldFormatValue = true;
@@ -52,22 +49,9 @@ class BalancesDataTableBuilder {
   }
 
   /**
-   * Fluent method to set the [[Enums.BalanceType]]
+   * Fluent method to set the [[BalanceType]]
    * 
-   * @param balanceType The type of balance for this data table
-   * 
-   * @returns This builder with respective balance type.
-   */
-  public setBalanceType(balanceType: BalanceType): BalancesDataTableBuilder {
-    this.balanceType = balanceType;
-    return this;
-  }
-
-
-  /**
-   * Gets an two-dimensional array with the balances.
-   * 
-   * For [[Enums.BalanceType.TOTAL]] balance type, the table format looks like:
+   * For [[BalanceType.TOTAL]] balance type, the table format looks like:
    * 
    * ```
    *   _____________________
@@ -80,7 +64,7 @@ class BalancesDataTableBuilder {
    * ```
    * Two columns, and Each Group | Account | Tag per line.
    * 
-   * For [[Enums.BalanceType.PERIOD]] or  [[BalanceType.CUMULATIVE]], the table will be a time table, and the format looks like:
+   * For [[BalanceType.PERIOD]] or  [[BalanceType.CUMULATIVE]], the table will be a time table, and the format looks like:
    * 
    * ```
    *  _____________________________________________
@@ -94,6 +78,21 @@ class BalancesDataTableBuilder {
    * ```
    * 
 	 * First column will be the Date column, and one column for each Group | Account | Tag.
+   * 
+   * 
+   * @param balanceType The type of balance for this data table
+   * 
+   * @returns This builder with respective balance type.
+   */
+  public setBalanceType(balanceType: BalanceType): BalancesDataTableBuilder {
+    this.balanceType = balanceType;
+    return this;
+  }
+
+
+  /**
+   * 
+   * Gets an two-dimensional array with the balances.
    * 
    *  @returns
    */

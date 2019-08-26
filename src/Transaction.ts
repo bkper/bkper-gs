@@ -139,9 +139,7 @@ class Transaction implements bkper.Transaction {
   }
 
   /**
-   * Gets the [[Account]] at the other side of the transaction given the one in one side.
-   * 
-   * @param account The account object, id or name
+   * @inheritdoc
    */
   public getOtherAccount(account: Account | string): Account {
     let accountObject = this.getAccount_(account);
@@ -155,10 +153,7 @@ class Transaction implements bkper.Transaction {
   }
 
   /**
-   * 
-   * The account name at the other side of the transaction given the one in one side.
-   * 
-   * @param account The account object, id or name
+   * @inheritdoc
    */
   public getOtherAccountName(account: string | Account): string {
     var otherAccount = this.getOtherAccount(account);
@@ -187,7 +182,7 @@ class Transaction implements bkper.Transaction {
 
   //DESCRIPTION
   /**
-   * @returns The description of this transaction
+   * @inheritdoc
    */
   public getDescription(): string {
     if (this.wrapped.description == null) {
@@ -199,7 +194,7 @@ class Transaction implements bkper.Transaction {
 
   //INFORMED DATE
   /**
-   * @returns The date the user informed for this transaction, adjusted to book's time zone
+   * @inheritdoc
    */
   public getInformedDate(): Date {
     if (this.informedDate == null) {
@@ -210,14 +205,14 @@ class Transaction implements bkper.Transaction {
 
 
   /**
-   * @returns The date the user informed for this transaction. The number format is YYYYMMDD
+   * @inheritdoc
    */
   public getInformedDateValue(): number {
     return this.informedDateValue;
   }
 
   /**
-   * @returns The date the user informed for this transaction, formatted according to the date pattern of [[Book]].
+   * @inheritdoc
    */
   public getInformedDateText(): string {
     return this.informedDateText;
@@ -225,14 +220,14 @@ class Transaction implements bkper.Transaction {
 
   //POST DATE
   /**
-   * @returns {Date} The date time user has recorded/posted this transaction
+   * @inheritdoc
    */
   public getPostDate(): Date {
     return this.postDate;
   }
 
   /**
-   * @returns The date time user has recorded/posted this transaction, formatted according to the date pattern of [[Book]].
+   * @inheritdoc
    */
   public getPostDateText(): string {
     return Utilities.formatDate(this.getPostDate(), this.book.getLocale(), this.book.getDatePattern() + " HH:mm:ss")
@@ -255,14 +250,7 @@ class Transaction implements bkper.Transaction {
   }
 
   /**
-   * Gets the balance that the [[Account]] has at that day, when listing transactions of that Account.
-   * 
-   * Evolved balances is returned when searching for transactions of a permanent [[Account]].
-   * 
-   * Only comes with the last posted transaction of the day.
-   * 
-   * @param raw True to get the raw balance, no matter the credit nature of the [[Account]].
-   * 
+   * @inheritdoc
    */
   public getAccountBalance(raw?: boolean): number {
     var accountBalance = this.getCaEvolvedBalance_();

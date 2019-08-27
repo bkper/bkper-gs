@@ -8,7 +8,7 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "build": "yarn run docs:json && yarn run types",
-    "docs": "./node_modules/.bin/typedoc ./src --ignoreCompilerErrors --excludeExternals --includeDeclarations --excludePrivate --name 'BkperApp' --mode file --logger none",
+    "docs": "./node_modules/.bin/typedoc ./@types/bkper-app --ignoreCompilerErrors --excludeExternals --includeDeclarations --name 'BkperApp' --mode file",
     "docs:html": "yarn docs --out dist/docs --theme minimal --hideGenerator && cp -rf ./images/ ./dist/docs/images/",
     "docs:json": "yarn docs --json dist/apidocs.json ",
     "docs:publish": "yarn docs && cp -rf ./dist/docs/* ../bkper.github.io/",

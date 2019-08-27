@@ -1,6 +1,4 @@
-/**
- * @ignore
- */
+
 namespace TransactionService_ {
 
   export interface TransactionResponse {

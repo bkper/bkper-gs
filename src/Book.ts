@@ -194,11 +194,7 @@ class Book implements bkper.Book {
 
 
   /**
-   * Gets an [[Account]] object
-   * 
-   * @param idOrName The id or name of the Account
-   * 
-   * @returns The matching Account object
+   * @inheritdoc
    */
   public getAccount(idOrName: string): Account {
 

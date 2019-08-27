@@ -1,10 +1,4 @@
-/**
- * 
- * An iterator that allows scripts to iterate over a potentially large collection of transactions.
- * 
- * @see [[Book.search]]
- *
- */
+
 class TransactionIterator implements bkper.TransactionIterator {
 
   private book: Book

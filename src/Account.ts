@@ -1,13 +1,4 @@
 
-/**
- * 
- * This class defines an [Account](https://en.wikipedia.org/wiki/Account_(bookkeeping)) of a [[Book]].
- * 
- * It mantains a balance of all amount [credited and debited](http://en.wikipedia.org/wiki/Debits_and_credits) in it by [[Transaction]]s.
- * 
- * An Account can be grouped by [[Group]]s.
- * 
- */
 class Account implements bkper.Account {
 
   /**

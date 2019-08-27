@@ -152,6 +152,15 @@ declare namespace bkper {
     continueTransactionIterator(query: string, continuationToken: string): TransactionIterator;
 
     /**
+     * Gets an [[Account]] object
+     * 
+     * @param idOrName The id or name of the Account
+     * 
+     * @returns The matching Account object
+     */
+    getAccount(idOrName: string): Account;
+
+    /**
      * Gets all [[Account]]s of this Book
      */
     getAccounts(): Account[];
@@ -263,6 +272,21 @@ declare namespace bkper {
    * 
    */
   export interface Account {
+
+    /**
+     * Gets the account internal id
+     */
+    getId(): string;
+
+    /**
+     * Gets the account name
+     */
+    getName(): string;
+
+    /**
+     * Gets the account description
+     */
+    getDescription(): string;
 
     /**
      * @returns The name of this Account without spaces and special characters

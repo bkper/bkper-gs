@@ -1,6 +1,4 @@
-/**
- * A TransactionsDataTableBuilder is used to setup and build two-dimensional arrays containing transactions.
- */
+
 class TransactionsDataTableBuilder implements bkper.TransactionsDataTableBuilder {
 
   private transactionIterator: TransactionIterator;

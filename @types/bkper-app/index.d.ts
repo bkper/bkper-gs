@@ -289,7 +289,7 @@ declare namespace bkper {
     getDescription(): string;
 
     /**
-     * @returns The name of this Account without spaces and special characters
+     * @returns The name of this account without spaces and special characters
      */
     getNormalizedName(): string;
 
@@ -298,7 +298,7 @@ declare namespace bkper {
      *  
      * @param raw True to get the raw balance, no matter the credit nature of this Account.
      * 
-     * @returns The balance of this Account
+     * @returns The balance of this account
      */
     getBalance(raw?: boolean): number;
 
@@ -360,7 +360,7 @@ declare namespace bkper {
 
   /**
   * This class defines a Group of [[Account]]s.
-  *
+  * 
   * Accounts can be grouped by different meaning, like Expenses, Revenue, Assets, Liabilities and so on
   * 
   * Its useful to keep organized and for high level analysis.

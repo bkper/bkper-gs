@@ -11,7 +11,8 @@
     "docs": "./node_modules/.bin/typedoc ./@types/bkper-app --ignoreCompilerErrors --excludeExternals --includeDeclarations --name 'BkperApp' --mode file",
     "docs:html": "yarn docs --out dist/docs --theme minimal --hideGenerator && cp -rf ./images/ ./dist/docs/images/",
     "docs:json": "yarn docs --json dist/apidocs.json ",
-    "docs:publish": "yarn docs && cp -rf ./dist/docs/* ../bkper.github.io/",
+    "docs:publish": "yarn docs:json && cp dist/apidocs.json ../bkper-site/client/static/_data/",
+    "docs:watch": "watch 'yarn run docs:publish' ./@types/bkper-app",
     "clasp": "./node_modules/.bin/clasp",
     "types": "mkdir -p dist && mkdir -p dist/bkper-app && cp src/library/index.ts dist/bkper-app/index.d.ts",
     "push": "yarn run clasp push",
@@ -21,6 +22,7 @@
     "@google/clasp": "^2.2.1",
     "@types/google-apps-script": "^0.0.56",
     "copyfiles": "^2.1.1",
-    "typedoc": "^0.15.0"
+    "typedoc": "^0.15.0",
+    "watch": "^1.0.2"
   }
 }

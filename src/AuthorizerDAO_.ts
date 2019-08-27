@@ -10,7 +10,7 @@ namespace AuthorizerDAO_ {
     }
     userData.accessToken = tokenData.access_token;
     //Expiration on miliseconds
-    var expiresOn = (Date.now() + ((tokenData.expires_in - 60) * 1000));
+    var expiresOn = (Date.now() + ((tokenData.expires_in - 360) * 1000));
     userData.expiresOn = expiresOn;
     PropertiesService.getUserProperties().setProperties(userData);
     return userData;

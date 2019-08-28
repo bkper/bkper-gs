@@ -26,7 +26,7 @@ declare namespace bkper {
      *
      * Example:
      *
-     * ```
+     * ```javascript
      * var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
      * book.record("#fuel for my Land Rover 126.50 28/01/2013");
      * ```
@@ -57,7 +57,7 @@ declare namespace bkper {
    *
    * A Book represents [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
    *
-   * It contains all [[Account]]s where [[Transaction]]s are recorded/posted;
+   * It contains all [[Accounts]] where [[Transactions]] are recorded/posted;
    * 
    */
   export interface Book {
@@ -123,18 +123,18 @@ declare namespace bkper {
     /**
      * @param value The value to be formatted.
      * 
-     * @return The value formated according to [[DecimalSeparator]] and [[FractionDigits]] of Book
+     * @return The value formated according to [[DecimalSeparator]] and fraction digits of Book
      */
     formatValue(value: number): string;
 
     /**
-     * Record [[Transaction]]s a on the Book. 
+     * Record [[Transactions]] a on the Book. 
      * 
      * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
      * 
      * Example: 
      * ```javascript
-     *   book.record("#gas 63.23");
+     * book.record("#gas 63.23");
      * ```
      * 
      * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
@@ -161,7 +161,7 @@ declare namespace bkper {
     getAccount(idOrName: string): Account;
 
     /**
-     * Gets all [[Account]]s of this Book
+     * Gets all [[Accounts]] of this Book
      */
     getAccounts(): Account[];
 
@@ -183,7 +183,7 @@ declare namespace bkper {
     createAccount(name: string, group?: string, description?: string): Account;
 
     /**
-     * Gets all [[Group]]s of this Book
+     * Gets all [[Groups]] of this Book
      */
     getGroups(): Group[]
 
@@ -216,7 +216,7 @@ declare namespace bkper {
     createBalancesDataTable(query: string): BalancesDataTableBuilder;
 
     /**
-     * Create a [[TransactionsDataTableBuilder]] based on a query, to create two dimensional Array representations of [[Transaction]]s dataset.
+     * Create a [[TransactionsDataTableBuilder]] based on a query, to create two dimensional Array representations of [[Transactions]] dataset.
      * 
      * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
      * 
@@ -248,9 +248,9 @@ declare namespace bkper {
      * 
      * ```javascript
      * var book = BkperApp.loadBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-     * 
+     *
      * var transactions = book.search("acc:CreditCard after:28/01/2013 before:29/01/2013");
-     * 
+     *
      * while (transactions.hasNext()) {
      *  var transaction = transactions.next();
      *  Logger.log(transaction.getDescription());
@@ -266,9 +266,9 @@ declare namespace bkper {
    * 
    * This class defines an [Account](https://en.wikipedia.org/wiki/Account_(bookkeeping)) of a [[Book]].
    * 
-   * It mantains a balance of all amount [credited and debited](http://en.wikipedia.org/wiki/Debits_and_credits) in it by [[Transaction]]s.
+   * It mantains a balance of all amount [credited and debited](http://en.wikipedia.org/wiki/Debits_and_credits) in it by [[Transactions]].
    * 
-   * An Account can be grouped by [[Group]]s.
+   * An Account can be grouped by [[Groups]].
    * 
    */
   export interface Account {
@@ -359,7 +359,7 @@ declare namespace bkper {
   }
 
   /**
-  * This class defines a Group of [[Account]]s.
+  * This class defines a Group of [[Accounts]].
   * 
   * Accounts can be grouped by different meaning, like Expenses, Revenue, Assets, Liabilities and so on
   * 
@@ -392,7 +392,7 @@ declare namespace bkper {
 
   /**
    * 
-   * This class defines a Transaction between [credit and debit](http://en.wikipedia.org/wiki/Debits_and_credits) [[Account]]s.
+   * This class defines a Transaction between [credit and debit](http://en.wikipedia.org/wiki/Debits_and_credits) [[Accounts]].
    *
    * A Transaction is the main entity on the [Double Entry](http://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) [Bookkeeping](http://en.wikipedia.org/wiki/Bookkeeping) system.
    * 
@@ -595,7 +595,7 @@ declare namespace bkper {
     addUrls(): TransactionsDataTableBuilder;
 
     /**
-     * @returns A two-dimensional array containing all [[Transaction]]s.
+     * @returns A two-dimensional array containing all [[Transactions]].
      */
     build(): any[][];
 
@@ -623,7 +623,7 @@ declare namespace bkper {
     /**
      * Fluent method to set the [[BalanceType]]
      * 
-     * For [[BalanceType.TOTAL]] balance type, the table format looks like:
+     * For **TOTAL** balance type, the table format looks like:
      * 
      * ```
      *   _____________________
@@ -636,7 +636,7 @@ declare namespace bkper {
      * ```
      * Two columns, and Each Group | Account | Tag per line.
      * 
-     * For [[BalanceType.PERIOD]] or  [[BalanceType.CUMULATIVE]], the table will be a time table, and the format looks like:
+     * For **PERIOD** or **CUMULATIVE**, the table will be a time table, and the format looks like:
      * 
      * ```
      *  _____________________________________________
@@ -649,7 +649,7 @@ declare namespace bkper {
      * 
      * ```
      * 
-     * First column will be the Date column, and one column for each Group | Account | Tag.
+     * First column will be the Date column, and one column for each [[Group]] | [[Account]] | Hashtag.
      * 
      * 
      * @param balanceType The type of balance for this data table
@@ -662,7 +662,6 @@ declare namespace bkper {
      * 
      * Gets an two-dimensional array with the balances.
      * 
-     *  @returns
      */
     build(): any[][];
 

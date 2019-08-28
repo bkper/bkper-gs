@@ -49,40 +49,7 @@ class BalancesDataTableBuilder implements bkper.BalancesDataTableBuilder {
   }
 
   /**
-   * Fluent method to set the [[BalanceType]]
-   * 
-   * For [[BalanceType.TOTAL]] balance type, the table format looks like:
-   * 
-   * ```
-   *   _____________________
-   *  |    NAME   | AMOUNT  |
-   *  | Expenses  | 4568.23 |
-   *  | Incomes   | 5678.93 |
-   *  |    ...    |   ...   |
-   *  |___________|_________|
-   * 
-   * ```
-   * Two columns, and Each Group | Account | Tag per line.
-   * 
-   * For [[BalanceType.PERIOD]] or  [[BalanceType.CUMULATIVE]], the table will be a time table, and the format looks like:
-   * 
-   * ```
-   *  _____________________________________________
-   *  |    DATE    | Expenses | Incomes |    ...   |
-   *  | 15/01/2014 | 2345.23  | 3452.93 |    ...   |
-   *  | 15/02/2014 | 2345.93  | 3456.46 |    ...   |
-   *  | 15/03/2014 | 2456.45  | 3567.87 |    ...   |
-   *  |    ...     |   ...    |   ...   |    ...   |
-   *  |___________ |__________|_________|__________|
-   * 
-   * ```
-   * 
-	 * First column will be the Date column, and one column for each Group | Account | Tag.
-   * 
-   * 
-   * @param balanceType The type of balance for this data table
-   * 
-   * @returns This builder with respective balance type.
+   * @inheritdoc
    */
   public setBalanceType(balanceType: BalanceType): BalancesDataTableBuilder {
     this.balanceType = balanceType;
@@ -105,7 +72,7 @@ class BalancesDataTableBuilder implements bkper.BalancesDataTableBuilder {
   }
 
 
-  ///////////////////////
+  ////////////////////////
 
 
   private buildTotalDataTable_() {

@@ -5,7 +5,7 @@
  * It contains all [[Account]]s where [[Transaction]]s are recorded/posted;
  * 
  */
-class Book implements bkper.Book {
+class Book implements GoogleAppsScript.Bkper.Book {
 
   private id: string
   private wrapped: bkper.BookV2Payload

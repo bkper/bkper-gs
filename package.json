@@ -8,13 +8,13 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "build": "yarn run docs:json && yarn run types",
-    "docs": "./node_modules/.bin/typedoc ./@types/bkper-app --ignoreCompilerErrors --excludeExternals --includeDeclarations --name 'BkperApp' --mode file",
+    "docs": "./node_modules/.bin/typedoc ./@types/google-apps-script.bkper --ignoreCompilerErrors --excludeExternals --includeDeclarations --name 'BkperApp' --mode file",
     "docs:html": "yarn docs --out dist/docs --theme minimal --hideGenerator && cp -rf ./images/ ./dist/docs/images/",
     "docs:json": "yarn docs --json dist/apidocs.json ",
     "docs:publish": "yarn docs:json && cp dist/apidocs.json ../bkper-site/client/static/_data/",
-    "docs:watch": "watch 'yarn run docs:publish' ./@types/bkper-app",
+    "docs:watch": "watch 'yarn run docs:publish' ./@types/google-apps-script.bkper",
     "clasp": "./node_modules/.bin/clasp",
-    "types": "mkdir -p dist && mkdir -p dist/bkper-app && cp src/library/index.ts dist/bkper-app/index.d.ts",
+    "types": "mkdir -p dist && mkdir -p dist/google-apps-script.bkper && cp src/library/index.ts dist/google-apps-script.bkper/index.d.ts",
     "push": "yarn run clasp push",
     "api": "yarn --cwd ../bkper-pwa/api-typings-generator build --url http://app.bkper.com/_ah/api/discovery/v1/apis/bkper/v2/rest --out /Users/maelcaldas/git/bkper-app/@types"
   },

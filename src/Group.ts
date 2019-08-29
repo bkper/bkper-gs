@@ -1,5 +1,5 @@
 
-class Group implements bkper.Group {
+class Group implements GoogleAppsScript.Bkper.Group {
 
   /**
    * @ignore

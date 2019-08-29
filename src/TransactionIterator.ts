@@ -1,5 +1,5 @@
 
-class TransactionIterator implements bkper.TransactionIterator {
+class TransactionIterator implements GoogleAppsScript.Bkper.TransactionIterator {
 
   private book: Book
   private query: string

@@ -1,5 +1,5 @@
 
-class Account implements bkper.Account {
+class Account implements GoogleAppsScript.Bkper.Account {
 
   /**
    * @ignore

@@ -3,7 +3,7 @@
 /**
  * A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
  */
-class BalancesDataTableBuilder implements bkper.BalancesDataTableBuilder {
+class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTableBuilder {
 
   private balanceType: BalanceType;
   private periodicity: Periodicity;

@@ -15,6 +15,7 @@
   enum Permission {
     NONE = "NONE",
     VIEWER = "VIEWER",
+    RECORD_ONLY = "RECORD_ONLY",
     POST = "POST",
     EDITOR = "EDITOR",
     OWNER = "OWNER"

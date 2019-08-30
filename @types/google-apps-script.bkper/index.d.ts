@@ -12,6 +12,9 @@ declare namespace GoogleAppsScript {
 
     /**
      * The main entry point to interact with Bkper
+     * 
+     * Script ID: **1fSZnepYcDUjxCsrWYD3452UJ5nJiB4js0cD45WWOAjMcKJR_PKfLU60X**
+     * 
      */
     export interface BkperApp {
 
@@ -175,10 +178,6 @@ declare namespace GoogleAppsScript {
        * If not specified, the type ASSET (permanent=true/credit=false) will be set.
        * 
        * If all other accounts in same group is in another group, the account will also be added to the other group.
-       * 
-       * @param name The name of the Account
-       * @param group The group of the Account. 
-       * @param description The description of the Account
        * 
        * @returns The created Account object
        */
@@ -548,8 +547,6 @@ declare namespace GoogleAppsScript {
 
       /**
        * Sets a continuation token from previous paused iteration
-       * 
-       * @param continuationToken 
        */
       setContinuationToken(continuationToken: string): void;
 
@@ -691,16 +688,56 @@ declare namespace GoogleAppsScript {
       YARLY = "YARLY"
     }
 
+    /**
+     * Decimal separator of numbers on book
+     */
     export enum DecimalSeparator {
+      /**
+       * ,
+       */
       COMMA = "COMMA",
+
+      /**
+       * .
+       */
       DOT = "DOT"
     }
 
+    /**
+     * Enum representing permissions of user in the Book
+     * 
+     * Learn more at [share article](https://help.bkper.com/en/articles/2569153-share-your-book-with-your-peers).
+     */
     export enum Permission {
+
+      /**
+       * No permission
+       */
       NONE = "NONE",
+
+      /**
+       * View transactions, accounts and balances.
+       */
       VIEWER = "VIEWER",
+
+      /**
+       * Record and delete drafts only. Useful to collect data only
+       */
+      RECORD_ONLY = "RECORD_ONLY",
+
+      /**
+       * View transactions, accounts, record and delete drafts
+       */
       POST = "POST",
+
+      /**
+       * Manage accounts, transactions, book configuration and sharing
+       */      
       EDITOR = "EDITOR",
+      
+      /**
+       * Manage everything, including book visibility and deletion. Only one owner per book.
+       */            
       OWNER = "OWNER"
     }
 
@@ -718,8 +755,10 @@ declare namespace GoogleAppsScript {
   }
 }
 /**
- * The main entry point to interact with Bkper Books
- * @hidden
+ * The main entry point to interact with Bkper
+ * 
+ * Script ID: **1fSZnepYcDUjxCsrWYD3452UJ5nJiB4js0cD45WWOAjMcKJR_PKfLU60X**
+ * 
  */
 declare var BkperApp: GoogleAppsScript.Bkper.BkperApp;
 

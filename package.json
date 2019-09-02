@@ -9,7 +9,7 @@
     "clean": "rm -rf ./dist",
     "build": "yarn run docs:json && yarn run types",
     "docs": "./node_modules/.bin/typedoc ./@types/google-apps-script.bkper --ignoreCompilerErrors --excludeExternals --includeDeclarations --name 'BkperApp' --mode file",
-    "docs:html": "yarn docs --out dist/docs --theme minimal --hideGenerator && cp -rf ./images/ ./dist/docs/images/",
+    "docs:html": "yarn docs --out dist/docs --theme minimal --hideGenerator",
     "docs:json": "yarn docs --json dist/apidocs.json ",
     "docs:publish": "yarn docs:json && cp dist/apidocs.json ../bkper-site/client/static/_data/",
     "docs:watch": "watch 'yarn run docs:publish' ./@types/google-apps-script.bkper",

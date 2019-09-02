@@ -20,8 +20,9 @@ class Book implements GoogleAppsScript.Bkper.Book {
   /**
    * @ignore
    */
-  constructor(id: string) {
+  constructor(id: string, wrapped?: bkper.BookV2Payload) {
     this.id = id;
+    this.wrapped = wrapped;
   }
 
   /**
@@ -280,10 +281,7 @@ class Book implements GoogleAppsScript.Bkper.Book {
     }
   }
 
-  /**
-   * @ignore
-   */
-  public getSavedQueries(): bkper.SavedQueryV2Payload[] {
+  public getSavedQueries(): {id?: string, query?: string, title?: string}[] {
     if (this.savedQueries == null) {
       this.savedQueries = SavedQueryService_.getSavedQueries(this.getId());
     }

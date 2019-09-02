@@ -36,21 +36,16 @@ function getAuthorizationHtml(continueUrl?: string, continueText?: string) {
   return Authorizer_.createAuthorizeTemplate(continueUrl, continueText);
 }
 
-function openById(bookId: string): Book  {
-  return new Book(bookId);
-}
-
 /**
- * @ignore
  */
-function getUserDetails(): bkper.UserDetailsV2Payload {
-  return UserService_.getUserDetails();
+function getBook(id: string): Book  {
+  return new Book(id);
 }
 
-
-function listBooks(): bkper.BookV2Payload[]  {
-  return BookService_.listBooks();
+function getBooks(): Book[] {
+  return BookService_.listBooks().map(bookV2 => {return new Book(bookV2.id, bookV2)});
 }
+
 
 /**
  * @ignore
@@ -62,6 +57,28 @@ function normalizeName(name: string): string {
 
 
 //DEPRECATED METHODS
+
+/**
+ * @ignore
+ */
+function getUserDetails(): bkper.UserDetailsV2Payload {
+  return UserService_.getUserDetails();
+}
+
+/**
+ * @ignore
+ */
+function openById(bookId: string): Book  {
+  return new Book(bookId);
+}
+
+/**
+ * @ignore
+ */
+function listBooks(): bkper.BookV2Payload[]  {
+  return BookService_.listBooks();
+}
+
 /**
  * @ignore
  */
@@ -75,4 +92,5 @@ function openLedgerById(ledgerId: string): Book {
 function listLedgers(): bkper.BookV2Payload[] {
   return listBooks();
 }
+
 

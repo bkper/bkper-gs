@@ -25,25 +25,28 @@ declare namespace GoogleAppsScript {
 
 
       /**
-       * Returns the [[Book]] with the specified bookId from url param.
+       * Gets the [[Book]] with the specified bookId from url param.
        *
        * This is the main Entry Point to start interacting with BkperApp
        *
        * Example:
        *
        * ```javascript
-       * var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+       * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
        * book.record("#fuel for my Land Rover 126.50 28/01/2013");
        * ```
        *
-       * @param bookId The universal book id - The same bookId param of URL you access at app.bkper.com
-       *
+       * @param id The universal book id - The same bookId param of URL you access at app.bkper.com
        */
-      openById(bookId: string): Book;
+      getBook(id: string): Book;
+
+      /**
+       * Gets all [[Books]] the user has access.
+       */
+      getBooks(): Book[];
 
       /**
        * Check if the user is already althorized with OAuth2 to the bkper API
-       * @returns True if the user is already authorized, false otherwise
        */
       isUserAuthorized(): boolean;
 
@@ -166,6 +169,11 @@ declare namespace GoogleAppsScript {
       getAccount(idOrName: string): Account;
 
       /**
+       * Gets all saved queries from this book
+       */
+      getSavedQueries(): {id?: string, query?: string, title?: string }[]
+
+      /**
        * Gets all [[Accounts]] of this Book
        */
       getAccounts(): Account[];
@@ -209,7 +217,7 @@ declare namespace GoogleAppsScript {
        * Example:
        * 
        * ```javascript
-       * var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+       * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
        * 
        * var balancesDataTable = book.createBalancesDataTable("#rental #energy after:8/2013 before:9/2013").build();
        * ```
@@ -228,7 +236,7 @@ declare namespace GoogleAppsScript {
        * Example: 
        * 
        * ```javascript
-       * var book = BkperApp.openById("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+       * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
        * 
        * var transactionsDataTable = book.createTransactionsDataTable("acc:'Bank' after:8/2013 before:9/2013").build();
        * ```
@@ -732,12 +740,12 @@ declare namespace GoogleAppsScript {
 
       /**
        * Manage accounts, transactions, book configuration and sharing
-       */      
+       */
       EDITOR = "EDITOR",
-      
+
       /**
        * Manage everything, including book visibility and deletion. Only one owner per book.
-       */            
+       */
       OWNER = "OWNER"
     }
 

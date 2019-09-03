@@ -132,6 +132,40 @@ namespace Utils_ {
     w.wrapped = wrapped;
     return w;
   }
+
+  export function buildURLParams(params: any): string {
+    var urlSegment = "";
+    var i = 0;
+    for (var prop in params) {
+      if (params.hasOwnProperty(prop)) {
+        if (i > 0) {
+          urlSegment += "&"
+        }
+        var name = prop;
+        var value = params[prop];
+        if (value != null) {
+          urlSegment += name + "=" + encodeURIComponent(value);
+          i++;
+        }
+      }
+    }
+    return urlSegment;
+  }
+
+  export function convertInMatrix(array: any[]): any[][] {
+    var maxLength = 0;
+    for (var i = 0; i < array.length; i++) {
+      if (array[i].length > maxLength) {
+        maxLength = array[i].length;
+      }
+    }
+    for (var i = 0; i < array.length; i++) {
+      while (array[i].length < maxLength) {
+        array[i].push(null);
+      }
+    }
+    return array;
+  }  
   
 }
 

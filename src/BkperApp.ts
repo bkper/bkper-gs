@@ -51,8 +51,7 @@ function getBooks(): Book[] {
  * @ignore
  */
 function normalizeName(name: string): string {
-  //@ts-ignore
-  return BkperUtils.normalizeText(name, "_");
+  return Normalizer_.normalizeText(name, "_");
 }
 
 

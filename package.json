@@ -7,22 +7,31 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf ./dist",
-    "build": "yarn run docs:json && yarn run types",
-    "docs": "./node_modules/.bin/typedoc ./@types/google-apps-script.bkper --ignoreCompilerErrors --excludeExternals --includeDeclarations --name 'BkperApp' --mode file",
-    "docs:html": "yarn docs --out dist/docs --theme minimal --hideGenerator",
-    "docs:json": "yarn docs --json dist/apidocs.json ",
-    "docs:publish": "yarn docs:json && cp dist/apidocs.json ../bkper-site/client/static/_data/",
+    "pretest": "tsc --skipLibCheck --sourcemap",
+    "test": "mocha --require source-map-support/register dist/BkperApp.js",
+    "docs": "./node_modules/.bin/typedoc ./@types/google-apps-script.bkper --ignoreCompilerErrors --excludeExternals --includeDeclarations --mode file --json dist/apidocs.json ",
+    "docs:publish": "yarn docs && cp dist/apidocs.json ../bkper-site/client/static/_data/ && cp ./@types/google-apps-script.bkper/index.d.ts ../bkper-site/client/static/api/google-apps-script.bkper.d.ts",
+    "postdocs:publish": "cp -rf @types/google-apps-script.bkper ../bkper-sheets/server/@types/google-apps-script.bkper",
     "docs:watch": "watch 'yarn run docs:publish' ./@types/google-apps-script.bkper",
     "clasp": "./node_modules/.bin/clasp",
-    "types": "mkdir -p dist && mkdir -p dist/google-apps-script.bkper && cp src/library/index.ts dist/google-apps-script.bkper/index.d.ts",
+    "prepush": "yarn run test",
     "push": "yarn run clasp push",
     "api": "yarn --cwd ../bkper-pwa/api-typings-generator build --url http://app.bkper.com/_ah/api/discovery/v1/apis/bkper/v2/rest --out /Users/maelcaldas/git/bkper-app/@types"
   },
   "devDependencies": {
     "@google/clasp": "^2.2.1",
+    "@types/chai": "^4.2.0",
     "@types/google-apps-script": "^0.0.56",
+    "@types/mocha": "^5.2.7",
     "copyfiles": "^2.1.1",
+    "source-map-support": "^0.5.13",
     "typedoc": "^0.15.0",
-    "watch": "^1.0.2"
+    "watch": "^1.0.2",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "systemjs": "^6.0.0"    
+  },
+  "dependencies": {
+
   }
 }

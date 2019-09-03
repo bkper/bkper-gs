@@ -1,12 +1,5 @@
 {
   "timeZone": "Etc/GMT",
-  "dependencies": {
-    "libraries": [{
-      "userSymbol": "BkperUtils",
-      "libraryId": "1WALyd4X8KqsCqV5N8Mw0nIRIbXht18YWdGMmwWfepItZBAKev9AwMcZV",
-      "version": "22"
-    }]
-  },
   "webapp": {
     "access": "ANYONE",
     "executeAs": "USER_ACCESSING"

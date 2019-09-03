@@ -85,8 +85,7 @@ class TransactionsDataTableBuilder implements GoogleAppsScript.Bkper.Transaction
 
     if (transactions.length > 0) {
       transactions.splice(0, 0, headerLine);
-      //@ts-ignore
-      transactions = BkperUtils.convertInMatrix(transactions);
+      transactions = Utils_.convertInMatrix(transactions);
       return transactions;
     } else {
       return [headerLine];

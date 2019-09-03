@@ -4,19 +4,20 @@
       "esnext"
     ],
     "target": "ES3",
-    "module": "none",
+    "module": "system",
     "noImplicitUseStrict": true,
     "noImplicitAny": true,
     "experimentalDecorators": true,
+    "outFile": "dist/BkperApp.js"
   },
   "include": [
     "src/**/*.ts",
+    "test/**/*.ts",
     "@types/**/*.d.ts",
   ],
   "exclude": [
-    "node_modules",
-    "@types/**/*-tests.ts",
-    "**/*.spec.ts",
-    "dist/**/*"
-  ]
+    "node_modules/",
+    "dist/"
+  ],
+
 }

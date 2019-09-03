@@ -36,8 +36,8 @@ namespace API {
       params.key = "AIzaSyCd9EGlw8P2vUoAkyaAE_472zXAhItPax8";
       //APP_KEY not defined. Fallback.
     }
-    // @ts-ignore
-    queryParams = BkperUtils.buildURLParams(params);
+    
+    queryParams = Utils_.buildURLParams(params);
 
     var serviceFullPath = "ledgers";
 

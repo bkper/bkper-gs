@@ -8,7 +8,7 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "pretest": "tsc --skipLibCheck --sourcemap",
-    "test": "mocha --require source-map-support/register dist/BkperApp.js",
+    "test": "mocha --require source-map-support/register dist/bundle.js",
     "docs": "./node_modules/.bin/typedoc ./@types/google-apps-script.bkper --ignoreCompilerErrors --excludeExternals --includeDeclarations --mode file --json dist/apidocs.json ",
     "docs:publish": "yarn docs && cp dist/apidocs.json ../bkper-site/client/static/_data/ && cp ./@types/google-apps-script.bkper/index.d.ts ../bkper-site/client/static/api/google-apps-script.bkper.d.ts",
     "postdocs:publish": "cp -rf @types/google-apps-script.bkper ../bkper-sheets/server/@types/google-apps-script.bkper",
@@ -23,15 +23,11 @@
     "@types/chai": "^4.2.0",
     "@types/google-apps-script": "^0.0.56",
     "@types/mocha": "^5.2.7",
-    "copyfiles": "^2.1.1",
-    "source-map-support": "^0.5.13",
-    "typedoc": "^0.15.0",
-    "watch": "^1.0.2",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
-    "systemjs": "^6.0.0"    
+    "source-map-support": "^0.5.13",
+    "typedoc": "^0.15.0",
+    "watch": "^1.0.2"
   },
-  "dependencies": {
-
-  }
+  "dependencies": {}
 }

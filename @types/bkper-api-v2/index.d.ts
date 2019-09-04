@@ -102,9 +102,9 @@ declare namespace bkper {
   }
   interface SavedQueryV2Payload {
     account?: string;
-    id?: string;
-    query?: string;
-    title?: string;
+    id: string;
+    query: string;
+    title: string;
   }
   interface TagBalancesV2Payload {
     balances?: BalanceV2Payload[];

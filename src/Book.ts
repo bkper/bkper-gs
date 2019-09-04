@@ -115,9 +115,9 @@ class Book implements GoogleAppsScript.Bkper.Book {
   /**
    * @inheritdoc
    */
-  public getLastUpdateMs(): string {
+  public getLastUpdateMs(): number {
     this.checkBookLoaded_();
-    return this.wrapped.lastUpdateMs;
+    return +this.wrapped.lastUpdateMs;
   }
 
   /**
@@ -281,7 +281,7 @@ class Book implements GoogleAppsScript.Bkper.Book {
     }
   }
 
-  public getSavedQueries(): {id?: string, query?: string, title?: string}[] {
+  public getSavedQueries(): {id: string, query: string, title: string}[] {
     if (this.savedQueries == null) {
       this.savedQueries = SavedQueryService_.getSavedQueries(this.getId());
     }

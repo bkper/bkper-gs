@@ -67,7 +67,7 @@ class Account implements GoogleAppsScript.Bkper.Account {
     }
   }
 
-  public isActive = function (): boolean {
+  public isActive(): boolean {
     return this.wrapped.active;
   };
 

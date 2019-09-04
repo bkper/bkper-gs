@@ -118,7 +118,7 @@ declare namespace GoogleAppsScript {
       /**
        * @return The last update date of the book, in in milliseconds
        */
-      getLastUpdateMs(): string;
+      getLastUpdateMs(): number;
 
       /**
        * @param  date The date to format as string.
@@ -171,7 +171,7 @@ declare namespace GoogleAppsScript {
       /**
        * Gets all saved queries from this book
        */
-      getSavedQueries(): {id?: string, query?: string, title?: string }[]
+      getSavedQueries(): {id: string, query: string, title: string}[]
 
       /**
        * Gets all [[Accounts]] of this Book
@@ -364,6 +364,11 @@ declare namespace GoogleAppsScript {
        * @param  group The Group name, id or object
        */
       isInGroup(group: string | Group): boolean;
+
+      /**
+       * Tell if this account is Active or otherwise Archived
+       */
+      isActive(): boolean;
 
     }
 

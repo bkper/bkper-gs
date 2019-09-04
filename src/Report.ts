@@ -241,7 +241,7 @@ namespace Report {
       return this.wrapped.name;
     }
 
-    public isCredit = function (): boolean {
+    public isCredit(): boolean {
       return this.wrapped.credit;
     }
 

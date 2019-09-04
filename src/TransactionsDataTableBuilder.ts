@@ -16,33 +16,25 @@ class TransactionsDataTableBuilder implements GoogleAppsScript.Bkper.Transaction
     this.shouldAddUrls = false;
   }
 
-  /**
-   * @inheritdoc
-   */
   public formatDate(): TransactionsDataTableBuilder {
     this.shouldFormatDate = true;
     return this;
   }
 
-  /**
-   * @inheritdoc
-   */
   public formatValue(): TransactionsDataTableBuilder {
     this.shouldFormatValue = true;
     return this;
   }
 
-  /**
-   * @inheritdoc
-   */
   public addUrls(): TransactionsDataTableBuilder {
     this.shouldAddUrls = true;
     return this;
   }
 
-  /**
-   * @inheritdoc
-   */
+  public getFilteredByAccount(): Account {
+    return this.transactionIterator.getFilteredByAccount();
+  }
+
   public build(): any[][] {
     var filteredByAccount = this.transactionIterator.getFilteredByAccount();
     var header = new Array();

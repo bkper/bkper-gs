@@ -602,6 +602,11 @@ declare namespace GoogleAppsScript {
       addUrls(): TransactionsDataTableBuilder;
 
       /**
+       * Return an account if query is filtering by a single account
+       */
+      getFilteredByAccount(): Account;
+
+      /**
        * @returns A two-dimensional array containing all [[Transactions]].
        */
       build(): any[][];

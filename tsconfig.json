@@ -4,11 +4,10 @@
       "esnext"
     ],
     "target": "ES3",
-    "module": "system",
+    "module": "none",
     "noImplicitUseStrict": true,
     "noImplicitAny": true,
-    "experimentalDecorators": true,
-    "outFile": "dist/bundle.js"
+    "experimentalDecorators": true
   },
   "include": [
     "src/**/*.ts",

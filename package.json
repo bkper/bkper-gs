@@ -7,8 +7,8 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf ./dist",
-    "pretest": "tsc --skipLibCheck --sourcemap",
-    "test": "mocha --require source-map-support/register dist/bundle.js",
+    "build": "tsc --skipLibCheck --sourcemap --outFile dist/bundle.js --module system",
+    "test": "yarn build && mocha --require source-map-support/register dist/bundle.js",
     "docs": "./node_modules/.bin/typedoc ./@types/google-apps-script.bkper --ignoreCompilerErrors --excludeExternals --includeDeclarations --mode file --json dist/apidocs.json ",
     "docs:publish": "yarn docs && cp dist/apidocs.json ../bkper-site/client/static/_data/ && cp ./@types/google-apps-script.bkper/index.d.ts ../bkper-site/client/static/api/google-apps-script.bkper.d.ts",
     "postdocs:publish": "cp -rf @types/google-apps-script.bkper ../bkper-sheets/server/@types/google-apps-script.bkper",

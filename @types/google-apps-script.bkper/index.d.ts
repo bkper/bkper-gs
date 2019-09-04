@@ -1,5 +1,5 @@
 // Type definitions for Bkper Google Apps Script library
-// Project: https://developers.bkper.com
+// Project: https://bkper.com/api
 // Definitions by: maelcaldas <https://github.com/maelcaldas>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.2

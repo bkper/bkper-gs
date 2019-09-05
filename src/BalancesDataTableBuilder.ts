@@ -6,30 +6,23 @@
 class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTableBuilder {
 
   private balanceType: BalanceType;
+  private balanceArray: BalanceContainer[];
   private periodicity: Periodicity;
-  private decimalSeparator: DecimalSeparator;
-  private datePattern: string;
-  private fractionDigits: number;
-  private balanceArray: Report.BalanceContainerReport[];
   private shouldFormatDate: boolean;
-  private offsetInMinutes: number;
-  private timeZone: string;
   private shouldFormatValue: boolean;
+  private book: Book;
 
   /**
    * @ignore
    */
-  constructor(balanceContainerReportArray: Report.BalanceContainerReport[], periodicity: Periodicity, decimalSeparator: DecimalSeparator, datePattern: string, fractionDigits: number, offsetInMinutes: number, timeZone: string) {
-    this.balanceType = BalanceType.TOTAL;
-    this.periodicity = periodicity;
-    this.decimalSeparator = decimalSeparator;
-    this.datePattern = datePattern;
-    this.fractionDigits = fractionDigits;
+  constructor(book: Book, balanceContainerReportArray: BalanceContainer[], periodicity: Periodicity) {
+    this.book = book;
     this.balanceArray = balanceContainerReportArray;
+    this.periodicity = periodicity;
+    
+    this.balanceType = BalanceType.TOTAL;
     this.shouldFormatDate = false;
     this.shouldFormatValue = false;
-    this.offsetInMinutes = offsetInMinutes;
-    this.timeZone = timeZone;
   }
 
   /**
@@ -122,14 +115,14 @@ class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTab
 
         for (var j = 0; j < balances.length; j++) {
           var balance = balances[j];
-          var fuzzyDate = this.getFuzzyDate_(balance);
+          var fuzzyDate = balance.getFuzzyDate();
           var indexEntry = dataIndexMap[fuzzyDate];
           if (indexEntry == null) {
             indexEntry = new Object();
-            indexEntry.date = this.getBalanceDate_(balance, this.offsetInMinutes);
+            indexEntry.date = balance.getDate();
             dataIndexMap[fuzzyDate] = indexEntry;
           }
-          var bal = cumulativeBalance ? balance.cumulativeBalance : balance.periodBalance;
+          var bal = cumulativeBalance ? balance.getCumulativeBalance() : balance.getPeriodBalance();
           indexEntry[balanceReport.getName()] = Utils_.getRepresentativeValue(bal, balanceReport.isCredit());
         }
 
@@ -151,7 +144,7 @@ class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTab
         } else {
           amount = Utils_.round(amount);
           if (this.shouldFormatValue) {
-            amount = Utils_.formatValue_(amount, this.decimalSeparator, this.fractionDigits);
+            amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
           }
         }
         row.push(amount);
@@ -173,7 +166,7 @@ class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTab
           if (cell == "null_amount") {
             var amount: any = 0;
             if (this.shouldFormatValue) {
-              amount = Utils_.formatValue_(amount, this.decimalSeparator, this.fractionDigits);
+              amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
             }
             row[j] = amount;
           }
@@ -186,7 +179,7 @@ class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTab
           } else if (cell == "null_amount") {
             var amount: any = 0;
             if (this.shouldFormatValue) {
-              amount = Utils_.formatValue_(amount, this.decimalSeparator, this.fractionDigits);
+              amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
             }
             row[j] = amount;
           }
@@ -198,12 +191,12 @@ class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTab
     }
 
     if (this.shouldFormatDate && table.length > 0) {
-      var pattern = Utils_.getDateFormatterPattern(this.datePattern, this.periodicity);
+      var pattern = Utils_.getDateFormatterPattern(this.book.getDatePattern(), this.periodicity);
       for (var j = 1; j < table.length; j++) {
         var row = table[j];
         if (row.length > 0) {
           //first column
-          row[0] = Utils_.formatDate(row[0], pattern, this.timeZone);
+          row[0] = Utils_.formatDate(row[0], pattern, this.book.getTimeZone());
         }
       }
 
@@ -211,30 +204,5 @@ class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTab
 
     return table;
   }
-
-  private getBalanceDate_(balance: bkper.BalanceV2Payload, offsetInMinutes: number) {
-    var year = balance.year;
-    var month = balance.month;
-    var day = balance.day;
-
-    if (month == null || month == 0) {
-      year++;
-    }
-    if (day == null || day == 0) {
-      month++;
-    }
-
-    var date = Utils_.createDate(year, month, day, offsetInMinutes);
-    return date;
-  }
-
-  private getFuzzyDate_(balance: bkper.BalanceV2Payload): string {
-    var year = balance.year * 10000;
-    var month = balance.month * 100;
-    var day = balance.day;
-    var fuzzyDate = year + month + day;
-    return fuzzyDate + "";
-  }
-
 
 }

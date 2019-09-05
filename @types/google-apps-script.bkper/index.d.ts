@@ -206,6 +206,14 @@ declare namespace GoogleAppsScript {
       getGroup(idOrName: string): Group
 
       /**
+       * 
+       * Create a [[BalanceReport]] based on query
+       * 
+       * @param query The report balance query
+       */
+      getBalanceReport(query: string): BalanceReport;
+
+      /**
        * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]], [[Group]] or **#hashtag**
        * 
        * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
@@ -616,6 +624,45 @@ declare namespace GoogleAppsScript {
        */
       build(): any[][];
 
+    }
+
+    /**
+     * Class that represents a balance on a window of time (Day / Month / Year). 
+     */
+    export interface Balance {
+      getDay(): number;
+      getMonth(): number;
+      getYear(): number;
+      getFuzzyDate(): number;
+      getDate(): Date;
+      getCumulativeBalance(): number;
+      getCumulativeBalance(): number;
+      getPeriodBalance(): number;
+      getCheckedCumulativeBalance(): number;
+      getCheckedPeriodBalance(): number;
+      getUncheckedCumulativeBalance(): number;
+      getUncheckedPeriodBalance(): number;
+    }
+
+    export interface BalanceReport {
+      createDataTable(): BalancesDataTableBuilder;
+      getPeriodicity(): Periodicity;
+      hasOnlyOneGroupBalance(): boolean;
+      getAccountBalances(): BalanceContainer[]
+      getTagBalances(): BalanceContainer[];
+      getGroupBalances(): BalanceContainer[];
+      getGroupBalance(name: string): BalanceContainer;
+    }
+
+    export interface BalanceContainer {
+      getBook(): Book;
+      getName(): string;
+      getBalances(): Balance[];
+      isCredit(): boolean;
+      getCumulativeBalance(): number;
+      getCumulativeBalanceText(): string;
+      getPeriodBalance(): number;
+      getPeriodBalanceText(): string;
     }
 
     /**

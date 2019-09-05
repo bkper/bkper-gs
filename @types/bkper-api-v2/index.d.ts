@@ -35,15 +35,16 @@ declare namespace bkper {
     permanent?: boolean;
   }
   interface BalanceV2Payload {
-    checkedCumulativeBalance?: number;
-    checkedPeriodBalance?: number;
-    cumulativeBalance?: number;
-    day?: number;
-    month?: number;
-    periodBalance?: number;
-    uncheckedCumulativeBalance?: number;
-    uncheckedPeriodBalance?: number;
-    year?: number;
+    checkedCumulativeBalance: number;
+    checkedPeriodBalance: number;
+    cumulativeBalance: number;
+    day: number;
+    month: number;
+    periodBalance: number;
+    uncheckedCumulativeBalance: number;
+    uncheckedPeriodBalance: number;
+    year: number;
+    fuzzyDate: number;
   }
   interface BalancesV2Payload {
     accountBalances?: AccountBalancesV2Payload[];

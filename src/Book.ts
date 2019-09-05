@@ -1,10 +1,4 @@
-/**
- *
- * A Book represents [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
- *
- * It contains all [[Account]]s where [[Transaction]]s are recorded/posted;
- * 
- */
+
 class Book implements GoogleAppsScript.Bkper.Book {
 
   private id: string
@@ -289,11 +283,11 @@ class Book implements GoogleAppsScript.Bkper.Book {
   }
 
   /**
-   * @ignore
+   * @inheritdoc
    */
   public getBalanceReport(query: string): Report.BalanceReport {
     var balances = BalancesService_.getBalances(this.getId(), query);
-    return new Report.BalanceReport(balances, this.getDecimalSeparator(), this.getDatePattern(), this.getFractionDigits(), this.getTimeZoneOffset(), this.getTimeZone());
+    return new Report.BalanceReport(this, balances);
   }
 
   /**
@@ -301,7 +295,7 @@ class Book implements GoogleAppsScript.Bkper.Book {
    */
   public createBalancesDataTable(query: string): BalancesDataTableBuilder {
     var balances = BalancesService_.getBalances(this.getId(), query);
-    return new Report.BalanceReport(balances, this.getDecimalSeparator(), this.getDatePattern(), this.getFractionDigits(), this.getTimeZoneOffset(), this.getTimeZone()).createDataTable();
+    return new Report.BalanceReport(this, balances).createDataTable();
   }
 
 

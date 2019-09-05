@@ -4,56 +4,37 @@
  */
 namespace Report {
 
-
-  export interface BalanceContainerReport {
-    getName(): string
-    getBalances(): bkper.BalanceV2Payload[]
-    isCredit(): boolean
-    getCumulativeBalance(): number
-    getCumulativeBalanceText(): string
-    getPeriodBalance(): number
-    getPeriodBalanceText(): string
-  }
-
   export class BalanceReport {
 
     private wrapped: bkper.BalancesV2Payload;
-    private decimalSeparator: DecimalSeparator;
-    private datePattern: string;
-    private fractionDigits: number;
-    private offsetInMinutes: number;
-    private timeZone: string;
-    private groupBalanceReports: GroupBalanceReport[];
-    private accountBalanceReports: AccountBalanceReport[];
-    private tagBalanceReports: TagBalanceReport[];
+
+    private book: Book;
+    private groupBalances: GroupBalances[];
+    private accountBalances: AccountBalances[];
+    private tagBalances: TagBalances[];
 
 
-    constructor(balanceReportPlain: bkper.BalancesV2Payload, decimalSeparator: DecimalSeparator, datePattern: string, fractionDigits: number, offsetInMinutes: number, timeZone: string) {
+    constructor(book: Book, balanceReportPlain: bkper.BalancesV2Payload) {
+      this.book = book;
       this.wrapped = balanceReportPlain;
-      this.groupBalanceReports = null;
-      this.accountBalanceReports = null;
-      this.tagBalanceReports = null;
-
-      this.decimalSeparator = decimalSeparator;
-      this.datePattern = datePattern;
-      this.fractionDigits = fractionDigits;
-      this.offsetInMinutes = offsetInMinutes;
-      this.timeZone = timeZone;
+      this.groupBalances = null;
+      this.accountBalances = null;
+      this.tagBalances = null;
     }
 
     public createDataTable(): BalancesDataTableBuilder {
       var dataTable = new Array();
-      if (this.getAccountBalanceReports() != null) {
-        dataTable = dataTable.concat(this.getAccountBalanceReports());
+      if (this.getAccountBalances() != null) {
+        dataTable = dataTable.concat(this.getAccountBalances());
       }
-      if (this.getTagBalanceReports() != null) {
-        dataTable = dataTable.concat(this.getTagBalanceReports());
+      if (this.getTagBalances() != null) {
+        dataTable = dataTable.concat(this.getTagBalances());
       }
-      if (this.getGroupBalanceReports() != null) {
-        dataTable = dataTable.concat(this.getGroupBalanceReports());
+      if (this.getGroupBalances() != null) {
+        dataTable = dataTable.concat(this.getGroupBalances());
       }
 
-      return new BalancesDataTableBuilder(dataTable, this.getPeriodicity(), this.decimalSeparator, this.datePattern, this.fractionDigits, this.offsetInMinutes, this.timeZone);
+      return new BalancesDataTableBuilder(this.book, dataTable, this.getPeriodicity());
     }
 
 
@@ -62,48 +43,48 @@ namespace Report {
     }
 
     public hasOnlyOneGroupBalance(): boolean {
-      return this.getGroupBalanceReports() != null && this.getGroupBalanceReports().length == 1;
+      return this.getGroupBalances() != null && this.getGroupBalances().length == 1;
     }
 
-    public getAccountBalanceReports(): AccountBalanceReport[] {
-      if (this.accountBalanceReports == null && this.wrapped.accountBalances != null) {
-        this.accountBalanceReports = [];
+    public getAccountBalances(): AccountBalances[] {
+      if (this.accountBalances == null && this.wrapped.accountBalances != null) {
+        this.accountBalances = [];
         for (var i = 0; i < this.wrapped.accountBalances.length; i++) {
           var accountBalance = this.wrapped.accountBalances[i];
-          var accountBalanceReport = new Report.AccountBalanceReport(accountBalance, this.decimalSeparator, this.fractionDigits);
-          this.accountBalanceReports.push(accountBalanceReport);
+          var accountBalanceReport = new Report.AccountBalances(this.book, accountBalance);
+          this.accountBalances.push(accountBalanceReport);
         }
       }
-      return this.accountBalanceReports;
+      return this.accountBalances;
     }
 
-    public getTagBalanceReports(): TagBalanceReport[] {
-      if (this.tagBalanceReports == null && this.wrapped.tagBalances != null) {
-        this.tagBalanceReports = [];
+    public getTagBalances(): TagBalances[] {
+      if (this.tagBalances == null && this.wrapped.tagBalances != null) {
+        this.tagBalances = [];
         for (var i = 0; i < this.wrapped.tagBalances.length; i++) {
           var tagBalance = this.wrapped.tagBalances[i];
-          var tagBalanceReport = new Report.TagBalanceReport(tagBalance, this.decimalSeparator, this.fractionDigits);
-          this.tagBalanceReports.push(tagBalanceReport);
+          var tagBalanceReport = new Report.TagBalances(this.book, tagBalance);
+          this.tagBalances.push(tagBalanceReport);
         }
       }
-      return this.tagBalanceReports;
+      return this.tagBalances;
     }
 
 
-    public getGroupBalanceReports(): GroupBalanceReport[] {
-      if (this.groupBalanceReports == null && this.wrapped.groupBalances != null) {
-        this.groupBalanceReports = [];
+    public getGroupBalances(): GroupBalances[] {
+      if (this.groupBalances == null && this.wrapped.groupBalances != null) {
+        this.groupBalances = [];
         for (var i = 0; i < this.wrapped.groupBalances.length; i++) {
           var grouBalances = this.wrapped.groupBalances[i];
-          var accGroupBalances = new GroupBalanceReport(grouBalances, this.getPeriodicity(), this.decimalSeparator, this.datePattern, this.fractionDigits, this.offsetInMinutes, this.timeZone);
-          this.groupBalanceReports.push(accGroupBalances);
+          var accGroupBalances = new GroupBalances(this.book, grouBalances, this.getPeriodicity());
+          this.groupBalances.push(accGroupBalances);
         }
       }
-      return this.groupBalanceReports;
+      return this.groupBalances;
     }
 
-    public getGroupBalanceReport(groupName: string): GroupBalanceReport {
-      var groupBalances = this.getGroupBalanceReports();
+    public getGroupBalance(groupName: string): GroupBalances {
+      var groupBalances = this.getGroupBalances();
       if (groupBalances == null) {
         return null;
       }
@@ -115,24 +96,23 @@ namespace Report {
       }
     }
 
-    public getBalanceReportPlain(): bkper.BalancesV2Payload {
-      return this.wrapped;
-    }
   }
 
 
   //###################### ACCOUNT BALANCE REPORT ######################
 
 
-  export class AccountBalanceReport implements BalanceContainerReport {
+  export class AccountBalances implements BalanceContainer {
     private wrapped: bkper.AccountBalancesV2Payload;
-    private decimalSeparator: DecimalSeparator;
-    private fractionDigits: number;
+    private book: Book;
 
-    constructor(balancePlain: bkper.AccountBalancesV2Payload, decimalSeparator: DecimalSeparator, fractionDigits: number) {
+    constructor(book: Book, balancePlain: bkper.AccountBalancesV2Payload) {
+      this.book = book;
       this.wrapped = balancePlain;
-      this.decimalSeparator = decimalSeparator;
-      this.fractionDigits = fractionDigits;
+    }
+
+    public getBook(): Book {
+      return this.book;
     }
 
     public getName(): string {
@@ -144,44 +124,44 @@ namespace Report {
     }
 
     public getPeriodBalance(): number {
-      var balance = Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
+      var balance = Utils_.round(this.wrapped.periodBalance, this.book.getFractionDigits());
       return Utils_.getRepresentativeValue(balance, this.isCredit());
     }
 
     public getPeriodBalanceText(): string {
-      return Utils_.formatValue_(this.getPeriodBalance(), this.decimalSeparator, this.fractionDigits)
+      return this.book.formatValue(this.getPeriodBalance());
     }
 
     public getCumulativeBalance(): number {
-      var balance = Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
+      var balance = Utils_.round(this.wrapped.cumulativeBalance, this.book.getFractionDigits());
       balance = Utils_.getRepresentativeValue(balance, this.isCredit());
       return balance;
     }
 
     public getCumulativeBalanceText(): string {
-      return Utils_.formatValue_(this.getCumulativeBalance(), this.decimalSeparator, this.fractionDigits);
+      return this.book.formatValue(this.getCumulativeBalance());
     }
 
-    public getBalances(): bkper.BalanceV2Payload[] {
-      return this.wrapped.balances;
+    public getBalances(): GoogleAppsScript.Bkper.Balance[] {
+      return this.wrapped.balances.map(balancePlain => new Balance(this, balancePlain));
     }
   }
 
 
-
-
   //###################### TAG BALANCE REPORT ######################
 
-  export class TagBalanceReport implements BalanceContainerReport {
+  export class TagBalances implements BalanceContainer {
 
     private wrapped: bkper.TagBalancesV2Payload;
-    private decimalSeparator: DecimalSeparator;
-    private fractionDigits: number;
+    private book: Book;
 
-    constructor(balancePlain: bkper.TagBalancesV2Payload, decimalSeparator: DecimalSeparator, fractionDigits: number) {
+    constructor(book: Book, balancePlain: bkper.TagBalancesV2Payload) {
+      this.book = book;
       this.wrapped = balancePlain;
-      this.decimalSeparator = decimalSeparator;
-      this.fractionDigits = fractionDigits;
+    }
+
+    public getBook(): Book {
+      return this.book;
     }
 
     public getName(): string {
@@ -193,48 +173,45 @@ namespace Report {
     }
 
     public getPeriodBalance(): number {
-      return Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
+      return Utils_.round(this.wrapped.periodBalance, this.book.getFractionDigits());
     }
 
     public getPeriodBalanceText(): string {
-      return Utils_.formatValue_(this.getPeriodBalance(), this.decimalSeparator, this.fractionDigits)
+      return this.book.formatValue(this.getPeriodBalance());
     }
 
     public getCumulativeBalance(): number {
-      return Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
+      return Utils_.round(this.wrapped.cumulativeBalance, this.book.getFractionDigits());
     }
 
     public getCumulativeBalanceText(): string {
-      return Utils_.formatValue_(this.getCumulativeBalance(), this.decimalSeparator, this.fractionDigits)
+      return this.book.formatValue(this.getCumulativeBalance());
     }
 
-    public getBalances(): bkper.BalanceV2Payload[] {
-      return this.wrapped.balances;
+    public getBalances(): GoogleAppsScript.Bkper.Balance[] {
+      return this.wrapped.balances.map(balancePlain => new Balance(this, balancePlain));
     }
   }
 
 
   //###################### GROUP BALANCE REPORT ######################
 
-  export class GroupBalanceReport implements BalanceContainerReport {
+  export class GroupBalances implements BalanceContainer {
 
     private wrapped: bkper.GroupBalancesV2Payload
-    private decimalSeparator: DecimalSeparator;
-    private fractionDigits: number;
+    private accountBalances: AccountBalances[];
     private periodicity: Periodicity;
-    private accountBalanceReports: AccountBalanceReport[];
-    private timeZone: string;
-    private datePattern: string;
-    private offsetInMinutes: number;
 
-    constructor(groupBalancesPlain: bkper.GroupBalancesV2Payload, periodicity: Periodicity, decimalSeparator: DecimalSeparator, datePattern: string, fractionDigits: number, offsetInMinutes: number, timeZone: string) {
+    private book: Book;
+
+    constructor(book: Book, groupBalancesPlain: bkper.GroupBalancesV2Payload, periodicity: Periodicity) {
+      this.book = book;
       this.wrapped = groupBalancesPlain;
       this.periodicity = periodicity;
-      this.datePattern = datePattern;
-      this.offsetInMinutes = offsetInMinutes;
-      this.decimalSeparator = decimalSeparator;
-      this.fractionDigits = fractionDigits;
-      this.timeZone = timeZone;
+    }
+
+    public getBook(): Book {
+      return this.book;
     }
 
     public getName(): string {
@@ -246,43 +223,43 @@ namespace Report {
     }
 
     public getPeriodBalance(): number {
-      var balance = Utils_.round(this.wrapped.periodBalance, this.fractionDigits);
+      var balance = Utils_.round(this.wrapped.periodBalance, this.book.getFractionDigits());
       return Utils_.getRepresentativeValue(balance, this.isCredit());
     }
 
     public getPeriodBalanceText(): string {
-      return Utils_.formatValue_(this.getPeriodBalance(), this.decimalSeparator, this.fractionDigits)
+      return this.book.formatValue(this.getPeriodBalance());
     }
 
     public getCumulativeBalance(): number {
-      var balance = Utils_.round(this.wrapped.cumulativeBalance, this.fractionDigits);
+      var balance = Utils_.round(this.wrapped.cumulativeBalance, this.book.getFractionDigits());
       return Utils_.getRepresentativeValue(balance, this.isCredit());
     }
 
     public getCumulativeBalanceText(): string {
-      return Utils_.formatValue_(this.getCumulativeBalance(), this.decimalSeparator, this.fractionDigits)
+      return this.book.formatValue(this.getCumulativeBalance());
     }
 
-    public getBalances(): bkper.GroupBalancesV2Payload[] {
-      return this.wrapped.balances;
+    public getBalances(): GoogleAppsScript.Bkper.Balance[] {
+      return this.wrapped.balances.map(balancePlain => new Balance(this, balancePlain));
     }
 
 
     public createDataTable() {
-      return new BalancesDataTableBuilder(this.getAccountBalanceReports(), this.periodicity, this.decimalSeparator, this.datePattern, this.fractionDigits, this.offsetInMinutes, this.timeZone);
+      return new BalancesDataTableBuilder(this.book, this.getAccountBalances(), this.periodicity);
     }
 
-    public getAccountBalanceReports(): AccountBalanceReport[] {
+    public getAccountBalances(): AccountBalances[] {
       var accountBalances = this.wrapped.accountBalances;
-      if (this.accountBalanceReports == null && accountBalances != null) {
-        this.accountBalanceReports = [];
+      if (this.accountBalances == null && accountBalances != null) {
+        this.accountBalances = [];
         for (var i = 0; i < accountBalances.length; i++) {
           var accountBalance = accountBalances[i];
-          var accBalances = new AccountBalanceReport(accountBalance, this.decimalSeparator, this.fractionDigits);
-          this.accountBalanceReports.push(accBalances);
+          var accBalances = new AccountBalances(this.book, accountBalance);
+          this.accountBalances.push(accBalances);
         }
       }
-      return this.accountBalanceReports;
+      return this.accountBalances;
     }
   }
 }

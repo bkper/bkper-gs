@@ -840,9 +840,19 @@ declare namespace GoogleAppsScript {
       formatValue(): BalancesDataTableBuilder;
 
       /**
-       * Fluent method to set the [[BalanceType]]
+       * Fluent method to set the [[BalanceType]] for the builder.
        * 
-       * For **TOTAL** balance type, the table format looks like:
+       * @param balanceType The type of balance for this data table
+       * 
+       * @returns This builder with respective balance type.
+       */
+      setBalanceType(balanceType: BalanceType): BalancesDataTableBuilder;
+
+      /**
+       * 
+       * Gets an two-dimensional array with the balances.
+       * 
+       * For **TOTAL** [[BalanceType]], the table format looks like:
        * 
        * ```
        *   _____________________
@@ -853,9 +863,9 @@ declare namespace GoogleAppsScript {
        *  |___________|_________|
        * 
        * ```
-       * Two columns, and Each Group | Account | Tag per line.
+       * Two columns, and each [[Group]] | [[Account]] | #hashtag per line.
        * 
-       * For **PERIOD** or **CUMULATIVE**, the table will be a time table, and the format looks like:
+       * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the table will be a time table, and the format looks like:
        * 
        * ```
        *  _____________________________________________
@@ -868,18 +878,7 @@ declare namespace GoogleAppsScript {
        * 
        * ```
        * 
-       * First column will be the Date column, and one column for each [[Group]], [[Account]] or Hashtag.
-       * 
-       * 
-       * @param balanceType The type of balance for this data table
-       * 
-       * @returns This builder with respective balance type.
-       */
-      setBalanceType(balanceType: BalanceType): BalancesDataTableBuilder;
-
-      /**
-       * 
-       * Gets an two-dimensional array with the balances.
+       * First column will be the Date column, and one column for each [[Group]], [[Account]] or #hashtag.
        * 
        */
       build(): any[][];

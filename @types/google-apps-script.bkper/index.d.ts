@@ -249,24 +249,25 @@ declare namespace GoogleAppsScript {
        * var transactionsDataTable = book.createTransactionsDataTable("acc:'Bank' after:8/2013 before:9/2013").build();
        * ```
        */
-      createTransactionsDataTable(query: string): TransactionsDataTableBuilder;
+      createTransactionsDataTable(query?: string): TransactionsDataTableBuilder;
+
 
 
       /**
-       * Search for transactions.
+       * Get Book transactions based on a query.
        * 
        * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
        *  
        * @param query The query string.
        * 
-       * @return The search result as an iterator.
+       * @return The Transactions result as an iterator.
        * 
        * Example:
        * 
        * ```javascript
        * var book = BkperApp.loadBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
        *
-       * var transactions = book.search("acc:CreditCard after:28/01/2013 before:29/01/2013");
+       * var transactions = book.getTransactions("acc:CreditCard after:28/01/2013 before:29/01/2013");
        *
        * while (transactions.hasNext()) {
        *  var transaction = transactions.next();
@@ -274,7 +275,7 @@ declare namespace GoogleAppsScript {
        * }
        * ```
        */
-      search(query: string): TransactionIterator;
+      getTransactions(query?: string): TransactionIterator;      
 
 
     }

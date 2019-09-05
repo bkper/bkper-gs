@@ -275,7 +275,7 @@ class Book implements GoogleAppsScript.Bkper.Book {
     }
   }
 
-  public getSavedQueries(): {id: string, query: string, title: string}[] {
+  public getSavedQueries(): { id: string, query: string, title: string }[] {
     if (this.savedQueries == null) {
       this.savedQueries = SavedQueryService_.getSavedQueries(this.getId());
     }
@@ -302,16 +302,38 @@ class Book implements GoogleAppsScript.Bkper.Book {
   /**
    * @inheritdoc
    */
-  public createTransactionsDataTable(query: string): TransactionsDataTableBuilder {
-    var transactionIterator = this.search(query);
+  public createTransactionsDataTable(query?: string): TransactionsDataTableBuilder {
+    var transactionIterator = this.getTransactions(query);
     return new TransactionsDataTableBuilder(transactionIterator);
   }
 
   /**
    * @inheritdoc
    */
-  public search(query: string): TransactionIterator {
+  public getTransactions(query?: string): TransactionIterator {
     return new TransactionIterator(this, query);
+  }
+
+
+
+
+
+  
+
+
+  //DEPRECATED
+  /**
+   * @deprecated
+   */
+  public getBalanceReport(query: string): BalancesReport {
+    return this.getBalancesReport(query);
+  }
+
+  /**
+   * @deprecated
+   */
+  public search(query?: string): TransactionIterator {
+    return this.getTransactions(query);
   }
 
 }

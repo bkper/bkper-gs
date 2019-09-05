@@ -12,7 +12,7 @@ class TransactionIterator implements GoogleAppsScript.Bkper.TransactionIterator 
   /**
    * @ignore
    */
-  constructor(book: Book, query: string) {
+  constructor(book: Book, query?: string) {
     this.book = book
     this.query = query
     if (this.query == null) {

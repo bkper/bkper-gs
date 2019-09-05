@@ -645,17 +645,16 @@ declare namespace GoogleAppsScript {
     }
 
     export interface BalancesReport {
-      createDataTable(): BalancesDataTableBuilder;
+      getBook(): Book;
       getPeriodicity(): Periodicity;
       hasOnlyOneGroup(): boolean;
-      getAccountBalancesContainers(): BalancesContainer[]
-      getTagBalancesContainers(): BalancesContainer[];
-      getGroupBalancesContainers(): BalancesContainer[];
-      getGroupBalancesContainer(groupName: string): BalancesContainer;
+      getBalancesContainers(): BalancesContainer[]
+      getBalancesContainer(name: string): BalancesContainer;
+      createDataTable(): BalancesDataTableBuilder;
     }
 
     export interface BalancesContainer {
-      getBook(): Book;
+      getBalancesReport(): BalancesReport;
       getName(): string;
       getBalances(): Balance[];
       isCredit(): boolean;
@@ -663,6 +662,9 @@ declare namespace GoogleAppsScript {
       getCumulativeBalanceText(): string;
       getPeriodBalance(): number;
       getPeriodBalanceText(): string;
+      getBalancesContainers(): BalancesContainer[]
+      getBalancesContainer(name: string): BalancesContainer;      
+      createDataTable(): BalancesDataTableBuilder;
     }
 
     /**

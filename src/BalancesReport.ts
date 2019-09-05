@@ -18,19 +18,27 @@
       this.tagBalancesContainers = null;
     }
 
+    public getBook(): Book {
+      return this.book;
+    }
+
     public createDataTable(): BalancesDataTableBuilder {
-      var dataTable = new Array();
+      return new BalancesDataTableBuilder(this.book, this.getBalancesContainers(), this.getPeriodicity());
+    }
+
+
+    public getBalancesContainers(): GoogleAppsScript.Bkper.BalancesContainer[] {
+      var containers = new Array<GoogleAppsScript.Bkper.BalancesContainer>();
       if (this.getAccountBalancesContainers() != null) {
-        dataTable = dataTable.concat(this.getAccountBalancesContainers());
+        containers = containers.concat(this.getAccountBalancesContainers());
       }
       if (this.getTagBalancesContainers() != null) {
-        dataTable = dataTable.concat(this.getTagBalancesContainers());
+        containers = containers.concat(this.getTagBalancesContainers());
       }
       if (this.getGroupBalancesContainers() != null) {
-        dataTable = dataTable.concat(this.getGroupBalancesContainers());
+        containers = containers.concat(this.getGroupBalancesContainers());
       }
-
-      return new BalancesDataTableBuilder(this.book, dataTable, this.getPeriodicity());
+      return containers;
     }
 
 
@@ -42,24 +50,24 @@
       return this.getGroupBalancesContainers() != null && this.getGroupBalancesContainers().length == 1;
     }
 
-    public getAccountBalancesContainers(): AccountBalancesContainer[] {
+    private getAccountBalancesContainers(): AccountBalancesContainer[] {
       if (this.accountBalancesContainers == null && this.wrapped.accountBalances != null) {
         this.accountBalancesContainers = [];
         for (var i = 0; i < this.wrapped.accountBalances.length; i++) {
           var accountBalance = this.wrapped.accountBalances[i];
-          var accountBalanceReport = new AccountBalancesContainer(this.book, accountBalance);
+          var accountBalanceReport = new AccountBalancesContainer(this, accountBalance);
           this.accountBalancesContainers.push(accountBalanceReport);
         }
       }
       return this.accountBalancesContainers;
     }
 
-    public getTagBalancesContainers(): TagBalancesContainer[] {
+    private getTagBalancesContainers(): TagBalancesContainer[] {
       if (this.tagBalancesContainers == null && this.wrapped.tagBalances != null) {
         this.tagBalancesContainers = [];
         for (var i = 0; i < this.wrapped.tagBalances.length; i++) {
           var tagBalance = this.wrapped.tagBalances[i];
-          var tagBalanceReport = new TagBalancesContainer(this.book, tagBalance);
+          var tagBalanceReport = new TagBalancesContainer(this, tagBalance);
           this.tagBalancesContainers.push(tagBalanceReport);
         }
       }
@@ -67,20 +75,20 @@
     }
 
 
-    public getGroupBalancesContainers(): GroupBalancesContainer[] {
+    private getGroupBalancesContainers(): GroupBalancesContainer[] {
       if (this.groupBalancesContainers == null && this.wrapped.groupBalances != null) {
         this.groupBalancesContainers = [];
         for (var i = 0; i < this.wrapped.groupBalances.length; i++) {
           var grouBalances = this.wrapped.groupBalances[i];
-          var accGroupBalances = new GroupBalancesContainer(this.book, grouBalances, this.getPeriodicity());
+          var accGroupBalances = new GroupBalancesContainer(this, grouBalances, this.getPeriodicity());
           this.groupBalancesContainers.push(accGroupBalances);
         }
       }
       return this.groupBalancesContainers;
     }
 
-    public getGroupBalancesContainer(groupName: string): GroupBalancesContainer {
-      var groupBalances = this.getGroupBalancesContainers();
+    public getBalancesContainer(groupName: string): GoogleAppsScript.Bkper.BalancesContainer {
+      var groupBalances = this.getBalancesContainers();
       if (groupBalances == null) {
         return null;
       }

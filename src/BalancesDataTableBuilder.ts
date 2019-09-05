@@ -6,18 +6,18 @@
 class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTableBuilder {
 
   private balanceType: BalanceType;
-  private balanceArray: BalanceContainer[];
+  private balanceArray: GoogleAppsScript.Bkper.BalancesContainer[];
   private periodicity: Periodicity;
   private shouldFormatDate: boolean;
   private shouldFormatValue: boolean;
-  private book: Book;
+  private book: GoogleAppsScript.Bkper.Book;
 
   /**
    * @ignore
    */
-  constructor(book: Book, balanceContainerReportArray: BalanceContainer[], periodicity: Periodicity) {
+  constructor(book: GoogleAppsScript.Bkper.Book, balancesContainers: GoogleAppsScript.Bkper.BalancesContainer[], periodicity: Periodicity) {
     this.book = book;
-    this.balanceArray = balanceContainerReportArray;
+    this.balanceArray = balancesContainers;
     this.periodicity = periodicity;
     
     this.balanceType = BalanceType.TOTAL;

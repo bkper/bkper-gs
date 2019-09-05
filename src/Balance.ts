@@ -2,9 +2,9 @@ class Balance implements GoogleAppsScript.Bkper.Balance {
 
   private wrapped: bkper.BalanceV2Payload;
 
-  private container: BalanceContainer;
+  private container: GoogleAppsScript.Bkper.BalancesContainer;
 
-  constructor(container: BalanceContainer, balancePlain: bkper.BalanceV2Payload) {
+  constructor(container: GoogleAppsScript.Bkper.BalancesContainer, balancePlain: bkper.BalanceV2Payload) {
     this.container = container;
     this.wrapped = balancePlain;
   }

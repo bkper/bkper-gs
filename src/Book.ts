@@ -285,9 +285,9 @@ class Book implements GoogleAppsScript.Bkper.Book {
   /**
    * @inheritdoc
    */
-  public getBalanceReport(query: string): Report.BalanceReport {
+  public getBalanceReport(query: string): BalancesReport {
     var balances = BalancesService_.getBalances(this.getId(), query);
-    return new Report.BalanceReport(this, balances);
+    return new BalancesReport(this, balances);
   }
 
   /**
@@ -295,7 +295,7 @@ class Book implements GoogleAppsScript.Bkper.Book {
    */
   public createBalancesDataTable(query: string): BalancesDataTableBuilder {
     var balances = BalancesService_.getBalances(this.getId(), query);
-    return new Report.BalanceReport(this, balances).createDataTable();
+    return new BalancesReport(this, balances).createDataTable();
   }
 
 

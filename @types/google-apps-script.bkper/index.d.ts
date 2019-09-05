@@ -211,7 +211,7 @@ declare namespace GoogleAppsScript {
        * 
        * @param query The report balance query
        */
-      getBalanceReport(query: string): BalanceReport;
+      getBalanceReport(query: string): BalancesReport;
 
       /**
        * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]], [[Group]] or **#hashtag**
@@ -644,17 +644,17 @@ declare namespace GoogleAppsScript {
       getUncheckedPeriodBalance(): number;
     }
 
-    export interface BalanceReport {
+    export interface BalancesReport {
       createDataTable(): BalancesDataTableBuilder;
       getPeriodicity(): Periodicity;
-      hasOnlyOneGroupBalance(): boolean;
-      getAccountBalances(): BalanceContainer[]
-      getTagBalances(): BalanceContainer[];
-      getGroupBalances(): BalanceContainer[];
-      getGroupBalance(name: string): BalanceContainer;
+      hasOnlyOneGroup(): boolean;
+      getAccountBalancesContainers(): BalancesContainer[]
+      getTagBalancesContainers(): BalancesContainer[];
+      getGroupBalancesContainers(): BalancesContainer[];
+      getGroupBalancesContainer(groupName: string): BalancesContainer;
     }
 
-    export interface BalanceContainer {
+    export interface BalancesContainer {
       getBook(): Book;
       getName(): string;
       getBalances(): Balance[];

@@ -710,7 +710,7 @@ declare namespace GoogleAppsScript {
     }
 
     /**
-     * Class representing a Balance Report.
+     * Class representing a Balance Report, generated when calling [Book.getBalanceReport](#book_getbalancesreport)
      */
     export interface BalancesReport {
 

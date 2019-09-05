@@ -4,7 +4,7 @@
 
     DAILY = "DAILY",
     MONTHLY = "MONTHLY",
-    YARLY = "YARLY"
+    YEARLY = "YEARLY"
   }
 
   enum DecimalSeparator {

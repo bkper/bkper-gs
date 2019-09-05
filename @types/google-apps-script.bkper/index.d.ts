@@ -628,14 +628,58 @@ declare namespace GoogleAppsScript {
     }
 
     /**
-     * Class that represents a balance on a window of time (Day / Month / Year). 
+     * Class that represents an [[Account]], [[Group]] or **#hashtag** balance on a window of time (Day / Month / Year). 
      */
     export interface Balance {
+
+      /**
+       * The day of the balance. Days starts on 1 to 31. 
+       * 
+       * Day can be 0 (zero) in case of Monthly or Early [[Periodicity]] of the [[BalancesReport]]
+       */
       getDay(): number;
+
+      /**
+       * The month of the balance. Months starts on 1 (January) to 12 (December)
+       * 
+       * Month can be 0 (zero) in case of Early [[Periodicity]] of the [[BalancesReport]]
+       */
       getMonth(): number;
+
+
+      /**
+       * The year of the balance
+       */
       getYear(): number;
+
+      /**
+       * The Fuzzy Date of the balance, based on [[Periodicity]] of the [[BalancesReport]] query, composed by Year, Month and Day.
+       * 
+       * The format is YYYYMMDD. Very usefull for ordering and indexing
+       * 
+       * Month and Day can be 0 (zero), depending on the granularity of the [[Periodicity]].
+       * 
+       * Example:
+       * 
+       * 20180125 - 25, January, 2018 - DAILY Periodicity
+       * 20180100 - January, 2018 - MONTHLY Periodicity
+       * 20180000 - 2018 - YEARLY Periodicity
+       * 
+       */
       getFuzzyDate(): number;
+
+
+      /**
+       * Date object constructed based on [[Book]] time zone offset. Usefull for 
+       * 
+       * If Month or Day is zero, the date will be constructed with first Month (January) or Day (1).
+       */
       getDate(): Date;
+
+
+      /**
+       * The cumulative balance to date
+       */
       getCumulativeBalance(): number;
       getCumulativeBalance(): number;
       getPeriodBalance(): number;
@@ -736,7 +780,7 @@ declare namespace GoogleAppsScript {
 
 
     /**
-     * The Periodicity of the query. It may depend on the way you write the range params.
+     * The Periodicity of the query. It may depend on the level of granularity you write the range params.
      */
     export enum Periodicity {
 
@@ -753,7 +797,7 @@ declare namespace GoogleAppsScript {
       /**
        * Example: on:2013, after:2013, $y
        */
-      YARLY = "YARLY"
+      YEARLY = "YEARLY"
     }
 
     /**

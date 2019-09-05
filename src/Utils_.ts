@@ -95,7 +95,7 @@ namespace Utils_ {
     if (periodicity == Periodicity.MONTHLY) {
       pattern = "MM/yyyy"
     }
-    if (periodicity == Periodicity.YARLY) {
+    if (periodicity == Periodicity.YEARLY) {
       pattern = "yyyy"
     }
     return pattern;

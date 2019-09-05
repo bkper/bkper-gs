@@ -6,7 +6,7 @@
 class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTableBuilder {
 
   private balanceType: BalanceType;
-  private balanceArray: GoogleAppsScript.Bkper.BalancesContainer[];
+  private balancesContainers: GoogleAppsScript.Bkper.BalancesContainer[];
   private periodicity: Periodicity;
   private shouldFormatDate: boolean;
   private shouldFormatValue: boolean;
@@ -17,7 +17,7 @@ class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTab
    */
   constructor(book: GoogleAppsScript.Bkper.Book, balancesContainers: GoogleAppsScript.Bkper.BalancesContainer[], periodicity: Periodicity) {
     this.book = book;
-    this.balanceArray = balancesContainers;
+    this.balancesContainers = balancesContainers;
     this.periodicity = periodicity;
     
     this.balanceType = BalanceType.TOTAL;
@@ -74,20 +74,20 @@ class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTab
     table.push(header);
 
 
-    if (this.balanceArray != null) {
-      this.balanceArray.sort(function (a, b) {
+    if (this.balancesContainers != null) {
+      this.balancesContainers.sort(function (a, b) {
         if (a != null && b != null) {
           return b.getCumulativeBalance() - a.getCumulativeBalance();
         }
         return -1;
       });
-      for (var i = 0; i < this.balanceArray.length; i++) {
-        var balanceReport = this.balanceArray[i];
-        if (balanceReport != null) {
+      for (var i = 0; i < this.balancesContainers.length; i++) {
+        var balancesArray = this.balancesContainers[i];
+        if (balancesArray != null) {
           var line = new Array();
-          var name = balanceReport.getName();
+          var name = balancesArray.getName();
           line.push(name);
-          var balance = this.shouldFormatValue ? balanceReport.getCumulativeBalanceText() : balanceReport.getCumulativeBalance();
+          var balance = this.shouldFormatValue ? balancesArray.getCumulativeBalanceText() : balancesArray.getCumulativeBalance();
           line.push(balance);
           table.push(line);
         }
@@ -105,11 +105,11 @@ class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTab
     var header = new Array();
     header.push("Date");
 
-    for (var i = 0; i < this.balanceArray.length; i++) {
-      var balanceReport = this.balanceArray[i];
-      header.push(balanceReport.getName());
+    for (var i = 0; i < this.balancesContainers.length; i++) {
+      var balancesContainer = this.balancesContainers[i];
+      header.push(balancesContainer.getName());
 
-      var balances = balanceReport.getBalances();
+      var balances = balancesContainer.getBalances();
 
       if (balances != null) {
 
@@ -123,7 +123,7 @@ class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTab
             dataIndexMap[fuzzyDate] = indexEntry;
           }
           var bal = cumulativeBalance ? balance.getCumulativeBalance() : balance.getPeriodBalance();
-          indexEntry[balanceReport.getName()] = Utils_.getRepresentativeValue(bal, balanceReport.isCredit());
+          indexEntry[balancesContainer.getName()] = Utils_.getRepresentativeValue(bal, balancesContainer.isCredit());
         }
 
       }
@@ -136,9 +136,9 @@ class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTab
       var rowObject = dataIndexMap[fuzzy];
       var row = new Array();
       row.push(rowObject.date);
-      for (var i = 0; i < this.balanceArray.length; i++) {
-        var balanceReport = this.balanceArray[i];
-        var amount = rowObject[balanceReport.getName()];
+      for (var i = 0; i < this.balancesContainers.length; i++) {
+        var balancesContainer = this.balancesContainers[i];
+        var amount = rowObject[balancesContainer.getName()];
         if (amount == null) {
           amount = "null_amount";
         } else {

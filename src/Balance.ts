@@ -32,7 +32,7 @@ class Balance implements GoogleAppsScript.Bkper.Balance {
     if (day == null || day == 0) {
       month++;
     }
-    var date = Utils_.createDate(year, month, day, this.container.getBook().getTimeZoneOffset());
+    var date = Utils_.createDate(year, month, day, this.container.getBalancesReport().getBook().getTimeZoneOffset());
     return date;
   }
 

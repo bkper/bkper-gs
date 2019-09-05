@@ -207,11 +207,11 @@ declare namespace GoogleAppsScript {
 
       /**
        * 
-       * Create a [[BalanceReport]] based on query
+       * Create a [[BalancesReport]] based on query
        * 
        * @param query The report balance query
        */
-      getBalanceReport(query: string): BalancesReport;
+      getBalancesReport(query: string): BalancesReport;
 
       /**
        * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]], [[Group]] or **#hashtag**

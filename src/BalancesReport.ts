@@ -10,9 +10,9 @@
     private tagBalancesContainers: TagBalancesContainer[];
 
 
-    constructor(book: Book, balanceReportPlain: bkper.BalancesV2Payload) {
+    constructor(book: Book, balancesReportPlain: bkper.BalancesV2Payload) {
       this.book = book;
-      this.wrapped = balanceReportPlain;
+      this.wrapped = balancesReportPlain;
       this.groupBalancesContainers = null;
       this.accountBalancesContainers = null;
       this.tagBalancesContainers = null;
@@ -55,8 +55,8 @@
         this.accountBalancesContainers = [];
         for (var i = 0; i < this.wrapped.accountBalances.length; i++) {
           var accountBalance = this.wrapped.accountBalances[i];
-          var accountBalanceReport = new AccountBalancesContainer(this, accountBalance);
-          this.accountBalancesContainers.push(accountBalanceReport);
+          var accountBalancesReport = new AccountBalancesContainer(this, accountBalance);
+          this.accountBalancesContainers.push(accountBalancesReport);
         }
       }
       return this.accountBalancesContainers;
@@ -67,8 +67,8 @@
         this.tagBalancesContainers = [];
         for (var i = 0; i < this.wrapped.tagBalances.length; i++) {
           var tagBalance = this.wrapped.tagBalances[i];
-          var tagBalanceReport = new TagBalancesContainer(this, tagBalance);
-          this.tagBalancesContainers.push(tagBalanceReport);
+          var tagBalancesContainer = new TagBalancesContainer(this, tagBalance);
+          this.tagBalancesContainers.push(tagBalancesContainer);
         }
       }
       return this.tagBalancesContainers;

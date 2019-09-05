@@ -175,7 +175,6 @@ class GroupBalancesContainer implements GoogleAppsScript.Bkper.BalancesContainer
     return this.wrapped.balances.map(balancePlain => new Balance(this, balancePlain));
   }
 
-
   public createDataTable() {
     return new BalancesDataTableBuilder(this.balancesReport.getBook(), this.getBalancesContainers(), this.periodicity);
   }

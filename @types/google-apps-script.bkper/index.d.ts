@@ -209,18 +209,18 @@ declare namespace GoogleAppsScript {
        * 
        * Create a [[BalancesReport]] based on query
        * 
-       * @param query The report balance query
+       * @param query The balances report query
        */
       getBalancesReport(query: string): BalancesReport;
 
       /**
-       * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]], [[Group]] or **#hashtag**
+       * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]], [[Group]] or #hashtag
        * 
        * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
        * 
-       * @param query The report balance query
+       * @param query The balances report query
        * 
-       * @return The balance data table builder
+       * @return The balances data table builder
        * 
        * Example:
        * 
@@ -628,7 +628,7 @@ declare namespace GoogleAppsScript {
     }
 
     /**
-     * Class that represents an [[Account]], [[Group]] or **#hashtag** balance on a window of time (Day / Month / Year). 
+     * Class that represents an [[Account]], [[Group]] or #hashtag balance on a window of time (Day / Month / Year). 
      */
     export interface Balance {
 
@@ -678,37 +678,145 @@ declare namespace GoogleAppsScript {
 
 
       /**
-       * The cumulative balance to date
+       * The cumulative balance to the date, since the first transaction posted.
        */
       getCumulativeBalance(): number;
-      getCumulativeBalance(): number;
-      getPeriodBalance(): number;
+
+      /**
+       * The cumulative checked balance to the date, since the first transaction posted.
+       */
       getCheckedCumulativeBalance(): number;
-      getCheckedPeriodBalance(): number;
+
+      /**
+       * The cumulative unchecked balance to the date, since the first transaction posted.
+       */
       getUncheckedCumulativeBalance(): number;
+
+      /**
+       * The balance on the date period.
+       */
+      getPeriodBalance(): number;
+
+      /**
+       * The checked balance on the date period.
+       */
+      getCheckedPeriodBalance(): number;
+
+      /**
+       * The unchecked balance on the date period.
+       */
       getUncheckedPeriodBalance(): number;
+      
     }
 
+    /**
+     * Class representing a Balance Report.
+     */
     export interface BalancesReport {
+
+      /**
+       * The [[Book]] that generated the report.
+       */
       getBook(): Book;
+
+      /**
+       * The [[Periodicity]] of the query used to generate the report.
+       */
       getPeriodicity(): Periodicity;
+
+      /**
+       * Check if the report has only one Group specified on query
+       */
       hasOnlyOneGroup(): boolean;
+
+      /**
+       * Gets all [[BalancesContainers]] of the report
+       */
       getBalancesContainers(): BalancesContainer[]
+
+      /**
+       * Gets a specific [[BalancesContainers]]
+       * 
+       * @param name The [[Account]] name, [[Group]] name or #hashtag
+       */      
       getBalancesContainer(name: string): BalancesContainer;
+
+      /**
+       * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]]
+       */
       createDataTable(): BalancesDataTableBuilder;
     }
 
+    /**
+     * The container of balances of an [[Account]], [[Group]] or #hashtag
+     * 
+     * The container is composed of a list of [[Balances]] for a window of time, as well as its period and cumulative totals.
+     */
     export interface BalancesContainer {
+
+      /**
+       * The parent BalancesReport of the container
+       */
       getBalancesReport(): BalancesReport;
+
+      /**
+       * The [[Account]] name, [[Group]] name or #hashtag
+       */
       getName(): string;
+
+      /**
+       * All [[Balances]] of the container
+       */
       getBalances(): Balance[];
+
+      /**
+       * Gets the credit nature of the BalancesContainer, based on [[Account]], [[Group]] or #hashtag this container represents.
+       * 
+       * For [[Account]], the credit nature will be the same as the one from the Account
+       * 
+       * For [[Group]], the credit nature will be the same, if all accounts containing on it has the same credit nature. False if mixed.
+       * 
+       * For #hashtag, the credit nature will be true.
+       */
       isCredit(): boolean;
+
+      /**
+       * The cumulative balance to the date, since the first transaction posted.
+       */
       getCumulativeBalance(): number;
+
+      /**
+       * The cumulative balance formatted according to [[Book]] decimal format and fraction digits.
+       */
       getCumulativeBalanceText(): string;
+
+      /**
+       * The balance on the date period.
+       */
       getPeriodBalance(): number;
+
+      /**
+       * The balance on the date period formatted according to [[Book]] decimal format and fraction digits
+       */
       getPeriodBalanceText(): string;
+
+      /**
+       * Gets all child [[BalancesContainers]].
+       * 
+       * **NOTE**: Only for Groups balance containers. Accounts and hashtags return empty.
+       */
       getBalancesContainers(): BalancesContainer[]
-      getBalancesContainer(name: string): BalancesContainer;      
+
+      /**
+       * Gets a specific [[BalancesContainer]].
+       * 
+       * **NOTE**: Only for Groups balance containers. Accounts and hashtags return null.
+       */
+      getBalancesContainer(name: string): BalancesContainer;
+      
+      /**
+       * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]]
+       */      
       createDataTable(): BalancesDataTableBuilder;
     }
 

@@ -58,8 +58,8 @@ describe('Utils_', () => {
       expect(expected).to.eql(Utils_.convertInMatrix(matrix));
 
     })
-
   });
+
 
 });
 

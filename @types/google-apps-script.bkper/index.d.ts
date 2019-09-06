@@ -655,15 +655,17 @@ declare namespace GoogleAppsScript {
       /**
        * The Fuzzy Date of the balance, based on [[Periodicity]] of the [[BalancesReport]] query, composed by Year, Month and Day.
        * 
-       * The format is YYYYMMDD. Very usefull for ordering and indexing
+       * The format is **YYYYMMDD**. Very usefull for ordering and indexing
        * 
        * Month and Day can be 0 (zero), depending on the granularity of the [[Periodicity]].
        * 
-       * Example:
+       * *Example:*
        * 
-       * 20180125 - 25, January, 2018 - DAILY Periodicity
-       * 20180100 - January, 2018 - MONTHLY Periodicity
-       * 20180000 - 2018 - YEARLY Periodicity
+       * **20180125** - 25, January, 2018 - DAILY Periodicity
+       * 
+       * **20180100** - January, 2018 - MONTHLY Periodicity
+       * 
+       * **20180000** - 2018 - YEARLY Periodicity
        * 
        */
       getFuzzyDate(): number;

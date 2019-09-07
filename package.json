@@ -9,11 +9,11 @@
     "clean": "rm -rf ./build",
     "build": "tsc --skipLibCheck --sourcemap --outFile build/test-bundle.js --module system", 
     "test": "yarn build && mocha --require source-map-support/register build/test-bundle.js",
-    "docs": "./node_modules/.bin/typedoc ./@types/google-apps-script.bkper --ignoreCompilerErrors --excludeExternals --includeDeclarations --mode file --json build/apidocs.json ",
+    "docs": "typedoc ./@types/google-apps-script.bkper --ignoreCompilerErrors --excludeExternals --includeDeclarations --mode file --json build/apidocs.json ",
     "docs:publish": "yarn docs && cp build/apidocs.json ../bkper-site/client/static/_data/ && cp ./@types/google-apps-script.bkper/index.d.ts ../bkper-site/client/static/api/google-apps-script.bkper.d.ts",
     "postdocs:publish": "cp @types/google-apps-script.bkper/index.d.ts ../bkper-sheets/server/@types/google-apps-script.bkper/index.d.ts",
     "docs:watch": "watch 'yarn run docs:publish' ./@types/google-apps-script.bkper",
-    "clasp": "./node_modules/.bin/clasp",
+    "clasp": "clasp",
     "prepush": "yarn run test",
     "push": "yarn run clasp push",
     "api": "yarn --cwd ../bkper-pwa/api-typings-generator build --url http://app.bkper.com/_ah/api/discovery/v1/apis/bkper/v2/rest --out /Users/maelcaldas/git/bkper-app/@types"

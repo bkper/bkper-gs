@@ -1,6 +1,73 @@
+interface BalancesContainer {
+
+  /**
+   * The parent BalancesReport of the container
+   */
+  getBalancesReport(): BalancesReport;
+
+  /**
+   * The [[Account]] name, [[Group]] name or #hashtag
+   */
+  getName(): string;
+
+  /**
+   * All [[Balances]] of the container
+   */
+  getBalances(): Balance[];
+
+  /**
+   * Gets the credit nature of the BalancesContainer, based on [[Account]], [[Group]] or #hashtag this container represents.
+   * 
+   * For [[Account]], the credit nature will be the same as the one from the Account
+   * 
+   * For [[Group]], the credit nature will be the same, if all accounts containing on it has the same credit nature. False if mixed.
+   * 
+   * For #hashtag, the credit nature will be true.
+   */
+  isCredit(): boolean;
+
+  /**
+   * The cumulative balance to the date, since the first transaction posted.
+   */
+  getCumulativeBalance(): number;
+
+  /**
+   * The cumulative balance formatted according to [[Book]] decimal format and fraction digits.
+   */
+  getCumulativeBalanceText(): string;
+
+  /**
+   * The balance on the date period.
+   */
+  getPeriodBalance(): number;
+
+  /**
+   * The balance on the date period formatted according to [[Book]] decimal format and fraction digits
+   */
+  getPeriodBalanceText(): string;
+
+  /**
+   * Gets all child [[BalancesContainers]].
+   * 
+   * **NOTE**: Only for Groups balance containers. Accounts and hashtags return empty.
+   */
+  getBalancesContainers(): BalancesContainer[]
+
+  /**
+   * Gets a specific [[BalancesContainer]].
+   * 
+   * **NOTE**: Only for Groups balance containers. Accounts and hashtags return null.
+   */
+  getBalancesContainer(name: string): BalancesContainer;
+  
+  /**
+   * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]]
+   */      
+  createDataTable(): BalancesDataTableBuilder;
+}
  //###################### ACCOUNT BALANCE CONTAINER ######################
 
- class AccountBalancesContainer implements GoogleAppsScript.Bkper.BalancesContainer {
+ class AccountBalancesContainer implements BalancesContainer {
   private wrapped: bkper.AccountBalancesV2Payload;
   private balancesReport: BalancesReport;
 
@@ -41,7 +108,7 @@
     return this.balancesReport.getBook().formatValue(this.getCumulativeBalance());
   }
 
-  public getBalances(): GoogleAppsScript.Bkper.Balance[] {
+  public getBalances(): Balance[] {
     return this.wrapped.balances.map(balancePlain => new Balance(this, balancePlain));
   }
 
@@ -49,10 +116,10 @@
     return new BalancesDataTableBuilder(this.balancesReport.getBook(), [this], this.balancesReport.getPeriodicity());
   }
 
-  public getBalancesContainers(): GoogleAppsScript.Bkper.BalancesContainer[] {
+  public getBalancesContainers(): BalancesContainer[] {
     return [];
   }
-  public getBalancesContainer(name: string): GoogleAppsScript.Bkper.BalancesContainer {
+  public getBalancesContainer(name: string): BalancesContainer {
     return null;
   }
 }
@@ -62,10 +129,9 @@
 
 
 
-
 //###################### TAG BALANCE CONTAINER ######################
 
-class TagBalancesContainer implements GoogleAppsScript.Bkper.BalancesContainer {
+class TagBalancesContainer implements BalancesContainer {
 
   private wrapped: bkper.TagBalancesV2Payload;
   private balancesReport: BalancesReport;
@@ -103,15 +169,15 @@ class TagBalancesContainer implements GoogleAppsScript.Bkper.BalancesContainer {
     return this.balancesReport.getBook().formatValue(this.getCumulativeBalance());
   }
 
-  public getBalances(): GoogleAppsScript.Bkper.Balance[] {
+  public getBalances(): Balance[] {
     return this.wrapped.balances.map(balancePlain => new Balance(this, balancePlain));
   }
 
-  public getBalancesContainers(): GoogleAppsScript.Bkper.BalancesContainer[] {
+  public getBalancesContainers(): BalancesContainer[] {
     return [];
   }
 
-  public getBalancesContainer(name: string): GoogleAppsScript.Bkper.BalancesContainer {
+  public getBalancesContainer(name: string): BalancesContainer {
     return null;
   }
   public createDataTable(): BalancesDataTableBuilder {
@@ -127,7 +193,7 @@ class TagBalancesContainer implements GoogleAppsScript.Bkper.BalancesContainer {
 
 //###################### GROUP BALANCE CONTAINER ######################
 
-class GroupBalancesContainer implements GoogleAppsScript.Bkper.BalancesContainer {
+class GroupBalancesContainer implements BalancesContainer {
 
   private wrapped: bkper.GroupBalancesV2Payload
   private accountBalances: AccountBalancesContainer[];
@@ -171,7 +237,7 @@ class GroupBalancesContainer implements GoogleAppsScript.Bkper.BalancesContainer
     return this.balancesReport.getBook().formatValue(this.getCumulativeBalance());
   }
 
-  public getBalances(): GoogleAppsScript.Bkper.Balance[] {
+  public getBalances(): Balance[] {
     return this.wrapped.balances.map(balancePlain => new Balance(this, balancePlain));
   }
 
@@ -179,7 +245,7 @@ class GroupBalancesContainer implements GoogleAppsScript.Bkper.BalancesContainer
     return new BalancesDataTableBuilder(this.balancesReport.getBook(), this.getBalancesContainers(), this.periodicity);
   }
 
-  public getBalancesContainers(): GoogleAppsScript.Bkper.BalancesContainer[] {
+  public getBalancesContainers(): BalancesContainer[] {
     var accountBalances = this.wrapped.accountBalances;
     if (this.accountBalances == null && accountBalances != null) {
       this.accountBalances = [];
@@ -192,7 +258,7 @@ class GroupBalancesContainer implements GoogleAppsScript.Bkper.BalancesContainer
     return this.accountBalances;
   }
   
-  public getBalancesContainer(name: string): GoogleAppsScript.Bkper.BalancesContainer {
+  public getBalancesContainer(name: string): BalancesContainer {
     return null;
   }  
 

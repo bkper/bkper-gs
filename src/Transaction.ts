@@ -1,5 +1,5 @@
 
-class Transaction implements GoogleAppsScript.Bkper.Transaction {
+class Transaction {
 
   /**
    * @ignore

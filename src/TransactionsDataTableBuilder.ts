@@ -1,5 +1,5 @@
 
-class TransactionsDataTableBuilder implements GoogleAppsScript.Bkper.TransactionsDataTableBuilder {
+class TransactionsDataTableBuilder {
 
   private transactionIterator: TransactionIterator;
   private shouldFormatDate: boolean;

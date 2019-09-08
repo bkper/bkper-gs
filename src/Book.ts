@@ -1,5 +1,7 @@
-
-class Book implements GoogleAppsScript.Bkper.Book {
+/**
+ * @external
+ */
+class Book {
 
   private id: string
   private wrapped: bkper.BookV2Payload

@@ -1,6 +1,6 @@
 
 
-  class BalancesReport implements GoogleAppsScript.Bkper.BalancesReport {
+  class BalancesReport {
 
     private wrapped: bkper.BalancesV2Payload;
 
@@ -27,8 +27,8 @@
     }
 
 
-    public getBalancesContainers(): GoogleAppsScript.Bkper.BalancesContainer[] {
-      var containers = new Array<GoogleAppsScript.Bkper.BalancesContainer>();
+    public getBalancesContainers(): BalancesContainer[] {
+      var containers = new Array<BalancesContainer>();
       if (this.getAccountBalancesContainers() != null) {
         containers = containers.concat(this.getAccountBalancesContainers());
       }
@@ -87,7 +87,7 @@
       return this.groupBalancesContainers;
     }
 
-    public getBalancesContainer(groupName: string): GoogleAppsScript.Bkper.BalancesContainer {
+    public getBalancesContainer(groupName: string): BalancesContainer {
       var groupBalances = this.getBalancesContainers();
       if (groupBalances == null) {
         return null;

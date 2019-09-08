@@ -65,21 +65,21 @@ function getUserDetails(): bkper.UserDetailsV2Payload {
 }
 
 /**
- * @ignore
+ * @external
  */
 function openById(bookId: string): Book  {
   return new Book(bookId);
 }
 
 /**
- * @ignore
+ * @external
  */
 function listBooks(): bkper.BookV2Payload[]  {
   return BookService_.listBooks();
 }
 
 /**
- * @ignore
+ * @external
  */
 function openLedgerById(ledgerId: string): Book {
 	  return openById(ledgerId);
@@ -87,6 +87,7 @@ function openLedgerById(ledgerId: string): Book {
 
 /**
  * @ignore
+ * @deprecated
  */
 function listLedgers(): bkper.BookV2Payload[] {
   return listBooks();

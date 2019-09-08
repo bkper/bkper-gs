@@ -3,19 +3,19 @@
 /**
  * A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
  */
-class BalancesDataTableBuilder implements GoogleAppsScript.Bkper.BalancesDataTableBuilder {
+class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
   private balanceType: BalanceType;
-  private balancesContainers: GoogleAppsScript.Bkper.BalancesContainer[];
+  private balancesContainers: BalancesContainer[];
   private periodicity: Periodicity;
   private shouldFormatDate: boolean;
   private shouldFormatValue: boolean;
-  private book: GoogleAppsScript.Bkper.Book;
+  private book: Book;
 
   /**
    * @ignore
    */
-  constructor(book: GoogleAppsScript.Bkper.Book, balancesContainers: GoogleAppsScript.Bkper.BalancesContainer[], periodicity: Periodicity) {
+  constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity) {
     this.book = book;
     this.balancesContainers = balancesContainers;
     this.periodicity = periodicity;

@@ -1,4 +1,9 @@
-
+/**
+ *
+ * An iterator that allows scripts to iterate over a potentially large collection of transactions.
+ *
+ * @public
+ */
 class TransactionIterator {
 
   private book: Book
@@ -9,9 +14,6 @@ class TransactionIterator {
   private filteredByAccount: Account
   private alreadyProcessedAccountFilter: boolean
 
-  /**
-   * @ignore
-   */
   constructor(book: Book, query?: string) {
     this.book = book
     this.query = query
@@ -26,7 +28,9 @@ class TransactionIterator {
   }
 
   /**
-   * @inheritdoc
+   * Gets the Book that originate the iterator
+   * 
+   * @public
    */
   public getBook(): Book {
     return this.book;
@@ -34,7 +38,13 @@ class TransactionIterator {
 
 
   /**
-   * @inheritdoc
+   * Gets a token that can be used to resume this iteration at a later time.
+   * 
+   * This method is useful if processing an iterator in one execution would exceed the maximum execution time.
+   * 
+   * Continuation tokens are generally valid short period of time.
+   * 
+   * @public
    */
   public getContinuationToken(): string {
 
@@ -53,7 +63,9 @@ class TransactionIterator {
   }
 
   /**
-   * @inheritdoc
+   * Sets a continuation token from previous paused iteration
+   * 
+   * @public
    */
   public setContinuationToken(continuationToken: string): void {
 
@@ -78,6 +90,8 @@ class TransactionIterator {
 
   /**
    * Determines whether calling next() will return a transaction.
+   * 
+   * @public
    */
   public hasNext(): boolean {
 
@@ -99,7 +113,9 @@ class TransactionIterator {
   }
 
   /**
-   * @inheritdoc
+   * Gets the next transaction in the collection of transactions.
+   * 
+   * @public
    */
   public next(): Transaction {
 
@@ -124,7 +140,9 @@ class TransactionIterator {
   }
 
   /**
-   * @inheritdoc
+   * Return an account if query is filtering by a single account
+   * 
+   * @public
    */
   public getFilteredByAccount(): Account {
 

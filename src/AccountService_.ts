@@ -1,6 +1,3 @@
-/**
- * @ignore
- */
 namespace AccountService_ {
 
   export function getAccounts(bookId: string): Account[] {

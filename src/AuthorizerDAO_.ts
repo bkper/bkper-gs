@@ -1,6 +1,3 @@
-/**
- * @ignore
- */
 namespace AuthorizerDAO_ {
   
   export function storeTokenData(tokenData: TokenData): UserData {

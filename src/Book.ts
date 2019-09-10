@@ -1,5 +1,10 @@
 /**
- * @external
+ *
+ * A Book represents [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
+ *
+ * It contains all [[Accounts]] where [[Transactions]] are recorded/posted;
+ * 
+ * @public
  */
 class Book {
 
@@ -13,23 +18,24 @@ class Book {
   private nameGroupMap: any;
   private savedQueries: bkper.SavedQueryV2Payload[];
 
-  /**
-   * @ignore
-   */
   constructor(id: string, wrapped?: bkper.BookV2Payload) {
     this.id = id;
     this.wrapped = wrapped;
   }
 
   /**
-   * @inheritdoc
+   * Same as bookId param
+   * 
+   * @public
    */
   public getId(): string {
     return this.id;
   }
 
   /**
-   * @inheritdoc
+   * @return The name of this Book
+   * 
+   * @public
    */
   public getName(): string {
     this.checkBookLoaded_();
@@ -37,7 +43,9 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * @return The number of fraction digits (decimal places) supported by this Book
+   * 
+   * @public
    */
   public getFractionDigits(): number {
     this.checkBookLoaded_();
@@ -45,7 +53,9 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * @return The name of the owner of the Book
+   * 
+   * @public
    */
   public getOwnerName(): string {
     this.checkBookLoaded_();
@@ -59,7 +69,9 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * @return The permission for the current user
+   * 
+   * @public
    */
   public getPermission(): Permission {
     this.checkBookLoaded_();
@@ -68,7 +80,7 @@ class Book {
 
 
   /**
-   * @ignore
+   * @deprecated
    */
   public getLocale(): string {
     this.checkBookLoaded_();
@@ -76,7 +88,9 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * @return The date pattern of the Book. Example: dd/MM/yyyy
+   * 
+   * @public
    */
   public getDatePattern(): string {
     this.checkBookLoaded_();
@@ -84,7 +98,9 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * @return The decimal separator of the Book
+   * 
+   * @public
    */
   public getDecimalSeparator(): DecimalSeparator {
     this.checkBookLoaded_();
@@ -93,7 +109,9 @@ class Book {
 
 
   /**
-   * @inheritdoc
+   * @return The time zone of the book
+   * 
+   * @public
    */
   public getTimeZone(): string {
     this.checkBookLoaded_();
@@ -101,7 +119,9 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * @return The time zone offset of the book, in minutes
+   * 
+   * @public
    */
   public getTimeZoneOffset(): number {
     this.checkBookLoaded_();
@@ -109,7 +129,9 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * @return The last update date of the book, in in milliseconds
+   * 
+   * @public
    */
   public getLastUpdateMs(): number {
     this.checkBookLoaded_();
@@ -117,21 +139,42 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * @param  date The date to format as string.
+   * @param  timeZone The output timezone of the result. Default to script's timeZone
+   * 
+   * @return The date formated according to date pattern of book
+   * 
+   * @public
    */
   public formatDate(date: Date, timeZone?: string): string {
     return Utils_.formatDate(date, this.getDatePattern(), timeZone);
   }
 
   /**
-   * @inheritdoc
+   * @param value The value to be formatted.
+   * 
+   * @return The value formated according to [[DecimalSeparator]] and fraction digits of Book
+   * 
+   * @public
    */
   public formatValue(value: number): string {
     return Utils_.formatValue_(value, this.getDecimalSeparator(), this.getFractionDigits());
   }
 
   /**
-   * @inheritdoc
+   * Record [[Transactions]] a on the Book. 
+   * 
+   * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
+   * 
+   * Example: 
+   * ```javascript
+   * book.record("#gas 63.23");
+   * ```
+   * 
+   * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
+   * @param timeZone The time zone to format dates.
+   * 
+   * @public
    */
   public record(transactions: string | any[] | any[][], timeZone?: string): void {
     if (timeZone == null || timeZone.trim() == "") {
@@ -142,7 +185,13 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * Resumes a transaction iteration using a continuation token from a previous iterator.
+   * 
+   * @param continuationToken continuation token from a previous transaction iterator
+   * 
+   * @return a collection of transactions that remained in a previous iterator when the continuation token was generated
+   * 
+   * @public
    */
   public continueTransactionIterator(query: string, continuationToken: string): TransactionIterator {
     var transactionIterator = new TransactionIterator(this, query);
@@ -150,9 +199,7 @@ class Book {
     return transactionIterator;
   }
 
-  /**
-   * @ignore
-   */
+
   public configureTransactions_(transactions: Transaction[]) {
     for (var i = 0; i < transactions.length; i++) {
       this.configureTransaction_(transactions[i]);
@@ -160,9 +207,7 @@ class Book {
     return transactions;
   }
 
-  /**
-   * @private
-   */
+
   private configureTransaction_(transaction: Transaction) {
     transaction.book = this;
     transaction.configure_();
@@ -180,7 +225,9 @@ class Book {
   // }
 
   /**
-   * @inheritdoc
+   * Gets all [[Accounts]] of this Book
+   * 
+   * @public
    */
   public getAccounts(): Account[] {
     if (this.accounts == null) {
@@ -191,7 +238,13 @@ class Book {
 
 
   /**
-   * @inheritdoc
+   * Gets an [[Account]] object
+   * 
+   * @param idOrName The id or name of the Account
+   * 
+   * @returns The matching Account object
+   * 
+   * @public
    */
   public getAccount(idOrName: string): Account {
 
@@ -213,7 +266,17 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * Create an [[Account]] in this book. 
+   * 
+   * The type of account will be determined by the type of others Accounts in same group. 
+   * 
+   * If not specified, the type ASSET (permanent=true/credit=false) will be set.
+   * 
+   * If all other accounts in same group is in another group, the account will also be added to the other group.
+   * 
+   * @returns The created Account object
+   * 
+   * @public
    */
   public createAccount(name: string, group?: string, description?: string): Account {
     var account = AccountService_.createAccount(this.getId(), name, group, description);
@@ -235,7 +298,9 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * Gets all [[Groups]] of this Book
+   * 
+   * @public
    */
   public getGroups(): Group[] {
     if (this.groups == null) {
@@ -245,7 +310,13 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * Gets a [[Group]] object
+   * 
+   * @param idOrName The id or name of the Group
+   * 
+   * @returns The matching Group object
+   * 
+   * @public
    */
   public getGroup(idOrName: string): Group {
 
@@ -277,6 +348,9 @@ class Book {
     }
   }
 
+  /**
+   * Gets all saved queries from this book
+   */
   public getSavedQueries(): { id: string, query: string, title: string }[] {
     if (this.savedQueries == null) {
       this.savedQueries = SavedQueryService_.getSavedQueries(this.getId());
@@ -285,7 +359,12 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * 
+   * Create a [[BalancesReport]] based on query
+   * 
+   * @param query The balances report query
+   * 
+   * @public
    */
   public getBalancesReport(query: string): BalancesReport {
     var balances = BalancesService_.getBalances(this.getId(), query);
@@ -293,7 +372,23 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]], [[Group]] or #hashtag
+   * 
+   * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
+   * 
+   * @param query The balances report query
+   * 
+   * @return The balances data table builder
+   * 
+   * Example:
+   * 
+   * ```javascript
+   * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+   * 
+   * var balancesDataTable = book.createBalancesDataTable("#rental #energy after:8/2013 before:9/2013").build();
+   * ```
+   * 
+   * @public
    */
   public createBalancesDataTable(query: string): BalancesDataTableBuilder {
     var balances = BalancesService_.getBalances(this.getId(), query);
@@ -302,7 +397,23 @@ class Book {
 
 
   /**
-   * @inheritdoc
+   * Create a [[TransactionsDataTableBuilder]] based on a query, to create two dimensional Array representations of [[Transactions]] dataset.
+   * 
+   * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
+   * 
+   * @param query The flter query.
+   * 
+   * @return Transactions data table builder.
+   * 
+   * Example: 
+   * 
+   * ```javascript
+   * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+   * 
+   * var transactionsDataTable = book.createTransactionsDataTable("acc:'Bank' after:8/2013 before:9/2013").build();
+   * ```
+   * 
+   * @public
    */
   public createTransactionsDataTable(query?: string): TransactionsDataTableBuilder {
     var transactionIterator = this.getTransactions(query);
@@ -310,7 +421,28 @@ class Book {
   }
 
   /**
-   * @inheritdoc
+   * Get Book transactions based on a query.
+   * 
+   * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
+   *  
+   * @param query The query string.
+   * 
+   * @return The Transactions result as an iterator.
+   * 
+   * Example:
+   * 
+   * ```javascript
+   * var book = BkperApp.loadBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+   *
+   * var transactions = book.getTransactions("acc:CreditCard after:28/01/2013 before:29/01/2013");
+   *
+   * while (transactions.hasNext()) {
+   *  var transaction = transactions.next();
+   *  Logger.log(transaction.getDescription());
+   * }
+   * ```
+   * 
+   * @public
    */
   public getTransactions(query?: string): TransactionIterator {
     return new TransactionIterator(this, query);
@@ -320,7 +452,7 @@ class Book {
 
 
 
-  
+
 
 
   //DEPRECATED

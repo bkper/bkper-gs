@@ -1,32 +1,40 @@
+/**
+ * This class defines a Group of [[Accounts]].
+ * 
+ * Accounts can be grouped by different meaning, like Expenses, Revenue, Assets, Liabilities and so on
+ * 
+ * Its useful to keep organized and for high level analysis.
+ * 
+ * @public
+ */
+class Group {
 
-class Group  {
-
-  /**
-   * @ignore
-   */
   wrapped: bkper.GroupV2Payload
 
-  /**
-   * @ignore
-   */
   book: Book
 
   /**
-   * @inheritdoc
+   * @returns The id of this Group
+   * 
+   * @public
    */
   getId(): string {
     return this.wrapped.id;
   }
 
   /**
-   * @inheritdoc
+   * @returns The name of this Group
+   * 
+   * @public
    */
   getName(): string {
     return this.wrapped.name;
   }
 
   /**
-   * @inheritdoc
+   * @returns True if this group has any account in it
+   * 
+   * @public
    */
   hasAccounts(): boolean {
     return this.getAccounts().length > 0;
@@ -34,7 +42,9 @@ class Group  {
 
 
   /**
-   * @inheritdoc
+   * @returns All Accounts of this group.
+   * 
+   * @public
    */
   getAccounts(): Account[] {
     var accounts = [];

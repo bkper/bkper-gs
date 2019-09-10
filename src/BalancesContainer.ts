@@ -1,17 +1,30 @@
+/**
+ * The container of balances of an [[Account]], [[Group]] or #hashtag
+ * 
+ * The container is composed of a list of [[Balances]] for a window of time, as well as its period and cumulative totals.
+ * 
+ * @public
+ */
 interface BalancesContainer {
 
   /**
    * The parent BalancesReport of the container
+   * 
+   * @public
    */
   getBalancesReport(): BalancesReport;
 
   /**
    * The [[Account]] name, [[Group]] name or #hashtag
+   * 
+   * @public
    */
   getName(): string;
 
   /**
    * All [[Balances]] of the container
+   * 
+   * @public
    */
   getBalances(): Balance[];
 
@@ -23,26 +36,36 @@ interface BalancesContainer {
    * For [[Group]], the credit nature will be the same, if all accounts containing on it has the same credit nature. False if mixed.
    * 
    * For #hashtag, the credit nature will be true.
+   * 
+   * @public
    */
   isCredit(): boolean;
 
   /**
    * The cumulative balance to the date, since the first transaction posted.
+   * 
+   * @public
    */
   getCumulativeBalance(): number;
 
   /**
    * The cumulative balance formatted according to [[Book]] decimal format and fraction digits.
+   * 
+   * @public
    */
   getCumulativeBalanceText(): string;
 
   /**
    * The balance on the date period.
+   * 
+   * @public
    */
   getPeriodBalance(): number;
 
   /**
    * The balance on the date period formatted according to [[Book]] decimal format and fraction digits
+   * 
+   * @public
    */
   getPeriodBalanceText(): string;
 
@@ -50,6 +73,8 @@ interface BalancesContainer {
    * Gets all child [[BalancesContainers]].
    * 
    * **NOTE**: Only for Groups balance containers. Accounts and hashtags return empty.
+   * 
+   * @public
    */
   getBalancesContainers(): BalancesContainer[]
 
@@ -57,17 +82,21 @@ interface BalancesContainer {
    * Gets a specific [[BalancesContainer]].
    * 
    * **NOTE**: Only for Groups balance containers. Accounts and hashtags return null.
+   * 
+   * @public
    */
   getBalancesContainer(name: string): BalancesContainer;
-  
+
   /**
    * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]]
-   */      
+   * 
+   * @public
+   */
   createDataTable(): BalancesDataTableBuilder;
 }
- //###################### ACCOUNT BALANCE CONTAINER ######################
+//###################### ACCOUNT BALANCE CONTAINER ######################
 
- class AccountBalancesContainer implements BalancesContainer {
+class AccountBalancesContainer implements BalancesContainer {
   private wrapped: bkper.AccountBalancesV2Payload;
   private balancesReport: BalancesReport;
 
@@ -182,7 +211,7 @@ class TagBalancesContainer implements BalancesContainer {
   }
   public createDataTable(): BalancesDataTableBuilder {
     return new BalancesDataTableBuilder(this.balancesReport.getBook(), [this], this.balancesReport.getPeriodicity());
-  }   
+  }
 }
 
 
@@ -257,9 +286,9 @@ class GroupBalancesContainer implements BalancesContainer {
     }
     return this.accountBalances;
   }
-  
+
   public getBalancesContainer(name: string): BalancesContainer {
     return null;
-  }  
+  }
 
 }

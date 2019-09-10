@@ -1,6 +1,3 @@
-/**
- * @ignore
- */
 namespace SavedQueryService_ {
 
   export function getSavedQueries(bookId: string): bkper.SavedQueryV2Payload[] {

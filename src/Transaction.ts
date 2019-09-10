@@ -1,14 +1,15 @@
-
+/**
+ * 
+ * This class defines a Transaction between [credit and debit](http://en.wikipedia.org/wiki/Debits_and_credits) [[Accounts]].
+ *
+ * A Transaction is the main entity on the [Double Entry](http://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) [Bookkeeping](http://en.wikipedia.org/wiki/Bookkeeping) system.
+ * 
+ * @public
+ */
 class Transaction {
 
-  /**
-   * @ignore
-   */
   wrapped: bkper.TransactionV2Payload
 
-  /**
-   * @ignore
-   */
   book: Book;
 
   private creditAccount: Account;
@@ -20,35 +21,45 @@ class Transaction {
   private alreadyPosted: boolean;
 
   /**
-   * @inheritdoc
+   * @returns The id of the Transaction
+   * 
+   * @public
    */
   public getId(): string {
     return this.wrapped.id;
   }
 
   /**
-   * @inheritdoc
+   * @returns True if transaction was already posted to the accounts. False if is still a Draft.
+   * 
+   * @public
    */
   public isPosted(): boolean {
     return this.wrapped.posted;
   }
 
   /**
-   * @inheritdoc
+   * @returns All #hashtags used on the transaction
+   * 
+   * @public
    */
   public getTags(): string[] {
     return this.wrapped.tags;
   }
 
   /**
-   * @inheritdoc
+   * @returns All urls of the transaction
+   * 
+   * @public
    */
   public getUrls(): string[] {
     return this.wrapped.urls;
   }
 
   /**
-   * @inheritdoc
+   * Check if the transaction has the specified tag
+   * 
+   * @public
    */
   public hasTag(tag: string): boolean {
 
@@ -65,14 +76,18 @@ class Transaction {
 
   //ORIGIN ACCOUNT
   /**
-   * @inheritdoc
+   * @returns The credit account. The same as origin account.
+   * 
+   * @public
    */
   public getCreditAccount(): Account {
     return this.creditAccount;
   }
 
   /**
-   * @inheritdoc
+   * @returns The credit account name.
+   * 
+   * @public
    */
   public getCreditAccountName(): string {
     if (this.getCreditAccount() != null) {
@@ -84,14 +99,18 @@ class Transaction {
 
   //DESTINATION ACCOUNT
   /**
-   * @inheritdoc
+   * @returns The debit account. The same as destination account.
+   * 
+   * @public
    */
   public getDebitAccount(): Account {
     return this.debitAccount;
   }
 
   /**
-   * @inheritdoc
+   * @returns The debit account name.
+   * 
+   * @public
    */
   public getDebitAccountName(): string {
     if (this.getDebitAccount() != null) {
@@ -104,14 +123,20 @@ class Transaction {
 
   //AMOUNT
   /**
-   * @inheritdoc
+   * @returns The amount of the transaction
+   * 
+   * @public
    */
   public getAmount(): number {
     return this.wrapped.amount;
   }
 
   /**
-   * @inheritdoc
+   * Get the absolute amount of this transaction if the given account is at the credit side, else null
+   * 
+   * @param account The account object, id or name
+   * 
+   * @public
    */
   public getCreditAmount(account: Account | string): number {
     let accountObject = this.getAccount_(account);
@@ -122,7 +147,11 @@ class Transaction {
   }
 
   /**
-   * @inheritdoc
+   * Gets the absolute amount of this transaction if the given account is at the debit side, else null
+   * 
+   * @param account The account object, id or name
+   * 
+   * @public
    */
   public getDebitAmount(account: Account | string): number {
     let accountObject = this.getAccount_(account);
@@ -133,7 +162,11 @@ class Transaction {
   }
 
   /**
-   * @inheritdoc
+   * Gets the [[Account]] at the other side of the transaction given the one in one side.
+   * 
+   * @param account The account object, id or name
+   * 
+   * @public
    */
   public getOtherAccount(account: Account | string): Account {
     let accountObject = this.getAccount_(account);
@@ -147,7 +180,12 @@ class Transaction {
   }
 
   /**
-   * @inheritdoc
+   * 
+   * The account name at the other side of the transaction given the one in one side.
+   * 
+   * @param account The account object, id or name
+   * 
+   * @public
    */
   public getOtherAccountName(account: string | Account): string {
     var otherAccount = this.getOtherAccount(account);
@@ -176,7 +214,9 @@ class Transaction {
 
   //DESCRIPTION
   /**
-   * @inheritdoc
+   * @returns The description of this transaction
+   * 
+   * @public
    */
   public getDescription(): string {
     if (this.wrapped.description == null) {
@@ -188,7 +228,9 @@ class Transaction {
 
   //INFORMED DATE
   /**
-   * @inheritdoc
+   * @returns The date the user informed for this transaction, adjusted to book's time zone
+   * 
+   * @public
    */
   public getInformedDate(): Date {
     if (this.informedDate == null) {
@@ -199,14 +241,18 @@ class Transaction {
 
 
   /**
-   * @inheritdoc
+   * @returns The date the user informed for this transaction. The number format is YYYYMMDD
+   * 
+   * @public
    */
   public getInformedDateValue(): number {
     return this.informedDateValue;
   }
 
   /**
-   * @inheritdoc
+   * @returns The date the user informed for this transaction, formatted according to the date pattern of [[Book]].
+   * 
+   * @public
    */
   public getInformedDateText(): string {
     return this.informedDateText;
@@ -214,14 +260,18 @@ class Transaction {
 
   //POST DATE
   /**
-   * @inheritdoc
+   * @returns {Date} The date time user has recorded/posted this transaction
+   * 
+   * @public
    */
   public getPostDate(): Date {
     return this.postDate;
   }
 
   /**
-   * @inheritdoc
+   * @returns The date time user has recorded/posted this transaction, formatted according to the date pattern of [[Book]].
+   * 
+   * @public
    */
   public getPostDateText(): string {
     return Utilities.formatDate(this.getPostDate(), this.book.getLocale(), this.book.getDatePattern() + " HH:mm:ss")
@@ -229,22 +279,24 @@ class Transaction {
 
 
   //EVOLVED BALANCES
-  /**
-   * @private
-   */
   private getCaEvolvedBalance_(): number {
     return this.wrapped.caBal;
   }
 
-  /**
-   * @private
-   */
   private getDaEvolvedBalance_(): number {
     return this.wrapped.daBal;
   }
 
   /**
-   * @inheritdoc
+   * Gets the balance that the [[Account]] has at that day, when listing transactions of that Account.
+   * 
+   * Evolved balances is returned when searching for transactions of a permanent [[Account]].
+   * 
+   * Only comes with the last posted transaction of the day.
+   * 
+   * @param raw True to get the raw balance, no matter the credit nature of the [[Account]].
+   * 
+   * @public
    */
   public getAccountBalance(raw?: boolean): number {
     var accountBalance = this.getCaEvolvedBalance_();
@@ -264,9 +316,6 @@ class Transaction {
     }
   }
 
-  /**
-   * @ignore
-   */
   public configure_(): void {
     var creditAccount = this.book.getAccount(this.wrapped.creditAccId);
     var debitAccount = this.book.getAccount(this.wrapped.debitAccId);

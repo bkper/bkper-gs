@@ -1,6 +1,3 @@
-/**
- * @ignore
- */
 namespace UserService_ {
   
   export function getUserDetails(): bkper.UserDetailsV2Payload {

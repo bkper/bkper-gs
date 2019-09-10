@@ -1,28 +1,132 @@
+/**
+ * The Periodicity of the query. It may depend on the level of granularity you write the range params.
+ * 
+ * @public
+ */
+enum Periodicity {
+
+  /**
+   * Example: after:25/01/1983, before:04/03/2013, after:$d-30, before:$d, after:$d-15/$m 
+   * 
+   * @public
+   */
+  DAILY = "DAILY",
+
+  /**
+   * Example: after:jan/2013, before:mar/2013, after:$m-1, before:$m
+   * 
+   * @public
+   */
+  MONTHLY = "MONTHLY",
+
+  /**
+   * Example: on:2013, after:2013, $y
+   * 
+   * @public
+   */
+  YEARLY = "YEARLY"
+}
+
+/**
+ * Decimal separator of numbers on book
+ * 
+ * @public
+ */
+enum DecimalSeparator {
+
+  /**
+   * ,
+   * 
+   * @public
+   */
+  COMMA = "COMMA",
+
+  /**
+   * .
+   * 
+   * @public
+   */
+  DOT = "DOT"
+}
 
 
-  enum Periodicity {
+/**
+ * Enum representing permissions of user in the Book
+ * 
+ * Learn more at [share article](https://help.bkper.com/en/articles/2569153-share-your-book-with-your-peers).
+ * 
+ * @public
+ */
+enum Permission {
 
-    DAILY = "DAILY",
-    MONTHLY = "MONTHLY",
-    YEARLY = "YEARLY"
-  }
+  /**
+   * No permission
+   * 
+   * @public
+   */
+  NONE = "NONE",
 
-  enum DecimalSeparator {
-    COMMA = "COMMA",
-    DOT = "DOT"
-  }
+  /**
+   * View transactions, accounts and balances.
+   * 
+   * @public
+   */
+  VIEWER = "VIEWER",
 
-  enum Permission {
-    NONE = "NONE",
-    VIEWER = "VIEWER",
-    RECORD_ONLY = "RECORD_ONLY",
-    POST = "POST",
-    EDITOR = "EDITOR",
-    OWNER = "OWNER"
-  }
+  /**
+   * Record and delete drafts only. Useful to collect data only
+   * 
+   * @public
+   */
+  RECORD_ONLY = "RECORD_ONLY",
 
-  enum BalanceType {
-    TOTAL = "TOTAL",
-    PERIOD = "PERIOD",
-    CUMULATIVE = "CUMULATIVE"
-  }
+  /**
+   * View transactions, accounts, record and delete drafts
+   * 
+   * @public
+   */
+  POST = "POST",
+
+  /**
+   * Manage accounts, transactions, book configuration and sharing
+   * 
+   * @public
+   */
+  EDITOR = "EDITOR",
+
+  /**
+   * Manage everything, including book visibility and deletion. Only one owner per book.
+   * 
+   * @public
+   */
+  OWNER = "OWNER"
+}
+
+/**
+ * Enum that represents balance types.
+ * 
+ * @public
+ */
+enum BalanceType {
+
+  /**
+   * Total balance
+   * 
+   * @public
+   */
+  TOTAL = "TOTAL",
+
+  /**
+   * Period balance
+   * 
+   * @public
+   */
+  PERIOD = "PERIOD",
+
+  /**
+   * Cumulative balance
+   * 
+   * @public
+   */
+  CUMULATIVE = "CUMULATIVE"
+}

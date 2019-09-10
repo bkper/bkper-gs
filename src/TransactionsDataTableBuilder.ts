@@ -1,4 +1,8 @@
-
+/**
+ * A TransactionsDataTableBuilder is used to setup and build two-dimensional arrays containing transactions.
+ * 
+ * @public
+ */
 class TransactionsDataTableBuilder {
 
   private transactionIterator: TransactionIterator;
@@ -6,9 +10,6 @@ class TransactionsDataTableBuilder {
   private shouldFormatValue: boolean;
   private shouldAddUrls: boolean;
 
-  /**
-   * @ignore
-   */
   constructor(transactionIterator: TransactionIterator) {
     this.transactionIterator = transactionIterator;
     this.shouldFormatDate = false;
@@ -16,25 +17,56 @@ class TransactionsDataTableBuilder {
     this.shouldAddUrls = false;
   }
 
+  /**
+   * Defines whether the dates should be formatted, based on date patter of the [[Book]]
+   * 
+   * @returns This builder with respective formatting option.
+   * 
+   * @public
+   */
   public formatDate(): TransactionsDataTableBuilder {
     this.shouldFormatDate = true;
     return this;
   }
 
+  /**
+   * Defines whether the value should be formatted based on [[DecimalSeparator]] of the [[Book]]
+   *
+   * @returns This builder with respective formatting option.
+   * 
+   * @public
+   */
   public formatValue(): TransactionsDataTableBuilder {
     this.shouldFormatValue = true;
     return this;
   }
 
+  /**
+   * Defines whether the value should add Attachments links
+   * 
+   * @returns This builder with respective add attachment option.
+   * 
+   * @public
+   */
   public addUrls(): TransactionsDataTableBuilder {
     this.shouldAddUrls = true;
     return this;
   }
 
+  /**
+   * Return an account if query is filtering by a single account
+   * 
+   * @public
+   */
   public getFilteredByAccount(): Account {
     return this.transactionIterator.getFilteredByAccount();
   }
 
+  /**
+   * @returns A two-dimensional array containing all [[Transactions]].
+   * 
+   * @public
+   */
   public build(): any[][] {
     var filteredByAccount = this.transactionIterator.getFilteredByAccount();
     var header = new Array();

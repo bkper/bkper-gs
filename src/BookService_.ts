@@ -1,6 +1,3 @@
-/**
- * @ignore
- */
 namespace BookService_ {
 
   export function listBooks(): bkper.BookV2Payload[] {

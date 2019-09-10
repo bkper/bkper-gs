@@ -1,4 +1,3 @@
-
 namespace Normalizer_ {
   
   var diacriticsMap_: any = null;

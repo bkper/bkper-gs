@@ -2,6 +2,8 @@
 
 /**
  * A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
+ * 
+ * @public
  */
 class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
@@ -12,21 +14,22 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   private shouldFormatValue: boolean;
   private book: Book;
 
-  /**
-   * @ignore
-   */
   constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity) {
     this.book = book;
     this.balancesContainers = balancesContainers;
     this.periodicity = periodicity;
-    
+
     this.balanceType = BalanceType.TOTAL;
     this.shouldFormatDate = false;
     this.shouldFormatValue = false;
   }
 
   /**
-   * @inheritdoc
+   * Defines whether the dates should be formatted based on date pattern and periodicity of the [[Book]].
+   *
+   * @returns This builder with respective formatting option.
+   * 
+   * @public
    */
   public formatDate(): BalancesDataTableBuilder {
     this.shouldFormatDate = true;
@@ -34,7 +37,11 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   }
 
   /**
-   * @inheritdoc
+   * Defines whether the value should be formatted based on decimal separator of the [[Book]].
+   * 
+   * @returns This builder with respective formatting option.
+   * 
+   * @public
    */
   public formatValue(): BalancesDataTableBuilder {
     this.shouldFormatValue = true;
@@ -42,19 +49,52 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   }
 
   /**
-   * @inheritdoc
+   * Fluent method to set the [[BalanceType]] for the builder.
+   * 
+   * @param balanceType The type of balance for this data table
+   * 
+   * @returns This builder with respective balance type.
+   * 
+   * @public
    */
   public setBalanceType(balanceType: BalanceType): BalancesDataTableBuilder {
     this.balanceType = balanceType;
     return this;
   }
 
-
   /**
    * 
    * Gets an two-dimensional array with the balances.
    * 
-   *  @returns
+   * For **TOTAL** [[BalanceType]], the table format looks like:
+   * 
+   * ```
+   *   _____________________
+   *  |    NAME   | AMOUNT  |
+   *  | Expenses  | 4568.23 |
+   *  | Incomes   | 5678.93 |
+   *  |    ...    |   ...   |
+   *  |___________|_________|
+   * 
+   * ```
+   * Two columns, and each [[Group]] | [[Account]] | #hashtag per line.
+   * 
+   * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the table will be a time table, and the format looks like:
+   * 
+   * ```
+   *  _____________________________________________
+   *  |    DATE    | Expenses | Incomes |    ...   |
+   *  | 15/01/2014 | 2345.23  | 3452.93 |    ...   |
+   *  | 15/02/2014 | 2345.93  | 3456.46 |    ...   |
+   *  | 15/03/2014 | 2456.45  | 3567.87 |    ...   |
+   *  |    ...     |   ...    |   ...   |    ...   |
+   *  |___________ |__________|_________|__________|
+   * 
+   * ```
+   * 
+   * First column will be the Date column, and one column for each [[Group]], [[Account]] or #hashtag.
+   * 
+   * @public
    */
   public build(): any[][] {
     if (this.balanceType == BalanceType.TOTAL) {

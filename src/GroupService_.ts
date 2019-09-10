@@ -1,6 +1,3 @@
-/**
- * @ignore
- */
 namespace GroupService_ {
   export function getGroups(bookId: string): Group[] {
 

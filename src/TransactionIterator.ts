@@ -29,8 +29,6 @@ class TransactionIterator {
 
   /**
    * Gets the Book that originate the iterator
-   * 
-   * @public
    */
   public getBook(): Book {
     return this.book;
@@ -43,8 +41,6 @@ class TransactionIterator {
    * This method is useful if processing an iterator in one execution would exceed the maximum execution time.
    * 
    * Continuation tokens are generally valid short period of time.
-   * 
-   * @public
    */
   public getContinuationToken(): string {
 
@@ -64,8 +60,6 @@ class TransactionIterator {
 
   /**
    * Sets a continuation token from previous paused iteration
-   * 
-   * @public
    */
   public setContinuationToken(continuationToken: string): void {
 
@@ -90,8 +84,6 @@ class TransactionIterator {
 
   /**
    * Determines whether calling next() will return a transaction.
-   * 
-   * @public
    */
   public hasNext(): boolean {
 
@@ -114,8 +106,6 @@ class TransactionIterator {
 
   /**
    * Gets the next transaction in the collection of transactions.
-   * 
-   * @public
    */
   public next(): Transaction {
 
@@ -141,8 +131,6 @@ class TransactionIterator {
 
   /**
    * Return an account if query is filtering by a single account
-   * 
-   * @public
    */
   public getFilteredByAccount(): Account {
 

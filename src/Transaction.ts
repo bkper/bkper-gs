@@ -22,8 +22,6 @@ class Transaction {
 
   /**
    * @returns The id of the Transaction
-   * 
-   * @public
    */
   public getId(): string {
     return this.wrapped.id;
@@ -31,8 +29,6 @@ class Transaction {
 
   /**
    * @returns True if transaction was already posted to the accounts. False if is still a Draft.
-   * 
-   * @public
    */
   public isPosted(): boolean {
     return this.wrapped.posted;
@@ -40,8 +36,6 @@ class Transaction {
 
   /**
    * @returns All #hashtags used on the transaction
-   * 
-   * @public
    */
   public getTags(): string[] {
     return this.wrapped.tags;
@@ -49,8 +43,6 @@ class Transaction {
 
   /**
    * @returns All urls of the transaction
-   * 
-   * @public
    */
   public getUrls(): string[] {
     return this.wrapped.urls;
@@ -58,8 +50,6 @@ class Transaction {
 
   /**
    * Check if the transaction has the specified tag
-   * 
-   * @public
    */
   public hasTag(tag: string): boolean {
 
@@ -77,8 +67,6 @@ class Transaction {
   //ORIGIN ACCOUNT
   /**
    * @returns The credit account. The same as origin account.
-   * 
-   * @public
    */
   public getCreditAccount(): Account {
     return this.creditAccount;
@@ -86,8 +74,6 @@ class Transaction {
 
   /**
    * @returns The credit account name.
-   * 
-   * @public
    */
   public getCreditAccountName(): string {
     if (this.getCreditAccount() != null) {
@@ -100,8 +86,6 @@ class Transaction {
   //DESTINATION ACCOUNT
   /**
    * @returns The debit account. The same as destination account.
-   * 
-   * @public
    */
   public getDebitAccount(): Account {
     return this.debitAccount;
@@ -109,8 +93,6 @@ class Transaction {
 
   /**
    * @returns The debit account name.
-   * 
-   * @public
    */
   public getDebitAccountName(): string {
     if (this.getDebitAccount() != null) {
@@ -124,8 +106,6 @@ class Transaction {
   //AMOUNT
   /**
    * @returns The amount of the transaction
-   * 
-   * @public
    */
   public getAmount(): number {
     return this.wrapped.amount;
@@ -135,8 +115,6 @@ class Transaction {
    * Get the absolute amount of this transaction if the given account is at the credit side, else null
    * 
    * @param account The account object, id or name
-   * 
-   * @public
    */
   public getCreditAmount(account: Account | string): number {
     let accountObject = this.getAccount_(account);
@@ -150,8 +128,6 @@ class Transaction {
    * Gets the absolute amount of this transaction if the given account is at the debit side, else null
    * 
    * @param account The account object, id or name
-   * 
-   * @public
    */
   public getDebitAmount(account: Account | string): number {
     let accountObject = this.getAccount_(account);
@@ -165,8 +141,6 @@ class Transaction {
    * Gets the [[Account]] at the other side of the transaction given the one in one side.
    * 
    * @param account The account object, id or name
-   * 
-   * @public
    */
   public getOtherAccount(account: Account | string): Account {
     let accountObject = this.getAccount_(account);
@@ -184,8 +158,6 @@ class Transaction {
    * The account name at the other side of the transaction given the one in one side.
    * 
    * @param account The account object, id or name
-   * 
-   * @public
    */
   public getOtherAccountName(account: string | Account): string {
     var otherAccount = this.getOtherAccount(account);
@@ -215,8 +187,6 @@ class Transaction {
   //DESCRIPTION
   /**
    * @returns The description of this transaction
-   * 
-   * @public
    */
   public getDescription(): string {
     if (this.wrapped.description == null) {
@@ -229,8 +199,6 @@ class Transaction {
   //INFORMED DATE
   /**
    * @returns The date the user informed for this transaction, adjusted to book's time zone
-   * 
-   * @public
    */
   public getInformedDate(): Date {
     if (this.informedDate == null) {
@@ -242,8 +210,6 @@ class Transaction {
 
   /**
    * @returns The date the user informed for this transaction. The number format is YYYYMMDD
-   * 
-   * @public
    */
   public getInformedDateValue(): number {
     return this.informedDateValue;
@@ -251,8 +217,6 @@ class Transaction {
 
   /**
    * @returns The date the user informed for this transaction, formatted according to the date pattern of [[Book]].
-   * 
-   * @public
    */
   public getInformedDateText(): string {
     return this.informedDateText;
@@ -261,8 +225,6 @@ class Transaction {
   //POST DATE
   /**
    * @returns {Date} The date time user has recorded/posted this transaction
-   * 
-   * @public
    */
   public getPostDate(): Date {
     return this.postDate;
@@ -270,8 +232,6 @@ class Transaction {
 
   /**
    * @returns The date time user has recorded/posted this transaction, formatted according to the date pattern of [[Book]].
-   * 
-   * @public
    */
   public getPostDateText(): string {
     return Utilities.formatDate(this.getPostDate(), this.book.getLocale(), this.book.getDatePattern() + " HH:mm:ss")
@@ -295,8 +255,6 @@ class Transaction {
    * Only comes with the last posted transaction of the day.
    * 
    * @param raw True to get the raw balance, no matter the credit nature of the [[Account]].
-   * 
-   * @public
    */
   public getAccountBalance(raw?: boolean): number {
     var accountBalance = this.getCaEvolvedBalance_();

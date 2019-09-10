@@ -19,8 +19,6 @@ class Account {
 
   /**
    * Gets the account internal id
-   * 
-   * @public
    */
   public getId(): string {
     return this.wrapped.id;
@@ -28,8 +26,6 @@ class Account {
 
   /**
    * Gets the account name
-   * 
-   * @public
    */
   public getName(): string {
     return this.wrapped.name;
@@ -37,16 +33,12 @@ class Account {
 
   /**
    * Gets the account description
-   * 
-   * @public
    */
   public getDescription(): string {
     return this.wrapped.description;
   }
   /**
    * @returns The name of this account without spaces and special characters
-   * 
-   * @public
    */
   public getNormalizedName(): string {
     if (this.normalizedName == null) {
@@ -61,8 +53,6 @@ class Account {
    * @param raw True to get the raw balance, no matter the credit nature of this Account.
    * 
    * @returns The balance of this account
-   * 
-   * @public
    */
   public getBalance(raw?: boolean): number {
     var balance = 0;
@@ -83,8 +73,6 @@ class Account {
    * @param raw True to get the raw balance, no matter the credit nature of this Account.
    * 
    * @returns The checked balance of this Account
-   * 
-   * @public
    */
   public getCheckedBalance(raw?: boolean): number {
     var balance = 0;
@@ -101,8 +89,6 @@ class Account {
   
   /**
    * Tell if this account is Active or otherwise Archived
-   * 
-   * @public
    */
   public isActive(): boolean {
     return this.wrapped.active;
@@ -119,8 +105,6 @@ class Account {
    * Usually represents assets or tangibles, capable of being perceived by the senses or the mind, like bank accounts, money, debts and so on.
    * 
    * @returns True if its a permanent Account
-   * 
-   * @public
    */
   public isPermanent(): boolean {
     return this.wrapped.permanent;
@@ -145,8 +129,6 @@ class Account {
    * ```
    * 
    * As a rule of thumb, and for simple understanding, almost all accounts are Debit nature (NOT credit), except the ones that "offers" amount for the books, like revenue accounts.
-   * 
-   * @public
    */
   public isCredit(): boolean {
     return this.wrapped.credit;
@@ -156,8 +138,6 @@ class Account {
    * Tell if this account is in the [[Group]]
    * 
    * @param  group The Group name, id or object
-   * 
-   * @public
    */
   public isInGroup(group: string | Group): boolean {
     if (group == null) {

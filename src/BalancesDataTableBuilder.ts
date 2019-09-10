@@ -28,8 +28,6 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    * Defines whether the dates should be formatted based on date pattern and periodicity of the [[Book]].
    *
    * @returns This builder with respective formatting option.
-   * 
-   * @public
    */
   public formatDate(): BalancesDataTableBuilder {
     this.shouldFormatDate = true;
@@ -40,8 +38,6 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    * Defines whether the value should be formatted based on decimal separator of the [[Book]].
    * 
    * @returns This builder with respective formatting option.
-   * 
-   * @public
    */
   public formatValue(): BalancesDataTableBuilder {
     this.shouldFormatValue = true;
@@ -54,8 +50,6 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    * @param balanceType The type of balance for this data table
    * 
    * @returns This builder with respective balance type.
-   * 
-   * @public
    */
   public setBalanceType(balanceType: BalanceType): BalancesDataTableBuilder {
     this.balanceType = balanceType;
@@ -93,8 +87,6 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    * ```
    * 
    * First column will be the Date column, and one column for each [[Group]], [[Account]] or #hashtag.
-   * 
-   * @public
    */
   public build(): any[][] {
     if (this.balanceType == BalanceType.TOTAL) {

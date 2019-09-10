@@ -24,8 +24,6 @@ class BalancesReport {
 
   /**
    * The [[Book]] that generated the report.
-   * 
-   * @public
    */
   public getBook(): Book {
     return this.book;
@@ -33,8 +31,6 @@ class BalancesReport {
 
   /**
    * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]].
-   * 
-   * @public
    */
   public createDataTable(): BalancesDataTableBuilder {
     return new BalancesDataTableBuilder(this.book, this.getBalancesContainers(), this.getPeriodicity());
@@ -42,8 +38,6 @@ class BalancesReport {
 
   /**
    * Gets all [[BalancesContainers]] of the report.
-   * 
-   * @public
    */
   public getBalancesContainers(): BalancesContainer[] {
     var containers = new Array<BalancesContainer>();
@@ -62,8 +56,6 @@ class BalancesReport {
 
   /**
    * The [[Periodicity]] of the query used to generate the report.
-   * 
-   * @public
    */
   public getPeriodicity(): Periodicity {
     return this.wrapped.periodicity;
@@ -71,8 +63,6 @@ class BalancesReport {
 
   /**
    * Check if the report has only one Group specified on query.
-   * 
-   * @public
    */
   public hasOnlyOneGroup(): boolean {
     return this.getGroupBalancesContainers() != null && this.getGroupBalancesContainers().length == 1;
@@ -119,8 +109,6 @@ class BalancesReport {
    * Gets a specific [[BalancesContainers]].
    * 
    * @param name The [[Account]] name, [[Group]] name or #hashtag.
-   * 
-   * @public
    */
   public getBalancesContainer(groupName: string): BalancesContainer {
     var groupBalances = this.getBalancesContainers();

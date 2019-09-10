@@ -25,8 +25,6 @@ class Book {
 
   /**
    * Same as bookId param
-   * 
-   * @public
    */
   public getId(): string {
     return this.id;
@@ -34,8 +32,6 @@ class Book {
 
   /**
    * @return The name of this Book
-   * 
-   * @public
    */
   public getName(): string {
     this.checkBookLoaded_();
@@ -44,8 +40,6 @@ class Book {
 
   /**
    * @return The number of fraction digits (decimal places) supported by this Book
-   * 
-   * @public
    */
   public getFractionDigits(): number {
     this.checkBookLoaded_();
@@ -54,8 +48,6 @@ class Book {
 
   /**
    * @return The name of the owner of the Book
-   * 
-   * @public
    */
   public getOwnerName(): string {
     this.checkBookLoaded_();
@@ -70,8 +62,6 @@ class Book {
 
   /**
    * @return The permission for the current user
-   * 
-   * @public
    */
   public getPermission(): Permission {
     this.checkBookLoaded_();
@@ -89,8 +79,6 @@ class Book {
 
   /**
    * @return The date pattern of the Book. Example: dd/MM/yyyy
-   * 
-   * @public
    */
   public getDatePattern(): string {
     this.checkBookLoaded_();
@@ -99,8 +87,6 @@ class Book {
 
   /**
    * @return The decimal separator of the Book
-   * 
-   * @public
    */
   public getDecimalSeparator(): DecimalSeparator {
     this.checkBookLoaded_();
@@ -110,8 +96,6 @@ class Book {
 
   /**
    * @return The time zone of the book
-   * 
-   * @public
    */
   public getTimeZone(): string {
     this.checkBookLoaded_();
@@ -120,8 +104,6 @@ class Book {
 
   /**
    * @return The time zone offset of the book, in minutes
-   * 
-   * @public
    */
   public getTimeZoneOffset(): number {
     this.checkBookLoaded_();
@@ -130,8 +112,6 @@ class Book {
 
   /**
    * @return The last update date of the book, in in milliseconds
-   * 
-   * @public
    */
   public getLastUpdateMs(): number {
     this.checkBookLoaded_();
@@ -143,8 +123,6 @@ class Book {
    * @param  timeZone The output timezone of the result. Default to script's timeZone
    * 
    * @return The date formated according to date pattern of book
-   * 
-   * @public
    */
   public formatDate(date: Date, timeZone?: string): string {
     return Utils_.formatDate(date, this.getDatePattern(), timeZone);
@@ -154,8 +132,6 @@ class Book {
    * @param value The value to be formatted.
    * 
    * @return The value formated according to [[DecimalSeparator]] and fraction digits of Book
-   * 
-   * @public
    */
   public formatValue(value: number): string {
     return Utils_.formatValue_(value, this.getDecimalSeparator(), this.getFractionDigits());
@@ -173,8 +149,6 @@ class Book {
    * 
    * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
    * @param timeZone The time zone to format dates.
-   * 
-   * @public
    */
   public record(transactions: string | any[] | any[][], timeZone?: string): void {
     if (timeZone == null || timeZone.trim() == "") {
@@ -190,8 +164,6 @@ class Book {
    * @param continuationToken continuation token from a previous transaction iterator
    * 
    * @return a collection of transactions that remained in a previous iterator when the continuation token was generated
-   * 
-   * @public
    */
   public continueTransactionIterator(query: string, continuationToken: string): TransactionIterator {
     var transactionIterator = new TransactionIterator(this, query);
@@ -226,8 +198,6 @@ class Book {
 
   /**
    * Gets all [[Accounts]] of this Book
-   * 
-   * @public
    */
   public getAccounts(): Account[] {
     if (this.accounts == null) {
@@ -243,8 +213,6 @@ class Book {
    * @param idOrName The id or name of the Account
    * 
    * @returns The matching Account object
-   * 
-   * @public
    */
   public getAccount(idOrName: string): Account {
 
@@ -275,8 +243,6 @@ class Book {
    * If all other accounts in same group is in another group, the account will also be added to the other group.
    * 
    * @returns The created Account object
-   * 
-   * @public
    */
   public createAccount(name: string, group?: string, description?: string): Account {
     var account = AccountService_.createAccount(this.getId(), name, group, description);
@@ -299,8 +265,6 @@ class Book {
 
   /**
    * Gets all [[Groups]] of this Book
-   * 
-   * @public
    */
   public getGroups(): Group[] {
     if (this.groups == null) {
@@ -315,8 +279,6 @@ class Book {
    * @param idOrName The id or name of the Group
    * 
    * @returns The matching Group object
-   * 
-   * @public
    */
   public getGroup(idOrName: string): Group {
 
@@ -363,8 +325,6 @@ class Book {
    * Create a [[BalancesReport]] based on query
    * 
    * @param query The balances report query
-   * 
-   * @public
    */
   public getBalancesReport(query: string): BalancesReport {
     var balances = BalancesService_.getBalances(this.getId(), query);
@@ -387,8 +347,6 @@ class Book {
    * 
    * var balancesDataTable = book.createBalancesDataTable("#rental #energy after:8/2013 before:9/2013").build();
    * ```
-   * 
-   * @public
    */
   public createBalancesDataTable(query: string): BalancesDataTableBuilder {
     var balances = BalancesService_.getBalances(this.getId(), query);
@@ -412,8 +370,6 @@ class Book {
    * 
    * var transactionsDataTable = book.createTransactionsDataTable("acc:'Bank' after:8/2013 before:9/2013").build();
    * ```
-   * 
-   * @public
    */
   public createTransactionsDataTable(query?: string): TransactionsDataTableBuilder {
     var transactionIterator = this.getTransactions(query);
@@ -441,8 +397,6 @@ class Book {
    *  Logger.log(transaction.getDescription());
    * }
    * ```
-   * 
-   * @public
    */
   public getTransactions(query?: string): TransactionIterator {
     return new TransactionIterator(this, query);

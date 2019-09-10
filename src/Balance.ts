@@ -18,8 +18,6 @@ class Balance {
    * The day of the balance. Days starts on 1 to 31. 
    * 
    * Day can be 0 (zero) in case of Monthly or Early [[Periodicity]] of the [[BalancesReport]]
-   * 
-   * @public
    */
   public getDay(): number {
     return this.wrapped.day
@@ -29,8 +27,6 @@ class Balance {
    * The month of the balance. Months starts on 1 (January) to 12 (December)
    * 
    * Month can be 0 (zero) in case of Early [[Periodicity]] of the [[BalancesReport]]
-   * 
-   * @public
    */
   public getMonth(): number {
     return this.wrapped.month;
@@ -38,8 +34,6 @@ class Balance {
 
   /**
    * The year of the balance
-   * 
-   * @public
    */
   public getYear(): number {
     return this.wrapped.year;
@@ -49,8 +43,6 @@ class Balance {
    * Date object constructed based on [[Book]] time zone offset. Usefull for 
    * 
    * If Month or Day is zero, the date will be constructed with first Month (January) or Day (1).
-   * 
-   * @public
    */
   public getDate(): Date {
     var year = this.getYear();
@@ -81,8 +73,6 @@ class Balance {
    * **20180100** - January, 2018 - MONTHLY Periodicity
    * 
    * **20180000** - 2018 - YEARLY Periodicity
-   * 
-   * @public
    */
   public getFuzzyDate(): number {
     return this.wrapped.fuzzyDate;
@@ -90,8 +80,6 @@ class Balance {
 
   /**
    * The cumulative balance to the date, since the first transaction posted.
-   * 
-   * @public
    */
   public getCumulativeBalance(): number {
     return this.wrapped.cumulativeBalance;
@@ -99,8 +87,6 @@ class Balance {
 
   /**
    * The cumulative checked balance to the date, since the first transaction posted.
-   * 
-   * @public
    */
   public getCheckedCumulativeBalance(): number {
     return this.wrapped.checkedCumulativeBalance;
@@ -108,8 +94,6 @@ class Balance {
 
   /**
    * The balance on the date period.
-   * 
-   * @public
    */
   public getPeriodBalance(): number {
     return this.wrapped.periodBalance;
@@ -117,8 +101,6 @@ class Balance {
 
   /**
    * The checked balance on the date period.
-   * 
-   * @public
    */
   public getCheckedPeriodBalance(): number {
     return this.wrapped.checkedPeriodBalance;
@@ -126,8 +108,6 @@ class Balance {
 
   /**
    * The unchecked cumulative balance to the date, since the first transaction posted.
-   * 
-   * @public
    */
   public getUncheckedCumulativeBalance(): number {
     return this.wrapped.uncheckedCumulativeBalance;
@@ -135,8 +115,6 @@ class Balance {
 
   /**
     * The unchecked balance on the date period.
-    * 
-    * @public
     */
   public getUncheckedPeriodBalance(): number {
     return this.wrapped.uncheckedPeriodBalance;

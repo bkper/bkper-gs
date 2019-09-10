@@ -15,38 +15,30 @@ class Group {
 
   /**
    * @returns The id of this Group
-   * 
-   * @public
    */
-  getId(): string {
+  public getId(): string {
     return this.wrapped.id;
   }
 
   /**
    * @returns The name of this Group
-   * 
-   * @public
    */
-  getName(): string {
+  public getName(): string {
     return this.wrapped.name;
   }
 
   /**
    * @returns True if this group has any account in it
-   * 
-   * @public
    */
-  hasAccounts(): boolean {
+  public hasAccounts(): boolean {
     return this.getAccounts().length > 0;
   }
 
 
   /**
    * @returns All Accounts of this group.
-   * 
-   * @public
    */
-  getAccounts(): Account[] {
+  public getAccounts(): Account[] {
     var accounts = [];
     var accs = this.book.getAccounts();
     for (var i = 0; i < accs.length; i++) {

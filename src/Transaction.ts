@@ -274,7 +274,7 @@ class Transaction {
     }
   }
 
-  public configure_(): void {
+  configure_(): void {
     var creditAccount = this.book.getAccount(this.wrapped.creditAccId);
     var debitAccount = this.book.getAccount(this.wrapped.debitAccId);
     this.creditAccount = creditAccount;

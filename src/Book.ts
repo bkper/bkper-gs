@@ -172,7 +172,7 @@ class Book {
   }
 
 
-  public configureTransactions_(transactions: Transaction[]) {
+  configureTransactions_(transactions: Transaction[]) {
     for (var i = 0; i < transactions.length; i++) {
       this.configureTransaction_(transactions[i]);
     }

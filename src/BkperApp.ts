@@ -2,18 +2,6 @@ function doGet(e: any) {
   return Authorizer_.processGetRequest(e);
 }
 
-function storeTokenData(code: string, redirectUri: string): void {
-  Authorizer_.storeTokenData(code, redirectUri);
-}
-
-function createAuthorizationURL(redirectUri: string, state: string): string {
-  return Authorizer_.createAuthorizationURL(redirectUri, state);
-}
-
-function getAuthorizedCloseWindow(): GoogleAppsScript.HTML.HtmlOutput {
-  return Authorizer_.getAuthorizedCloseWindow();
-}
-
 /**
  * Check if the user is already althorized with OAuth2 to the bkper API
  * 
@@ -31,7 +19,7 @@ function isUserAuthorized(): boolean {
  * 
  * @public
  */
-function getAuthorizationHtml(continueUrl?: string, continueText?: string) {
+function getAuthorizationHtml(continueUrl?: string, continueText?: string): GoogleAppsScript.HTML.HtmlOutput {
   return Authorizer_.createAuthorizeTemplate(continueUrl, continueText);
 }
 
@@ -64,6 +52,19 @@ function getBooks(): Book[] {
   return BookService_.listBooks().map(bookV2 => { return new Book(bookV2.id, bookV2) });
 }
 
+
+
+function storeTokenData(code: string, redirectUri: string): void {
+  Authorizer_.storeTokenData(code, redirectUri);
+}
+
+function createAuthorizationURL(redirectUri: string, state: string): string {
+  return Authorizer_.createAuthorizationURL(redirectUri, state);
+}
+
+function getAuthorizedCloseWindow(): GoogleAppsScript.HTML.HtmlOutput {
+  return Authorizer_.getAuthorizedCloseWindow();
+}
 
 
 function normalizeName(name: string): string {

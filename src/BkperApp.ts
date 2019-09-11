@@ -42,7 +42,7 @@ function getAuthorizationHtml(continueUrl?: string, continueText?: string) {
  *
  * Example:
  *
- * ```javascript
+ * ```js
  * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
  * book.record("#fuel for my Land Rover 126.50 28/01/2013");
  * ```

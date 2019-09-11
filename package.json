@@ -22,7 +22,7 @@
   "devDependencies": {
     "@google/clasp": "^2.2.1",
     "@types/chai": "^4.2.0",
-    "@types/google-apps-script": "^0.0.56",
+    "@types/google-apps-script": "^0.0.59",
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",

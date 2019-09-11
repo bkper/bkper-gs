@@ -87,10 +87,10 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/google-apps-script@^0.0.56":
-  version "0.0.56"
-  resolved "https://registry.yarnpkg.com/@types/google-apps-script/-/google-apps-script-0.0.56.tgz#949a6a2ce852349f97eebf43ddf76a70d3b82434"
-  integrity sha512-WWgH2maNOuZf93htQHIu432E6jE+fvREBUeV4lnZE9jbCCPqhIRFX9+bdBWGK0GOSsjAuzB3fB9rBe+RxapCeA==
+"@types/google-apps-script@^0.0.59":
+  version "0.0.59"
+  resolved "https://registry.yarnpkg.com/@types/google-apps-script/-/google-apps-script-0.0.59.tgz#d248ea06895e12136891ff7f2103431f79ca6689"
+  integrity sha512-P3vuBBvpaEtpkRuMIuxXh1vZ6UiKMETnXBfPvyn8egWHxNHgISfUC+pDs6uni/MrgFd9KySA6h9ckKQ/mRPWKw==
 
 "@types/minimatch@*", "@types/minimatch@3.0.3", "@types/minimatch@^3.0.3":
   version "3.0.3"

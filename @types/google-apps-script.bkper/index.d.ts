@@ -1,8 +1,8 @@
-// Type definitions for Bkper Google Apps Script library
+// Type definitions for BkperApp
 // Project: https://bkper.com/api
-// Definitions by: maelcaldas <https://github.com/maelcaldas>
+// Generator: https://github.com/maelcaldas/gas-dts-gen
+// Definitions by: Mael <https://github.com/maelcaldas>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-// TypeScript Version: 2.2
 
 /// <reference types="google-apps-script" />
 
@@ -14,7 +14,6 @@ declare namespace GoogleAppsScript {
      * The main entry point to interact with Bkper
      * 
      * Script ID: **1fSZnepYcDUjxCsrWYD3452UJ5nJiB4js0cD45WWOAjMcKJR_PKfLU60X**
-     * 
      */
     export interface BkperApp {
 

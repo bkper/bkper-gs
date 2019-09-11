@@ -31,7 +31,7 @@ declare namespace GoogleAppsScript {
        *
        * Example:
        *
-       * ```javascript
+       * ```js
        * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
        * book.record("#fuel for my Land Rover 126.50 28/01/2013");
        * ```
@@ -141,7 +141,7 @@ declare namespace GoogleAppsScript {
        * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
        * 
        * Example: 
-       * ```javascript
+       * ```js
        * book.record("#gas 63.23");
        * ```
        * 
@@ -224,7 +224,7 @@ declare namespace GoogleAppsScript {
        * 
        * Example:
        * 
-       * ```javascript
+       * ```js
        * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
        * 
        * var balancesDataTable = book.createBalancesDataTable("#rental #energy after:8/2013 before:9/2013").build();
@@ -243,7 +243,7 @@ declare namespace GoogleAppsScript {
        * 
        * Example: 
        * 
-       * ```javascript
+       * ```js
        * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
        * 
        * var transactionsDataTable = book.createTransactionsDataTable("acc:'Bank' after:8/2013 before:9/2013").build();
@@ -264,7 +264,7 @@ declare namespace GoogleAppsScript {
        * 
        * Example:
        * 
-       * ```javascript
+       * ```js
        * var book = BkperApp.loadBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
        *
        * var transactions = book.getTransactions("acc:CreditCard after:28/01/2013 before:29/01/2013");

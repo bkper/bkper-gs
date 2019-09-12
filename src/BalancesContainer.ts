@@ -116,6 +116,9 @@ class AccountBalancesContainer implements BalancesContainer {
   }
 
   public getBalances(): Balance[] {
+    if (!this.wrapped.balances) {
+      return new Array<Balance>();
+    }
     return this.wrapped.balances.map(balancePlain => new Balance(this, balancePlain));
   }
 
@@ -177,6 +180,9 @@ class TagBalancesContainer implements BalancesContainer {
   }
 
   public getBalances(): Balance[] {
+    if (!this.wrapped.balances) {
+      return new Array<Balance>();
+    }    
     return this.wrapped.balances.map(balancePlain => new Balance(this, balancePlain));
   }
 
@@ -245,6 +251,9 @@ class GroupBalancesContainer implements BalancesContainer {
   }
 
   public getBalances(): Balance[] {
+    if (!this.wrapped.balances) {
+      return new Array<Balance>();
+    }    
     return this.wrapped.balances.map(balancePlain => new Balance(this, balancePlain));
   }
 

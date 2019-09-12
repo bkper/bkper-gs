@@ -28,6 +28,9 @@
     "docs:watch": "watch 'yarn docs && yarn run docs:publish' ./@types/google-apps-script.bkper",
     "prepush": "yarn run test",
     "push": "yarn clasp push",
+    "predts": "yarn remove @types/google-apps-script",
+    "dts": "clasp-dts --out build",
+    "postdts": "yarn add --dev @types/google-apps-script",
     "api": "yarn --cwd ../bkper-pwa/api-typings-generator build --url http://app.bkper.com/_ah/api/discovery/v1/apis/bkper/v2/rest --out /Users/maelcaldas/git/bkper-app/@types"
   },
   "devDependencies": {

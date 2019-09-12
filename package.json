@@ -27,6 +27,7 @@
     "test": "mocha --require source-map-support/register build/test-bundle.js",
     "predocs": "yarn run dts",
     "docs": "typedoc ./build/google-apps-script.bkper --ignoreCompilerErrors --excludeExternals --includeDeclarations --mode file --json build/apidocs.json ",
+    "predocs:publish": "yarn docs",
     "docs:publish": "cp build/apidocs.json ../bkper-site/client/static/_data/ && cp ./build/google-apps-script.bkper/index.d.ts ../bkper-site/client/static/api/google-apps-script.bkper.d.ts",
     "postdocs:publish": "cp build/google-apps-script.bkper/index.d.ts ../bkper-sheets/server/@types/google-apps-script.bkper/index.d.ts",
     "docs:watch": "watch 'yarn docs && yarn run docs:publish' ./src",

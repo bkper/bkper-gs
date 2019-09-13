@@ -36,7 +36,7 @@ With BkperApp you can create many solutions on G Suite, such as the [Sheets] and
 
 It works the same way your favorite Google Apps Script library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] etc, and it is safely authorized using [OAuth2] protocol:
 
-![BkperApp overview](/api/images/BkperApp-overview.png)
+![BkperApp overview](https://bkper.com/api/images/BkperApp-overview.png)
 
 
 
@@ -74,11 +74,11 @@ function recordATransaction() {
 ```
 Exchange the parameter of the function [getBook] for the id of the [Book] you want to record the [Transaction]. This is the same parameter found on the URL accessed on [bkper.com]:
 
-![bookId](/api/images/bookId.png)
+![bookId](https://bkper.com/api/images/bookId.png)
 
 Now run the **recordATransaction** function and see the record appearing on the bkper screen:
 
-![Recording](/api/images/recording.png)
+![Recording](https://bkper.com/api/images/recording.png)
 
 You can also record transactions in batch by passing an Array of strings as the [record] method parameter:
 
@@ -110,7 +110,7 @@ Each book is a large database and every interaction is done in terms of queries.
 
 Every query is shown in the search box on top of the page:
 
-![Query](/api/images/query.png)
+![Query](https://bkper.com/api/images/query.png)
 
 When you retrieve transactions, the [getTransactions] method returns an [TransactionIterator] to let you handle potentially large datasets:
 
@@ -132,7 +132,7 @@ function listTransactions() {
 
 Run the **queryTransactions** function, exchanging your bookId, with the same query, check the log output and you will see the same descriptions:
 
-![Search log](/api/images/logSearch.png)
+![Search log](https://bkper.com/api/images/logSearch.png)
 
 
 
@@ -188,11 +188,11 @@ To help keep your development environment more productive and the code base easi
 <br/><br/>
 Typescript is basically javascript with.... types! A tipical function in typescript look like:
 
-![Typescript Function](/api/images/typescript_function.png)
+![Typescript Function](https://bkper.com/api/images/typescript_function.png)
 
 A type specification can also be composed by multiple types, chaining then with **```|```** (pipe) and a parameter can be marked as optional with:
 
-![Typescript Params](/api/images/typescript_params.png)
+![Typescript Params](https://bkper.com/api/images/typescript_params.png)
 
 You can learn more about how to use Typescript with the [Apps Script official documentation](https://developers.google.com/apps-script/guides/typescript).
 

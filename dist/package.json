@@ -1,0 +1,34 @@
+{
+  "name": "@bkper/bkperapp",
+  "version": "1.0.0",
+  "description": "Google Apps Script library for Bkper",
+  "homepage": "https://bkper.com/api",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bkper/bkper-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bkper/bkper-issues/issues",
+    "email": "support@bkper.com"
+  },
+  "author": {
+    "name": "Mael",
+    "url": "https://github.com/maelcaldas"
+  },
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {},
+  "keywords": [
+    "google",
+    "gsuite",
+    "apps-script",
+    "api",
+    "google-apps-script",
+    "typescript",
+    "library",
+    "ledger",
+    "accounting",
+    "bookkeeping"
+  ],
+  "types": "./index.d.ts"
+}

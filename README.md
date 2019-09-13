@@ -27,7 +27,7 @@
 [VS Code]: https://code.visualstudio.com
 [clasp]: https://developers.google.com/apps-script/guides/clasp
 
-### <a name='overview'></a>Overview
+## <a name='overview'></a>Overview
 
 The standard way to access the Bkper API is through our [Google Apps Script] library BkperApp. 
 
@@ -40,12 +40,12 @@ It works the same way your favorite Google Apps Script library works, like [Cale
 </p>
 
 
-### <a name='authorization'></a>Authorization
+## <a name='authorization'></a>Authorization
 
 To authorize the library, you just need to run the OAuth2 flow only once per account. This can be easily done when you install any Add-ons, or at [bkper.app]
 
 
-### <a name='setup'></a>Setup
+## <a name='setup'></a>Setup
 
 This library is already published as an Apps Script, making it easy to include in your project. To add it to your script, do the following in the Apps Script code editor:
 
@@ -56,7 +56,7 @@ This library is already published as an Apps Script, making it easy to include i
 
 
 
-### <a name='record_transactions'></a>Record Transactions
+## <a name='record_transactions'></a>Record Transactions
 
 
 To record your first [Transaction], after authorizing and setup, copy and paste the function bellow:
@@ -100,7 +100,7 @@ The above code will send all records in a bulk. Very useful for importing large 
 
 
 
-### <a name='list_transactions'></a>List Transactions
+## <a name='list_transactions'></a>List Transactions
 
 
 Each book is a large database and every interaction is done in terms of queries. Everytime you "select" an [Account] by clicking on left menu at [bkper.com], you are actually filtering transactions by that [Account].
@@ -135,7 +135,7 @@ Run the **queryTransactions** function, exchanging your bookId, with the same qu
 
 
 
-### <a name='list_accounts'></a>List Accounts
+## <a name='list_accounts'></a>List Accounts
 
 
 You can access all Account objects, in a way similar to the left sidebar:
@@ -155,7 +155,7 @@ function listAccounts() {
 ```
 
 
-### <a name='development'></a>Clasp Development
+## <a name='development'></a>Clasp Development
 
 We recommend [clasp] to develop Apps Script locally with, with [VS Code] editor, which is really powerfull and free.
 
@@ -179,7 +179,7 @@ or
 ```npm i -S @bkper/bkper-app```
 
 <!-- 
-### <a name='samples'></a>Samples
+## <a name='samples'></a>Samples
 
 
 - [BkperCSVExportService](https://github.com/bkper/BkperCSVExportService) - Service to export bkper transactions in CSV format.

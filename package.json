@@ -1,6 +1,6 @@
 {
-  "name": "bkper-app",
-  "version": "1",
+  "name": "@bkper/bkperapp",
+  "version": "1.0.0",
   "description": "Google Apps Script library for Bkper",
   "homepage": "https://bkper.com/api",
   "repository": {
@@ -15,20 +15,20 @@
     "name": "Mael",
     "url": "https://github.com/maelcaldas"
   },
-  "private": true,
   "scripts": {
     "clean": "rimraf build",
     "open": "clasp open",
     "predts": "yarn remove @types/google-apps-script",
-    "dts": "clasp-dts --out build",
+    "dts": "clasp-dts-gen --out dist",
     "postdts": "yarn add --dev @types/google-apps-script",
     "build": "tsc --skipLibCheck --sourcemap --outFile build/test-bundle.js --module system",
     "pretest": "yarn build",
     "test": "mocha --require source-map-support/register build/test-bundle.js",
-    "docs": "typedoc ./build/google.script.run --ignoreCompilerErrors --excludeExternals --includeDeclarations --mode file --json build/apidocs.json ",
+    "predocs": "yarn dts",
+    "docs": "typedoc ./dist/google-apps-script.bkper --ignoreCompilerErrors --excludeExternals --includeDeclarations --mode file --json build/apidocs.json ",
     "predocs:publish": "yarn docs",
-    "docs:publish": "cp build/apidocs.json ../bkper-site/client/static/_data/ && cp ./build/google-apps-script.bkper/index.d.ts ../bkper-site/client/static/api/google-apps-script.bkper.d.ts",
-    "postdocs:publish": "cp build/google-apps-script.bkper/index.d.ts ../bkper-sheets/server/@types/google-apps-script.bkper/index.d.ts",
+    "docs:publish": "cp dist/apidocs.json ../bkper-site/client/static/_data/ && cp ./dist/index.d.ts ../bkper-site/client/static/api/google-apps-script.bkper.d.ts",
+    "postdocs:publish": "cp dist/* ../bkper-sheets/server/node_modules/bkper-app/",
     "docs:watch": "watch 'yarn docs && yarn run docs:publish' ./src",
     "prepush": "yarn run test",
     "push": "yarn clasp push",
@@ -46,5 +46,17 @@
     "typedoc": "^0.15.0",
     "watch": "^1.0.2"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "keywords": [
+    "google",
+    "gsuite",
+    "apps-script",
+    "api",
+    "google-apps-script",
+    "typescript",
+    "library",
+    "ledger",
+    "accounting",
+    "bookkeeping"
+  ]
 }

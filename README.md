@@ -3,7 +3,7 @@
 
 [Google Apps Script]: https://developers.google.com/apps-script/reference/
 [OAuth2]: https://oauth.net/2/
-[authorization script]: https://script.google.com/macros/s/AKfycbz8F5FGTTW72pQBfDvGjEB4eglVmOfhG_a9Qb3EXYjVo5IICg/exec
+[bkper.app]: bkper.app
 
 [Dashboard]: https://script.google.com/home
 [Book]: https://bkper.com/api/reference/#book
@@ -22,11 +22,10 @@
 
 [Sheets]: https://gsuite.google.com/marketplace/app/bkper_sheets/75894855272
 [Forms]: https://gsuite.google.com/marketplace/app/bkper_forms/588203895124
-[Typescript]: https://www.typescriptlang.org/
+[Typescript]: https://developers.google.com/apps-script/guides/typescript
 [reference documentation]: https://bkper.com/api/reference/
 [VS Code]: https://code.visualstudio.com
 [clasp]: https://developers.google.com/apps-script/guides/clasp
-[DefinitelyTyped]: http://definitelytyped.org/
 
 ### <a name='overview'></a>Overview
 
@@ -36,14 +35,14 @@ With BkperApp you can create many solutions on G Suite, such as the [Sheets] and
 
 It works the same way your favorite Google Apps Script library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] etc, and it is safely authorized using [OAuth2] protocol:
 
-![BkperApp overview](https://bkper.com/api/images/BkperApp-overview.png)
-
+<p align="center">
+  <img src="https://bkper.com/api/images/BkperApp-overview.png">
+</p>
 
 
 ### <a name='authorization'></a>Authorization
 
-To authorize the library, you just need to run the OAuth2 flow only once per account. This can be easily done when you install any Add-ons, or by clicking and running this [authorization script]
-
+To authorize the library, you just need to run the OAuth2 flow only once per account. This can be easily done when you install any Add-ons, or at [bkper.app]
 
 
 ### <a name='setup'></a>Setup
@@ -54,7 +53,6 @@ This library is already published as an Apps Script, making it easy to include i
 2. In the "Add a Library" text box, enter the Script ID "**1fSZnepYcDUjxCsrWYD3452UJ5nJiB4js0cD45WWOAjMcKJR_PKfLU60X**" and click the "Select" button.
 3. Choose a version in the dropdown box (usually best to pick the latest version).
 4. Click the "Save" button.
-
 
 
 
@@ -98,7 +96,6 @@ function batchRecordTransactions() {
 }
 ```
 The above code will send all records in a bulk. Very useful for importing large amount of data without the risk of reaching script limits.
-
 
 
 
@@ -158,23 +155,11 @@ function listAccounts() {
 ```
 
 
+### <a name='development'></a>Clasp Development
 
-<!-- 
-### <a name='samples'></a>Samples
+We recommend [clasp] to develop Apps Script locally with, with [VS Code] editor, which is really powerfull and free.
 
-
-- [BkperCSVExportService](https://github.com/bkper/BkperCSVExportService) - Service to export bkper transactions in CSV format.
-
-- [bkper things](https://github.com/oshliaer/bkper/tree/master/bkper%20things) - Custom action scripts triggered from inside bkper through webhooks -->
-
-
-### <a name='typescript'></a>Typescript
-
-[Google Apps Script] is amazing and allows you to do great things really quickly, but, it starts getting hard to maintain as the code base grows and, when coming to finances automation, it grows fast.
-
-To help keep your development environment more productive and the code base easier to maintain, you can use [Typescript].
-
-[Typescript] gives you many advantages, including:
+We also strongly recommend using [Typescript], so you can get:
 
  - Code Autocomplete
  - Contextual documentation
@@ -185,28 +170,19 @@ To help keep your development environment more productive and the code base easi
  - Easier code redability
  - Automatic refactoring
 
-<br/><br/>
-Typescript is basically javascript with.... types! A tipical function in typescript look like:
+Type definitions for BkperApp:
 
-![Typescript Function](https://bkper.com/api/images/typescript_function.png)
+```yarn add --dev @bkper/bkper-app```
 
-A type specification can also be composed by multiple types, chaining then with **```|```** (pipe) and a parameter can be marked as optional with:
+or
 
-![Typescript Params](https://bkper.com/api/images/typescript_params.png)
+```npm i -S @bkper/bkper-app```
 
-You can learn more about how to use Typescript with the [Apps Script official documentation](https://developers.google.com/apps-script/guides/typescript).
-
-Understanding the basic type definition structure is essential to understand our [reference documentation], even if you don't use typescript.
+<!-- 
+### <a name='samples'></a>Samples
 
 
-### <a name='development'></a>Development
+- [BkperCSVExportService](https://github.com/bkper/BkperCSVExportService) - Service to export bkper transactions in CSV format.
 
-We use [clasp] to develop Apps Script locally, with [VS Code] editor, which is really powerfull and free.
-
-
-In adition to [Google Apps Script type definitions](https://www.npmjs.com/package/@types/google-apps-script) which is required to develop with Typescript locally, we offer our own BkperApp library definitions, which can be donwloaded here:
-
-<h4 class='center'><a href='http://bkper.com/api/google-apps-script.bkper.d.ts' download>Download BkperApp type definitions</a></h4>
-
-We will soon publish it to the [DefinitelyTyped], so you can manage it together with other type definitions.
+- [bkper things](https://github.com/oshliaer/bkper/tree/master/bkper%20things) - Custom action scripts triggered from inside bkper through webhooks -->
 

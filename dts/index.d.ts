@@ -1,5 +1,5 @@
-// Type definitions for BkperApp 9/13/2019
-// Generator: https://github.com/maelcaldas/clasp-dtsgen
+// Type definitions for BkperApp
+// Generator: https://github.com/maelcaldas/clasp-dts
 
 /// <reference types="google-apps-script" />
 
@@ -24,7 +24,7 @@ declare namespace bkper {
          * Gets the authorization screen html template for the user to authorize the API
          *
          */
-        getAuthorizationHtml(continueUrl?: string, continueText?: string): HtmlOutput;
+        getAuthorizationHtml(continueUrl?: string, continueText?: string): GoogleAppsScript.HTML.HtmlOutput;
 
         /**
          * Gets the [[Book]] with the specified bookId from url param.

@@ -1,5 +1,5 @@
 {
-  "name": "@bkper/bkperapp",
+  "name": "@bkper/bkper-app",
   "version": "1.0.0",
   "description": "Google Apps Script library for Bkper",
   "homepage": "https://bkper.com/api",
@@ -18,10 +18,11 @@
   "scripts": {
     "clean": "rimraf build",
     "open": "clasp open",
-    "dist":"run-p dist:*",
-    "dist:dts": "clasp-dts-gen --out dist",
-    "dist:readme": "cp README.md dist/",
-    "dist:license": "cp LICENSE dist/",
+    "predts": "yarn remove @types/google-apps-script",
+    "dts": "run-p dts:*",
+    "dts:gen": "clasp-dts",
+    "dts:license": "cp LICENSE dist/",
+    "postdts": "yarn add --dev @types/google-apps-script",
     "test": "run-s test:*",
     "test:bundle": "tsc --skipLibCheck --sourcemap --outFile build/test-bundle.js --module system",
     "test:run": "mocha --require source-map-support/register build/test-bundle.js",

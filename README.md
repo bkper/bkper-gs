@@ -154,12 +154,9 @@ function listAccounts() {
 }
 ```
 
-
 ## <a name='development'></a>Clasp Development
 
-We recommend [clasp] to develop Apps Script locally with, with [VS Code] editor, which is really powerfull and free.
-
-We also strongly recommend using [Typescript], so you can get:
+We recommend [clasp] to develop Apps Script locally with [Typescript] on [VS Code] editor, which is really powerfull, so you get:
 
  - Code Autocomplete
  - Contextual documentation
@@ -172,11 +169,11 @@ We also strongly recommend using [Typescript], so you can get:
 
 Type definitions for BkperApp:
 
-```yarn add --dev @bkper/bkper-app```
+```yarn add --dev @bkper/bkper-app-dts```
 
 or
 
-```npm i -S @bkper/bkper-app```
+```npm i -S @bkper/bkper-app-dts```
 
 <!-- 
 ## <a name='samples'></a>Samples

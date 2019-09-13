@@ -29,7 +29,7 @@
 
 ## <a name='overview'></a>Overview
 
-The standard way to access the Bkper API is through our [Google Apps Script] library BkperApp. 
+The standard way to access the [Bkper] API is through our [Google Apps Script] library **BkperApp**. 
 
 With BkperApp you can create many solutions on G Suite, such as the [Sheets] and [Forms] Add-ons, simple automations or advanced solutions with [Google Apps Script API], and you can manage your scripts in the [Dashboard].
 

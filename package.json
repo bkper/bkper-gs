@@ -12,16 +12,14 @@
     "email": "support@bkper.com"
   },
   "author": {
-    "name": "Mael",
-    "url": "https://github.com/maelcaldas"
+    "name": "bkper, Inc",
+    "url": "https://bkper.com"
   },
   "scripts": {
     "clean": "rimraf build",
     "open": "clasp open",
     "predts": "yarn remove @types/google-apps-script",
-    "dts": "run-p dts:*",
-    "dts:gen": "clasp-dts",
-    "dts:license": "cp LICENSE dist/",
+    "dts": "clasp-dts",
     "postdts": "yarn add --dev @types/google-apps-script",
     "test": "run-s test:*",
     "test:bundle": "tsc --skipLibCheck --sourcemap --outFile build/test-bundle.js --module system",

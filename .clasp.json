@@ -3,7 +3,7 @@
   "projectId": "nimbustecnologia.com.br:bookkeeper",
   "rootDir": "./src",
   "library": {
-    "namespace": "Bkper",
+    "namespace": "bkper",
     "name": "BkperApp"
   }
 }

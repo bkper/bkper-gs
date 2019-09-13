@@ -24,7 +24,7 @@ declare namespace bkper {
          * Gets the authorization screen html template for the user to authorize the API
          *
          */
-        getAuthorizationHtml(continueUrl?: string, continueText?: string): GoogleAppsScript.HTML.HtmlOutput;
+        getAuthorizationHtml(continueUrl?: string, continueText?: string): HtmlOutput;
 
         /**
          * Gets the [[Book]] with the specified bookId from url param.

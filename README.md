@@ -3,7 +3,7 @@
 
 [Google Apps Script]: https://developers.google.com/apps-script/reference/
 [OAuth2]: https://oauth.net/2/
-[bkper.app]: bkper.app
+[bkper.app]: https://bkper.app
 
 [Dashboard]: https://script.google.com/home
 [Book]: https://bkper.com/api/reference/#book

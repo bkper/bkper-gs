@@ -152,7 +152,7 @@ namespace Authorizer_ {
       continueUrl = continueUrl.replace(/'/g, '"');
       template.continueUrl = continueUrl;
     } else {
-      template.continueUrl = "http://bkper.github.io/docs/BkperApp";
+      template.continueUrl = "https://bkper.com/api";
     }
     if (continueText != null) {
       template.continueText = continueText;

@@ -30,7 +30,7 @@ namespace API {
       params.key = APP_KEY;
     } catch (error) {
       // @ts-ignore
-      params.key = "AIzaSyCd9EGlw8P2vUoAkyaAE_472zXAhItPax8";
+      params.key = PropertiesService.getScriptProperties().getProperty('APP_KEY');
       //APP_KEY not defined. Fallback.
     }
     

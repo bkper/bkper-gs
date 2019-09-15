@@ -1,5 +1,5 @@
 // Type definitions for BkperApp
-// Generator: https://github.com/maelcaldas/clasp-dts
+// Generator: https://github.com/maelcaldas/clasp-types
 
 /// <reference types="google-apps-script" />
 

@@ -1,6 +1,6 @@
 {
   "name": "@bkper/bkper-app",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Google Apps Script library for Bkper",
   "homepage": "https://bkper.com/api",
   "repository": {
@@ -18,15 +18,15 @@
   "scripts": {
     "clean": "rimraf build",
     "open": "clasp open",
-    "dts": "run-s dts:*",
-    "dts:generate": "clasp-dts && copyfiles README.md dts/lib",
-    "dts:publish": "yarn --cwd dts/ publish --access public --new-version $npm_package_version",
+    "types": "run-s types:*",
+    "types:generate": "clasp-types && copyfiles README.md types/lib",
+    "types:publish": "yarn --cwd types/ publish --access public --new-version $npm_package_version",
     "test": "run-s test:*",
     "test:bundle": "tsc --skipLibCheck --sourcemap --outFile build/test-bundle.js --module system",
     "test:run": "mocha --require source-map-support/register build/test-bundle.js",
     "push": "clasp push",
     "preversion": "run-s test push",
-    "postversion": "yarn dts && git push && git push --tags && echo \"Successfully released version $npm_package_version!\""
+    "postversion": "yarn types && git push && git push --tags && echo \"Successfully released version $npm_package_version!\""
   },
   "devDependencies": {
     "@google/clasp": "^2.2.1",

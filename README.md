@@ -6,15 +6,15 @@
 [bkper.app]: https://bkper.app
 
 [Dashboard]: https://script.google.com/home
-[Book]: https://bkper.com/api/reference/#book
-[Account]: https://bkper.com/api/reference/#account
-[Transaction]: https://bkper.com/api/reference/#transaction
-[TransactionIterator]: https://bkper.com/api/reference/#transactioniterator
+[Book]: https://bkper.com/api/bkper-app/reference/#book
+[Account]: https://bkper.com/api/bkper-app/reference/#account
+[Transaction]: https://bkper.com/api/bkper-app/reference/#transaction
+[TransactionIterator]: https://bkper.com/api/bkper-app/reference/#transactioniterator
 [Google Apps Script API]: https://developers.google.com/apps-script/api/
 
-[record]: https://bkper.com/api/reference/#book_record
-[getTransactions]: https://bkper.com/api/reference/#book_gettransactions
-[getBook]: https://bkper.com/api/reference/#bkperapp_getbook
+[record]: https://bkper.com/api/bkper-app/reference/#book_record
+[getTransactions]: https://bkper.com/api/bkper-app/reference/#book_gettransactions
+[getBook]: https://bkper.com/api/bkper-app/reference/#bkperapp_getbook
 
 [CalendarApp]: https://developers.google.com/apps-script/reference/calendar/calendar-app
 [DocumentApp]: https://developers.google.com/apps-script/reference/document/document-app
@@ -23,16 +23,17 @@
 [Sheets]: https://gsuite.google.com/marketplace/app/bkper_sheets/75894855272
 [Forms]: https://gsuite.google.com/marketplace/app/bkper_forms/588203895124
 [Typescript]: https://developers.google.com/apps-script/guides/typescript
-[reference documentation]: https://bkper.com/api/reference/
+[reference documentation]: https://bkper.com/api/bkper-app/reference/
 [VS Code]: https://code.visualstudio.com
 [clasp]: https://developers.google.com/apps-script/guides/clasp
-[BkperApp Typescript Definitions]: https://www.npmjs.com/package/@bkper/bkper-app-types
+[Typescript Definitions]: https://www.npmjs.com/package/@bkper/bkper-app-types
 [GitHub]: https://github.com/
 [Cloud Source Repositories]: https://cloud.google.com/source-repositories/
+[BkperApp]: https://bkper.com/api/bkper-app/reference
 
 ## <a name='overview'></a>Overview
 
-The standard way to access the [Bkper] API is through our [Google Apps Script] library **BkperApp**. 
+The standard way to access the [Bkper] API is through our [Google Apps Script] library [BkperApp](https://bkper.com/api/bkper-app/reference). 
 
 With BkperApp you can create many solutions on G Suite, such as the [Sheets] and [Forms] Add-ons, simple automations or advanced solutions with [Google Apps Script API], and you can manage your scripts in the [Dashboard].
 
@@ -70,7 +71,7 @@ Altough you can work on the Online editor really quickly, we strongly recommend 
  - Easier code redability
  - Automatic refactoring
 
-Add [BkperApp Typescript Definitions]
+Add **BkperApp** [Typescript Definitions]
 
 Don't forget to keep your code always in sync with version control system such as [GitHub] or [Cloud Source Repositories]
 
@@ -114,7 +115,6 @@ function batchRecordTransactions() {
 }
 ```
 The above code will send all records in a bulk. Very useful for importing large amount of data without the risk of reaching script limits.
-
 
 
 

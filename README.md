@@ -26,6 +26,9 @@
 [reference documentation]: https://bkper.com/api/reference/
 [VS Code]: https://code.visualstudio.com
 [clasp]: https://developers.google.com/apps-script/guides/clasp
+[BkperApp Typescript Definitions]: https://www.npmjs.com/package/@bkper/bkper-app-types
+[GitHub]: https://github.com/
+[Cloud Source Repositories]: https://cloud.google.com/source-repositories/
 
 ## <a name='overview'></a>Overview
 
@@ -54,7 +57,22 @@ This library is already published as an Apps Script, making it easy to include i
 3. Choose a version in the dropdown box (usually best to pick the latest version).
 4. Click the "Save" button.
 
+## <a name='development'></a>Development
 
+Altough you can work on the Online editor really quickly, we strongly recommend [clasp] to develop locally with [Typescript] on [VS Code] editor, which is really powerfull and free, so you get:
+
+ - Code Autocomplete
+ - Contextual documentation
+ - Compile time error checking
+ - Code navigation - really helpful!
+ - Calling hierarchy searching
+ - Use of new javascript features such as classes, interfaces, arrow functions etc
+ - Easier code redability
+ - Automatic refactoring
+
+Add [BkperApp Typescript Definitions]
+
+Don't forget to keep your code always in sync with version control system such as [GitHub] or [Cloud Source Repositories]
 
 ## <a name='record_transactions'></a>Record Transactions
 
@@ -133,8 +151,6 @@ Run the **queryTransactions** function, exchanging your bookId, with the same qu
 
 
 
-
-
 ## <a name='list_accounts'></a>List Accounts
 
 
@@ -153,19 +169,6 @@ function listAccounts() {
   }
 }
 ```
-
-## <a name='development'></a>Clasp Development
-
-We recommend [clasp] to develop Apps Script locally with [Typescript] on [VS Code] editor, which is really powerfull, so you get:
-
- - Code Autocomplete
- - Contextual documentation
- - Compile time error checking
- - Code navigation - really helpful!
- - Calling hierarchy searching
- - Use of new javascript features such as classes, interfaces, arrow functions etc
- - Easier code redability
- - Automatic refactoring
 
 
 <!-- 

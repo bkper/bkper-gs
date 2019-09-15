@@ -18,13 +18,15 @@
   "scripts": {
     "clean": "rimraf build",
     "open": "clasp open",
-    "dts": "clasp-dts && copyfiles README.md dts/lib",
+    "dts": "run-s dts:*",
+    "dts:generate": "clasp-dts && copyfiles README.md dts/lib",
+    "dts:publish": "yarn --cwd dts/ publish --new-version $npm_package_version",
     "test": "run-s test:*",
     "test:bundle": "tsc --skipLibCheck --sourcemap --outFile build/test-bundle.js --module system",
     "test:run": "mocha --require source-map-support/register build/test-bundle.js",
     "push": "clasp push",
-    "preversion": "run-s test dts push",
-    "postversion": "git push && git push --tags && yarn publish ./dts && echo \"Successfully released version $npm_package_version!\""
+    "preversion": "run-s test push",
+    "postversion": "yarn dts && git push && git push --tags && echo \"Successfully released version $npm_package_version!\""
   },
   "devDependencies": {
     "@google/clasp": "^2.2.1",

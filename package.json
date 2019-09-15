@@ -1,6 +1,6 @@
 {
-  "name": "bkper-app",
-  "version": "1.0.4",
+  "name": "@bkper/bkper-app",
+  "version": "1.0.5",
   "description": "Google Apps Script library for Bkper",
   "homepage": "https://bkper.com/api",
   "repository": {
@@ -19,6 +19,7 @@
     "clean": "rimraf build",
     "open": "clasp open",
     "dts": "clasp-dts",
+    "dts:publish": "yarn --cwd dts/ publish",
     "test": "run-s test:*",
     "test:bundle": "tsc --skipLibCheck --sourcemap --outFile build/test-bundle.js --module system",
     "test:run": "mocha --require source-map-support/register build/test-bundle.js",
@@ -33,7 +34,6 @@
   "devDependencies": {
     "@google/clasp": "^2.2.1",
     "@types/chai": "^4.2.0",
-    "@types/google-apps-script": "^0.0.59",
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
@@ -43,7 +43,9 @@
     "typedoc": "^0.15.0",
     "watch": "^1.0.2"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@types/google-apps-script": "^0.0.59"
+  },
   "keywords": [
     "google",
     "gsuite",

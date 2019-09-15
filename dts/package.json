@@ -1,6 +1,6 @@
 {
   "name": "@bkper/bkper-app-dts",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Typescript definitions for BkperApp",
   "homepage": "https://bkper.com/api",
   "repository": {
@@ -17,7 +17,9 @@
   },
   "scripts": {},
   "devDependencies": {},
-  "dependencies": {},
+  "dependencies": {
+    "@types/google-apps-script": "*"
+  },
   "keywords": [
     "google",
     "gsuite",

@@ -1,6 +1,6 @@
 {
   "name": "@bkper/bkper-app",
-  "version": "1.0.5",
+  "version": "1.0.4",
   "description": "Google Apps Script library for Bkper",
   "homepage": "https://bkper.com/api",
   "repository": {
@@ -19,14 +19,11 @@
     "clean": "rimraf build",
     "open": "clasp open",
     "dts": "clasp-dts",
+    "postdts": "copyfiles README.md dts/lib",
     "dts:publish": "yarn --cwd dts/ publish",
     "test": "run-s test:*",
     "test:bundle": "tsc --skipLibCheck --sourcemap --outFile build/test-bundle.js --module system",
     "test:run": "mocha --require source-map-support/register build/test-bundle.js",
-    "docs": "run-s docs:*",
-    "docs:gen": "typedoc ./dist/google-apps-script.bkper --ignoreCompilerErrors --excludeExternals --includeDeclarations --mode file --json build/apidocs.json ",
-    "docs:pub": "cp dist/apidocs.json ../bkper-site/client/static/_data/ && cp ./dist/index.d.ts ../bkper-site/client/static/api/google-apps-script.bkper.d.ts",
-    "docs:deploy": "cp dist/* ../bkper-sheets/server/node_modules/bkper-app/",
     "watch": "watch 'yarn docs && yarn run docs:publish' ./src",
     "prepush": "yarn run test",
     "push": "clasp push"
@@ -36,6 +33,7 @@
     "@types/chai": "^4.2.0",
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
+    "copyfiles": "^2.1.1",
     "mocha": "^6.2.0",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.0",

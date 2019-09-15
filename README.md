@@ -167,13 +167,6 @@ We recommend [clasp] to develop Apps Script locally with [Typescript] on [VS Cod
  - Easier code redability
  - Automatic refactoring
 
-Type definitions for BkperApp:
-
-```yarn add --dev @bkper/bkper-app-dts```
-
-or
-
-```npm i -S @bkper/bkper-app-dts```
 
 <!-- 
 ## <a name='samples'></a>Samples

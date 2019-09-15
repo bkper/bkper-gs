@@ -6,15 +6,15 @@
 [bkper.app]: https://bkper.app
 
 [Dashboard]: https://script.google.com/home
-[Book]: https://bkper.com/api/bkper-app/reference/#book
-[Account]: https://bkper.com/api/bkper-app/reference/#account
-[Transaction]: https://bkper.com/api/bkper-app/reference/#transaction
-[TransactionIterator]: https://bkper.com/api/bkper-app/reference/#transactioniterator
+[Book]: https://bkper.com/api/bkper-app/#book
+[Account]: https://bkper.com/api/bkper-app/#account
+[Transaction]: https://bkper.com/api/bkper-app/#transaction
+[TransactionIterator]: https://bkper.com/api/bkper-app/#transactioniterator
 [Google Apps Script API]: https://developers.google.com/apps-script/api/
 
-[record]: https://bkper.com/api/bkper-app/reference/#book_record
-[getTransactions]: https://bkper.com/api/bkper-app/reference/#book_gettransactions
-[getBook]: https://bkper.com/api/bkper-app/reference/#bkperapp_getbook
+[record]: https://bkper.com/api/bkper-app/#book_record
+[getTransactions]: https://bkper.com/api/bkper-app/#book_gettransactions
+[getBook]: https://bkper.com/api/bkper-app/#bkperapp_getbook
 
 [CalendarApp]: https://developers.google.com/apps-script/reference/calendar/calendar-app
 [DocumentApp]: https://developers.google.com/apps-script/reference/document/document-app
@@ -23,17 +23,17 @@
 [Sheets]: https://gsuite.google.com/marketplace/app/bkper_sheets/75894855272
 [Forms]: https://gsuite.google.com/marketplace/app/bkper_forms/588203895124
 [Typescript]: https://developers.google.com/apps-script/guides/typescript
-[reference documentation]: https://bkper.com/api/bkper-app/reference/
+[reference documentation]: https://bkper.com/api/bkper-app/
 [VS Code]: https://code.visualstudio.com
 [clasp]: https://developers.google.com/apps-script/guides/clasp
 [Typescript Definitions]: https://www.npmjs.com/package/@bkper/bkper-app-types
 [GitHub]: https://github.com/
 [Cloud Source Repositories]: https://cloud.google.com/source-repositories/
-[BkperApp]: https://bkper.com/api/bkper-app/reference
+[BkperApp]: https://bkper.com/api/bkper-app
 
 ## <a name='overview'></a>Overview
 
-The standard way to access the [Bkper] API is through our [Google Apps Script] library [BkperApp](https://bkper.com/api/bkper-app/reference). 
+The standard way to access the [Bkper] API is through our [Google Apps Script] library [BkperApp](https://bkper.com/api/bkper-app). 
 
 With BkperApp you can create many solutions on G Suite, such as the [Sheets] and [Forms] Add-ons, simple automations or advanced solutions with [Google Apps Script API], and you can manage your scripts in the [Dashboard].
 

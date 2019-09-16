@@ -43,17 +43,5 @@
   },
   "dependencies": {
     "@types/google-apps-script": "^0.0.59"
-  },
-  "keywords": [
-    "google",
-    "gsuite",
-    "apps-script",
-    "api",
-    "google-apps-script",
-    "typescript",
-    "library",
-    "ledger",
-    "accounting",
-    "bookkeeping"
-  ]
+  }
 }

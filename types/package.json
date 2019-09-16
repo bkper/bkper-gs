@@ -1,6 +1,6 @@
 {
   "name": "@bkper/bkper-app-types",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Typescript definitions for BkperApp",
   "homepage": "https://bkper.com/api",
   "repository": {
@@ -20,18 +20,6 @@
   "dependencies": {
     "@types/google-apps-script": "*"
   },
-  "keywords": [
-    "google",
-    "gsuite",
-    "apps-script",
-    "api",
-    "google-apps-script",
-    "typescript",
-    "library",
-    "ledger",
-    "accounting",
-    "bookkeeping"
-  ],
   "license": "MIT",
   "types": "./index.d.ts"
 }

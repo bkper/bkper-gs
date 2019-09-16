@@ -71,7 +71,30 @@ Altough you can work on the Online editor really quickly, we strongly recommend 
  - Easier code redability
  - Automatic refactoring
 
-Add **BkperApp** [Typescript Definitions]
+### Add Typescript Definitions:
+
+#### 1) Add the package:
+
+```
+npm i -S @bkper/bkper-app-types
+```
+or
+```
+yarn add --dev @bkper/bkper-app-types
+```
+
+#### 2) Configure tsconfig.json:
+
+```
+{
+    "compilerOptions": {
+        "typeRoots" : ["node_modules/@bkper", "node_modules/@types" ]
+    }
+}
+```
+
+[Learn more](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#types-typeroots-and-types) about **@types**, **typeRoots** and **types**
+
 
 Don't forget to keep your code always in sync with version control system such as [GitHub] or [Cloud Source Repositories]
 

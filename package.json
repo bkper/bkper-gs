@@ -18,14 +18,14 @@
   "scripts": {
     "clean": "rimraf build",
     "open": "clasp open",
-    "types:generate": "yarn clasp-types && copyfiles README.md types/lib",
+    "types:generate": "yarn clasp-types",
     "types:publish": "yarn --cwd types/ publish --access public --new-version $npm_package_version",
     "test": "run-s test:*",
     "test:bundle": "tsc --skipLibCheck --sourcemap --outFile build/test-bundle.js --module system",
     "test:run": "mocha --require source-map-support/register build/test-bundle.js",
     "push": "clasp push",
     "preversion": "run-s test push",
-    "postversion": "git push && git push --tags && yarn types:generate && yarn types:publish && echo \"Successfully released version $npm_package_version!\""
+    "postversion": "yarn types:generate && yarn types:publish && git push && git push --tags && echo \"Successfully released version $npm_package_version!\""
   },
   "devDependencies": {
     "@google/clasp": "^2.2.1",

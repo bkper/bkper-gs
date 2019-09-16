@@ -6,15 +6,15 @@
 [bkper.app]: https://bkper.app
 
 [Dashboard]: https://script.google.com/home
-[Book]: https://bkper.com/api/reference/#book
-[Account]: https://bkper.com/api/reference/#account
-[Transaction]: https://bkper.com/api/reference/#transaction
-[TransactionIterator]: https://bkper.com/api/reference/#transactioniterator
+[Book]: https://bkper.com/api/bkper-app/#book
+[Account]: https://bkper.com/api/bkper-app/#account
+[Transaction]: https://bkper.com/api/bkper-app/#transaction
+[TransactionIterator]: https://bkper.com/api/bkper-app/#transactioniterator
 [Google Apps Script API]: https://developers.google.com/apps-script/api/
 
-[record]: https://bkper.com/api/reference/#book_record
-[getTransactions]: https://bkper.com/api/reference/#book_gettransactions
-[getBook]: https://bkper.com/api/reference/#bkperapp_getbook
+[record]: https://bkper.com/api/bkper-app/#book_record
+[getTransactions]: https://bkper.com/api/bkper-app/#book_gettransactions
+[getBook]: https://bkper.com/api/bkper-app/#bkperapp_getbook
 
 [CalendarApp]: https://developers.google.com/apps-script/reference/calendar/calendar-app
 [DocumentApp]: https://developers.google.com/apps-script/reference/document/document-app
@@ -23,13 +23,17 @@
 [Sheets]: https://gsuite.google.com/marketplace/app/bkper_sheets/75894855272
 [Forms]: https://gsuite.google.com/marketplace/app/bkper_forms/588203895124
 [Typescript]: https://developers.google.com/apps-script/guides/typescript
-[reference documentation]: https://bkper.com/api/reference/
+[reference documentation]: https://bkper.com/api/bkper-app/
 [VS Code]: https://code.visualstudio.com
 [clasp]: https://developers.google.com/apps-script/guides/clasp
+[Typescript Definitions]: https://www.npmjs.com/package/@bkper/bkper-app-types
+[GitHub]: https://github.com/
+[Cloud Source Repositories]: https://cloud.google.com/source-repositories/
+[BkperApp]: https://bkper.com/api/bkper-app
 
 ## <a name='overview'></a>Overview
 
-The standard way to access the [Bkper] API is through our [Google Apps Script] library **BkperApp**. 
+The standard way to access the [Bkper] API is through our [Google Apps Script] library [BkperApp](https://bkper.com/api/bkper-app). 
 
 With BkperApp you can create many solutions on G Suite, such as the [Sheets] and [Forms] Add-ons, simple automations or advanced solutions with [Google Apps Script API], and you can manage your scripts in the [Dashboard].
 
@@ -54,7 +58,22 @@ This library is already published as an Apps Script, making it easy to include i
 3. Choose a version in the dropdown box (usually best to pick the latest version).
 4. Click the "Save" button.
 
+## <a name='development'></a>Development
 
+Altough you can work on the Online editor really quickly, we strongly recommend [clasp] to develop locally with [Typescript] on [VS Code] editor, which is really powerfull and free, so you get:
+
+ - Code Autocomplete
+ - Contextual documentation
+ - Compile time error checking
+ - Code navigation - really helpful!
+ - Calling hierarchy searching
+ - Use of new javascript features such as classes, interfaces, arrow functions etc
+ - Easier code redability
+ - Automatic refactoring
+
+Add **BkperApp** [Typescript Definitions]
+
+Don't forget to keep your code always in sync with version control system such as [GitHub] or [Cloud Source Repositories]
 
 ## <a name='record_transactions'></a>Record Transactions
 
@@ -99,7 +118,6 @@ The above code will send all records in a bulk. Very useful for importing large 
 
 
 
-
 ## <a name='list_transactions'></a>List Transactions
 
 
@@ -133,8 +151,6 @@ Run the **queryTransactions** function, exchanging your bookId, with the same qu
 
 
 
-
-
 ## <a name='list_accounts'></a>List Accounts
 
 
@@ -153,19 +169,6 @@ function listAccounts() {
   }
 }
 ```
-
-## <a name='development'></a>Clasp Development
-
-We recommend [clasp] to develop Apps Script locally with [Typescript] on [VS Code] editor, which is really powerfull, so you get:
-
- - Code Autocomplete
- - Contextual documentation
- - Compile time error checking
- - Code navigation - really helpful!
- - Calling hierarchy searching
- - Use of new javascript features such as classes, interfaces, arrow functions etc
- - Easier code redability
- - Automatic refactoring
 
 
 <!-- 

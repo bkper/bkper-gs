@@ -24,7 +24,7 @@ yarn add --dev @bkper/bkper-app-types
 }
 ```
 
-[Learn more](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#types-typeroots-and-types)
+[Learn more](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#types-typeroots-and-types) about **@types**, **typeRoots** and **types**
 
 # Details
 

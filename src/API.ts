@@ -33,7 +33,7 @@ namespace API {
       params.key = PropertiesService.getScriptProperties().getProperty('APP_KEY');
       //APP_KEY not defined. Fallback.
     }
-    
+
     queryParams = Utils_.buildURLParams(params);
 
     var serviceFullPath = "ledgers";
@@ -75,18 +75,24 @@ namespace API {
       options.contentType = "application/json; charset=UTF-8";
     }
 
+    options.muteHttpExceptions = true;
+
     var retries = 0;
     var sleepTime = 1000;
     while (true) {
-      try {
-        var response = UrlFetchApp.fetch(apiURL, options);
+      var response = UrlFetchApp.fetch(apiURL, options);
+
+      if (response.getResponseCode() >= 200 && response.getResponseCode() < 300) {
+        //OK
         return response;
-      } catch (error) {
-        var errorMsg = error + "";
-        if (errorMsg.indexOf("code 50") >= 0 || errorMsg.indexOf("Address unavailable") >= 0 || errorMsg.indexOf("Unexpected error") >= 0 || errorMsg.indexOf("Timeout") >= 0) {
-          Logger.log("Failed to execute: " + retries);
+      } else {
+        //ERROR
+        let responseText = response.getContentText();
+        let error = JSON.parse(responseText).error;
+        if (response.getResponseCode() >= 500) {
+          //Retry in case of server error
           if (retries > 4) {
-            throw error;
+            throw error.message;
           } else {
             Logger.log("Retrying in " + (sleepTime / 1000) + " secs...");
             Utilities.sleep(sleepTime);
@@ -94,15 +100,16 @@ namespace API {
             retries++;
           }
         } else {
-          if (errorMsg.indexOf("403") >= 0 || errorMsg.indexOf("forbidden") >= 0) {
+          if (response.getResponseCode() == 403 || responseText.indexOf("forbidden") >= 0) {
+            //Forbidden
             Authorizer_.validateAccessToken();
           }
-          throw error;
+          throw error.message;
         }
       }
     }
-
   }
+
 
   class Headers {
     Authorization: string

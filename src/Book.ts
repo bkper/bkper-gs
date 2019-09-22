@@ -152,7 +152,6 @@ class Book {
    */
   public record(transactions: string | any[] | any[][], timeZone?: string): void {
     if (timeZone == null || timeZone.trim() == "") {
-      Logger.log("Fallback to book timezone!")
       timeZone = this.getTimeZone();
     }
     TransactionService_.record(this, transactions, timeZone);

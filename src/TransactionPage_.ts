@@ -7,7 +7,7 @@ class TransactionPage_ {
 
   constructor(book: Book, query: string, lastCursor: string) {
 
-    var transactionResponse = TransactionService_.searchTransactions(book, query, 500, lastCursor);
+    var transactionResponse = TransactionService_.searchTransactions(book, query, 1000, lastCursor);
 
     this.transactions = transactionResponse.items;
     this.cursor = transactionResponse.cursor;

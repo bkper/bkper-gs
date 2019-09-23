@@ -14,6 +14,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   private shouldFormatValue: boolean;
   private book: Book;
   private shouldExpand: boolean;
+  private shouldTranspose: boolean
 
   constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity) {
     this.book = book;
@@ -24,6 +25,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     this.shouldFormatDate = false;
     this.shouldFormatValue = false;
     this.shouldExpand = false;
+    this.shouldTranspose = false;
   }
 
   /**
@@ -57,6 +59,42 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   }
 
   /**
+   * Defines wheter should transpose rows into columns.
+   * 
+   * For **TOTAL** [[BalanceType]], the **transposed** table looks like:
+   * 
+   * ```
+   *   _________________________________________
+   *  | NAME      | Expenses | Income  |  ...  | 
+   *  | AMOUNT    | 4568.23  | 5678.93 |  ...  |
+   *  |___________|__________|_________|_______| 
+   * 
+   * ```
+   * Two rows, and each [[Group]] | [[Account]] | #hashtag per column.
+   * 
+   * 
+   * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the **transposed** table will be a time table, and the format looks like:
+   * 
+   * ```
+   *   _______________________________________________________________
+   *  |    NAME    | 15/01/2014 | 15/02/2014 | 15/03/2014 |    ...    |
+   *  |  Expenses  |  2345.23   |  2345.93   |  2456.45   |    ...    |
+   *  |  Income    |  3452.93   |  3456.46   |  3567.87   |    ...    |
+   *  |     ...    |     ...    |     ...    |     ...    |    ...    |
+   *  |____________|____________|____________|____________|___________|
+   * 
+   * ```
+   * 
+   * First column will be teach [[Group]], [[Account]] or #hashtag, and one column for each Date.
+   * 
+   * @returns This builder with respective transposed option, for chaining.
+   */
+  public transpose(): BalancesDataTableBuilder {
+    this.shouldTranspose = true;
+    return this;
+  }
+
+  /**
    * Fluent method to set the [[BalanceType]] for the builder.
    * 
    * @param balanceType The type of balance for this data table
@@ -78,7 +116,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    *   _____________________
    *  |    NAME   | AMOUNT  |
    *  | Expenses  | 4568.23 |
-   *  | Incomes   | 5678.93 |
+   *  | Income    | 5678.93 |
    *  |    ...    |   ...   |
    *  |___________|_________|
    * 
@@ -89,7 +127,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    * 
    * ```
    *  _____________________________________________
-   *  |    DATE    | Expenses | Incomes |    ...   |
+   *  |    DATE    | Expenses | Income  |    ...   |
    *  | 15/01/2014 | 2345.23  | 3452.93 |    ...   |
    *  | 15/02/2014 | 2345.93  | 3456.46 |    ...   |
    *  | 15/03/2014 | 2456.45  | 3567.87 |    ...   |
@@ -156,6 +194,10 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         line.push(balance);
         table.push(line);
       }
+    }
+
+    if (this.shouldTranspose) {
+      table = table[0].map((col: any, i: number) => table.map(row => row[i]));
     }
 
     return table;
@@ -282,6 +324,10 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         }
       }
 
+    }
+
+    if (this.shouldTranspose) {
+      table = table[0].map((col: any, i: number) => table.map(row => row[i]));
     }
 
     return table;

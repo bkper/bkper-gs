@@ -235,7 +235,7 @@ declare namespace bkper {
          *   _____________________
          *  |    NAME   | AMOUNT  |
          *  | Expenses  | 4568.23 |
-         *  | Incomes   | 5678.93 |
+         *  | Income    | 5678.93 |
          *  |    ...    |   ...   |
          *  |___________|_________|
          * 
@@ -246,7 +246,7 @@ declare namespace bkper {
          * 
          * ```
          *  _____________________________________________
-         *  |    DATE    | Expenses | Incomes |    ...   |
+         *  |    DATE    | Expenses | Income  |    ...   |
          *  | 15/01/2014 | 2345.23  | 3452.93 |    ...   |
          *  | 15/02/2014 | 2345.93  | 3456.46 |    ...   |
          *  | 15/03/2014 | 2456.45  | 3567.87 |    ...   |
@@ -258,6 +258,13 @@ declare namespace bkper {
          * First column will be the Date column, and one column for each [[Group]], [[Account]] or #hashtag.
          */
         build(): any[][];
+
+        /**
+         * Defines wheter Groups should expand its child accounts.
+         *
+         * @returns This builder with respective expanded option, for chaining.
+         */
+        expandGroups(): BalancesDataTableBuilder;
 
         /**
          * Defines whether the dates should be formatted based on date pattern and periodicity of the [[Book]].
@@ -279,6 +286,39 @@ declare namespace bkper {
          * @returns This builder with respective balance type.
          */
         setBalanceType(balanceType: BalanceType): BalancesDataTableBuilder;
+
+        /**
+         * Defines wheter should transpose rows into columns.
+         *
+         * For **TOTAL** [[BalanceType]], the **transposed** table looks like:
+         * 
+         * ```
+         *   _________________________________________
+         *  | NAME      | Expenses | Income  |  ...  |
+         *  | AMOUNT    | 4568.23  | 5678.93 |  ...  |
+         *  |___________|__________|_________|_______|
+         * 
+         * ```
+         * Two rows, and each [[Group]] | [[Account]] | #hashtag per column.
+         * 
+         * 
+         * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the **transposed** table will be a time table, and the format looks like:
+         * 
+         * ```
+         *   _______________________________________________________________
+         *  |    NAME    | 15/01/2014 | 15/02/2014 | 15/03/2014 |    ...    |
+         *  |  Expenses  |  2345.23   |  2345.93   |  2456.45   |    ...    |
+         *  |  Income    |  3452.93   |  3456.46   |  3567.87   |    ...    |
+         *  |     ...    |     ...    |     ...    |     ...    |    ...    |
+         *  |____________|____________|____________|____________|___________|
+         * 
+         * ```
+         * 
+         * First column will be teach [[Group]], [[Account]] or #hashtag, and one column for each Date.
+         *
+         * @returns This builder with respective transposed option, for chaining.
+         */
+        transpose(): BalancesDataTableBuilder;
 
     }
 

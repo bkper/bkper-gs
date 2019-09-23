@@ -13,6 +13,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   private shouldFormatDate: boolean;
   private shouldFormatValue: boolean;
   private book: Book;
+  private shouldExpand: boolean;
 
   constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity) {
     this.book = book;
@@ -22,6 +23,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     this.balanceType = BalanceType.TOTAL;
     this.shouldFormatDate = false;
     this.shouldFormatValue = false;
+    this.shouldExpand = false;
   }
 
   /**
@@ -41,6 +43,16 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    */
   public formatValue(): BalancesDataTableBuilder {
     this.shouldFormatValue = true;
+    return this;
+  }
+
+  /**
+   * Defines wheter Groups should expand its child accounts.
+   * 
+   * @returns This builder with respective expanded option, for chaining.
+   */
+  public expandGroups(): BalancesDataTableBuilder {
+    this.shouldExpand = true;
     return this;
   }
 
@@ -105,24 +117,44 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     var header = ["Name", "Amount"]
     table.push(header);
 
+    if (this.balancesContainers == null) {
+      return table;
+    }
 
-    if (this.balancesContainers != null) {
-      this.balancesContainers.sort(function (a, b) {
-        if (a != null && b != null) {
-          return b.getCumulativeBalance() - a.getCumulativeBalance();
-        }
-        return -1;
-      });
-      for (var i = 0; i < this.balancesContainers.length; i++) {
-        var balancesArray = this.balancesContainers[i];
-        if (balancesArray != null) {
-          var line = new Array();
-          var name = balancesArray.getName();
-          line.push(name);
-          var balance = this.shouldFormatValue ? balancesArray.getCumulativeBalanceText() : balancesArray.getCumulativeBalance();
-          line.push(balance);
-          table.push(line);
-        }
+    this.balancesContainers.sort((a, b) => {
+      if (a != null && b != null) {
+        return b.getCumulativeBalance() - a.getCumulativeBalance();
+      }
+      return -1;
+    });
+
+    let containers = new Array<BalancesContainer>();
+    this.balancesContainers.forEach(container => {
+      if (this.shouldExpand && container.getBalancesContainers) {
+        let subContainers = container.getBalancesContainers();
+        subContainers.sort((a, b) => {
+          if (a != null && b != null) {
+            return b.getCumulativeBalance() - a.getCumulativeBalance();
+          }
+          return -1;
+        });
+        subContainers.forEach(subContainer => {
+          containers.push(subContainer);
+        })
+      } else {
+        containers.push(container);
+      }
+    });
+
+    for (var i = 0; i < containers.length; i++) {
+      var balancesArray = containers[i];
+      if (balancesArray != null) {
+        var line = new Array();
+        var name = balancesArray.getName();
+        line.push(name);
+        var balance = this.shouldFormatValue ? balancesArray.getCumulativeBalanceText() : balancesArray.getCumulativeBalance();
+        line.push(balance);
+        table.push(line);
       }
     }
 
@@ -137,8 +169,26 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     var header = new Array();
     header.push("Date");
 
-    for (var i = 0; i < this.balancesContainers.length; i++) {
-      var balancesContainer = this.balancesContainers[i];
+    if (this.balancesContainers == null) {
+      return table;
+    }
+
+    let containers = new Array<BalancesContainer>();
+    this.balancesContainers.forEach(container => {
+      if (this.shouldExpand && container.getBalancesContainers) {
+        let subContainers = container.getBalancesContainers();
+        subContainers.forEach(subContainer => {
+          containers.push(subContainer);
+        })
+      } else {
+        containers.push(container);
+      }
+
+    });
+
+
+    for (var i = 0; i < containers.length; i++) {
+      var balancesContainer = containers[i];
       header.push(balancesContainer.getName());
 
       var balances = balancesContainer.getBalances();
@@ -168,8 +218,8 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
       var rowObject = dataIndexMap[fuzzy];
       var row = new Array();
       row.push(rowObject.date);
-      for (var i = 0; i < this.balancesContainers.length; i++) {
-        var balancesContainer = this.balancesContainers[i];
+      for (var i = 0; i < containers.length; i++) {
+        var balancesContainer = containers[i];
         var amount = rowObject[balancesContainer.getName()];
         if (amount == null) {
           amount = "null_amount";

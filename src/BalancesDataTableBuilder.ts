@@ -168,7 +168,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     let containers = new Array<BalancesContainer>();
     this.balancesContainers.forEach(container => {
-      if (this.shouldExpand && container.getBalancesContainers) {
+      if (this.shouldExpand && container instanceof GroupBalancesContainer) {
         let subContainers = container.getBalancesContainers();
         subContainers.sort((a, b) => {
           if (a != null && b != null) {
@@ -217,7 +217,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     let containers = new Array<BalancesContainer>();
     this.balancesContainers.forEach(container => {
-      if (this.shouldExpand && container.getBalancesContainers) {
+      if (this.shouldExpand && container instanceof GroupBalancesContainer) {
         let subContainers = container.getBalancesContainers();
         subContainers.forEach(subContainer => {
           containers.push(subContainer);

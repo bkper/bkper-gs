@@ -6,49 +6,49 @@
 class TransactionsDataTableBuilder {
 
   private transactionIterator: TransactionIterator;
-  private shouldFormatDate: boolean;
-  private shouldFormatValue: boolean;
+  private shouldFormatDates: boolean;
+  private shouldFormatValues: boolean;
   private shouldAddUrls: boolean;
 
   constructor(transactionIterator: TransactionIterator) {
     this.transactionIterator = transactionIterator;
-    this.shouldFormatDate = false;
-    this.shouldFormatValue = false;
+    this.shouldFormatDates = false;
+    this.shouldFormatValues = false;
     this.shouldAddUrls = false;
   }
 
   /**
    * Defines whether the dates should be formatted, based on date patter of the [[Book]]
    * 
-   * @returns This builder with respective formatting option.
+   * @returns This builder with respective formatting option, for chaining.
    */
-  public formatDate(): TransactionsDataTableBuilder {
-    this.shouldFormatDate = true;
+  public formatDates(format: boolean): TransactionsDataTableBuilder {
+    this.shouldFormatDates = format;
     return this;
   }
-
+  
   /**
-   * Defines whether the value should be formatted based on [[DecimalSeparator]] of the [[Book]]
+   * Defines whether amounts should be formatted based on [[DecimalSeparator]] of the [[Book]]
    *
-   * @returns This builder with respective formatting option.
+   * @returns This builder with respective formatting option, for chaining.
    */
-  public formatValue(): TransactionsDataTableBuilder {
-    this.shouldFormatValue = true;
+  public formatValues(format: boolean): TransactionsDataTableBuilder {
+    this.shouldFormatValues = format;
     return this;
   }
 
   /**
-   * Defines whether the value should add Attachments links
+   * Defines whether include attachments and url links.
    * 
-   * @returns This builder with respective add attachment option.
+   * @returns This builder with respective add attachment option, for chaining.
    */
-  public addUrls(): TransactionsDataTableBuilder {
-    this.shouldAddUrls = true;
+  public includeUrls(include: boolean): TransactionsDataTableBuilder {
+    this.shouldAddUrls = include;
     return this;
   }
 
   /**
-   * Return an account if query is filtering by a single account
+   * @returns An account if query is filtering by a single account
    */
   public getFilteredByAccount(): Account {
     return this.transactionIterator.getFilteredByAccount();
@@ -114,7 +114,7 @@ class TransactionsDataTableBuilder {
 
       var line = new Array();
 
-      if (this.shouldFormatDate) {
+      if (this.shouldFormatDates) {
         line.push(transaction.getInformedDateText());
       } else {
         line.push(transaction.getInformedDate());
@@ -129,7 +129,7 @@ class TransactionsDataTableBuilder {
         line.push("");
       }
       if (transaction.getAmount() != null) {
-        if (this.shouldFormatValue) {
+        if (this.shouldFormatValues) {
           var decimalSeparator = iterator.getBook().getDecimalSeparator();
           var fractionDigits = iterator.getBook().getFractionDigits();
           line.push(Utils_.formatValue_(transaction.getAmount(), decimalSeparator, fractionDigits));
@@ -140,7 +140,7 @@ class TransactionsDataTableBuilder {
         line.push("");
       }
 
-      if (this.shouldFormatDate) {
+      if (this.shouldFormatDates) {
         line.push(transaction.getPostDateText());
       } else {
         line.push(transaction.getPostDate());
@@ -169,7 +169,7 @@ class TransactionsDataTableBuilder {
       var transaction = iterator.next();
       var line = new Array();
 
-      if (this.shouldFormatDate) {
+      if (this.shouldFormatDates) {
         line.push(transaction.getInformedDateText());
       } else {
         line.push(transaction.getInformedDate());
@@ -197,7 +197,7 @@ class TransactionsDataTableBuilder {
 
         var amount: string | number = transaction.getAmount();
 
-        if (this.shouldFormatValue) {
+        if (this.shouldFormatValues) {
           amount = Utils_.formatValue_(transaction.getAmount(), iterator.getBook().getDecimalSeparator(), iterator.getBook().getFractionDigits());
         };
 
@@ -216,7 +216,7 @@ class TransactionsDataTableBuilder {
       if (account.isPermanent()) {
         if (transaction.getAccountBalance() != null) {
           var balance: string | number = transaction.getAccountBalance();
-          if (this.shouldFormatValue) {
+          if (this.shouldFormatValues) {
             balance = Utils_.formatValue_(balance, iterator.getBook().getDecimalSeparator(), iterator.getBook().getFractionDigits());
           };
           line.push(balance);
@@ -225,7 +225,7 @@ class TransactionsDataTableBuilder {
         }
       }
 
-      if (this.shouldFormatDate) {
+      if (this.shouldFormatDates) {
         line.push(transaction.getPostDateText());
       } else {
         line.push(transaction.getPostDate());
@@ -250,6 +250,32 @@ class TransactionsDataTableBuilder {
       return false;
     }
     return transaction.getCreditAccount().getId() == account.getId();
+  }
+
+
+
+
+/******************* DEPRECATED METHODS *******************/
+
+  /**
+   * @deprecated
+   */
+  formatDate(): TransactionsDataTableBuilder {
+    return this.formatDates(true);
+  }
+  
+  /**
+   * @deprecated
+   */
+  formatValue(): TransactionsDataTableBuilder {
+    return this.formatValues(true);
+  }
+  
+  /**
+   * @deprecated
+   */
+  addUrls(): TransactionsDataTableBuilder {
+    return this.includeUrls(true);
   }
 
 }

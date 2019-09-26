@@ -18,6 +18,7 @@
   "scripts": {
     "clean": "rimraf build",
     "open": "clasp open",
+    "build": "yarn test",
     "types:generate": "yarn clasp-types",
     "types:publish": "yarn --cwd dist/@bkper/bkper-app-types publish --access public --new-version $npm_package_version",
     "test": "run-s test:*",

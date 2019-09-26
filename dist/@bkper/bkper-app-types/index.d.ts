@@ -227,35 +227,7 @@ declare namespace bkper {
     export interface BalancesDataTableBuilder {
 
         /**
-         * Gets an two-dimensional array with the balances.
-         *
-         * For **TOTAL** [[BalanceType]], the table format looks like:
-         * 
-         * ```
-         *   _____________________
-         *  |    NAME   | AMOUNT  |
-         *  | Expenses  | 4568.23 |
-         *  | Income    | 5678.93 |
-         *  |    ...    |   ...   |
-         *  |___________|_________|
-         * 
-         * ```
-         * Two columns, and each [[Group]] | [[Account]] | #hashtag per line.
-         * 
-         * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the table will be a time table, and the format looks like:
-         * 
-         * ```
-         *  _____________________________________________
-         *  |    DATE    | Expenses | Income  |    ...   |
-         *  | 15/01/2014 | 2345.23  | 3452.93 |    ...   |
-         *  | 15/02/2014 | 2345.93  | 3456.46 |    ...   |
-         *  | 15/03/2014 | 2456.45  | 3567.87 |    ...   |
-         *  |    ...     |   ...    |   ...   |    ...   |
-         *  |___________ |__________|_________|__________|
-         * 
-         * ```
-         * 
-         * First column will be the Date column, and one column for each [[Group]], [[Account]] or #hashtag.
+         * Builds an two-dimensional array with the balances.
          */
         build(): any[][];
 
@@ -264,31 +236,24 @@ declare namespace bkper {
          *
          * @returns This builder with respective expanded option, for chaining.
          */
-        expandGroups(): BalancesDataTableBuilder;
+        expanded(expanded: boolean): BalancesDataTableBuilder;
 
         /**
          * Defines whether the dates should be formatted based on date pattern and periodicity of the [[Book]].
          *
-         * @returns This builder with respective formatting option.
+         * @returns This builder with respective formatting option, for chaining.
          */
-        formatDate(): BalancesDataTableBuilder;
+        formatDates(format: boolean): BalancesDataTableBuilder;
 
         /**
          * Defines whether the value should be formatted based on decimal separator of the [[Book]].
          *
-         * @returns This builder with respective formatting option.
+         * @returns This builder with respective formatting option, for chaining.
          */
-        formatValue(): BalancesDataTableBuilder;
+        formatValues(format: boolean): BalancesDataTableBuilder;
 
         /**
-         * Fluent method to set the [[BalanceType]] for the builder.
-         *
-         * @returns This builder with respective balance type.
-         */
-        setBalanceType(balanceType: BalanceType): BalancesDataTableBuilder;
-
-        /**
-         * Defines wheter should transpose rows into columns.
+         * Defines wheter should rows and columns should be transposed.
          *
          * For **TOTAL** [[BalanceType]], the **transposed** table looks like:
          * 
@@ -318,7 +283,14 @@ declare namespace bkper {
          *
          * @returns This builder with respective transposed option, for chaining.
          */
-        transpose(): BalancesDataTableBuilder;
+        transposed(transposed: boolean): BalancesDataTableBuilder;
+
+        /**
+         * Fluent method to set the [[BalanceType]] for the builder.
+         *
+         * @returns This builder with respective balance type, for chaining.
+         */
+        type(type: BalanceType): BalancesDataTableBuilder;
 
     }
 
@@ -752,13 +724,6 @@ declare namespace bkper {
     export interface TransactionsDataTableBuilder {
 
         /**
-         * Defines whether the value should add Attachments links
-         *
-         * @returns This builder with respective add attachment option.
-         */
-        addUrls(): TransactionsDataTableBuilder;
-
-        /**
          * @returns A two-dimensional array containing all [[Transactions]].
          */
         build(): any[][];
@@ -766,21 +731,28 @@ declare namespace bkper {
         /**
          * Defines whether the dates should be formatted, based on date patter of the [[Book]]
          *
-         * @returns This builder with respective formatting option.
+         * @returns This builder with respective formatting option, for chaining.
          */
-        formatDate(): TransactionsDataTableBuilder;
+        formatDates(format: boolean): TransactionsDataTableBuilder;
 
         /**
-         * Defines whether the value should be formatted based on [[DecimalSeparator]] of the [[Book]]
+         * Defines whether amounts should be formatted based on [[DecimalSeparator]] of the [[Book]]
          *
-         * @returns This builder with respective formatting option.
+         * @returns This builder with respective formatting option, for chaining.
          */
-        formatValue(): TransactionsDataTableBuilder;
+        formatValues(format: boolean): TransactionsDataTableBuilder;
 
         /**
-         * Return an account if query is filtering by a single account
+         * @returns An account if query is filtering by a single account
          */
         getFilteredByAccount(): Account;
+
+        /**
+         * Defines whether include attachments and url links.
+         *
+         * @returns This builder with respective add attachment option, for chaining.
+         */
+        includeUrls(include: boolean): TransactionsDataTableBuilder;
 
     }
 

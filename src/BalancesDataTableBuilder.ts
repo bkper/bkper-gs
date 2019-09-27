@@ -171,15 +171,17 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     this.balancesContainers.forEach(container => {
       if (this.shouldExpand && container instanceof GroupBalancesContainer) {
         let subContainers = container.getBalancesContainers();
-        subContainers.sort((a, b) => {
-          if (a != null && b != null) {
-            return b.getCumulativeBalance() - a.getCumulativeBalance();
-          }
-          return -1;
-        });
-        subContainers.forEach(subContainer => {
-          containers.push(subContainer);
-        })
+        if (subContainers != null) {
+          subContainers.sort((a, b) => {
+            if (a != null && b != null) {
+              return b.getCumulativeBalance() - a.getCumulativeBalance();
+            }
+            return -1;
+          });
+          subContainers.forEach(subContainer => {
+            containers.push(subContainer);
+          })
+        }
       } else {
         containers.push(container);
       }
@@ -220,9 +222,11 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     this.balancesContainers.forEach(container => {
       if (this.shouldExpand && container instanceof GroupBalancesContainer) {
         let subContainers = container.getBalancesContainers();
-        subContainers.forEach(subContainer => {
-          containers.push(subContainer);
-        })
+        if (subContainers != null) {
+          subContainers.forEach(subContainer => {
+            containers.push(subContainer);
+          })
+        }
       } else {
         containers.push(container);
       }

@@ -1,6 +1,6 @@
 namespace Authorizer_ {
 
-  const API_UNAUTHORIZED = "bkper_api_unauthorized";
+  const API_UNAUTHORIZED = "Bkper API Unauthorized. Open any Bkper Add-on or go to https://bkper.app to authorize";
 
   //scriptUri: "https://script.google.com/a/macros/nimbustecnologia.com.br/s/AKfycbz5W1wM6pehcWmXa53D9jUctPHHymvFTTH05mxNdQ/dev",
   const scriptUri = "https://script.google.com/macros/s/AKfycbz8F5FGTTW72pQBfDvGjEB4eglVmOfhG_a9Qb3EXYjVo5IICg/exec"
@@ -57,6 +57,26 @@ namespace Authorizer_ {
   }
   
   export function getAccessToken(): string {
+    return Utils_.retry<string>(getAccessTokenLocked)
+  }
+
+  function getAccessTokenLocked(): string {
+    var lock = LockService.getUserLock();
+    try {
+      lock.waitLock(30000);
+      return getAccessTokenRefressingIfNeeded();
+    } catch (e) {
+      Logger.log('Could not obtain lock after 30 seconds.');
+      throw e;
+    } finally {
+      if (lock != null) {
+        lock.releaseLock();
+      }
+    }
+  }
+
+  
+  function getAccessTokenRefressingIfNeeded(): string {
     var userData = AuthorizerDAO_.getAuthorizedUserData();
     if (userData == null) {
       throw API_UNAUTHORIZED;
@@ -76,9 +96,8 @@ namespace Authorizer_ {
       var tokenData: AuthorizerDAO_.TokenData  = JSON.parse(response.getContentText());
       userData = AuthorizerDAO_.storeTokenData(tokenData);
     }
-    
     return userData.accessToken;
-  }
+  }  
 
   export function storeTokenData(code: string, redirectUri: string): void {
     var postPayload = {

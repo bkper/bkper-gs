@@ -163,6 +163,26 @@ namespace Utils_ {
     }
     return array;
   }  
+
+  export function retry<R>(func: Function): R {
+    var retries = 0;
+    var sleepTime = 1000;
+    while (true) {
+      try {
+        return func();
+      } catch (e) {
+        Logger.log("Failed to execute: " + retries);
+        if (retries > 5) {
+          throw e;
+        } else {
+          Logger.log("Retrying in " + (sleepTime / 1000) + " secs...");
+          Utilities.sleep(sleepTime);
+          sleepTime = sleepTime * 2;
+          retries++;
+        }
+      }
+    }
+  }  
   
 }
 

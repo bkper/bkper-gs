@@ -81,7 +81,6 @@ namespace API {
     var sleepTime = 1000;
     while (true) {
       var response = UrlFetchApp.fetch(apiURL, options);
-
       if (response.getResponseCode() >= 200 && response.getResponseCode() < 300) {
         //OK
         return response;

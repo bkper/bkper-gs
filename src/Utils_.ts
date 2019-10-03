@@ -1,5 +1,5 @@
 namespace Utils_ {
-  
+
   export function round(num: number, fractionDigits?: number): number {
     if (num == null) {
       num = 0;

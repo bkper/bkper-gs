@@ -78,13 +78,14 @@ namespace Authorizer_ {
   
   function getAccessTokenRefressingIfNeeded(): string {
     var userData = AuthorizerDAO_.getAuthorizedUserData();
+
     if (userData == null) {
       throw API_UNAUTHORIZED;
     }
     if (AuthorizerDAO_.isTokenExpired(userData)) {
       var postPayload = {
-        "client_id" : PropertiesService.getScriptProperties().getProperty(clientIdKey),
-        "client_secret" : PropertiesService.getScriptProperties().getProperty(clientSecretKey),
+        "client_id" : CachedProperties_.getCachedProperty(CacheService.getScriptCache(), PropertiesService.getScriptProperties(), clientIdKey),
+        "client_secret" : CachedProperties_.getCachedProperty(CacheService.getScriptCache(), PropertiesService.getScriptProperties(), clientSecretKey),
         "refresh_token" : userData.refreshToken,
         "grant_type" : "refresh_token"
       };
@@ -94,7 +95,7 @@ namespace Authorizer_ {
       };
       var response = fetchTokenEndpoint(options);
       var tokenData: AuthorizerDAO_.TokenData  = JSON.parse(response.getContentText());
-      userData = AuthorizerDAO_.storeTokenData(tokenData);
+      userData = AuthorizerDAO_.storeTokenData(tokenData, userData.refreshToken);
     }
     return userData.accessToken;
   }  
@@ -102,8 +103,8 @@ namespace Authorizer_ {
   export function storeTokenData(code: string, redirectUri: string): void {
     var postPayload = {
       "code" : code,
-      "client_id" : PropertiesService.getScriptProperties().getProperty(clientIdKey),
-      "client_secret" : PropertiesService.getScriptProperties().getProperty(clientSecretKey),
+      "client_id" : CachedProperties_.getCachedProperty(CacheService.getScriptCache(), PropertiesService.getScriptProperties(), clientIdKey),
+      "client_secret" : CachedProperties_.getCachedProperty(CacheService.getScriptCache(), PropertiesService.getScriptProperties(), clientSecretKey),
       "redirect_uri" : redirectUri,
       "grant_type" : "authorization_code"
     };
@@ -116,8 +117,8 @@ namespace Authorizer_ {
     var response = fetchTokenEndpoint(options);
     var responseText = response.getContentText()
     
-    var tokenData  = JSON.parse(responseText);
-    AuthorizerDAO_.storeTokenData(tokenData);
+    var tokenData: AuthorizerDAO_.TokenData  = JSON.parse(responseText);
+    AuthorizerDAO_.storeTokenData(tokenData, tokenData.refresh_token);
   }
   
   function fetchTokenEndpoint(options: object): GoogleAppsScript.URL_Fetch.HTTPResponse {
@@ -137,7 +138,7 @@ namespace Authorizer_ {
       var accessToken =  getAccessToken();
       var responseJSON = UrlFetchApp.fetch("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + accessToken).getContentText();
       var tokenInfo = JSON.parse(responseJSON);
-      var rightAudience = PropertiesService.getScriptProperties().getProperty(clientIdKey);
+      var rightAudience = CachedProperties_.getCachedProperty(CacheService.getScriptCache(), PropertiesService.getScriptProperties(), clientIdKey);
       if (tokenInfo.audience !=  rightAudience) {
         throw API_UNAUTHORIZED;
       }
@@ -148,7 +149,7 @@ namespace Authorizer_ {
   }
   
   export function createAuthorizationURL(redirectUri: string, state: string): string {
-    var authorizationURL = "https://accounts.google.com/o/oauth2/auth?client_id=" + PropertiesService.getScriptProperties().getProperty(clientIdKey) +
+    var authorizationURL = "https://accounts.google.com/o/oauth2/auth?client_id=" + CachedProperties_.getCachedProperty(CacheService.getScriptCache(), PropertiesService.getScriptProperties(), clientIdKey) +
       "&response_type=code" +
         "&scope=" + scope +
           "&redirect_uri=" + redirectUri +

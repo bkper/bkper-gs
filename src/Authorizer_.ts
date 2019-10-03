@@ -57,11 +57,7 @@ namespace Authorizer_ {
   }
   
   export function getAccessToken(): string {
-    return Utils_.retry<string>(getAccessTokenLocked)
-  }
-
-  function getAccessTokenLocked(): string {
-    var lock = LockService.getUserLock();
+    var lock = Utils_.retry<GoogleAppsScript.Lock.Lock>(LockService.getUserLock);
     try {
       lock.waitLock(30000);
       return getAccessTokenRefressingIfNeeded();
@@ -74,7 +70,6 @@ namespace Authorizer_ {
       }
     }
   }
-
   
   function getAccessTokenRefressingIfNeeded(): string {
     var userData = AuthorizerDAO_.getAuthorizedUserData();
@@ -129,6 +124,8 @@ namespace Authorizer_ {
       if (errorMsg.indexOf("invalid_grant") >= 0) {
         AuthorizerDAO_.unauthorize();
         throw API_UNAUTHORIZED;
+      } else {
+        throw error;
       }
     }
   }

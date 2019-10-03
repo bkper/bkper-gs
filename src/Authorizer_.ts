@@ -55,9 +55,13 @@ namespace Authorizer_ {
       return false;
     }
   }
+
+  function getUserLock(): GoogleAppsScript.Lock.Lock {
+    return LockService.getUserLock();
+  }
   
   export function getAccessToken(): string {
-    var lock = Utils_.retry<GoogleAppsScript.Lock.Lock>(LockService.getUserLock);
+    var lock = Utils_.retry<GoogleAppsScript.Lock.Lock>(getUserLock);
     try {
       lock.waitLock(30000);
       return getAccessTokenRefressingIfNeeded();

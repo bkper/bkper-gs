@@ -38,7 +38,16 @@ namespace BookService_ {
       throw new Error("Book id null!");
     }
 
-    var responseJSON = API.call_("get", null, bookId);
+    let cache = CacheService.getUserCache();
+    let cacheKey = "BKPER_BOOK_"+ bookId;
+
+    let responseJSON = cache.get(cacheKey);
+
+    if (responseJSON == null) {
+      responseJSON = API.call_("get", null, bookId);
+      cache.put(cacheKey, responseJSON, 30);
+    }
+
     var bookPlain = JSON.parse(responseJSON);
     return bookPlain;
   }

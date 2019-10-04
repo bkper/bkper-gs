@@ -56,21 +56,22 @@ namespace Authorizer_ {
     }
   }
 
-  function getUserLock(): GoogleAppsScript.Lock.Lock {
-    return LockService.getUserLock();
-  }
   
   export function getAccessToken(): string {
-    var lock = Utils_.retry<GoogleAppsScript.Lock.Lock>(getUserLock);
+    let sleepMin=300; 
+    let sleepMax=1500;  
+    let rumpUp = 1;     
+    let maxRetries = 20;
+    let lock = Utils_.retry<GoogleAppsScript.Lock.Lock>(() => LockService.getUserLock(), sleepMin, sleepMax, maxRetries, rumpUp);
     try {
-      lock.waitLock(30000);
+      Utils_.retry<void>(() => lock.waitLock(30000), sleepMin, sleepMax, maxRetries, rumpUp);
       return getAccessTokenRefressingIfNeeded();
     } catch (e) {
       Logger.log('Could not obtain lock after 30 seconds.');
       throw e;
     } finally {
       if (lock != null) {
-        lock.releaseLock();
+        Utils_.retry<void>(() => lock.releaseLock(), sleepMin, sleepMax, maxRetries, rumpUp);
       }
     }
   }

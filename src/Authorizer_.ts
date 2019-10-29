@@ -1,6 +1,6 @@
 namespace Authorizer_ {
 
-  const API_UNAUTHORIZED = "Bkper API Unauthorized for user. Open any Bkper Add-on or go to https://bkper.app to authorize";
+  const API_UNAUTHORIZED = "Bkper API Unauthorized for the user. Open any Bkper Add-on or go to https://bkper.app to authorize";
 
   //scriptUri: "https://script.google.com/a/macros/nimbustecnologia.com.br/s/AKfycbz5W1wM6pehcWmXa53D9jUctPHHymvFTTH05mxNdQ/dev",
   const scriptUri = "https://script.google.com/macros/s/AKfycbz8F5FGTTW72pQBfDvGjEB4eglVmOfhG_a9Qb3EXYjVo5IICg/exec"

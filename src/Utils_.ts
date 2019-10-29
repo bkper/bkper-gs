@@ -177,7 +177,8 @@ export function retry<R>(func: Function, sleepTimeMinMs: number, sleepTimeMaxMs:
           let sleepTimeMs = Math.random() * (+sleepTimeMaxMs - +sleepTimeMinMs) + +sleepTimeMinMs;     
           Logger.log("Retrying in " + (sleepTimeMs / 1000) + " secs...");
           Utilities.sleep(sleepTimeMs);
-          sleepTimeMs = sleepTimeMs * rumpUp;
+          sleepTimeMaxMs = sleepTimeMaxMs * rumpUp;
+          sleepTimeMinMs = sleepTimeMinMs * rumpUp;
           retries++;
         }
       }

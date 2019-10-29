@@ -1,5 +1,7 @@
 namespace Authorizer_ {
 
+  const API_UNAUTHORIZED = "Bkper API Unauthorized for user. Open any Bkper Add-on or go to https://bkper.app to authorize";
+
   //scriptUri: "https://script.google.com/a/macros/nimbustecnologia.com.br/s/AKfycbz5W1wM6pehcWmXa53D9jUctPHHymvFTTH05mxNdQ/dev",
   const scriptUri = "https://script.google.com/macros/s/AKfycbz8F5FGTTW72pQBfDvGjEB4eglVmOfhG_a9Qb3EXYjVo5IICg/exec"
 
@@ -78,7 +80,7 @@ namespace Authorizer_ {
     var userData = AuthorizerDAO_.getAuthorizedUserData();
 
     if (userData == null) {
-      throwApiUnauthorized();
+      throw API_UNAUTHORIZED;
     }
     if (AuthorizerDAO_.isTokenExpired(userData)) {
       var postPayload = {
@@ -126,7 +128,7 @@ namespace Authorizer_ {
       var errorMsg = error + "";
       if (errorMsg.indexOf("invalid_grant") >= 0) {
         AuthorizerDAO_.unauthorize();
-        throwApiUnauthorized();
+        throw API_UNAUTHORIZED;
       } else {
         throw error;
       }
@@ -140,11 +142,11 @@ namespace Authorizer_ {
       var tokenInfo = JSON.parse(responseJSON);
       var rightAudience = CachedProperties_.getCachedProperty(CacheService.getScriptCache(), PropertiesService.getScriptProperties(), clientIdKey);
       if (tokenInfo.audience !=  rightAudience) {
-        throwApiUnauthorized();
+        throw API_UNAUTHORIZED;
       }
     } catch (error) {
       Logger.log(error);
-      throwApiUnauthorized();
+      throw API_UNAUTHORIZED;
     }
   }
   
@@ -201,10 +203,6 @@ namespace Authorizer_ {
     var template = HtmlService.createTemplateFromFile('AuthorizeView');
     template.authorizeLink = url1;
     return template.evaluate().setTitle("Authorize BkperApp");
-  }
-
-  function throwApiUnauthorized() {
-    throw `Bkper API Unauthorized for user ${Session.getEffectiveUser().getEmail()}. Open any Bkper Add-on or go to https://bkper.app to authorize it`;
   }
 }
 

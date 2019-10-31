@@ -48,23 +48,31 @@ class TransactionsDataTableBuilder {
   }
 
   /**
-   * @returns An account if query is filtering by a single account
-   */
-  public getFilteredByAccount(): Account {
-    return this.transactionIterator.getFilteredByAccount();
+   * @returns The account, when filtering by a single account
+   */  
+  public getAccount(): Account {
+    return this.transactionIterator.getAccount();
   }
+
+  /**
+   * @deprecated
+   */
+  getFilteredByAccount(): Account {
+    return this.getAccount();
+  }  
+
 
   /**
    * @returns A two-dimensional array containing all [[Transactions]].
    */
   public build(): any[][] {
-    var filteredByAccount = this.transactionIterator.getFilteredByAccount();
+    var account = this.transactionIterator.getAccount();
     var header = new Array();
     var transactions = new Array();
     var finalArray = new Array();
     var headerLine = new Array();
 
-    if (filteredByAccount != null) {
+    if (account != null) {
 
       headerLine.push("Date");
       headerLine.push("Account");
@@ -72,8 +80,8 @@ class TransactionsDataTableBuilder {
       headerLine.push("Debit");
       headerLine.push("Credit");
 
-      transactions = this.getExtract2DArray_(this.transactionIterator, filteredByAccount);
-      if (filteredByAccount.isPermanent()) {
+      transactions = this.getExtract2DArray_(this.transactionIterator, account);
+      if (account.isPermanent()) {
         headerLine.push("Balance");
       }
 

@@ -3,6 +3,7 @@ namespace TransactionService_ {
   export interface TransactionResponse {
     items: Transaction[]
     cursor: string
+    account: Account
   }
 
   export function searchTransactions(book: Book, query: string, limit: number, cursor?: string): TransactionResponse {
@@ -25,7 +26,8 @@ namespace TransactionService_ {
     
     var transactionResponse: TransactionResponse = {
       items: [],
-      cursor: null
+      cursor: null,
+      account: null
     };
     
     if (responseJSON == null || responseJSON == "") {
@@ -39,6 +41,9 @@ namespace TransactionService_ {
     transactionResponse.items = Utils_.wrapObjects(new Transaction(), transactionsPlain.items);
     book.configureTransactions_(transactionResponse.items);
     transactionResponse.cursor = transactionsPlain.cursor;
+    if (transactionsPlain.accountId) {
+      transactionResponse.account = book.getAccount(transactionsPlain.accountId)
+    }
     return transactionResponse;
   }
 

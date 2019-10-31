@@ -164,7 +164,7 @@ function listTransactions() {
   var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgKCtg6MLDA");
 
   //GetTransactions returns an interator to deal with potencial large datasets
-  var transactionIterator = book.getTransactions("acc:'Bank' after:01/04/2014");
+  var transactionIterator = book.getTransactions("account:'Bank' after:01/04/2014");
 
   while (transactionIterator.hasNext()) {
     var transaction = transactionIterator.next();

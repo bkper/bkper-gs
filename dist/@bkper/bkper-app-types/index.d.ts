@@ -387,7 +387,7 @@ declare namespace bkper {
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
          * 
-         * var transactionsDataTable = book.createTransactionsDataTable("acc:'Bank' after:8/2013 before:9/2013").build();
+         * var transactionsDataTable = book.createTransactionsDataTable("account:'Bank' after:8/2013 before:9/2013").build();
          * ```
          */
         createTransactionsDataTable(query?: string): TransactionsDataTableBuilder;
@@ -502,7 +502,7 @@ declare namespace bkper {
          * ```js
          * var book = BkperApp.loadBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
          * 
-         * var transactions = book.getTransactions("acc:CreditCard after:28/01/2013 before:29/01/2013");
+         * var transactions = book.getTransactions("account:CreditCard after:28/01/2013 before:29/01/2013");
          * 
          * while (transactions.hasNext()) {
          *  var transaction = transactions.next();

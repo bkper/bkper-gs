@@ -1,5 +1,6 @@
 class TransactionPage_ {
 
+  private account: Account
   private transactions: Transaction[]
   private cursor: string
   private index: number
@@ -9,6 +10,7 @@ class TransactionPage_ {
 
     var transactionResponse = TransactionService_.searchTransactions(book, query, 1000, lastCursor);
 
+    this.account = transactionResponse.account;
     this.transactions = transactionResponse.items;
     this.cursor = transactionResponse.cursor;
     this.index = 0;
@@ -43,6 +45,10 @@ class TransactionPage_ {
 
   public setIndex(index: number) {
     this.index = index;
+  }
+
+  public getAccount(): Account {
+    return this.account;
   }
 
   public next(): Transaction {

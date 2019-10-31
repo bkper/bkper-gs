@@ -6,12 +6,12 @@ describe('Utils_', () => {
     it('should build url form prams', () => {
       let params = {
         ledgerId: "agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgKCtg6MLDA",
-        query: "= acc:'Credit Card' after:$m-12 before:$m+1",
+        query: "= account:'Credit Card' after:$m-12 before:$m+1",
         chartType: "pie",
         balanceType: "cumulative"
       }
       let urlParams = Utils_.buildURLParams(params);
-      expect("ledgerId=agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgKCtg6MLDA&query=%3D%20acc%3A'Credit%20Card'%20after%3A%24m-12%20before%3A%24m%2B1&chartType=pie&balanceType=cumulative")
+      expect("ledgerId=agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgKCtg6MLDA&query=%3D%20account%3A'Credit%20Card'%20after%3A%24m-12%20before%3A%24m%2B1&chartType=pie&balanceType=cumulative")
         .to.equal(urlParams);
     });
   });

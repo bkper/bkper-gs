@@ -48,7 +48,7 @@ class TransactionsDataTableBuilder {
   }
 
   /**
-   * @returns The account, when filtering by a single account
+   * @returns The account, when filtering by a single account.
    */  
   public getAccount(): Account {
     return this.transactionIterator.getAccount();

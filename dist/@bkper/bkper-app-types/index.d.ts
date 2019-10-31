@@ -683,6 +683,11 @@ declare namespace bkper {
     export interface TransactionIterator {
 
         /**
+         * @returns The account, when filtering by a single account.
+         */
+        getAccount(): Account;
+
+        /**
          * Gets the Book that originate the iterator
          */
         getBook(): Book;
@@ -695,11 +700,6 @@ declare namespace bkper {
          * Continuation tokens are generally valid short period of time.
          */
         getContinuationToken(): string;
-
-        /**
-         * Return an account if query is filtering by a single account
-         */
-        getFilteredByAccount(): Account;
 
         /**
          * Determines whether calling next() will return a transaction.
@@ -743,9 +743,9 @@ declare namespace bkper {
         formatValues(format: boolean): TransactionsDataTableBuilder;
 
         /**
-         * @returns An account if query is filtering by a single account
+         * @returns The account, when filtering by a single account.
          */
-        getFilteredByAccount(): Account;
+        getAccount(): Account;
 
         /**
          * Defines whether include attachments and url links.

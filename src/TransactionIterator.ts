@@ -129,7 +129,7 @@ class TransactionIterator {
 
 
   /**
-   * @returns The account, when filtering by a single account
+   * @returns The account, when filtering by a single account.
    */  
   public getAccount(): Account {
     if (this.currentPage == null) {

@@ -118,6 +118,16 @@
   </tr>
 </table>
 
+<script>
+  setTimeout(function () {
+    try {
+      window.top.close();
+    } catch (error) {
+      console.log("Attempt to automatically close window failed: " + error)
+    }
+  }, 2000);
+</script>
+
 
 </body>
 </html>

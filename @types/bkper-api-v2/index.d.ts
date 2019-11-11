@@ -50,6 +50,7 @@ declare namespace bkper {
     accountBalances?: AccountBalancesV2Payload[];
     groupBalances?: GroupBalancesV2Payload[];
     periodicity?: any;
+    balanceCheckedType?: any;
     range?: string;
     tagBalances?: TagBalancesV2Payload[];
     totalRemovedBalances?: number;

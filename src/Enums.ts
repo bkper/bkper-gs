@@ -102,3 +102,26 @@ enum BalanceType {
    */
   CUMULATIVE = "CUMULATIVE"
 }
+
+/**
+ * Enum that represents queried balances of checked/unchecked transactions.
+ * 
+ * @public
+ */
+enum BalanceCheckedType {
+
+  /**
+   *  Balances of all transactions, no matter its checked or unchecked state.
+   */
+  FULL_BALANCE = "FULL_BALANCE",
+
+  /**
+   * Balances of checked transactions only.
+   */
+  CHECKED_BALANCE = "CHECKED_BALANCE",
+
+  /**
+   * Balances of unchecked transactions only.
+   */
+  UNCHECKED_BALANCE = "UNCHECKED_BALANCE"
+}

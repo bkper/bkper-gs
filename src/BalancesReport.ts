@@ -33,7 +33,7 @@ class BalancesReport {
    * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]].
    */
   public createDataTable(): BalancesDataTableBuilder {
-    return new BalancesDataTableBuilder(this.book, this.getBalancesContainers(), this.getPeriodicity());
+    return new BalancesDataTableBuilder(this.book, this.getBalancesContainers(), this.getPeriodicity(), this.getBalanceCheckedType());
   }
 
   /**
@@ -59,6 +59,10 @@ class BalancesReport {
    */
   public getPeriodicity(): Periodicity {
     return this.wrapped.periodicity;
+  }
+
+  public getBalanceCheckedType(): BalanceCheckedType {
+    return this.wrapped.balanceCheckedType;
   }
 
   /**
@@ -98,7 +102,7 @@ class BalancesReport {
       this.groupBalancesContainers = [];
       for (var i = 0; i < this.wrapped.groupBalances.length; i++) {
         var grouBalances = this.wrapped.groupBalances[i];
-        var accGroupBalances = new GroupBalancesContainer(this, grouBalances, this.getPeriodicity());
+        var accGroupBalances = new GroupBalancesContainer(this, grouBalances, this.getPeriodicity(), this.getBalanceCheckedType());
         this.groupBalancesContainers.push(accGroupBalances);
       }
     }

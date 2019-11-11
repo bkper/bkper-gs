@@ -10,17 +10,18 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   private balanceType: BalanceType;
   private balancesContainers: BalancesContainer[];
   private periodicity: Periodicity;
+  private balanceCheckedType: BalanceCheckedType;
   private shouldFormatDate: boolean;
   private shouldFormatValue: boolean;
   private book: Book;
   private shouldExpand: boolean;
   private shouldTranspose: boolean
 
-  constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity) {
+  constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity, balanceCheckedType: BalanceCheckedType) {
     this.book = book;
     this.balancesContainers = balancesContainers;
     this.periodicity = periodicity;
-
+    this.balanceCheckedType = balanceCheckedType;
     this.balanceType = BalanceType.TOTAL;
     this.shouldFormatDate = false;
     this.shouldFormatValue = false;
@@ -162,7 +163,13 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     this.balancesContainers.sort((a, b) => {
       if (a != null && b != null) {
-        return b.getCumulativeBalance() - a.getCumulativeBalance();
+        if (this.balanceCheckedType == BalanceCheckedType.FULL_BALANCE) {
+          return b.getCumulativeBalance() - a.getCumulativeBalance();
+        } else if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
+          return b.getCheckedCumulativeBalance() - a.getCheckedCumulativeBalance();
+        } else {
+          return b.getUncheckedCumulativeBalance() - a.getUncheckedCumulativeBalance();
+        }
       }
       return -1;
     });
@@ -174,7 +181,13 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         if (subContainers != null) {
           subContainers.sort((a, b) => {
             if (a != null && b != null) {
-              return b.getCumulativeBalance() - a.getCumulativeBalance();
+              if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
+                return b.getCheckedCumulativeBalance() - a.getCheckedCumulativeBalance();
+              } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
+                return b.getUncheckedCumulativeBalance() - a.getUncheckedCumulativeBalance();
+              } else {
+                return b.getCumulativeBalance() - a.getCumulativeBalance();
+              }              
             }
             return -1;
           });
@@ -188,13 +201,30 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     });
 
     for (var i = 0; i < containers.length; i++) {
-      var balancesArray = containers[i];
-      if (balancesArray != null) {
+      var balances = containers[i];
+      if (balances != null) {
         var line = new Array();
-        var name = balancesArray.getName();
+        var name = balances.getName();
         line.push(name);
-        var balance = this.shouldFormatValue ? balancesArray.getCumulativeBalanceText() : balancesArray.getCumulativeBalance();
-        line.push(balance);
+        var amount;
+        if (this.shouldFormatValue) {
+          if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
+            amount = balances.getCheckedCumulativeBalanceText();
+          } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
+            amount = balances.getUncheckedCumulativeBalanceText();
+          } else {
+            amount = balances.getCumulativeBalanceText();
+          }
+        } else {
+            if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
+              amount = balances.getCheckedCumulativeBalance();
+            } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
+              amount = balances.getUncheckedCumulativeBalance();
+            } else {
+              amount = balances.getCumulativeBalance();
+            }
+        }
+        line.push(amount);
         table.push(line);
       }
     }
@@ -251,8 +281,25 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             indexEntry.date = balance.getDate();
             dataIndexMap[fuzzyDate] = indexEntry;
           }
-          var bal = cumulativeBalance ? balance.getCumulativeBalance() : balance.getPeriodBalance();
-          indexEntry[balancesContainer.getName()] = Utils_.getRepresentativeValue(bal, balancesContainer.isCredit());
+          var amount;
+          if (cumulativeBalance) {
+            if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
+              amount = balance.getCheckedCumulativeBalance();
+            } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
+              amount = balance.getUncheckedCumulativeBalance();
+            } else {
+              amount = balance.getCumulativeBalance();
+            }            
+          } else {
+            if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
+              amount = balance.getCheckedPeriodBalance();
+            } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
+              amount = balance.getUncheckedPeriodBalance();
+            } else {
+              amount = balance.getPeriodBalance();
+            }            
+          }
+          indexEntry[balancesContainer.getName()] = Utils_.getRepresentativeValue(amount, balancesContainer.isCredit());
         }
 
       }

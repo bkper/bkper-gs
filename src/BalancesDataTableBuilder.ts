@@ -163,12 +163,12 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     this.balancesContainers.sort((a, b) => {
       if (a != null && b != null) {
-        if (this.balanceCheckedType == BalanceCheckedType.FULL_BALANCE) {
-          return b.getCumulativeBalance() - a.getCumulativeBalance();
-        } else if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
+        if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
           return b.getCheckedCumulativeBalance() - a.getCheckedCumulativeBalance();
-        } else {
+        } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
           return b.getUncheckedCumulativeBalance() - a.getUncheckedCumulativeBalance();
+        } else {
+          return b.getCumulativeBalance() - a.getCumulativeBalance();
         }
       }
       return -1;

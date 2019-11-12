@@ -20,6 +20,8 @@ declare namespace bkper {
 
         BalanceType: typeof BalanceType;
 
+        BalanceCheckedType: typeof BalanceCheckedType;
+
         /**
          * Gets the authorization screen html template for the user to authorize the API
          */
@@ -303,6 +305,11 @@ declare namespace bkper {
          * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]].
          */
         createDataTable(): BalancesDataTableBuilder;
+
+        /**
+         * The [[BalanceCheckedType]] of the query used to generate the report.
+         */
+        getBalanceCheckedType(): BalanceCheckedType;
 
         /**
          * Gets a specific [[BalancesContainers]].
@@ -793,6 +800,26 @@ declare namespace bkper {
         getBalancesReport(): BalancesReport;
 
         /**
+         * The cumulative checked balance to the date, since the first transaction posted.
+         */
+        getCheckedCumulativeBalance(): number;
+
+        /**
+         * The cumulative checked balance formatted according to [[Book]] decimal format and fraction digits.
+         */
+        getCheckedCumulativeBalanceText(): string;
+
+        /**
+         * The checked balance on the date period.
+         */
+        getCheckedPeriodBalance(): number;
+
+        /**
+         * The checked balance on the date period formatted according to [[Book]] decimal format and fraction digits
+         */
+        getCheckedPeriodBalanceText(): string;
+
+        /**
          * The cumulative balance to the date, since the first transaction posted.
          */
         getCumulativeBalance(): number;
@@ -818,6 +845,26 @@ declare namespace bkper {
         getPeriodBalanceText(): string;
 
         /**
+         * The cumulative unchecked balance to the date, since the first transaction posted.
+         */
+        getUncheckedCumulativeBalance(): number;
+
+        /**
+         * The cumulative unchecked balance formatted according to [[Book]] decimal format and fraction digits.
+         */
+        getUncheckedCumulativeBalanceText(): string;
+
+        /**
+         * The unchecked balance on the date period.
+         */
+        getUncheckedPeriodBalance(): number;
+
+        /**
+         * The unchecked balance on the date period formatted according to [[Book]] decimal format and fraction digits
+         */
+        getUncheckedPeriodBalanceText(): string;
+
+        /**
          * Gets the credit nature of the BalancesContainer, based on [[Account]], [[Group]] or #hashtag this container represents.
          *
          * For [[Account]], the credit nature will be the same as the one from the Account
@@ -827,6 +874,30 @@ declare namespace bkper {
          * For #hashtag, the credit nature will be true.
          */
         isCredit(): boolean;
+
+    }
+
+    /**
+     * Enum that represents queried balances of checked/unchecked transactions.
+     *
+     * The type is obtained from parsing the **is:checked is:unchecked** query operator.
+     */
+    export enum BalanceCheckedType {
+
+        /**
+         * Balances of is:checked transactions only.
+         */
+        CHECKED_BALANCE = "CHECKED_BALANCE",
+
+        /**
+         *  Balances of all transactions, no matter its checked or unchecked state.
+         */
+        FULL_BALANCE = "FULL_BALANCE",
+
+        /**
+         * Balances of is:unchecked transactions only.
+         */
+        UNCHECKED_BALANCE = "UNCHECKED_BALANCE",
 
     }
 

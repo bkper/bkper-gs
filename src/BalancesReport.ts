@@ -61,6 +61,9 @@ class BalancesReport {
     return this.wrapped.periodicity;
   }
 
+  /**
+   * The [[BalanceCheckedType]] of the query used to generate the report.
+   */  
   public getBalanceCheckedType(): BalanceCheckedType {
     return this.wrapped.balanceCheckedType;
   }

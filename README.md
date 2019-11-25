@@ -20,7 +20,7 @@
 [DocumentApp]: https://developers.google.com/apps-script/reference/document/document-app
 [SpreadsheetApp]: https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app
 
-[Sheets]: https://gsuite.google.com/marketplace/app/bkper_sheets/75894855272
+[Add-on for Google Sheets]: https://apps.google.com/marketplace/app/nigjlfhgcfljgfalepfbklfceelkggdd
 [Forms]: https://gsuite.google.com/marketplace/app/bkper_forms/588203895124
 [Typescript]: https://developers.google.com/apps-script/guides/typescript
 [reference documentation]: https://bkper.com/api/bkper-app/
@@ -41,7 +41,7 @@ The standard way to access the [Bkper] API is through our [Google Apps Script] l
 [![GSTests status](https://gs-tests-status.appspot.com/badge.svg?suite=BkperApp&namespace=bkpertest)](https://script.google.com/macros/s/AKfycbyWJJFIwoqnNudRMGse18qVNWw5aa7g03-iLmL_rjqO8mg-MjI/exec?suite=BkperApp&namespace=bkpertest)
 
 
-With BkperApp you can create many solutions on G Suite, such as the [Sheets] and [Forms] Add-ons, simple automations or advanced solutions with [Google Apps Script API], and you can manage your scripts in the [Dashboard].
+With BkperApp you can create many bookkeeping and accounting solutions on G Suite, such as the Bkper [Add-on for Google Sheets], simple automations or advanced solutions with [Google Apps Script API], and you can manage your scripts in the [Dashboard].
 
 It works the same way your favorite Google Apps Script library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] etc, and it is safely authorized using [OAuth2] protocol:
 

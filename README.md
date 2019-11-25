@@ -20,7 +20,7 @@
 [DocumentApp]: https://developers.google.com/apps-script/reference/document/document-app
 [SpreadsheetApp]: https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app
 
-[Add-on for Google Sheets]: https://apps.google.com/marketplace/app/nigjlfhgcfljgfalepfbklfceelkggdd
+[Add-on for Google Sheets]: https://gsuite.google.com/marketplace/app/bkper/360398463400
 [Forms]: https://gsuite.google.com/marketplace/app/bkper_forms/588203895124
 [Typescript]: https://developers.google.com/apps-script/guides/typescript
 [reference documentation]: https://bkper.com/api/bkper-app/

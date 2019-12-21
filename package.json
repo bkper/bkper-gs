@@ -26,6 +26,9 @@
     "test:run": "mocha --require source-map-support/register build/test-bundle.js",
     "push": "clasp push",
     "watch": "yarn push --watch",
+    "version:patch": "yarn version --patch",
+    "version:minor": "yarn version --minor",
+    "version:major": "yarn version --major",
     "preversion": "run-s test push",
     "postversion": "clasp version $npm_package_version && git push && git push --tags && echo \"Successfully released version $npm_package_version!\""
   },

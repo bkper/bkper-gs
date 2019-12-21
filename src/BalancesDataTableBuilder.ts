@@ -68,7 +68,6 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    * 
    * ```
    *   _____________________
-   *  |    NAME   | AMOUNT  |
    *  | Expenses  | 4568.23 |
    *  | Income    | 5678.93 |
    *  |    ...    |   ...   |
@@ -81,7 +80,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    * 
    * ```
    *  _____________________________________________
-   *  |    DATE    | Expenses | Income  |    ...   |
+   *  |            | Expenses | Income  |    ...   |
    *  | 15/01/2014 | 2345.23  | 3452.93 |    ...   |
    *  | 15/02/2014 | 2345.93  | 3456.46 |    ...   |
    *  | 15/03/2014 | 2456.45  | 3567.87 |    ...   |
@@ -105,10 +104,10 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    * For **TOTAL** [[BalanceType]], the **transposed** table looks like:
    * 
    * ```
-   *   _________________________________________
-   *  | NAME      | Expenses | Income  |  ...  | 
-   *  | AMOUNT    | 4568.23  | 5678.93 |  ...  |
-   *  |___________|__________|_________|_______| 
+   *   _____________________________
+   *  | Expenses | Income  |  ...  | 
+   *  | 4568.23  | 5678.93 |  ...  |
+   *  |__________|_________|_______| 
    * 
    * ```
    * Two rows, and each [[Group]] | [[Account]] | #hashtag per column.
@@ -118,7 +117,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    * 
    * ```
    *   _______________________________________________________________
-   *  |    NAME    | 15/01/2014 | 15/02/2014 | 15/03/2014 |    ...    |
+   *  |            | 15/01/2014 | 15/02/2014 | 15/03/2014 |    ...    |
    *  |  Expenses  |  2345.23   |  2345.93   |  2456.45   |    ...    |
    *  |  Income    |  3452.93   |  3456.46   |  3567.87   |    ...    |
    *  |     ...    |     ...    |     ...    |     ...    |    ...    |
@@ -154,8 +153,6 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
   private buildTotalDataTable_() {
     var table = new Array();
-    var header = ["Name", "Amount"]
-    table.push(header);
 
     if (this.balancesContainers == null) {
       return table;
@@ -242,7 +239,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     var cumulativeBalance = this.balanceType == BalanceType.CUMULATIVE;
 
     var header = new Array();
-    header.push("Date");
+    header.push("");
 
     if (this.balancesContainers == null) {
       return table;

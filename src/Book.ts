@@ -17,6 +17,7 @@ class Book {
   private idGroupMap: any;
   private nameGroupMap: any;
   private savedQueries: bkper.SavedQueryV2Payload[];
+  
 
   constructor(id: string, wrapped?: bkper.BookV2Payload) {
     this.id = id;
@@ -117,6 +118,24 @@ class Book {
     this.checkBookLoaded_();
     return +this.wrapped.lastUpdateMs;
   }
+
+
+  /**
+   * Gets the custom properties stored in this Book
+   */  
+  public getProperties(): any {
+    return this.wrapped.properties;
+  }
+
+  /**
+   * Gets the property value for a given key
+   * 
+   * @param key The property key
+   */
+  public getProperty(key: string): string {
+    return this.wrapped.properties[key];
+  }  
+
 
   /**
    * @param  date The date to format as string.

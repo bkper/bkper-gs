@@ -97,6 +97,16 @@ declare namespace bkper {
         getNormalizedName(): string;
 
         /**
+         * Gets the custom properties stored in this Account
+         */
+        getProperties(): any;
+
+        /**
+         * Gets the property value for a given key
+         */
+        getProperty(key: string): string;
+
+        /**
          * Tell if this account is Active or otherwise Archived
          */
         isActive(): boolean;
@@ -260,10 +270,10 @@ declare namespace bkper {
          * For **TOTAL** [[BalanceType]], the **transposed** table looks like:
          * 
          * ```
-         *   _________________________________________
-         *  | NAME      | Expenses | Income  |  ...  |
-         *  | AMOUNT    | 4568.23  | 5678.93 |  ...  |
-         *  |___________|__________|_________|_______|
+         *   _____________________________
+         *  | Expenses | Income  |  ...  |
+         *  | 4568.23  | 5678.93 |  ...  |
+         *  |__________|_________|_______|
          * 
          * ```
          * Two rows, and each [[Group]] | [[Account]] | #hashtag per column.
@@ -273,7 +283,7 @@ declare namespace bkper {
          * 
          * ```
          *   _______________________________________________________________
-         *  |    NAME    | 15/01/2014 | 15/02/2014 | 15/03/2014 |    ...    |
+         *  |            | 15/01/2014 | 15/02/2014 | 15/03/2014 |    ...    |
          *  |  Expenses  |  2345.23   |  2345.93   |  2456.45   |    ...    |
          *  |  Income    |  3452.93   |  3456.46   |  3567.87   |    ...    |
          *  |     ...    |     ...    |     ...    |     ...    |    ...    |
@@ -481,6 +491,16 @@ declare namespace bkper {
          * @returns The permission for the current user
          */
         getPermission(): Permission;
+
+        /**
+         * Gets the custom properties stored in this Book
+         */
+        getProperties(): any;
+
+        /**
+         * Gets the property value for a given key
+         */
+        getProperty(key: string): string;
 
         /**
          * Gets all saved queries from this book

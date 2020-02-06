@@ -47,6 +47,23 @@ class Account {
     return this.normalizedName;
   }
 
+
+  /**
+   * Gets the custom properties stored in this Account
+   */  
+  public getProperties(): any {
+    return this.wrapped.properties;
+  }
+
+  /**
+   * Gets the property value for a given key
+   * 
+   * @param key The property key
+   */
+  public getProperty(key: string): string {
+    return this.wrapped.properties[key];
+  }  
+
   /**
    * Gets the balance based on credit nature of this Account
    *  
@@ -169,4 +186,7 @@ class Account {
     }
     return false;
   }
+
+
+
 }

@@ -33,6 +33,7 @@ declare namespace bkper {
     id?: string;
     name?: string;
     permanent?: boolean;
+    properties?: any;
   }
   interface BalanceV2Payload {
     checkedCumulativeBalance: number;
@@ -70,6 +71,7 @@ declare namespace bkper {
     permission?: any;
     timeZone?: string;
     timeZoneOffset?: number;
+    properties?: any;
   }
   interface GroupBalancesV2Payload {
     accountBalances?: AccountBalancesV2Payload[];

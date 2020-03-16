@@ -124,6 +124,7 @@ class Book {
    * Gets the custom properties stored in this Book
    */  
   public getProperties(): any {
+    this.checkBookLoaded_();
     return this.wrapped.properties;
   }
 

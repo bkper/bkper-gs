@@ -134,6 +134,7 @@ class Book {
    * @param key The property key
    */
   public getProperty(key: string): string {
+    this.checkBookLoaded_();
     return this.wrapped.properties[key];
   }  
 

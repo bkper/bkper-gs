@@ -1,27 +1,4 @@
-function doGet(e: any) {
-  return Authorizer_.processGetRequest(e);
-}
 
-/**
- * Check if the user is already althorized with OAuth2 to the bkper API
- * 
- * @public
- */
-function isUserAuthorized(): boolean {
-  return Authorizer_.isUserAuthorized();
-}
-
-/**
- * Gets the authorization screen html template for the user to authorize the API
- * 
- * @param continueUrl The url to continue the action after authorization
- * @param continueText The link text to show the user the action after authorization
- * 
- * @public
- */
-function getAuthorizationHtml(continueUrl?: string, continueText?: string): GoogleAppsScript.HTML.HtmlOutput {
-  return Authorizer_.createAuthorizeTemplate(continueUrl, continueText);
-}
 
 /**
  * Gets the [[Book]] with the specified bookId from url param.
@@ -50,20 +27,6 @@ function getBook(id: string): Book {
  */
 function getBooks(): Book[] {
   return BookService_.listBooks().map(bookV2 => { return new Book(bookV2.id, bookV2) });
-}
-
-
-
-function storeTokenData(code: string, redirectUri: string): void {
-  Authorizer_.storeTokenData(code, redirectUri);
-}
-
-function createAuthorizationURL(redirectUri: string, state: string): string {
-  return Authorizer_.createAuthorizationURL(redirectUri, state);
-}
-
-function getAuthorizedCloseWindow(): GoogleAppsScript.HTML.HtmlOutput {
-  return Authorizer_.getAuthorizedCloseWindow();
 }
 
 

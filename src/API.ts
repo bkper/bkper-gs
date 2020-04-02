@@ -66,9 +66,8 @@ namespace API {
       options.headers = new Headers();
     }
 
-    (options.headers as Headers)["x-bkper-app-id"] = "bkper-gas";
-
-    var accessToken = Authorizer_.getAccessToken();
+    // var accessToken = Authorizer_.getAccessToken();
+    var accessToken = ScriptApp.getOAuthToken();
 
     (options.headers as Headers).Authorization = "Bearer " + accessToken;
     if (options.contentType == null) {
@@ -99,10 +98,6 @@ namespace API {
             retries++;
           }
         } else {
-          if (response.getResponseCode() == 403 || responseText.indexOf("forbidden") >= 0) {
-            //Forbidden
-            Authorizer_.validateAccessToken();
-          }
           throw error.message;
         }
       }
@@ -112,7 +107,6 @@ namespace API {
 
   class Headers {
     Authorization: string
-    "x-bkper-app-id": string
   }
 
 }

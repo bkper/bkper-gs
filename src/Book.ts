@@ -125,7 +125,7 @@ class Book {
    */  
   public getProperties(): any {
     this.checkBookLoaded_();
-    return this.wrapped.properties;
+    return this.wrapped.properties != null ?  this.wrapped.properties : {};
   }
 
   /**
@@ -135,7 +135,7 @@ class Book {
    */
   public getProperty(key: string): string {
     this.checkBookLoaded_();
-    return this.wrapped.properties[key];
+    return this.wrapped.properties != null ?  this.wrapped.properties[key] : '';
   }  
 
 

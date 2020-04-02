@@ -52,7 +52,7 @@ class Account {
    * Gets the custom properties stored in this Account
    */  
   public getProperties(): any {
-    return this.wrapped.properties;
+    return this.wrapped.properties != null ?  this.wrapped.properties : {};
   }
 
   /**
@@ -61,7 +61,7 @@ class Account {
    * @param key The property key
    */
   public getProperty(key: string): string {
-    return this.wrapped.properties[key];
+    return this.wrapped.properties != null ?  this.wrapped.properties[key] : '';
   }  
 
   /**

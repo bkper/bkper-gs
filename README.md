@@ -3,7 +3,6 @@
 
 [Google Apps Script]: https://developers.google.com/apps-script/reference/
 [OAuth2]: https://oauth.net/2/
-[bkper.app]: https://bkper.app
 
 [Dashboard]: https://script.google.com/home
 [Book]: https://bkper.com/api/bkper-app/#book
@@ -43,17 +42,7 @@ The standard way to access the [Bkper] API is through our [Google Apps Script] l
 
 With BkperApp you can create many bookkeeping and accounting solutions on G Suite, such as the Bkper [Add-on for Google Sheets], simple automations or advanced solutions with [Google Apps Script API], and you can manage your scripts in the [Dashboard].
 
-It works the same way your favorite Google Apps Script library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] etc, and it is safely authorized using [OAuth2] protocol:
-
-<p align="center">
-  <img src="https://bkper.com/api/images/BkperApp-overview.png">
-</p>
-
-
-## <a name='authorization'></a>Authorization
-
-To authorize the library, you just need to run the OAuth2 flow only once per account. This can be easily done when you install any Add-ons, or at [bkper.app]
-
+It works the same way your favorite Google Apps Script library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] and the like.
 
 ## <a name='setup'></a>Setup
 

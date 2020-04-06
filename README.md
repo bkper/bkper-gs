@@ -60,7 +60,7 @@ To authorize the library, you just need to run the OAuth2 flow only once per acc
 This library is already published as an Apps Script, making it easy to include in your project. To add it to your script, do the following in the Apps Script code editor:
 
 1. Click on the menu item "Resources > Libraries..."
-2. In the "Add a Library" text box, enter the Script ID "**1fSZnepYcDUjxCsrWYD3452UJ5nJiB4js0cD45WWOAjMcKJR_PKfLU60X**" and click the "Select" button.
+2. In the "Add a Library" text box, enter the Script ID "**1hMJszJGSUVZDB3vmsWrUZfRhY1UWbhS0SQ6Lzl06gm1zhBF3ioTM7mpJ**" and click the "Select" button.
 3. Choose a version in the dropdown box (usually best to pick the latest version).
 4. Click the "Save" button.
 

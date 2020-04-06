@@ -8,7 +8,7 @@ declare namespace bkper {
     /**
      * The main entry point to interact with BkperApp
      *
-     * Script ID: **1fSZnepYcDUjxCsrWYD3452UJ5nJiB4js0cD45WWOAjMcKJR_PKfLU60X**
+     * Script ID: **1hMJszJGSUVZDB3vmsWrUZfRhY1UWbhS0SQ6Lzl06gm1zhBF3ioTM7mpJ**
      */
     export interface BkperApp {
 
@@ -21,11 +21,6 @@ declare namespace bkper {
         BalanceType: typeof BalanceType;
 
         BalanceCheckedType: typeof BalanceCheckedType;
-
-        /**
-         * Gets the authorization screen html template for the user to authorize the API
-         */
-        getAuthorizationHtml(continueUrl?: string, continueText?: string): GoogleAppsScript.HTML.HtmlOutput;
 
         /**
          * Gets the [[Book]] with the specified bookId from url param.
@@ -45,11 +40,6 @@ declare namespace bkper {
          * Gets all [[Books]] the user has access.
          */
         getBooks(): Book[];
-
-        /**
-         * Check if the user is already althorized with OAuth2 to the bkper API
-         */
-        isUserAuthorized(): boolean;
 
     }
 

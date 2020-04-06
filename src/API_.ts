@@ -128,7 +128,8 @@ namespace API_ {
     let lock = Utils_.retry<GoogleAppsScript.Lock.Lock>(() => LockService.getUserLock(), sleepMin, sleepMax, maxRetries, rumpUp);
     try {
       Utils_.retry<void>(() => lock.waitLock(30000), sleepMin, sleepMax, maxRetries, rumpUp);
-      Session.getEffectiveUser().getEmail();
+      //WARNING this is required in order to the API send proper scope
+      //Session.getEffectiveUser().getEmail();
       return ScriptApp.getOAuthToken();
     } catch (e) {
       Logger.log('Could not obtain lock after 30 seconds.');

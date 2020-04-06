@@ -41,6 +41,15 @@ declare namespace bkper {
          */
         getBooks(): Book[];
 
+        /**
+         * Sets the API key to identify the agent.
+         *
+         * API keys are intended for agent identification only, not for authentication. [Learn more](https://cloud.google.com/endpoints/docs/frameworks/java/when-why-api-key)
+         * 
+         * See how to create your api key [here](https://cloud.google.com/docs/authentication/api-keys).
+         */
+        setApiKey(key: string): void;
+
     }
 
     /**

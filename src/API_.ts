@@ -1,4 +1,22 @@
 
+let API_KEY_ : string;
+
+
+/**
+ * Set the GCP key to be used on the API to identify the calls
+ * 
+ * API keys are intended for agent identification only, not for authentication. [Learn more](https://cloud.google.com/endpoints/docs/frameworks/java/when-why-api-key)
+ * 
+ * See how to create your api key [here](https://cloud.google.com/docs/authentication/api-keys).
+ *
+ * @param key The key from GCP API &  Services Credentials console
+ * 
+ * @public
+ */
+function setApiKey(key: string): void {
+  API_KEY_ = key;
+}
+
 namespace API_ {
 
   export function call_(httpMethod: 'get' | 'delete' | 'patch' | 'post' | 'put', service?: string, Id?: string | number, params?: object, requestBody?: string, contentType?: string, headers?: object): string {
@@ -25,14 +43,12 @@ namespace API_ {
       params = new Object();
     }
 
-    try {
-      // @ts-ignore
-      params.key = APP_KEY;
-    } catch (error) {
-      // @ts-ignore
-      params.key = CachedProperties_.getCachedProperty(CacheService.getScriptCache(), PropertiesService.getScriptProperties(), 'APP_KEY');
-      //APP_KEY not defined. Fallback.
+    if (API_KEY_ == null) {
+      API_KEY_ = CachedProperties_.getCachedProperty(CacheService.getScriptCache(), PropertiesService.getScriptProperties(), 'API_KEY');
     }
+
+    // @ts-ignore
+    params.key = API_KEY_;
 
     queryParams = Utils_.buildURLParams(params);
 
@@ -110,9 +126,9 @@ namespace API_ {
     let rumpUp = 1;     
     let maxRetries = 20;
     let lock = Utils_.retry<GoogleAppsScript.Lock.Lock>(() => LockService.getUserLock(), sleepMin, sleepMax, maxRetries, rumpUp);
-    Session.getEffectiveUser().getEmail();
     try {
       Utils_.retry<void>(() => lock.waitLock(30000), sleepMin, sleepMax, maxRetries, rumpUp);
+      Session.getEffectiveUser().getEmail();
       return ScriptApp.getOAuthToken();
     } catch (e) {
       Logger.log('Could not obtain lock after 30 seconds.');

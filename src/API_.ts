@@ -1,5 +1,5 @@
 
-namespace API {
+namespace API_ {
 
   export function call_(httpMethod: 'get' | 'delete' | 'patch' | 'post' | 'put', service?: string, Id?: string | number, params?: object, requestBody?: string, contentType?: string, headers?: object): string {
     var options: GoogleAppsScript.URL_Fetch.URLFetchRequestOptions =
@@ -67,7 +67,7 @@ namespace API {
     }
 
     // var accessToken = Authorizer_.getAccessToken();
-    var accessToken = ScriptApp.getOAuthToken();
+    var accessToken = getAccessToken_();
 
     (options.headers as Headers).Authorization = "Bearer " + accessToken;
     if (options.contentType == null) {
@@ -100,6 +100,26 @@ namespace API {
         } else {
           throw error.message;
         }
+      }
+    }
+  }
+
+  function getAccessToken_(): string {
+    let sleepMin=300; 
+    let sleepMax=1500;  
+    let rumpUp = 1;     
+    let maxRetries = 20;
+    let lock = Utils_.retry<GoogleAppsScript.Lock.Lock>(() => LockService.getUserLock(), sleepMin, sleepMax, maxRetries, rumpUp);
+    Session.getEffectiveUser().getEmail();
+    try {
+      Utils_.retry<void>(() => lock.waitLock(30000), sleepMin, sleepMax, maxRetries, rumpUp);
+      return ScriptApp.getOAuthToken();
+    } catch (e) {
+      Logger.log('Could not obtain lock after 30 seconds.');
+      throw e;
+    } finally {
+      if (lock != null) {
+        Utils_.retry<void>(() => lock.releaseLock(), sleepMin, sleepMax, maxRetries, rumpUp);
       }
     }
   }

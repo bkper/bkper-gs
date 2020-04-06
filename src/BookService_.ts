@@ -1,7 +1,7 @@
 namespace BookService_ {
 
   export function listBooks(): bkper.BookV2Payload[] {
-    var responseJSON = API.call_("get");
+    var responseJSON = API_.call_("get");
     
     if (responseJSON == null || responseJSON == "") {
       return [];
@@ -44,7 +44,7 @@ namespace BookService_ {
     let responseJSON = cache.get(cacheKey);
 
     if (responseJSON == null) {
-      responseJSON = API.call_("get", null, bookId);
+      responseJSON = API_.call_("get", null, bookId);
       cache.put(cacheKey, responseJSON, 30);
     }
 

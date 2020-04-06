@@ -1,7 +1,7 @@
 namespace AccountService_ {
 
   export function getAccounts(bookId: string): Account[] {
-    var responseJSON = API.call_("get", "accounts", bookId);
+    var responseJSON = API_.call_("get", "accounts", bookId);
     if (responseJSON == null || responseJSON == "") {
       return [];
     }
@@ -23,7 +23,7 @@ namespace AccountService_ {
     
     var accountUpdateJSON = JSON.stringify(accountUpdate);
     
-    var responseJSON = API.call_("post", "accounts", bookId, null, accountUpdateJSON);
+    var responseJSON = API_.call_("post", "accounts", bookId, null, accountUpdateJSON);
     
     var accountPlain = JSON.parse(responseJSON);
     var account = Utils_.wrapObject(new Account(), accountPlain);

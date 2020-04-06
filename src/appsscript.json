@@ -1,8 +1,4 @@
 {
   "timeZone": "Etc/GMT",
-  "webapp": {
-    "access": "ANYONE",
-    "executeAs": "USER_ACCESSING"
-  },
   "exceptionLogging": "STACKDRIVER"
 }

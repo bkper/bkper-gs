@@ -22,7 +22,7 @@ namespace TransactionService_ {
       headers = {"cursor" : cursor};
     }
     
-    var responseJSON = API.call_("get", "transactions", book.getId(), params, null, null, headers);
+    var responseJSON = API_.call_("get", "transactions", book.getId(), params, null, null, headers);
     
     var transactionResponse: TransactionResponse = {
       items: [],
@@ -68,7 +68,7 @@ namespace TransactionService_ {
     }
     var body = "text=" +  encodeURIComponent(text);
 
-    var response = API.call_("post", "drafts", book.getId(), null, body, "application/x-www-form-urlencoded; charset=UTF-8");
+    var response = API_.call_("post", "drafts", book.getId(), null, body, "application/x-www-form-urlencoded; charset=UTF-8");
     return response;
   }
 

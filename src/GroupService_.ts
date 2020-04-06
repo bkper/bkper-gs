@@ -1,7 +1,7 @@
 namespace GroupService_ {
   export function getGroups(bookId: string): Group[] {
 
-    var responseJSON = API.call_("get", "groups", bookId);
+    var responseJSON = API_.call_("get", "groups", bookId);
 
     if (responseJSON == null || responseJSON == "") {
       return [];

@@ -897,6 +897,15 @@ declare namespace bkper {
     }
 
     /**
+     * OAuth token provider used to provide OAuth2 tokens upon calling the API.
+     */
+    export interface OAuthTokenProvider {
+
+        getOAuthToken(): string;
+
+    }
+
+    /**
      * Enum that represents queried balances of checked/unchecked transactions.
      *
      * The type is obtained from parsing the **is:checked is:unchecked** query operator.
@@ -1019,6 +1028,10 @@ declare namespace bkper {
         VIEWER = "VIEWER",
 
     }
+
+    export var API_KEY_: string;
+
+    export var OAUTH_TOKEN_PROVIDER_: OAuthTokenProvider;
 
 }
 

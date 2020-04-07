@@ -4,6 +4,8 @@ let OAUTH_TOKEN_PROVIDER_: OAuthTokenProvider;
 
 /**
  * OAuth token provider used to provide OAuth2 tokens upon calling the API.
+ * 
+ * @public
  */
 interface OAuthTokenProvider {
   getOAuthToken(): string;

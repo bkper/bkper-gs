@@ -3,7 +3,11 @@ let API_KEY_: string;
 let OAUTH_TOKEN_PROVIDER_: OAuthTokenProvider;
 
 /**
- * OAuth token provider used to provide OAuth2 tokens upon calling the API.
+ * OAuth token provider interface to provide OAuth2 tokens upon calling the API.
+ * 
+ * Implement your own if you need to use one other than the default built-in [ScriptApp](https://developers.google.com/apps-script/reference/script/script-app#getoauthtoken).
+ * 
+ * See
  * 
  * @public
  */
@@ -27,11 +31,13 @@ function setApiKey(key: string): void {
 }
 
 /**
- * Sets the OAuth 2 token provider. 
+ * Sets the [[OAuthTokenProvider]]. 
  * 
- * If none set, the default [ScriptApp](https://developers.google.com/apps-script/reference/script/script-app#getoauthtoken) will be used.
+ * If none set, the default built-in [ScriptApp](https://developers.google.com/apps-script/reference/script/script-app#getoauthtoken).
  * 
- * @param tokenProvider The OAuth2 token provider implementation.
+ * @param tokenProvider The [[OAuthTokenProvider]] implementation.
+ * 
+ * @public
  */
 function setOAuthTokenProvider(tokenProvider: OAuthTokenProvider) {
   OAUTH_TOKEN_PROVIDER_ = tokenProvider;

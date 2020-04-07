@@ -101,11 +101,11 @@ namespace API_ {
     }
 
     if (OAUTH_TOKEN_PROVIDER_ == null) {
+      //Required to force use of token with proper email scope authorized.
+      try{Session.getEffectiveUser().getEmail();}catch(error){};
       OAUTH_TOKEN_PROVIDER_ = ScriptApp;
     }
 
-    //Required to force use of token with proper email scope authorized.
-    try{Session.getEffectiveUser().getEmail();}catch(error){};
 
     var accessToken = OAUTH_TOKEN_PROVIDER_.getOAuthToken();
 

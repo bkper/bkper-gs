@@ -50,6 +50,13 @@ declare namespace bkper {
          */
         setApiKey(key: string): void;
 
+        /**
+         * Sets the [[OAuthTokenProvider]].
+         *
+         * If none set, the default built-in [ScriptApp](https://developers.google.com/apps-script/reference/script/script-app#getoauthtoken) will be used.
+         */
+        setOAuthTokenProvider(tokenProvider: OAuthTokenProvider): void;
+
     }
 
     /**
@@ -897,7 +904,11 @@ declare namespace bkper {
     }
 
     /**
-     * OAuth token provider used to provide OAuth2 tokens upon calling the API.
+     * Interface to provide OAuth2 tokens upon calling the API.
+     *
+     * Implement your own if you need to use one other than the default built-in [ScriptApp](https://developers.google.com/apps-script/reference/script/script-app#getoauthtoken).
+     * 
+     * See
      */
     export interface OAuthTokenProvider {
 

@@ -1,6 +1,13 @@
 
-let API_KEY_ : string;
+let API_KEY_: string;
+let OAUTH_TOKEN_PROVIDER_: OAuthTokenProvider;
 
+/**
+ * OAuth token provider used to provide OAuth2 tokens upon calling the API.
+ */
+interface OAuthTokenProvider {
+  getOAuthToken(): string;
+}
 
 /**
  * Sets the API key to identify the agent.
@@ -9,12 +16,23 @@ let API_KEY_ : string;
  * 
  * See how to create your api key [here](https://cloud.google.com/docs/authentication/api-keys).
  *
- * @param key The key from GCP API &  Services Credentials console
+ * @param key The key from GCP API &  Services Credentials console.
  * 
  * @public
  */
 function setApiKey(key: string): void {
   API_KEY_ = key;
+}
+
+/**
+ * Sets the OAuth 2 token provider. 
+ * 
+ * If none set, the default [ScriptApp](https://developers.google.com/apps-script/reference/script/script-app#getoauthtoken) will be used.
+ * 
+ * @param tokenProvider The OAuth2 token provider implementation.
+ */
+function setOAuthTokenProvider(tokenProvider: OAuthTokenProvider) {
+  OAUTH_TOKEN_PROVIDER_ = tokenProvider;
 }
 
 namespace API_ {
@@ -82,8 +100,14 @@ namespace API_ {
       options.headers = new Headers();
     }
 
-    // var accessToken = Authorizer_.getAccessToken();
-    var accessToken = getAccessToken_();
+    if (OAUTH_TOKEN_PROVIDER_ == null) {
+      OAUTH_TOKEN_PROVIDER_ = ScriptApp;
+    }
+
+    //Required to force use of token with proper email scope authorized.
+    try{Session.getEffectiveUser().getEmail();}catch(error){};
+
+    var accessToken = OAUTH_TOKEN_PROVIDER_.getOAuthToken();
 
     (options.headers as Headers).Authorization = "Bearer " + accessToken;
     if (options.contentType == null) {
@@ -116,27 +140,6 @@ namespace API_ {
         } else {
           throw error.message;
         }
-      }
-    }
-  }
-
-  function getAccessToken_(): string {
-    let sleepMin=300; 
-    let sleepMax=1500;  
-    let rumpUp = 1;     
-    let maxRetries = 20;
-    let lock = Utils_.retry<GoogleAppsScript.Lock.Lock>(() => LockService.getUserLock(), sleepMin, sleepMax, maxRetries, rumpUp);
-    try {
-      Utils_.retry<void>(() => lock.waitLock(30000), sleepMin, sleepMax, maxRetries, rumpUp);
-      //WARNING this is required in order to the API send proper scope
-      //Session.getEffectiveUser().getEmail();
-      return ScriptApp.getOAuthToken();
-    } catch (e) {
-      Logger.log('Could not obtain lock after 30 seconds.');
-      throw e;
-    } finally {
-      if (lock != null) {
-        Utils_.retry<void>(() => lock.releaseLock(), sleepMin, sleepMax, maxRetries, rumpUp);
       }
     }
   }

@@ -1,6 +1,6 @@
 namespace CachedProperties_ {
 
-  const CACHE_EXPIRATION_TIME_SECONDS = 21600; // 6 hours.
+  const CACHE_EXPIRATION_TIME_SECONDS = 3600; // 6 hours.
 
   export function getCachedProperty(cache: GoogleAppsScript.Cache.Cache, properties: GoogleAppsScript.Properties.Properties, key: string): string {
     let value = cache.get(key);

@@ -1,0 +1,10 @@
+type: generic-app
+
+# You can override the name from the repository
+name: BkperApp
+
+# Set your logo url from public host. Best fit 200x200 px. Use https:// 
+logo: https://storage.googleapis.com/bkper-public/logos/bkper-app_bot2.png
+
+
+

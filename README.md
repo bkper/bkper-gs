@@ -30,10 +30,9 @@
 [Cloud Source Repositories]: https://cloud.google.com/source-repositories/
 [BkperApp]: https://bkper.com/api/bkper-app
 
-## <a name='overview'></a>Overview 
+## Overview 
 
-The standard way to access the [Bkper] API is through our [Google Apps Script] library [BkperApp](https://bkper.com/api/bkper-app). 
-
+BkperApp provides a simple and secure way to acceess the [Bkper] API through [Google Apps Script] infrastructure.
 
 [![clasp](https://img.shields.io/badge/built%20with-clasp-4285f4.svg)](https://github.com/google/clasp)
 [![npm (scoped)](https://img.shields.io/npm/v/@bkper/bkper-app-types?color=%235889e4&label=types)](https://www.npmjs.com/package/@bkper/bkper-app-types)
@@ -44,7 +43,7 @@ With BkperApp you can create many bookkeeping and accounting solutions on G Suit
 
 It works the same way your favorite Google Apps Script library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] and the like.
 
-## <a name='setup'></a>Setup
+## Setup
 
 This library is already published as an Apps Script, making it easy to include in your project. To add it to your script, do the following in the Apps Script code editor:
 
@@ -53,7 +52,7 @@ This library is already published as an Apps Script, making it easy to include i
 3. Choose a version in the dropdown box (usually best to pick the latest version).
 4. Click the "Save" button.
 
-## <a name='development'></a>Development
+## Development
 
 Altough you can work on the Online editor really quickly, we strongly recommend [clasp] to develop locally with [Typescript] on [VS Code] editor, which is really powerfull and free, so you get:
 
@@ -93,7 +92,7 @@ yarn add --dev @bkper/bkper-app-types
 
 Don't forget to keep your code always in sync with version control system such as [GitHub] or [Cloud Source Repositories]
 
-## <a name='record_transactions'></a>Record Transactions
+## Record Transactions
 
 
 To record your first [Transaction], after authorizing and setup, copy and paste the function bellow:
@@ -136,7 +135,7 @@ The above code will send all records in a bulk. Very useful for importing large 
 
 
 
-## <a name='list_transactions'></a>List Transactions
+## List Transactions
 
 
 Each book is a large database and every interaction is done in terms of queries. Everytime you "select" an [Account] by clicking on left menu at [bkper.com], you are actually filtering transactions by that [Account].
@@ -169,7 +168,7 @@ Run the **queryTransactions** function, exchanging your bookId, with the same qu
 
 
 
-## <a name='list_accounts'></a>List Accounts
+## List Accounts
 
 
 You can access all Account objects, in a way similar to the left sidebar:

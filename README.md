@@ -5,15 +5,15 @@
 [OAuth2]: https://oauth.net/2/
 
 [Dashboard]: https://script.google.com/home
-[Book]: https://bkper.com/api/bkper-app/#book
-[Account]: https://bkper.com/api/bkper-app/#account
-[Transaction]: https://bkper.com/api/bkper-app/#transaction
-[TransactionIterator]: https://bkper.com/api/bkper-app/#transactioniterator
+[Book]: https://bkper.com/docs/bkper-app/#book
+[Account]: https://bkper.com/docs/bkper-app/#account
+[Transaction]: https://bkper.com/docs/bkper-app/#transaction
+[TransactionIterator]: https://bkper.com/docs/bkper-app/#transactioniterator
 [Google Apps Script API]: https://developers.google.com/apps-script/api/
 
-[record]: https://bkper.com/api/bkper-app/#book_record
-[getTransactions]: https://bkper.com/api/bkper-app/#book_gettransactions
-[getBook]: https://bkper.com/api/bkper-app/#bkperapp_getbook
+[record]: https://bkper.com/docs/bkper-app/#book_record
+[getTransactions]: https://bkper.com/docs/bkper-app/#book_gettransactions
+[getBook]: https://bkper.com/docs/bkper-app/#bkperapp_getbook
 
 [CalendarApp]: https://developers.google.com/apps-script/reference/calendar/calendar-app
 [DocumentApp]: https://developers.google.com/apps-script/reference/document/document-app
@@ -22,15 +22,15 @@
 [Add-on for Google Sheets]: https://gsuite.google.com/marketplace/app/bkper/360398463400
 [Forms]: https://gsuite.google.com/marketplace/app/bkper_forms/588203895124
 [Typescript]: https://developers.google.com/apps-script/guides/typescript
-[reference documentation]: https://bkper.com/api/bkper-app/
+[reference documentation]: https://bkper.com/docs/bkper-app/
 [VS Code]: https://code.visualstudio.com
 [clasp]: https://developers.google.com/apps-script/guides/clasp
 [Typescript Definitions]: https://www.npmjs.com/package/@bkper/bkper-app-types
 [GitHub]: https://github.com/
 [Cloud Source Repositories]: https://cloud.google.com/source-repositories/
-[BkperApp]: https://bkper.com/api/bkper-app
+[BkperApp]: https://bkper.com/docs/bkper-app
 
-## Overview 
+## BkperApp 
 
 BkperApp provides a simple and secure way to acceess the [Bkper] API through [Google Apps Script] infrastructure.
 
@@ -108,11 +108,11 @@ function recordATransaction() {
 ```
 Exchange the parameter of the function [getBook] for the id of the [Book] you want to record the [Transaction]. This is the same parameter found on the URL accessed on [bkper.com]:
 
-![bookId](https://bkper.com/api/images/bookId.png)
+![bookId](https://bkper.com/docs/images/bookId.png)
 
 Now run the **recordATransaction** function and see the record appearing on the bkper screen:
 
-![Recording](https://bkper.com/api/images/recording.png)
+![Recording](https://bkper.com/docs/images/recording.png)
 
 You can also record transactions in batch by passing an Array of strings as the [record] method parameter:
 
@@ -142,7 +142,7 @@ Each book is a large database and every interaction is done in terms of queries.
 
 Every query is shown in the search box on top of the page:
 
-![Query](https://bkper.com/api/images/query.png)
+![Query](https://bkper.com/docs/images/query.png)
 
 When you retrieve transactions, the [getTransactions] method returns an [TransactionIterator] to let you handle potentially large datasets:
 
@@ -164,7 +164,7 @@ function listTransactions() {
 
 Run the **queryTransactions** function, exchanging your bookId, with the same query, check the log output and you will see the same descriptions:
 
-![Search log](https://bkper.com/api/images/logSearch.png)
+![Search log](https://bkper.com/docs/images/logSearch.png)
 
 
 

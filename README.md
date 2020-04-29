@@ -30,7 +30,7 @@
 [Cloud Source Repositories]: https://cloud.google.com/source-repositories/
 [BkperApp]: https://bkper.com/docs/bkper-app
 
-## BkperApp #{bkper-app}
+<h2 id="bkper-app">BkperApp</h2>
 
 BkperApp provides a simple and secure way to acceess the [Bkper] API through [Google Apps Script] infrastructure.
 
@@ -43,7 +43,7 @@ With BkperApp you can create many bookkeeping and accounting solutions on G Suit
 
 It works the same way your favorite Google Apps Script library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] and the like.
 
-## Setup
+<h3 id="bkper-app-setup">Setup</h3>
 
 This library is already published as an Apps Script, making it easy to include in your project. To add it to your script, do the following in the Apps Script code editor:
 
@@ -52,7 +52,7 @@ This library is already published as an Apps Script, making it easy to include i
 3. Choose a version in the dropdown box (usually best to pick the latest version).
 4. Click the "Save" button.
 
-## Development
+<h3 id="bkper-app-development">Development</h3>
 
 Altough you can work on the Online editor really quickly, we strongly recommend [clasp] to develop locally with [Typescript] on [VS Code] editor, which is really powerfull and free, so you get:
 
@@ -65,9 +65,9 @@ Altough you can work on the Online editor really quickly, we strongly recommend 
  - Easier code redability
  - Automatic refactoring
 
-### Add Typescript Definitions:
+#### Add Typescript Definitions:
 
-#### 1) Add the package:
+##### 1) Add the package:
 
 ```
 npm i -S @bkper/bkper-app-types
@@ -77,7 +77,7 @@ or
 yarn add --dev @bkper/bkper-app-types
 ```
 
-#### 2) Configure tsconfig.json:
+##### 2) Configure tsconfig.json:
 
 ```
 {
@@ -92,7 +92,7 @@ yarn add --dev @bkper/bkper-app-types
 
 Don't forget to keep your code always in sync with version control system such as [GitHub] or [Cloud Source Repositories]
 
-## Record Transactions
+<h3 id="bkper-app-record-transactions">Record Transactions</h3>
 
 
 To record your first [Transaction], after authorizing and setup, copy and paste the function bellow:
@@ -135,7 +135,7 @@ The above code will send all records in a bulk. Very useful for importing large 
 
 
 
-## List Transactions
+<h3 id="bkper-app-list-transactions">List Transactions</h3>
 
 
 Each book is a large database and every interaction is done in terms of queries. Everytime you "select" an [Account] by clicking on left menu at [bkper.com], you are actually filtering transactions by that [Account].
@@ -168,7 +168,7 @@ Run the **queryTransactions** function, exchanging your bookId, with the same qu
 
 
 
-## List Accounts
+<h3 id="bkper-app-list-accounts">List Accounts</h3>
 
 
 You can access all Account objects, in a way similar to the left sidebar:
@@ -187,12 +187,4 @@ function listAccounts() {
 }
 ```
 
-
-<!-- 
-## <a name='samples'></a>Samples
-
-
-- [BkperCSVExportService](https://github.com/bkper/BkperCSVExportService) - Service to export bkper transactions in CSV format.
-
-- [bkper things](https://github.com/oshliaer/bkper/tree/master/bkper%20things) - Custom action scripts triggered from inside bkper through webhooks -->
 

@@ -131,6 +131,7 @@ declare namespace bkper {
   interface TransactionV2Payload {
     accuracy?: number;
     amount?: number;
+    agentId?: string;
     bookId?: string;
     bookName?: string;
     caBal?: number;

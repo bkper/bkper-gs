@@ -30,8 +30,16 @@
 [Cloud Source Repositories]: https://cloud.google.com/source-repositories/
 [BkperApp]: https://bkper.com/docs/bkper-app
 
-<h2 id="bkper-app">BkperApp <img height="30" width="30" src="https://bkper.com/docs/images/google-apps-script.svg"/></h2>
-BkperApp provides a simple and secure way to acceess the [Bkper] API through [Google Apps Script] infrastructure.
+<h2 id="bkper-app">
+BkperApp
+<a href='https://script.google.com/a/bkper.com/d/1hMJszJGSUVZDB3vmsWrUZfRhY1UWbhS0SQ6Lzl06gm1zhBF3ioTM7mpJ/edit?usp=drive_web'>
+  <img height="30" width="30" src="https://bkper.com/docs/images/google-apps-script.svg"/>
+</a>
+</h2>
+
+
+BkperApp provides a simple and secure way to access the [Bkper] API through [Google Apps Script] infrastructure.
+
 
 [![clasp](https://img.shields.io/badge/built%20with-clasp-4285f4.svg)](https://github.com/google/clasp)
 [![npm (scoped)](https://img.shields.io/npm/v/@bkper/bkper-app-types?color=%235889e4&label=types)](https://www.npmjs.com/package/@bkper/bkper-app-types)

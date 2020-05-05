@@ -15,22 +15,23 @@
     "name": "bkper, Inc",
     "url": "https://bkper.com"
   },
+  "license": "Apache-2.0",
   "scripts": {
     "clean": "rimraf build",
     "open": "clasp open",
-    "build": "yarn test",
-    "types:generate": "yarn clasp-types",
-    "types:publish": "yarn --cwd dist/@bkper/bkper-app-types publish --access public",
+    "push": "clasp push",
+    "start": "yarn push --watch",    
     "test": "run-s test:*",
     "test:bundle": "tsc --skipLibCheck --sourcemap --outFile build/test-bundle.js --module system",
     "test:run": "mocha --require source-map-support/register build/test-bundle.js",
-    "push": "clasp push",
-    "watch": "yarn push --watch",
+    "build": "yarn && yarn clean && yarn test && run-s build:*",
+    "build:types": "yarn clasp-types",    
     "patch": "yarn version --patch",
     "minor": "yarn version --minor",
     "major": "yarn version --major",
     "preversion": "run-s test push",
-    "postversion": "clasp version $npm_package_version && git push && git push --tags && echo \"Successfully released version $npm_package_version!\""
+    "publish-types": "yarn --cwd dist/@bkper/bkper-app-types publish --access public",
+    "postversion": "clasp version $npm_package_version && git push && git push --tags && yarn publish-types"
   },
   "devDependencies": {
     "@google/clasp": "^2.3.0",

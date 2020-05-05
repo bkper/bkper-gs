@@ -1,9 +1,8 @@
 {
   "scriptId": "1hMJszJGSUVZDB3vmsWrUZfRhY1UWbhS0SQ6Lzl06gm1zhBF3ioTM7mpJ",
-  "projectId": "bkper-app2",
   "rootDir": "./src",
   "library": {
-    "namespace": "bkper",
+    "namespace": "Bkper",
     "name": "BkperApp"
   }
 }

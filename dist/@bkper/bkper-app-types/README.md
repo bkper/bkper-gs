@@ -1,6 +1,6 @@
 # Summary
 
-This package contains Typescript definitions for [BkperApp](https://bkper.com/docs)
+This package contains Typescript definitions for [BkperApp](https://bkper.com/docs/#bkperapp)
 
 # Instalation
 

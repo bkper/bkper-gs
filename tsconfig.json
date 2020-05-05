@@ -1,22 +1,21 @@
 {
   "compilerOptions": {
-    "lib": [
-      "esnext"
-    ],
-    "target": "ES3",
     "module": "none",
     "noImplicitUseStrict": true,
+    "experimentalDecorators": true,
+    "lib": [ "esnext" ],
+    "target": "ES6",
     "noImplicitAny": true,
-    "experimentalDecorators": true
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.ts",
+    "@types/**/*.d.ts",
     "test/**/*.ts",
-    "@types/**/*.d.ts"
   ],
   "exclude": [
     "node_modules/",
     "dist/"
-  ],
+  ]
 
 }

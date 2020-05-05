@@ -3,7 +3,7 @@
 
 /// <reference types="google-apps-script" />
 
-declare namespace bkper {
+declare namespace Bkper {
 
     /**
      * The main entry point to interact with BkperApp
@@ -1051,4 +1051,4 @@ declare namespace bkper {
 
 }
 
-declare var BkperApp: bkper.BkperApp;
+declare var BkperApp: Bkper.BkperApp;

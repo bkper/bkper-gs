@@ -1,6 +1,6 @@
 {
   "name": "@bkper/bkper-app-types",
-  "version": "1.6.3",
+  "version": "1.6.5",
   "description": "Typescript definitions for BkperApp",
   "homepage": "https://bkper.com/docs/#bkperapp",
   "repository": {
@@ -15,11 +15,11 @@
     "name": "bkper, Inc",
     "url": "https://bkper.com"
   },
+  "license": "MIT",
   "scripts": {},
   "devDependencies": {},
   "dependencies": {
     "@types/google-apps-script": "*"
   },
-  "license": "MIT",
   "types": "./index.d.ts"
 }

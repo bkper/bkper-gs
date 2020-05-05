@@ -24,14 +24,14 @@
     "test": "run-s test:*",
     "test:bundle": "tsc --skipLibCheck --sourcemap --outFile build/test-bundle.js --module system",
     "test:run": "mocha --require source-map-support/register build/test-bundle.js",
-    "build": "yarn && yarn clean && yarn test && run-s build:*",
+    "build": "yarn && run-s clean test build:*",
     "build:types": "yarn clasp-types",
     "patch": "yarn version --patch",
     "minor": "yarn version --minor",
     "major": "yarn version --major",
-    "preversion": "run-s test push",
-    "publish-types": "yarn --cwd dist/@bkper/bkper-app-types publish --access public",
-    "postversion": "clasp version $npm_package_version && git push && git push --tags && yarn publish-types"
+    "preversion": "run-s build push",
+    "postversion": "clasp version $npm_package_version && git push && git push --tags",
+    "publish:types": "yarn build && yarn --cwd dist/@bkper/bkper-app-types publish --new-version $npm_package_version --access public"
   },
   "devDependencies": {
     "@google/clasp": "^2.3.0",

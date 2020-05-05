@@ -1,6 +1,6 @@
 {
   "name": "@bkper/bkper-app",
-  "version": "1.6.5",
+  "version": "1.7.0",
   "description": "Google Apps Script library for Bkper",
   "homepage": "https://bkper.com/docs/#bkperapp",
   "repository": {
@@ -20,12 +20,12 @@
     "clean": "rimraf build",
     "open": "clasp open",
     "push": "clasp push",
-    "start": "yarn push --watch",    
+    "start": "yarn push --watch",
     "test": "run-s test:*",
     "test:bundle": "tsc --skipLibCheck --sourcemap --outFile build/test-bundle.js --module system",
     "test:run": "mocha --require source-map-support/register build/test-bundle.js",
     "build": "yarn && yarn clean && yarn test && run-s build:*",
-    "build:types": "yarn clasp-types",    
+    "build:types": "yarn clasp-types",
     "patch": "yarn version --patch",
     "minor": "yarn version --minor",
     "major": "yarn version --major",

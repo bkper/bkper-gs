@@ -49,11 +49,11 @@ namespace TransactionService_ {
 
   export function record(book: Book, transactions: string | any[] | any[][], timezone?: string): string {
     var text = "";
-    if (transactions instanceof Array) {
+    if (Array.isArray(transactions)) {
       var hasManyRows = false;
       for (var i = 0; i < transactions.length; i++) {
         var row = transactions[i];
-        if (row instanceof Array) {
+        if (Array.isArray(row)) {
           transactions[i] = arrayToTransaction_(row, book, timezone);
           hasManyRows = true;
         }
@@ -78,7 +78,7 @@ namespace TransactionService_ {
       if (typeof cell == "string" || typeof cell == "boolean") {
         row[j] = cell;
       }
-      else if (cell instanceof Date) {
+      else if (Object.prototype.toString.call(cell) === '[object Date]') {
         row[j] = book.formatDate(cell, timezone);
       } else if (!isNaN(cell)) {
         row[j] = Utils_.formatValue_(cell, book.getDecimalSeparator(), book.getFractionDigits());

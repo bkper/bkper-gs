@@ -74,7 +74,7 @@ namespace Utils_ {
   } 
   
   export function formatDate(date: Date, pattern: string, timeZone: string): string {
-    if (date == null || !(date instanceof Date)) {
+    if (date == null || !(Object.prototype.toString.call(date) === '[object Date]')) {
       return '';
     }
     

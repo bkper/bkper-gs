@@ -10,19 +10,14 @@ namespace TransactionService_ {
     if (query == null) {
       query = "";
     }
-    var params =
-        {
-          "query" : query,
-          "limit" : limit
-        };
-    
-    var headers = null;
-
+    var request = new HttpBooksApiRequest(`${book.getId()}/transactions`);
+    request.addParam('query', query);
+    request.addParam('limit', limit);
     if (cursor != null) {
-      headers = {"cursor" : cursor};
+      request.addHeader('cursor', cursor);
     }
-    
-    var responseJSON = API_.call_("get", "transactions", book.getId(), params, null, null, headers);
+
+    var responseJSON = request.fetch().getContentText();
     
     var transactionResponse: TransactionResponse = {
       items: [],
@@ -68,8 +63,12 @@ namespace TransactionService_ {
     }
     var body = "text=" +  encodeURIComponent(text);
 
-    var response = API_.call_("post", "drafts", book.getId(), null, body, "application/x-www-form-urlencoded; charset=UTF-8");
-    return response;
+    return new HttpBooksApiRequest(`${book.getId()}/drafts`)
+          .setMethod('post')
+          .setPayload(body)
+          .setContentType('application/x-www-form-urlencoded; charset=UTF-8')
+          .fetch()
+          .getContentText();
   }
 
   function arrayToTransaction_(row: any[], book: Book, timezone?: string) {

@@ -1,7 +1,7 @@
 namespace UserService_ {
   
   export function getUserDetails(): bkper.UserDetailsV2Payload {
-      var responseJSON = API_.fetch("bkper","v2", "user/details").getContentText();
+      var responseJSON = new HttpApiRequest('user/details').fetch().getContentText();
       return JSON.parse(responseJSON);
     }
 }

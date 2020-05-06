@@ -1,7 +1,7 @@
 namespace AccountService_ {
 
   export function getAccounts(bookId: string): Account[] {
-    var responseJSON = API_.call_("get", "accounts", bookId);
+    var responseJSON = new HttpBooksApiRequest(`${bookId}/accounts`).fetch().getContentText();
     if (responseJSON == null || responseJSON == "") {
       return [];
     }
@@ -22,8 +22,10 @@ namespace AccountService_ {
     accountUpdate.description = description;
     
     var accountUpdateJSON = JSON.stringify(accountUpdate);
+
+    Logger.log(accountUpdateJSON)
     
-    var responseJSON = API_.call_("post", "accounts", bookId, null, accountUpdateJSON);
+    var responseJSON = new HttpBooksApiRequest(`${bookId}/accounts`).setMethod('post').setPayload(accountUpdateJSON).fetch().getContentText();
     
     var accountPlain = JSON.parse(responseJSON);
     var account = Utils_.wrapObject(new Account(), accountPlain);

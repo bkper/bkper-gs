@@ -6,7 +6,8 @@
     "lib": [ "esnext" ],
     "target": "ES3",
     "noImplicitAny": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "typeRoots" : ["node_modules/@bkper", "node_modules/@types" ]
   },
   "include": [
     "src/**/*.ts",

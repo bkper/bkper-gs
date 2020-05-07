@@ -5,5 +5,12 @@
   "oauthScopes": [
     "https://www.googleapis.com/auth/script.external_request",
     "https://www.googleapis.com/auth/userinfo.email"
-  ]
+  ],
+  "dependencies": {
+    "libraries": [{
+      "userSymbol": "HttpRequestApp",
+      "libraryId": "1Iqaz0dbrlOXp9D2giO0DS6CDW_Q4IrgfhTJyYqxknww_OmFVF_4NQVR_",
+      "version": "8"
+    }]
+  }  
 }

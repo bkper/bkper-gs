@@ -20,7 +20,7 @@
     "clean": "rimraf build",
     "open": "clasp open",
     "push": "clasp push",
-    "start": "yarn push --watch",
+    "watch": "yarn push --watch",
     "test": "run-s test:*",
     "test:bundle": "tsc --skipLibCheck --sourcemap --outFile build/test-bundle.js --module system",
     "test:run": "mocha --require source-map-support/register build/test-bundle.js",
@@ -49,6 +49,6 @@
     "watch": "^1.0.2"
   },
   "dependencies": {
-    "@types/google-apps-script": "^0.0.59"
+    "@types/google-apps-script": "^1.0.14"
   }
 }

@@ -14,7 +14,7 @@ namespace TransactionService_ {
     request.addParam('query', query);
     request.addParam('limit', limit);
     if (cursor != null) {
-      request.addHeader('cursor', cursor);
+      request.setHeader('cursor', cursor);
     }
 
     var responseJSON = request.fetch().getContentText();

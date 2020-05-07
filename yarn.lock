@@ -55,10 +55,10 @@
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
-"@types/google-apps-script@^0.0.59":
-  version "0.0.59"
-  resolved "https://registry.yarnpkg.com/@types/google-apps-script/-/google-apps-script-0.0.59.tgz#d248ea06895e12136891ff7f2103431f79ca6689"
-  integrity sha512-P3vuBBvpaEtpkRuMIuxXh1vZ6UiKMETnXBfPvyn8egWHxNHgISfUC+pDs6uni/MrgFd9KySA6h9ckKQ/mRPWKw==
+"@types/google-apps-script@^1.0.14":
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/@types/google-apps-script/-/google-apps-script-1.0.14.tgz#194d0d1c5236651ddae03c512891605c88501839"
+  integrity sha512-dxYrClArM39GGlANFbCJiBg+wBmmK5VuBW2/JBaqg6Bo/OpAcXJoQ69zml6HmuHoKJDw1WR+BRxeJ/U9L9dk8A==
 
 "@types/minimatch@3.0.3", "@types/minimatch@^3.0.3":
   version "3.0.3"

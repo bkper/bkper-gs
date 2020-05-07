@@ -32,7 +32,7 @@
 
 <h2 id="bkper-app">
 BkperApp
-<a href='https://script.google.com/a/bkper.com/d/1hMJszJGSUVZDB3vmsWrUZfRhY1UWbhS0SQ6Lzl06gm1zhBF3ioTM7mpJ/edit?usp=drive_web'>
+<a href='https://script.google.com/d/1hMJszJGSUVZDB3vmsWrUZfRhY1UWbhS0SQ6Lzl06gm1zhBF3ioTM7mpJ/edit?usp=sharing'>
   <img height="30" width="30" src="https://bkper.com/docs/images/google-apps-script.svg"/>
 </a>
 </h2>

@@ -19,10 +19,6 @@
 [SpreadsheetApp]: https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app
 
 [Add-on for Google Sheets]: https://gsuite.google.com/marketplace/app/bkper/360398463400
-[Typescript]: https://developers.google.com/apps-script/guides/typescript
-[VS Code]: https://code.visualstudio.com
-[clasp]: https://developers.google.com/apps-script/guides/clasp
-[Typescript Definitions]: https://www.npmjs.com/package/@bkper/bkper-app-types
 
 ## BkperApp
 

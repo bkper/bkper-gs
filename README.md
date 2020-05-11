@@ -1,5 +1,6 @@
 [Bkper]: https://bkper.com/
 [bkper.com]: https://bkper.com
+[Apps and Bots]: https://bkper.com/docs
 
 [Google Apps Script]: https://developers.google.com/apps-script/reference/
 [OAuth2]: https://oauth.net/2/
@@ -20,7 +21,6 @@
 [SpreadsheetApp]: https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app
 
 [Add-on for Google Sheets]: https://gsuite.google.com/marketplace/app/bkper/360398463400
-[Forms]: https://gsuite.google.com/marketplace/app/bkper_forms/588203895124
 [Typescript]: https://developers.google.com/apps-script/guides/typescript
 [reference documentation]: https://bkper.com/docs/bkper-app/
 [VS Code]: https://code.visualstudio.com
@@ -30,27 +30,117 @@
 [Cloud Source Repositories]: https://cloud.google.com/source-repositories/
 [BkperApp]: https://bkper.com/docs/bkper-app
 
-<h2 id="bkper-app">
-BkperApp
-<a href='https://script.google.com/d/1hMJszJGSUVZDB3vmsWrUZfRhY1UWbhS0SQ6Lzl06gm1zhBF3ioTM7mpJ/edit?usp=sharing'>
-  <img height="30" width="30" src="https://bkper.com/docs/images/google-apps-script.svg"/>
-</a>
-</h2>
-
+## BkperApp<a href='https://script.google.com/d/1hMJszJGSUVZDB3vmsWrUZfRhY1UWbhS0SQ6Lzl06gm1zhBF3ioTM7mpJ/edit?usp=sharing'><img height="30" width="30" src="https://bkper.com/docs/images/google-apps-script.svg"/></a>
 
 BkperApp provides a simple and secure way to access the [Bkper] API through [Google Apps Script] infrastructure.
-
 
 [![clasp](https://img.shields.io/badge/built%20with-clasp-4285f4.svg)](https://github.com/google/clasp)
 [![npm (scoped)](https://img.shields.io/npm/v/@bkper/bkper-app-types?color=%235889e4&label=types)](https://www.npmjs.com/package/@bkper/bkper-app-types)
 [![GSTests status](https://gs-tests-status.appspot.com/badge.svg?suite=BkperApp&namespace=bkpertest)](https://script.google.com/macros/s/AKfycbyWJJFIwoqnNudRMGse18qVNWw5aa7g03-iLmL_rjqO8mg-MjI/exec?suite=BkperApp&namespace=bkpertest)
 
 
-With BkperApp you can create many bookkeeping and accounting solutions on G Suite, such as the Bkper [Add-on for Google Sheets], simple automations or advanced solutions with [Google Apps Script API], and you can manage your scripts in the [Dashboard].
+With BkperApp you can build [Apps and Bots] to your Books to create bookkeeping and accounting solutions on G Suite, such as the Bkper [Add-on for Google Sheets], simple automations or advanced solutions, and you can manage your scripts in the [Dashboard].
 
 It works the same way your favorite Google Apps Script library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] and the like.
 
-<h3 id="bkper-app-setup">Setup</h3>
+See the [complete reference](https://bkper.com/docs/bkper-app/)
+
+
+### Get a Book
+
+The get a [Book], use the parameter found on the URL accessed on [bkper.com]:
+
+![bookId](https://bkper.com/docs/images/bookId.png)
+
+To get the Book name:
+
+```javascript
+function getBookName() {
+  var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
+  var bookName = book.getName();
+}
+```
+
+### Record Transactions
+
+To record a simple transaction:
+
+```javascript
+function recordATransaction() {
+  var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
+  book.record("#gas 63.23");
+}
+```
+
+You can also record transactions in batch by passing an Array of strings as the [record] method parameter:
+
+```javascript
+function batchRecordTransactions() {
+
+  var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
+
+  var transactions = new Array();
+
+  transactions.push("#breakfast 15.40");
+  transactions.push("#lunch 27.45");
+  transactions.push("#dinner 35.86");
+
+  book.record(transactions);
+
+}
+```
+The above code will send all records in a bulk. Very useful for importing large amount of data without the risk of reaching script limits.
+
+
+### List Transactions
+
+Each book is a large database and every interaction is done in terms of queries. Everytime you "select" an [Account] by clicking on left menu at [bkper.com], you are actually filtering transactions by that [Account].
+
+When you retrieve transactions, the [getTransactions] method returns an [TransactionIterator] to let you handle potentially large datasets:
+
+```javascript
+function listTransactions() {
+
+  var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgKCtg6MLDA");
+
+  //GetTransactions returns an interator to deal with potencial large datasets
+  var transactionIterator = book.getTransactions("account:'Bank' after:01/04/2014");
+
+  while (transactionIterator.hasNext()) {
+    var transaction = transactionIterator.next();
+    Logger.log(transaction.getDescription());
+  }
+
+}
+```
+
+Run the **queryTransactions** function, exchanging your bookId, with the same query, check the log output and you will see the same descriptions:
+
+![Search log](https://bkper.com/docs/images/logSearch.png)
+
+
+### List Accounts
+
+
+You can access all Account objects, in a way similar to the left sidebar:
+```javascript
+function listAccounts() {
+  //Open the book
+  var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
+
+  var accounts = book.getAccounts();
+  for (var i=0; i < accounts.length; i++) {
+    var account = accounts[i];
+    if (account.isPermanent() && account.isActive()) {
+      Logger.log(account.getName() + ": " + account.getBalance());
+    }
+  }
+}
+```
+
+### See the [complete reference](https://bkper.com/docs/bkper-app/)
+
+### Setup
 
 This library is already published as an Apps Script, making it easy to include in your project. To add it to your script, do the following in the Apps Script code editor:
 
@@ -59,7 +149,7 @@ This library is already published as an Apps Script, making it easy to include i
 3. Choose a version in the dropdown box (usually best to pick the latest version).
 4. Click the "Save" button.
 
-<h3 id="bkper-app-development">Development</h3>
+### Development
 
 Altough you can work on the Online editor really quickly, we strongly recommend [clasp] to develop locally with [Typescript] on [VS Code] editor, which is really powerfull and free, so you get:
 
@@ -95,103 +185,3 @@ yarn add --dev @bkper/bkper-app-types
 ```
 
 [Learn more](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#types-typeroots-and-types) about **@types**, **typeRoots** and **types**
-
-
-Don't forget to keep your code always in sync with version control system such as [GitHub] or [Cloud Source Repositories]
-
-<h3 id="bkper-app-record-transactions">Record Transactions</h3>
-
-
-To record your first [Transaction], after authorizing and setup, copy and paste the function bellow:
-
-```javascript
-function recordATransaction() {
-
-  var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
-
-  book.record("#gas 63.23");
-
-}
-```
-Exchange the parameter of the function [getBook] for the id of the [Book] you want to record the [Transaction]. This is the same parameter found on the URL accessed on [bkper.com]:
-
-![bookId](https://bkper.com/docs/images/bookId.png)
-
-Now run the **recordATransaction** function and see the record appearing on the bkper screen:
-
-![Recording](https://bkper.com/docs/images/recording.png)
-
-You can also record transactions in batch by passing an Array of strings as the [record] method parameter:
-
-```javascript
-function batchRecordTransactions() {
-
-  var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
-
-  var transactions = new Array();
-
-  transactions.push("#breakfast 15.40");
-  transactions.push("#lunch 27.45");
-  transactions.push("#dinner 35.86");
-
-  book.record(transactions);
-
-}
-```
-The above code will send all records in a bulk. Very useful for importing large amount of data without the risk of reaching script limits.
-
-
-
-<h3 id="bkper-app-list-transactions">List Transactions</h3>
-
-
-Each book is a large database and every interaction is done in terms of queries. Everytime you "select" an [Account] by clicking on left menu at [bkper.com], you are actually filtering transactions by that [Account].
-
-Every query is shown in the search box on top of the page:
-
-![Query](https://bkper.com/docs/images/query.png)
-
-When you retrieve transactions, the [getTransactions] method returns an [TransactionIterator] to let you handle potentially large datasets:
-
-```javascript
-function listTransactions() {
-
-  var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgKCtg6MLDA");
-
-  //GetTransactions returns an interator to deal with potencial large datasets
-  var transactionIterator = book.getTransactions("account:'Bank' after:01/04/2014");
-
-  while (transactionIterator.hasNext()) {
-    var transaction = transactionIterator.next();
-    Logger.log(transaction.getDescription());
-  }
-
-}
-```
-
-Run the **queryTransactions** function, exchanging your bookId, with the same query, check the log output and you will see the same descriptions:
-
-![Search log](https://bkper.com/docs/images/logSearch.png)
-
-
-
-<h3 id="bkper-app-list-accounts">List Accounts</h3>
-
-
-You can access all Account objects, in a way similar to the left sidebar:
-```javascript
-function listAccounts() {
-  //Open the book
-  var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
-
-  var accounts = book.getAccounts();
-  for (var i=0; i < accounts.length; i++) {
-    var account = accounts[i];
-    if (account.isPermanent() && account.isActive()) {
-      Logger.log(account.getName() + ": " + account.getBalance());
-    }
-  }
-}
-```
-
-

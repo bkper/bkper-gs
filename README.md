@@ -3,14 +3,12 @@
 [Apps and Bots]: https://bkper.com/docs
 
 [Google Apps Script]: https://developers.google.com/apps-script/reference/
-[OAuth2]: https://oauth.net/2/
 
 [Dashboard]: https://script.google.com/home
 [Book]: https://bkper.com/docs/bkper-app/#book
 [Account]: https://bkper.com/docs/bkper-app/#account
 [Transaction]: https://bkper.com/docs/bkper-app/#transaction
 [TransactionIterator]: https://bkper.com/docs/bkper-app/#transactioniterator
-[Google Apps Script API]: https://developers.google.com/apps-script/api/
 
 [record]: https://bkper.com/docs/bkper-app/#book_record
 [getTransactions]: https://bkper.com/docs/bkper-app/#book_gettransactions
@@ -22,15 +20,11 @@
 
 [Add-on for Google Sheets]: https://gsuite.google.com/marketplace/app/bkper/360398463400
 [Typescript]: https://developers.google.com/apps-script/guides/typescript
-[reference documentation]: https://bkper.com/docs/bkper-app/
 [VS Code]: https://code.visualstudio.com
 [clasp]: https://developers.google.com/apps-script/guides/clasp
 [Typescript Definitions]: https://www.npmjs.com/package/@bkper/bkper-app-types
-[GitHub]: https://github.com/
-[Cloud Source Repositories]: https://cloud.google.com/source-repositories/
-[BkperApp]: https://bkper.com/docs/bkper-app
 
-## BkperApp<a href='https://script.google.com/d/1hMJszJGSUVZDB3vmsWrUZfRhY1UWbhS0SQ6Lzl06gm1zhBF3ioTM7mpJ/edit?usp=sharing'><img height="30" width="30" src="https://bkper.com/docs/images/google-apps-script.svg"/></a>
+## BkperApp
 
 BkperApp provides a simple and secure way to access the [Bkper] API through [Google Apps Script] infrastructure.
 
@@ -142,7 +136,7 @@ function listAccounts() {
 
 ### Setup
 
-This library is already published as an Apps Script, making it easy to include in your project. To add it to your script, do the following in the Apps Script code editor:
+This library is already published as an [Apps Script](https://script.google.com/d/1hMJszJGSUVZDB3vmsWrUZfRhY1UWbhS0SQ6Lzl06gm1zhBF3ioTM7mpJ/edit?usp=sharing), making it easy to include in your project. To add it to your script, do the following in the Apps Script code editor:
 
 1. Click on the menu item "Resources > Libraries..."
 2. In the "Add a Library" text box, enter the Script ID "**1hMJszJGSUVZDB3vmsWrUZfRhY1UWbhS0SQ6Lzl06gm1zhBF3ioTM7mpJ**" and click the "Select" button.

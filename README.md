@@ -143,20 +143,7 @@ This library is already published as an [Apps Script](https://script.google.com/
 3. Choose a version in the dropdown box (usually best to pick the latest version).
 4. Click the "Save" button.
 
-### Development
-
-Altough you can work on the Online editor really quickly, we strongly recommend [clasp] to develop locally with [Typescript] on [VS Code] editor, which is really powerfull and free, so you get:
-
- - Code Autocomplete
- - Contextual documentation
- - Compile time error checking
- - Code navigation - really helpful!
- - Calling hierarchy searching
- - Use of new javascript features such as classes, interfaces, arrow functions etc
- - Easier code redability
- - Automatic refactoring
-
-#### Add Typescript Definitions:
+#### Typescript Definitions for autocomplete:
 
 ##### 1) Add the package:
 

@@ -129,13 +129,22 @@ class Book {
   }
 
   /**
-   * Gets the property value for a given key
+   * Gets the property value for given keys. First property found will be retrieved
    * 
-   * @param key The property key
+   * @param keys The property key
    */
-  public getProperty(key: string): string {
+  public getProperty(...keys: string[]): string {
     this.checkBookLoaded_();
-    return this.wrapped.properties != null ?  this.wrapped.properties[key] : '';
+
+    for (let index = 0; index < keys.length; index++) {
+      const key = keys[index];
+      let value = this.wrapped.properties != null ?  this.wrapped.properties[key] : null 
+      if (value != null && value.trim() != '') {
+        return value;
+      }
+    }
+
+    return null;
   }  
 
 

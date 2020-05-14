@@ -108,9 +108,9 @@ declare namespace Bkper {
         getProperties(): any;
 
         /**
-         * Gets the property value for a given key
+         * Gets the property value for given keys. First property found will be retrieved
          */
-        getProperty(key: string): string;
+        getProperty(...keys: string[]): string;
 
         /**
          * Tell if this account is Active or otherwise Archived
@@ -504,9 +504,9 @@ declare namespace Bkper {
         getProperties(): any;
 
         /**
-         * Gets the property value for a given key
+         * Gets the property value for given keys. First property found will be retrieved
          */
-        getProperty(key: string): string;
+        getProperty(...keys: string[]): string;
 
         /**
          * Gets all saved queries from this book

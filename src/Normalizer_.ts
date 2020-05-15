@@ -7,13 +7,13 @@ namespace Normalizer_ {
       return;
     }
     
+    text = text.replace(new RegExp("-", 'g'), " ");
     text = text.replace(/ +(?= )/g,'');
-    
+
     text = removeDiacritics(text.trim().toLowerCase());
     
     if (spaceReplacement) {
-      var re = new RegExp(" ", 'g');
-      text = text.replace(re, spaceReplacement);
+      text = text.replace(new RegExp(" ", 'g'), spaceReplacement);
     }
     return text; 
   }  

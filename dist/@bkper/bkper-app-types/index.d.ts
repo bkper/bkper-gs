@@ -88,6 +88,11 @@ declare namespace Bkper {
         getDescription(): string;
 
         /**
+         * Get the [[Groups]] of this account.
+         */
+        getGroups(): Group[];
+
+        /**
          * Gets the account internal id
          */
         getId(): string;

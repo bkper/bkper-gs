@@ -158,6 +158,20 @@ class Account {
     return this.wrapped.credit;
   }
 
+
+  /**
+   * Get the [[Groups]] of this account.
+   */  
+  public getGroups(): Group[] {
+    let groups = new Array<Group>();
+    for (var i = 0; i < this.wrapped.groupsIds.length; i++) {
+      let groupId = this.wrapped.groupsIds[i];
+      let group = this.book.getGroup(groupId);
+      groups.push(group);
+    }
+    return groups;
+  }  
+
   /**
    * Tell if this account is in the [[Group]]
    * 
@@ -193,6 +207,7 @@ class Account {
     }
     return false;
   }
+
 
 
 

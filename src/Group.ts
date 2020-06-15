@@ -50,4 +50,28 @@ class Group {
   }
 
 
+
+  /**
+   * Gets the custom properties stored in this Account
+   */  
+  public getProperties(): any {
+    return this.wrapped.properties != null ?  this.wrapped.properties : {};
+  }
+
+  /**
+   * Gets the property value for given keys. First property found will be retrieved
+   * 
+   * @param keys The property key
+   */
+  public getProperty(...keys: string[]): string {
+    for (let index = 0; index < keys.length; index++) {
+      const key = keys[index];
+      let value = this.wrapped.properties != null ?  this.wrapped.properties[key] : null 
+      if (value != null && value.trim() != '') {
+        return value;
+      }
+    }
+    return null;
+  }
+  
 }

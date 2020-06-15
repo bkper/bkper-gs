@@ -92,6 +92,7 @@ declare namespace bkper {
   interface GroupV2Payload {
     id?: string;
     name?: string;
+    properties?: any;
   }
   interface Message {
     message?: string;

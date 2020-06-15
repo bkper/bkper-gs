@@ -586,6 +586,16 @@ declare namespace Bkper {
         getName(): string;
 
         /**
+         * Gets the custom properties stored in this Account
+         */
+        getProperties(): any;
+
+        /**
+         * Gets the property value for given keys. First property found will be retrieved
+         */
+        getProperty(...keys: string[]): string;
+
+        /**
          * @returns True if this group has any account in it
          */
         hasAccounts(): boolean;

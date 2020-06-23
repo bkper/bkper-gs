@@ -421,12 +421,16 @@ declare namespace Bkper {
         createTransactionsDataTable(query?: string): TransactionsDataTableBuilder;
 
         /**
-         * @returns The date formated according to date pattern of book
+         * Formats a date according to date pattern of the Book.
+         *
+         * @returns The date formated
          */
         formatDate(date: Date, timeZone?: string): string;
 
         /**
-         * @returns The value formated according to [[DecimalSeparator]] and fraction digits of Book
+         * Formats a value according to [[DecimalSeparator]] and fraction digits of the Book.
+         *
+         * @returns The value formated
          */
         formatValue(value: number): string;
 
@@ -561,6 +565,13 @@ declare namespace Bkper {
          * ```
          */
         record(transactions: string | any[] | any[][], timeZone?: string): void;
+
+        /**
+         * Rounds a value according to the number of fraction digits of the Book
+         *
+         * @returns The value rounded
+         */
+        round(value: number): number;
 
         search(query?: string): TransactionIterator;
 

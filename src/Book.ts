@@ -149,28 +149,35 @@ class Book {
 
 
   /**
+   * Formats a date according to date pattern of the Book.
+   * 
    * @param  date The date to format as string.
    * @param  timeZone The output timezone of the result. Default to script's timeZone
    * 
-   * @return The date formated according to date pattern of book
+   * @return The date formated
    */
   public formatDate(date: Date, timeZone?: string): string {
     return Utils_.formatDate(date, this.getDatePattern(), timeZone);
   }
 
   /**
+   * 
+   * Formats a value according to [[DecimalSeparator]] and fraction digits of the Book.
+   * 
    * @param value The value to be formatted.
    * 
-   * @return The value formated according to [[DecimalSeparator]] and fraction digits of the Book
+   * @return The value formated
    */
   public formatValue(value: number): string {
     return Utils_.formatValue_(value, this.getDecimalSeparator(), this.getFractionDigits());
   }
 
   /**
+   * Rounds a value according to the number of fraction digits of the Book
+   * 
    * @param value The value to be rounded
    * 
-   * @returns The value rounded according to the number of fraction digits of the Book
+   * @returns The value rounded
    */
   public round(value: number): number {
     return Utils_.round(value, this.getFractionDigits());

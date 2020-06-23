@@ -81,7 +81,7 @@ class Account {
   public getBalance(raw?: boolean): number {
     var balance = 0;
     if (this.wrapped.balance != null) {
-      balance = Utils_.round(this.wrapped.balance);
+      balance = Utils_.round(this.wrapped.balance, this.book.getFractionDigits());
     }
 
     if (raw) {
@@ -101,7 +101,7 @@ class Account {
   public getCheckedBalance(raw?: boolean): number {
     var balance = 0;
     if (this.wrapped.balance != null) {
-      balance = Utils_.round(this.wrapped.checkedBalance);
+      balance = Utils_.round(this.wrapped.checkedBalance, this.book.getFractionDigits());
     }
 
     if (raw) {

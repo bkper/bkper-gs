@@ -161,10 +161,19 @@ class Book {
   /**
    * @param value The value to be formatted.
    * 
-   * @return The value formated according to [[DecimalSeparator]] and fraction digits of Book
+   * @return The value formated according to [[DecimalSeparator]] and fraction digits of the Book
    */
   public formatValue(value: number): string {
     return Utils_.formatValue_(value, this.getDecimalSeparator(), this.getFractionDigits());
+  }
+
+  /**
+   * @param value The value to be rounded
+   * 
+   * @returns The value rounded according to the number of fraction digits of the Book
+   */
+  public round(value: number): number {
+    return Utils_.round(value, this.getFractionDigits());
   }
 
   /**

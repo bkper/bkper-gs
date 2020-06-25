@@ -164,10 +164,12 @@ class Account {
    */  
   public getGroups(): Group[] {
     let groups = new Array<Group>();
-    for (var i = 0; i < this.wrapped.groupsIds.length; i++) {
-      let groupId = this.wrapped.groupsIds[i];
-      let group = this.book.getGroup(groupId);
-      groups.push(group);
+    if (this.wrapped.groupsIds != null) {
+      for (var i = 0; i < this.wrapped.groupsIds.length; i++) {
+        let groupId = this.wrapped.groupsIds[i];
+        let group = this.book.getGroup(groupId);
+        groups.push(group);
+      }
     }
     return groups;
   }  

@@ -12,7 +12,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   private periodicity: Periodicity;
   private balanceCheckedType: BalanceCheckedType;
   private shouldFormatDate: boolean;
-  private shouldHideDate: boolean;
+  private showValuesOnly: boolean;
   private shouldFormatValue: boolean;
   private book: Book;
   private shouldExpand: boolean;
@@ -25,7 +25,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     this.balanceCheckedType = balanceCheckedType;
     this.balanceType = BalanceType.TOTAL;
     this.shouldFormatDate = false;
-    this.shouldHideDate = false;
+    this.showValuesOnly = false;
     this.shouldFormatValue = false;
     this.shouldExpand = false;
     this.shouldTranspose = false;
@@ -42,16 +42,6 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   }
 
     
-  /**
-   * Defines whether the dates should be hidden for **PERIOD** or **CUMULATIVE** [[BalanceType]]
-   *
-   * @returns This builder with respective hide dates option, for chaining.
-   */  
-  public hideDates(hide: boolean): BalancesDataTableBuilder{
-    this.shouldHideDate = hide;
-    return this;
-  }
-
   /**
    * Defines whether the value should be formatted based on decimal separator of the [[Book]].
    * 
@@ -144,6 +134,16 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    */
   public transposed(transposed: boolean): BalancesDataTableBuilder {
     this.shouldTranspose = transposed;
+    return this;
+  }
+
+  /**
+   * Defines whether only values and no dates should be displayed for **PERIOD** or **CUMULATIVE** [[BalanceType]]
+   *
+   * @returns This builder with respective valuesOnly option, for chaining.
+   */  
+  public valuesOnly(valuesOnly: boolean): BalancesDataTableBuilder{
+    this.showValuesOnly = valuesOnly;
     return this;
   }
 
@@ -389,7 +389,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     }
 
-    if (this.shouldHideDate) {
+    if (this.showValuesOnly) {
       table = table.map(row => row.slice(1));
     }
 
@@ -442,4 +442,11 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     return this.transposed(true);
   }  
 
+  /**
+   * @deprecated
+   */
+  hideDates(hide: boolean): BalancesDataTableBuilder{
+    this.showValuesOnly = hide;
+    return this;
+  }
 }

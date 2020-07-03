@@ -276,6 +276,13 @@ declare namespace Bkper {
         formatValues(format: boolean): BalancesDataTableBuilder;
 
         /**
+         * Defines whether the dates should be hidden for **PERIOD** or **CUMULATIVE** [[BalanceType]]
+         *
+         * @returns This builder with respective hide dates option, for chaining.
+         */
+        hideDates(hide: boolean): BalancesDataTableBuilder;
+
+        /**
          * Defines wheter should rows and columns should be transposed.
          *
          * For **TOTAL** [[BalanceType]], the **transposed** table looks like:
@@ -314,13 +321,6 @@ declare namespace Bkper {
          * @returns This builder with respective balance type, for chaining.
          */
         type(type: BalanceType): BalancesDataTableBuilder;
-
-        /**
-         * Defines whether only values and no dates should be displayed for **PERIOD** or **CUMULATIVE** [[BalanceType]]
-         *
-         * @returns This builder with respective valuesOnly option, for chaining.
-         */
-        valuesOnly(valuesOnly: boolean): BalancesDataTableBuilder;
 
     }
 

@@ -316,7 +316,7 @@ declare namespace Bkper {
         type(type: BalanceType): BalancesDataTableBuilder;
 
         /**
-         * Defines whether only values should be displayed for **PERIOD** or **CUMULATIVE** [[BalanceType]]
+         * Defines whether only values and no dates should be displayed for **PERIOD** or **CUMULATIVE** [[BalanceType]]
          *
          * @returns This builder with respective valuesOnly option, for chaining.
          */

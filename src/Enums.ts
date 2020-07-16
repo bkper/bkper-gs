@@ -103,7 +103,7 @@ enum AccountType {
   INCOMING = "INCOMING",  
 
   /**
-   * Outgooing account type
+   * Outgoing account type
    */
   OUTGOING = "OUTGOING"
 }

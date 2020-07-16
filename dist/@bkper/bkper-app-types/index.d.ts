@@ -186,7 +186,7 @@ declare namespace Bkper {
          *
          * @returns This builder, for chaining.
          */
-        includeArchived(includeArchived: boolean): AccountsDataTableBuilder;
+        includeArchived(include: boolean): AccountsDataTableBuilder;
 
     }
 

@@ -22,6 +22,8 @@ declare namespace Bkper {
 
         BalanceCheckedType: typeof BalanceCheckedType;
 
+        AccountType: typeof AccountType;
+
         /**
          * Gets the [[Book]] with the specified bookId from url param.
          *
@@ -118,6 +120,11 @@ declare namespace Bkper {
         getProperty(...keys: string[]): string;
 
         /**
+         * @returns The type for of this account
+         */
+        getType(): AccountType;
+
+        /**
          * Tell if this account is Active or otherwise Archived
          */
         isActive(): boolean;
@@ -161,6 +168,18 @@ declare namespace Bkper {
          * @returns True if its a permanent Account
          */
         isPermanent(): boolean;
+
+    }
+
+    /**
+     * A AccountsDataTableBuilder is used to setup and build two-dimensional arrays containing transactions.
+     */
+    export interface AccountsDataTableBuilder {
+
+        /**
+         * @returns A two-dimensional array containing all [[Accounts]].
+         */
+        build(): any[][];
 
     }
 
@@ -394,6 +413,14 @@ declare namespace Bkper {
         createAccount(name: string, group?: string, description?: string): Account;
 
         /**
+         * Create a [[AccountsDataTableBuilder]], to build two dimensional Array representations of [[Accounts]] dataset.
+         *
+         * @returns Accounts data table builder.
+         * 
+         */
+        createAccountsDataTable(): AccountsDataTableBuilder;
+
+        /**
          * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]], [[Group]] or #hashtag
          *
          * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
@@ -411,7 +438,7 @@ declare namespace Bkper {
         createBalancesDataTable(query: string): BalancesDataTableBuilder;
 
         /**
-         * Create a [[TransactionsDataTableBuilder]] based on a query, to create two dimensional Array representations of [[Transactions]] dataset.
+         * Create a [[TransactionsDataTableBuilder]] based on a query, to build two dimensional Array representations of [[Transactions]] dataset.
          *
          * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
          *
@@ -607,6 +634,11 @@ declare namespace Bkper {
          * @returns The name of this Group
          */
         getName(): string;
+
+        /**
+         * @returns The name of this group without spaces and special characters
+         */
+        getNormalizedName(): string;
 
         /**
          * Gets the custom properties stored in this Account
@@ -951,6 +983,33 @@ declare namespace Bkper {
          * A valid OAuth2 access token with **email** scope authorized.
          */
         getOAuthToken(): string;
+
+    }
+
+    /**
+     * Enum that represents account types.
+     */
+    export enum AccountType {
+
+        /**
+         * Asset account type
+         */
+        ASSET = "ASSET",
+
+        /**
+         * Incoming account type
+         */
+        INCOMING = "INCOMING",
+
+        /**
+         * Liability account type
+         */
+        LIABILITY = "LIABILITY",
+
+        /**
+         * Outgooing account type
+         */
+        OUTGOING = "OUTGOING",
 
     }
 

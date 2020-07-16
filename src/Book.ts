@@ -398,9 +398,20 @@ class Book {
     return new BalancesReport(this, balances).createDataTable();
   }
 
+  /**
+   * Create a [[AccountsDataTableBuilder]], to build two dimensional Array representations of [[Accounts]] dataset.
+   * 
+   * @return Accounts data table builder.
+   * 
+   */  
+  public createAccountsDataTable(): AccountsDataTableBuilder {
+    let accounts = this.getAccounts();
+    return new AccountsDataTableBuilder(accounts);
+  }
+
 
   /**
-   * Create a [[TransactionsDataTableBuilder]] based on a query, to create two dimensional Array representations of [[Transactions]] dataset.
+   * Create a [[TransactionsDataTableBuilder]] based on a query, to build two dimensional Array representations of [[Transactions]] dataset.
    * 
    * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
    * 

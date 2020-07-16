@@ -15,8 +15,6 @@ class Account {
 
   book: Book;
 
-  private normalizedName: string;
-
   /**
    * Gets the account internal id
    */
@@ -37,16 +35,20 @@ class Account {
   public getDescription(): string {
     return this.wrapped.description;
   }
+
   /**
    * @returns The name of this account without spaces and special characters
    */
   public getNormalizedName(): string {
-    if (this.normalizedName == null) {
-      this.normalizedName = normalizeName(this.getName());
-    }
-    return this.normalizedName;
+    return this.wrapped.normalizedName;
   }
 
+  /**
+   * @return The type for of this account
+   */
+  public getType(): AccountType {
+    return this.wrapped.type;
+  }
 
   /**
    * Gets the custom properties stored in this Account

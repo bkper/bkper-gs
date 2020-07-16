@@ -55,14 +55,6 @@ class TransactionsDataTableBuilder {
   }
 
   /**
-   * @deprecated
-   */
-  getFilteredByAccount(): Account {
-    return this.getAccount();
-  }  
-
-
-  /**
    * @returns A two-dimensional array containing all [[Transactions]].
    */
   public build(): any[][] {
@@ -265,6 +257,14 @@ class TransactionsDataTableBuilder {
 
 /******************* DEPRECATED METHODS *******************/
 
+
+  /**
+   * @deprecated
+   */
+  getFilteredByAccount(): Account {
+    return this.getAccount();
+  }  
+  
   /**
    * @deprecated
    */

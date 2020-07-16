@@ -28,6 +28,14 @@ class Group {
   }
 
   /**
+   * @returns The name of this group without spaces and special characters
+   */
+  public getNormalizedName(): string {
+    return this.wrapped.normalizedName;
+  }
+
+
+  /**
    * @returns True if this group has any account in it
    */
   public hasAccounts(): boolean {

@@ -81,6 +81,34 @@ enum Permission {
 }
 
 /**
+ * Enum that represents account types.
+ * 
+ * @public
+ */
+enum AccountType {
+
+  /**
+   * Asset account type
+   */
+  ASSET = "ASSET",
+
+  /**
+   * Liability account type
+   */
+  LIABILITY = "LIABILITY",
+
+  /**
+   * Incoming account type
+   */
+  INCOMING = "INCOMING",  
+
+  /**
+   * Outgooing account type
+   */
+  OUTGOING = "OUTGOING"
+}
+
+/**
  * Enum that represents balance types.
  * 
  * @public

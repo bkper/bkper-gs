@@ -32,8 +32,10 @@ declare namespace bkper {
     groupsIds?: string[];
     id?: string;
     name?: string;
+    normalizedName?: string;
     permanent?: boolean;
     properties?: any;
+    type?: any
   }
   interface BalanceV2Payload {
     checkedCumulativeBalance: number;
@@ -92,6 +94,7 @@ declare namespace bkper {
   interface GroupV2Payload {
     id?: string;
     name?: string;
+    normalizedName?: string;
     properties?: any;
   }
   interface Message {

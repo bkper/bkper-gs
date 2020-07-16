@@ -12,7 +12,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   private periodicity: Periodicity;
   private balanceCheckedType: BalanceCheckedType;
   private shouldFormatDate: boolean;
-  private showValuesOnly: boolean;
+  private showHideDates: boolean;
   private shouldFormatValue: boolean;
   private book: Book;
   private shouldExpand: boolean;
@@ -25,7 +25,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     this.balanceCheckedType = balanceCheckedType;
     this.balanceType = BalanceType.TOTAL;
     this.shouldFormatDate = false;
-    this.showValuesOnly = false;
+    this.showHideDates = false;
     this.shouldFormatValue = false;
     this.shouldExpand = false;
     this.shouldTranspose = false;
@@ -143,7 +143,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    * @returns This builder with respective hide dates option, for chaining.
    */  
   public hideDates(hide: boolean): BalancesDataTableBuilder{
-    this.showValuesOnly = hide;
+    this.showHideDates = hide;
     return this;
   }
 
@@ -389,7 +389,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     }
 
-    if (this.showValuesOnly) {
+    if (this.showHideDates) {
       table = table.map(row => row.slice(1));
     }
 

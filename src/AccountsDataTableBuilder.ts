@@ -7,8 +7,21 @@ class AccountsDataTableBuilder {
 
   private accounts: Account[];
 
+  private shouldIncludeArchived: boolean;
+
   constructor(accounts: Account[]) {
     this.accounts = accounts;
+    this.shouldIncludeArchived = false;
+  }
+
+  /**
+   * Defines whether the archived accounts should included.
+   *
+   * @returns This builder, for chaining.
+   */
+  public includeArchived(includeArchived: boolean): AccountsDataTableBuilder {
+    this.shouldIncludeArchived = includeArchived;
+    return this;
   }
 
   private getTypeIndex(type: AccountType): number {
@@ -30,7 +43,13 @@ class AccountsDataTableBuilder {
   public build(): any[][] {
     var table = new Array<Array<any>>();
 
-    this.accounts.sort((a1: Account, a2: Account) => {
+    let accounts = this.accounts;
+
+    if (!this.shouldIncludeArchived) {
+      accounts = this.accounts.filter(a => a.isActive());
+    }
+
+    accounts.sort((a1: Account, a2: Account) => {
       let ret = this.getTypeIndex(a1.getType()) - this.getTypeIndex(a2.getType())
       if (ret == 0) {
         ret = a1.getNormalizedName().localeCompare(a2.getNormalizedName())
@@ -38,7 +57,8 @@ class AccountsDataTableBuilder {
       return ret;
     })
 
-    for (const account of this.accounts) {
+
+    for (const account of accounts) {
       var line = new Array();
       line.push(account.getName())
       line.push(account.getType())

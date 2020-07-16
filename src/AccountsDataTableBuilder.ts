@@ -19,8 +19,8 @@ class AccountsDataTableBuilder {
    *
    * @returns This builder, for chaining.
    */
-  public includeArchived(includeArchived: boolean): AccountsDataTableBuilder {
-    this.shouldIncludeArchived = includeArchived;
+  public includeArchived(include: boolean): AccountsDataTableBuilder {
+    this.shouldIncludeArchived = include;
     return this;
   }
 

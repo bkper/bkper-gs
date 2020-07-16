@@ -181,6 +181,13 @@ declare namespace Bkper {
          */
         build(): any[][];
 
+        /**
+         * Defines whether the archived accounts should included.
+         *
+         * @returns This builder, for chaining.
+         */
+        includeArchived(includeArchived: boolean): AccountsDataTableBuilder;
+
     }
 
     /**
@@ -1007,7 +1014,7 @@ declare namespace Bkper {
         LIABILITY = "LIABILITY",
 
         /**
-         * Outgooing account type
+         * Outgoing account type
          */
         OUTGOING = "OUTGOING",
 

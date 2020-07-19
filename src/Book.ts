@@ -184,7 +184,7 @@ class Book {
   }
 
   /**
-   * Record [[Transactions]] a on the Book. 
+   * Record [[Transactions]] on the Book. 
    * 
    * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
    * 
@@ -202,6 +202,7 @@ class Book {
     }
     TransactionService_.record(this, transactions, timeZone);
   }
+
 
   /**
    * Resumes a transaction iteration using a continuation token from a previous iterator.
@@ -246,7 +247,7 @@ class Book {
    */
   public getAccounts(): Account[] {
     if (this.accounts == null) {
-      this.configureAccounts_(AccountService_.getAccounts(this.getId()));
+      this.setAccounts_(AccountService_.getAccounts(this.getId()));
     }
     return this.accounts;
   }
@@ -291,17 +292,90 @@ class Book {
    */
   public createAccount(name: string, group?: string, description?: string): Account {
     var account = AccountService_.createAccount(this.getId(), name, group, description);
-    account.book = this;
-    this.accounts = null;
+    this.addAccounts_([account]);
     return account;
   }
 
-  private configureAccounts_(accounts: Account[]): void {
-    this.accounts = accounts;
+  /**
+   * Create [[Accounts]] on the Book, in batch.
+   * 
+   * The first column of the matrix will be used as the [[Account]] name.
+   * 
+   * The other columns will be used to find a matching [[AccountType]].
+   * 
+   * Names matching existent accounts will be skipped.
+   * 
+   */
+  public createAccounts(accounts: string[][]): Account[] {
+
+    let accountsPayloads: bkper.AccountCreatePayload[] = []
+
+    for (let i = 0; i < accounts.length; i++) {
+      const row = accounts[i]
+      const account: bkper.AccountCreatePayload = {
+        name: row[0],
+        type: AccountType.ASSET,
+        groupIds: []
+      }
+
+      if (this.getAccount(account.name)) {
+        //Account already created. Skip.
+        continue;
+      }
+
+      if (row.length > 1) {
+        for (let j = 1; j < row.length; j++) {
+          const cell = row[j];
+          if (this.isType(cell)) {
+            account.type = cell;
+          } else {
+            let group = this.getGroup(cell);
+            if (group != null) {
+              account.groupIds.push(group.getId());
+            }
+          }
+        }
+      }
+
+      accountsPayloads.push(account)
+    }
+
+    if (accountsPayloads.length > 0) {
+      let createdAccounts = AccountService_.createAccounts(this.getId(), accountsPayloads);
+      this.addAccounts_(createdAccounts);
+      return createdAccounts;
+    }
+
+    return [];
+  }
+
+  private isType(groupOrType: string): boolean {
+    if (groupOrType == AccountType.ASSET) {
+      return true;
+    }
+    if (groupOrType == AccountType.LIABILITY) {
+      return true;
+    }
+    if (groupOrType == AccountType.INCOMING) {
+      return true;
+    }
+    if (groupOrType == AccountType.OUTGOING) {
+      return true;
+    }
+    return false;
+  }  
+
+  private setAccounts_(accounts: Account[]): void {
+    this.accounts = [];
     this.idAccountMap = new Object();
     this.nameAccountMap = new Object();
-    for (var i = 0; i < this.accounts.length; i++) {
-      var account = this.accounts[i];
+    this.addAccounts_(accounts);
+  }
+
+  private addAccounts_(accounts: Account[]) {
+    this.accounts = this.accounts.concat(accounts);
+    for (var i = 0; i < accounts.length; i++) {
+      var account = accounts[i];
       account.book = this;
       this.idAccountMap[account.getId()] = account;
       this.nameAccountMap[account.getNormalizedName()] = account;
@@ -313,10 +387,22 @@ class Book {
    */
   public getGroups(): Group[] {
     if (this.groups == null) {
-      this.configureGroups_(GroupService_.getGroups(this.getId()));
+      this.setGroups_(GroupService_.getGroups(this.getId()));
     }
     return this.groups;
   }
+
+  /**
+   * Create [[Groups]] on the Book, in batch.
+   */
+  public createGroups(groups: string[]): Group[] {
+    if (groups.length > 0) {
+      let createdGroups = GroupService_.createGroups(this.getId(), groups);
+      this.addGroups_(createdGroups);
+      return createdGroups;
+    }
+    return [];
+  }  
 
   /**
    * Gets a [[Group]] object
@@ -343,12 +429,17 @@ class Book {
     return group;
   }
 
-  private configureGroups_(groups: Group[]): void {
-    this.groups = groups;
+  private setGroups_(groups: Group[]): void {
+    this.groups = [];
     this.idGroupMap = new Object();
     this.nameGroupMap = new Object();
-    for (var i = 0; i < this.groups.length; i++) {
-      var group = this.groups[i];
+    this.addGroups_(groups);
+  }
+
+  private addGroups_(groups: Group[]) {
+    this.groups = this.groups.concat(groups);
+    for (var i = 0; i < groups.length; i++) {
+      var group = groups[i];
       group.book = this;
       this.idGroupMap[group.getId()] = group;
       this.nameGroupMap[normalizeName(group.getName())] = group;

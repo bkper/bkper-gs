@@ -420,6 +420,18 @@ declare namespace Bkper {
         createAccount(name: string, group?: string, description?: string): Account;
 
         /**
+         * Create [[Accounts]] on the Book, in batch.
+         *
+         * The first column of the matrix will be used as the [[Account]] name.
+         * 
+         * The other columns will be used to find a matching [[AccountType]].
+         * 
+         * Names matching existent accounts will be skipped.
+         * 
+         */
+        createAccounts(accounts: string[][]): Account[];
+
+        /**
          * Create a [[AccountsDataTableBuilder]], to build two dimensional Array representations of [[Accounts]] dataset.
          *
          * @returns Accounts data table builder.
@@ -443,6 +455,11 @@ declare namespace Bkper {
          * ```
          */
         createBalancesDataTable(query: string): BalancesDataTableBuilder;
+
+        /**
+         * Create [[Groups]] on the Book, in batch.
+         */
+        createGroups(groups: string[]): Group[];
 
         /**
          * Create a [[TransactionsDataTableBuilder]] based on a query, to build two dimensional Array representations of [[Transactions]] dataset.
@@ -596,7 +613,7 @@ declare namespace Bkper {
         getTransactions(query?: string): TransactionIterator;
 
         /**
-         * Record [[Transactions]] a on the Book.
+         * Record [[Transactions]] on the Book.
          *
          * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
          * 

@@ -23,13 +23,32 @@ namespace AccountService_ {
     
     var accountUpdateJSON = JSON.stringify(accountUpdate);
 
-    Logger.log(accountUpdateJSON)
-    
     var responseJSON = new HttpBooksApiRequest(`${bookId}/accounts`).setMethod('post').setPayload(accountUpdateJSON).fetch().getContentText();
     
     var accountPlain = JSON.parse(responseJSON);
     var account = Utils_.wrapObject(new Account(), accountPlain);
     return account;
   }
+
+  export function createAccounts(bookId: string, accountsPayloads: bkper.AccountCreatePayload[]): Account[] {
+
+    let accountsBatch: bkper.AccountsCreateBatchPayload = {
+      accounts: accountsPayloads
+    };
+
+    var accountSaveBatchJSON = JSON.stringify(accountsBatch);
+
+    var responseJSON = new HttpBooksApiRequest(`${bookId}/accounts/batch`).setMethod('post').setPayload(accountSaveBatchJSON).fetch().getContentText();
+
+    var accountsPlain = JSON.parse(responseJSON).items;
+
+    if (accountsPlain == null) {
+      return [];
+    }
+    var accounts = Utils_.wrapObjects(new Account(), accountsPlain);
+    return accounts;
+    
+  }
+
 
 }

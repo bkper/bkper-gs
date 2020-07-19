@@ -14,4 +14,25 @@ namespace GroupService_ {
     var groups = Utils_.wrapObjects(new Group(), groupsPlain);
     return groups;
   }
+
+  export function createGroups(bookId: string, groupNames: string[]): Group[] {
+
+    let groupsBatch: bkper.GroupsCreateBatchPayload = {
+      groups: groupNames
+    };
+
+    var groupsBatchJSON = JSON.stringify(groupsBatch);
+    var responseJSON = new HttpBooksApiRequest(`${bookId}/groups/batch`).setMethod('post').setPayload(groupsBatchJSON).fetch().getContentText();
+
+    if (responseJSON == null || responseJSON == "") {
+      return [];
+    }
+
+    var groupsPlain = JSON.parse(responseJSON).items;
+    if (groupsPlain == null) {
+      return [];
+    }
+    var groups = Utils_.wrapObjects(new Group(), groupsPlain);
+    return groups;
+  }
 }

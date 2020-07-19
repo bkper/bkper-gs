@@ -20,6 +20,17 @@ declare namespace bkper {
     /** The name of the account. */
     name?: string;
   }
+  interface AccountCreatePayload {
+    name?: string;
+    type?: string;
+    groupIds?: string[];
+  }
+  interface AccountsCreateBatchPayload {
+    accounts?: AccountCreatePayload[];
+  }
+  interface GroupsCreateBatchPayload {
+    groups?: string[];
+  }
   interface AccountPayloadCollection {
     items?: AccountV2Payload[];
   }

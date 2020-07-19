@@ -373,10 +373,7 @@ class Book {
   }
 
   private addAccounts_(accounts: Account[]) {
-    if (this.accounts == null) {
-      this.accounts = [];
-    }
-    this.accounts = this.accounts.concat(accounts);
+    this.accounts = this.getAccounts().concat(accounts);
     for (var i = 0; i < accounts.length; i++) {
       var account = accounts[i];
       account.book = this;
@@ -440,10 +437,7 @@ class Book {
   }
 
   private addGroups_(groups: Group[]) {
-    if (this.groups == null) {
-      this.groups = [];
-    }
-    this.groups = this.groups.concat(groups);
+    this.groups = this.getGroups().concat(groups);
     for (var i = 0; i < groups.length; i++) {
       var group = groups[i];
       group.book = this;

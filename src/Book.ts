@@ -247,7 +247,7 @@ class Book {
    */
   public getAccounts(): Account[] {
     if (this.accounts == null) {
-      this.setAccounts_(AccountService_.getAccounts(this.getId()));
+      this.configureAccounts_(AccountService_.getAccounts(this.getId()));
     }
     return this.accounts;
   }
@@ -294,7 +294,8 @@ class Book {
    */
   public createAccount(name: string, group?: string, description?: string): Account {
     var account = AccountService_.createAccount(this.getId(), name, group, description);
-    this.addAccounts_([account]);
+    account.book = this;
+    this.accounts = null;
     return account;
   }
 
@@ -344,7 +345,11 @@ class Book {
 
     if (accountsPayloads.length > 0) {
       let createdAccounts = AccountService_.createAccounts(this.getId(), accountsPayloads);
-      this.addAccounts_(createdAccounts);
+      this.accounts = null;
+      for (var i = 0; i < createdAccounts.length; i++) {
+        var account = createdAccounts[i];
+        account.book = this;
+      }      
       return createdAccounts;
     }
 
@@ -367,29 +372,25 @@ class Book {
     return false;
   }  
 
-  private setAccounts_(accounts: Account[]): void {
-    this.accounts = [];
+  private configureAccounts_(accounts: Account[]): void {
+    this.accounts = accounts;
     this.idAccountMap = new Object();
     this.nameAccountMap = new Object();
-    this.addAccounts_(accounts);
-  }
-
-  private addAccounts_(accounts: Account[]) {
-    this.accounts = this.getAccounts().concat(accounts);
-    for (var i = 0; i < accounts.length; i++) {
-      var account = accounts[i];
+    for (var i = 0; i < this.accounts.length; i++) {
+      var account = this.accounts[i];
       account.book = this;
       this.idAccountMap[account.getId()] = account;
       this.nameAccountMap[account.getNormalizedName()] = account;
     }
   }
 
+
   /**
    * Gets all [[Groups]] of this Book
    */
   public getGroups(): Group[] {
     if (this.groups == null) {
-      this.setGroups_(GroupService_.getGroups(this.getId()));
+      this.configureGroups_(GroupService_.getGroups(this.getId()));
     }
     return this.groups;
   }
@@ -400,7 +401,13 @@ class Book {
   public createGroups(groups: string[]): Group[] {
     if (groups.length > 0) {
       let createdGroups = GroupService_.createGroups(this.getId(), groups);
-      this.addGroups_(createdGroups);
+      this.groups = null;
+
+      for (var i = 0; i < createdGroups.length; i++) {
+        var group = createdGroups[i];
+        group.book = this;
+      }
+
       return createdGroups;
     }
     return [];
@@ -433,17 +440,12 @@ class Book {
     return group;
   }
 
-  private setGroups_(groups: Group[]): void {
-    this.groups = [];
+  private configureGroups_(groups: Group[]): void {
+    this.groups = groups;
     this.idGroupMap = new Object();
     this.nameGroupMap = new Object();
-    this.addGroups_(groups);
-  }
-
-  private addGroups_(groups: Group[]) {
-    this.groups = this.getGroups().concat(groups);
-    for (var i = 0; i < groups.length; i++) {
-      var group = groups[i];
+    for (var i = 0; i < this.groups.length; i++) {
+      var group = this.groups[i];
       group.book = this;
       this.idGroupMap[group.getId()] = group;
       this.nameGroupMap[normalizeName(group.getName())] = group;

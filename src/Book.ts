@@ -266,6 +266,8 @@ class Book {
       return null;
     }
 
+    idOrName = idOrName + '';
+
     if (this.accounts == null) {
       this.getAccounts();
     }
@@ -416,6 +418,8 @@ class Book {
     if (idOrName == null) {
       return null;
     }
+
+    idOrName = idOrName + '';
 
     if (this.groups == null) {
       this.getGroups();

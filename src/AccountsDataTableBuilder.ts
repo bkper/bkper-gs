@@ -49,6 +49,10 @@ class AccountsDataTableBuilder {
       accounts = this.accounts.filter(a => a.isActive());
     }
 
+    if (accounts == null || accounts.length == 0) {
+      return [['']]
+    }
+
     accounts.sort((a1: Account, a2: Account) => {
       let ret = this.getTypeIndex(a1.getType()) - this.getTypeIndex(a2.getType())
       if (ret == 0) {

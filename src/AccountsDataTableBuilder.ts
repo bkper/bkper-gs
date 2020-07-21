@@ -49,9 +49,9 @@ class AccountsDataTableBuilder {
       accounts = this.accounts.filter(a => a.isActive());
     }
 
-    if (accounts == null || accounts.length == 0) {
-      return [['']]
-    }
+    let headers = [];
+    headers.push('Name')
+    headers.push('Type')
 
     accounts.sort((a1: Account, a2: Account) => {
       let ret = this.getTypeIndex(a1.getType()) - this.getTypeIndex(a2.getType())
@@ -77,8 +77,14 @@ class AccountsDataTableBuilder {
         line.push(group.getName())
       }
 
+      if (line.length > headers.length) {
+        headers.push('Group')
+      }
+
       table.push(line);
     }
+
+    table.unshift(headers);
 
     table = Utils_.convertInMatrix(table);
 

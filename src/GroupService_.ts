@@ -18,7 +18,7 @@ namespace GroupService_ {
   export function createGroups(bookId: string, groupNames: string[]): Group[] {
 
     let groupsBatch: bkper.GroupsCreateBatchPayload = {
-      groups: groupNames
+      names: groupNames
     };
 
     var groupsBatchJSON = JSON.stringify(groupsBatch);

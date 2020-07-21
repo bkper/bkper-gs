@@ -29,7 +29,7 @@ declare namespace bkper {
     accounts?: AccountCreatePayload[];
   }
   interface GroupsCreateBatchPayload {
-    groups?: string[];
+    names?: string[];
   }
   interface AccountPayloadCollection {
     items?: AccountV2Payload[];

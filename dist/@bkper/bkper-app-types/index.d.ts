@@ -504,12 +504,15 @@ declare namespace Bkper {
          */
         getAccounts(): Account[];
 
-        getBalanceReport(query: string): BalancesReport;
-
         /**
          * Create a [[BalancesReport]] based on query
          */
         getBalancesReport(query: string): BalancesReport;
+
+        /**
+         * @returns The collection of this book
+         */
+        getCollection(): Collection;
 
         /**
          * @returns The date pattern of the Book. Example: dd/MM/yyyy
@@ -547,8 +550,6 @@ declare namespace Bkper {
          * @returns The last update date of the book, in in milliseconds
          */
         getLastUpdateMs(): number;
-
-        getLocale(): string;
 
         /**
          * @returns The name of this Book
@@ -631,7 +632,27 @@ declare namespace Bkper {
          */
         round(value: number): number;
 
-        search(query?: string): TransactionIterator;
+    }
+
+    /**
+     * This class defines a Collection of [[Books]].
+     */
+    export interface Collection {
+
+        /**
+         * @returns All Books of this collection.
+         */
+        getBooks(): Book[];
+
+        /**
+         * @returns The id of this Collection
+         */
+        getId(): string;
+
+        /**
+         * @returns The name of this Collection
+         */
+        getName(): string;
 
     }
 

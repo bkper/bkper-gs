@@ -71,14 +71,6 @@ class Book {
 
 
   /**
-   * @deprecated
-   */
-  public getLocale(): string {
-    this.checkBookLoaded_();
-    return this.wrapped.locale;
-  }
-
-  /**
    * @return The date pattern of the Book. Example: dd/MM/yyyy
    */
   public getDatePattern(): string {
@@ -563,17 +555,27 @@ class Book {
 
 
   //DEPRECATED
+
+
   /**
    * @deprecated
    */
-  public getBalanceReport(query: string): BalancesReport {
+  getLocale(): string {
+    this.checkBookLoaded_();
+    return this.wrapped.locale;
+  }
+
+  /**
+   * @deprecated
+   */
+  getBalanceReport(query: string): BalancesReport {
     return this.getBalancesReport(query);
   }
 
   /**
    * @deprecated
    */
-  public search(query?: string): TransactionIterator {
+  search(query?: string): TransactionIterator {
     return this.getTransactions(query);
   }
 

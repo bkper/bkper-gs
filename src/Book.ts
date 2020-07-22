@@ -12,6 +12,7 @@ class Book {
   private wrapped: bkper.BookV2Payload
   private accounts: Account[];
   private groups: Group[];
+  private collection: Collection;
   private idAccountMap: any;
   private nameAccountMap: any;
   private idGroupMap: any;
@@ -67,6 +68,17 @@ class Book {
   public getPermission(): Permission {
     this.checkBookLoaded_();
     return this.wrapped.permission;
+  }
+
+  /** 
+   * @return The collection of this book
+   */
+  public getCollection(): Collection {
+    this.checkBookLoaded_();
+    if (this.wrapped.collection != null && this.collection == null) {
+      this.collection = new Collection(this.wrapped.collection);
+    }
+    return this.collection;
   }
 
 

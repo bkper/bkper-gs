@@ -34,6 +34,14 @@ declare namespace bkper {
   interface AccountPayloadCollection {
     items?: AccountV2Payload[];
   }
+
+  interface CollectionV2Payload {
+    id?: string;
+    name?: string;
+    ownerUsername?: string;
+    books: BookV2Payload[];
+  }
+
   interface AccountV2Payload {
     active?: boolean;
     balance?: number;
@@ -85,6 +93,7 @@ declare namespace bkper {
     timeZone?: string;
     timeZoneOffset?: number;
     properties?: any;
+    collection?: CollectionV2Payload;
   }
   interface GroupBalancesV2Payload {
     accountBalances?: AccountBalancesV2Payload[];

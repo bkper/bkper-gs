@@ -60,7 +60,7 @@ class Group {
 
 
   /**
-   * Gets the custom properties stored in this Account
+   * Gets the custom properties stored in this Group
    */  
   public getProperties(): any {
     return this.wrapped.properties != null ?  this.wrapped.properties : {};

@@ -9,7 +9,7 @@
 class Book {
 
   private id: string
-  private wrapped: bkper.BookV2Payload
+  private wrapped: bkper.Book;
   private accounts: Account[];
   private groups: Group[];
   private collection: Collection;
@@ -17,10 +17,10 @@ class Book {
   private nameAccountMap: any;
   private idGroupMap: any;
   private nameGroupMap: any;
-  private savedQueries: bkper.SavedQueryV2Payload[];
+  private savedQueries: bkper.Query[];
   
 
-  constructor(id: string, wrapped?: bkper.BookV2Payload) {
+  constructor(id: string, wrapped?: bkper.Book) {
     this.id = id;
     this.wrapped = wrapped;
   }
@@ -59,6 +59,8 @@ class Book {
   private checkBookLoaded_(): void {
     if (this.wrapped == null) {
       this.wrapped = BookService_.loadBookWrapped(this.getId());
+      this.configureGroups_(this.wrapped.groups);
+      this.configureAccounts_(this.wrapped.accounts);
     }
   }
 
@@ -67,7 +69,7 @@ class Book {
    */
   public getPermission(): Permission {
     this.checkBookLoaded_();
-    return this.wrapped.permission;
+    return this.wrapped.permission as Permission;
   }
 
   /** 
@@ -205,6 +207,7 @@ class Book {
       timeZone = this.getTimeZone();
     }
     TransactionService_.record(this, transactions, timeZone);
+    this.wrapped = null;
   }
 
 
@@ -250,9 +253,7 @@ class Book {
    * Gets all [[Accounts]] of this Book
    */
   public getAccounts(): Account[] {
-    if (this.accounts == null) {
-      this.configureAccounts_(AccountService_.getAccounts(this.getId()));
-    }
+    this.checkBookLoaded_();
     return this.accounts;
   }
 
@@ -272,9 +273,7 @@ class Book {
 
     idOrName = idOrName + '';
 
-    if (this.accounts == null) {
-      this.getAccounts();
-    }
+    this.checkBookLoaded_();
 
     var account = this.idAccountMap[idOrName];
     if (account == null) {
@@ -285,23 +284,6 @@ class Book {
     return account;
   }
 
-  /**
-   * Create an [[Account]] in this book. 
-   * 
-   * The type of account will be determined by the type of others Accounts in same group. 
-   * 
-   * If not specified, the type ASSET (permanent=true/credit=false) will be set.
-   * 
-   * If all other accounts in same group is in another group, the account will also be added to the other group.
-   * 
-   * @returns The created Account object
-   */
-  public createAccount(name: string, group?: string, description?: string): Account {
-    var account = AccountService_.createAccount(this.getId(), name, group, description);
-    account.book = this;
-    this.accounts = null;
-    return account;
-  }
 
   /**
    * Create [[Accounts]] on the Book, in batch.
@@ -315,14 +297,14 @@ class Book {
    */
   public createAccounts(accounts: string[][]): Account[] {
 
-    let accountsPayloads: bkper.AccountCreatePayload[] = []
+    let accountsPayloads: bkper.AccountSave[] = []
 
     for (let i = 0; i < accounts.length; i++) {
       const row = accounts[i]
-      const account: bkper.AccountCreatePayload = {
+      const account: bkper.AccountSave = {
         name: row[0],
         type: AccountType.ASSET,
-        groupIds: []
+        groups: []
       }
 
       if (this.getAccount(account.name)) {
@@ -338,7 +320,7 @@ class Book {
           } else {
             let group = this.getGroup(cell);
             if (group != null) {
-              account.groupIds.push(group.getId());
+              account.groups.push(group.getId());
             }
           }
         }
@@ -349,7 +331,7 @@ class Book {
 
     if (accountsPayloads.length > 0) {
       let createdAccounts = AccountService_.createAccounts(this.getId(), accountsPayloads);
-      this.accounts = null;
+      this.wrapped = null;
       for (var i = 0; i < createdAccounts.length; i++) {
         var account = createdAccounts[i];
         account.book = this;
@@ -376,8 +358,8 @@ class Book {
     return false;
   }  
 
-  private configureAccounts_(accounts: Account[]): void {
-    this.accounts = accounts;
+  private configureAccounts_(accounts: bkper.Account[]): void {
+    this.accounts = Utils_.wrapObjects(new Account(), accounts);
     this.idAccountMap = new Object();
     this.nameAccountMap = new Object();
     for (var i = 0; i < this.accounts.length; i++) {
@@ -393,9 +375,7 @@ class Book {
    * Gets all [[Groups]] of this Book
    */
   public getGroups(): Group[] {
-    if (this.groups == null) {
-      this.configureGroups_(GroupService_.getGroups(this.getId()));
-    }
+    this.checkBookLoaded_();
     return this.groups;
   }
 
@@ -404,8 +384,9 @@ class Book {
    */
   public createGroups(groups: string[]): Group[] {
     if (groups.length > 0) {
-      let createdGroups = GroupService_.createGroups(this.getId(), groups);
-      this.groups = null;
+      let groupsSave: bkper.GroupSave[] = groups.map(groupName => {return {name: groupName}});
+      let createdGroups = GroupService_.createGroups(this.getId(), groupsSave);
+      this.wrapped = null;
 
       for (var i = 0; i < createdGroups.length; i++) {
         var group = createdGroups[i];
@@ -432,9 +413,7 @@ class Book {
 
     idOrName = idOrName + '';
 
-    if (this.groups == null) {
-      this.getGroups();
-    }
+    this.checkBookLoaded_();
 
     var group = this.idGroupMap[idOrName];
     if (group == null) {
@@ -444,8 +423,8 @@ class Book {
     return group;
   }
 
-  private configureGroups_(groups: Group[]): void {
-    this.groups = groups;
+  private configureGroups_(groups: bkper.Group[]): void {
+    this.groups = Utils_.wrapObjects(new Group(), groups);
     this.idGroupMap = new Object();
     this.nameGroupMap = new Object();
     for (var i = 0; i < this.groups.length; i++) {
@@ -459,7 +438,7 @@ class Book {
   /**
    * Gets all saved queries from this book
    */
-  public getSavedQueries(): { id: string, query: string, title: string }[] {
+  getSavedQueries(): {id?: string, query?: string, title?: string}[]  {
     if (this.savedQueries == null) {
       this.savedQueries = SavedQueryService_.getSavedQueries(this.getId());
     }
@@ -565,16 +544,25 @@ class Book {
 
 
 
-
   //DEPRECATED
 
-
   /**
+   * Create an [[Account]] in this book. 
+   * 
+   * The type of account will be determined by the type of others Accounts in same group. 
+   * 
+   * If not specified, the type ASSET (permanent=true/credit=false) will be set.
+   * 
+   * If all other accounts in same group is in another group, the account will also be added to the other group.
+   * 
+   * @returns The created Account object
+   * 
    * @deprecated
    */
-  getLocale(): string {
-    this.checkBookLoaded_();
-    return this.wrapped.locale;
+  public createAccount(name: string, group?: string, description?: string): Account {
+    var account = AccountService_.createAccountV2(this.getId(), name, group, description);
+    this.wrapped = null;
+    return this.getAccount(name);
   }
 
   /**
@@ -590,5 +578,4 @@ class Book {
   search(query?: string): TransactionIterator {
     return this.getTransactions(query);
   }
-
 }

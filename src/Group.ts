@@ -9,7 +9,7 @@
  */
 class Group {
 
-  wrapped: bkper.GroupV2Payload
+  wrapped: bkper.Group
 
   book: Book
 

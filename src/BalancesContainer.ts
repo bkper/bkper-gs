@@ -117,11 +117,11 @@ interface BalancesContainer {
 
 class AccountBalancesContainer implements BalancesContainer {
 
-  private wrapped: bkper.AccountBalancesV2Payload;
+  private wrapped: bkper.AccountBalances;
   private balancesReport: BalancesReport;
 
 
-  constructor(balancesReport: BalancesReport, balancePlain: bkper.AccountBalancesV2Payload) {
+  constructor(balancesReport: BalancesReport, balancePlain: bkper.AccountBalances) {
     this.balancesReport = balancesReport
     this.wrapped = balancePlain;
   }
@@ -218,10 +218,10 @@ class AccountBalancesContainer implements BalancesContainer {
 
 class TagBalancesContainer implements BalancesContainer {
 
-  private wrapped: bkper.TagBalancesV2Payload;
+  private wrapped: bkper.TagBalances;
   private balancesReport: BalancesReport;
 
-  constructor(balancesReport: BalancesReport, balancePlain: bkper.TagBalancesV2Payload) {
+  constructor(balancesReport: BalancesReport, balancePlain: bkper.TagBalances) {
     this.balancesReport = balancesReport;
     this.wrapped = balancePlain;
   }
@@ -315,14 +315,14 @@ class TagBalancesContainer implements BalancesContainer {
 
 class GroupBalancesContainer implements BalancesContainer {
 
-  private wrapped: bkper.GroupBalancesV2Payload
+  private wrapped: bkper.GroupBalances
   private accountBalances: AccountBalancesContainer[];
   private periodicity: Periodicity;
   private balanceCheckedType: BalanceCheckedType;
 
   private balancesReport: BalancesReport;
 
-  constructor(balancesReport: BalancesReport, groupBalancesPlain: bkper.GroupBalancesV2Payload, periodicity: Periodicity, balanceCheckedType: BalanceCheckedType) {
+  constructor(balancesReport: BalancesReport, groupBalancesPlain: bkper.GroupBalances, periodicity: Periodicity, balanceCheckedType: BalanceCheckedType) {
     this.balancesReport = balancesReport;
     this.wrapped = groupBalancesPlain;
     this.periodicity = periodicity;

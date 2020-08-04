@@ -6,7 +6,7 @@
  */
 class BalancesReport {
 
-  private wrapped: bkper.BalancesV2Payload;
+  private wrapped: bkper.Balances;
 
   private book: Book;
   private groupBalancesContainers: GroupBalancesContainer[];
@@ -14,7 +14,7 @@ class BalancesReport {
   private tagBalancesContainers: TagBalancesContainer[];
 
 
-  constructor(book: Book, balancesReportPlain: bkper.BalancesV2Payload) {
+  constructor(book: Book, balancesReportPlain: bkper.Balances) {
     this.book = book;
     this.wrapped = balancesReportPlain;
     this.groupBalancesContainers = null;
@@ -58,14 +58,14 @@ class BalancesReport {
    * The [[Periodicity]] of the query used to generate the report.
    */
   public getPeriodicity(): Periodicity {
-    return this.wrapped.periodicity;
+    return this.wrapped.periodicity as Periodicity;
   }
 
   /**
    * The [[BalanceCheckedType]] of the query used to generate the report.
    */  
   public getBalanceCheckedType(): BalanceCheckedType {
-    return this.wrapped.balanceCheckedType;
+    return this.wrapped.balanceCheckedType as BalanceCheckedType;
   }
 
   /**

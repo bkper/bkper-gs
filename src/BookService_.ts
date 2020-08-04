@@ -1,15 +1,14 @@
 namespace BookService_ {
 
-  export function listBooks(): bkper.BookV2Payload[] {
+  export function listBooks(): bkper.Book[] {
 
-    var responseJSON = new HttpBooksApiRequest('').fetch().getContentText();
+    var responseJSON = new HttpBooksApiV3Request('').fetch().getContentText();
     
     if (responseJSON == null || responseJSON == "") {
       return [];
     }
     
-    var bookListPlain: bkper.BookThinCollection = JSON.parse(responseJSON);
-
+    var bookListPlain: bkper.BookList = JSON.parse(responseJSON);
 
     var booksJson = bookListPlain.items;
 
@@ -33,21 +32,12 @@ namespace BookService_ {
     return booksJson;
   }
 
-  export function loadBookWrapped(bookId: string): bkper.BookV2Payload {
+  export function loadBookWrapped(bookId: string): bkper.Book {
 
     if (bookId == null) {
       throw new Error("Book id null!");
     }
-
-    let cache = CacheService.getUserCache();
-    let cacheKey = "BKPER_BOOK_"+ bookId;
-
-    let responseJSON = cache.get(cacheKey);
-
-    if (responseJSON == null) {
-      responseJSON = new HttpBooksApiRequest(bookId).fetch().getContentText();
-      cache.put(cacheKey, responseJSON, 30);
-    }
+    let responseJSON = new HttpBooksApiV3Request(bookId).fetch().getContentText();
 
     var bookPlain = JSON.parse(responseJSON);
     return bookPlain;

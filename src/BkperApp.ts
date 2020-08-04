@@ -38,13 +38,6 @@ function normalizeName(name: string): string {
 /**
  * @deprecated
  */
-function getUserDetails(): bkper.UserDetailsV2Payload {
-  return UserService_.getUserDetails();
-}
-
-/**
- * @deprecated
- */
 function openById(bookId: string): Book {
   return new Book(bookId);
 }
@@ -52,7 +45,7 @@ function openById(bookId: string): Book {
 /**
  * @deprecated
  */
-function listBooks(): bkper.BookV2Payload[] {
+function listBooks(): bkper.Book[] {
   return BookService_.listBooks();
 }
 
@@ -66,7 +59,7 @@ function openLedgerById(ledgerId: string): Book {
 /**
  * @deprecated
  */
-function listLedgers(): bkper.BookV2Payload[] {
+function listLedgers(): bkper.Book[] {
   return listBooks();
 }
 

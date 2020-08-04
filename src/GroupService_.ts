@@ -1,28 +1,30 @@
 namespace GroupService_ {
-  export function getGroups(bookId: string): Group[] {
+  // export function getGroups(bookId: string): Group[] {
 
-    var responseJSON = new HttpBooksApiRequest(`${bookId}/groups`).fetch().getContentText();
+  //   var responseJSON = new HttpBooksApiV2Request(`${bookId}/groups`).fetch().getContentText();
 
-    if (responseJSON == null || responseJSON == "") {
-      return [];
-    }
+  //   if (responseJSON == null || responseJSON == "") {
+  //     return [];
+  //   }
 
-    var groupsPlain = JSON.parse(responseJSON).items;
-    if (groupsPlain == null) {
-      return [];
-    }
-    var groups = Utils_.wrapObjects(new Group(), groupsPlain);
-    return groups;
-  }
+  //   var groupsPlain = JSON.parse(responseJSON).items;
+  //   if (groupsPlain == null) {
+  //     return [];
+  //   }
+  //   var groups = Utils_.wrapObjects(new Group(), groupsPlain);
+  //   return groups;
+  // }
 
-  export function createGroups(bookId: string, groupNames: string[]): Group[] {
+  export function createGroups(bookId: string, groupSaveList: bkper.GroupSave[]): Group[] {
 
-    let groupsBatch: bkper.GroupsCreateBatchPayload = {
-      names: groupNames
+    let groupsBatch: bkper.GroupSaveBatch = {
+      items: groupSaveList
     };
 
     var groupsBatchJSON = JSON.stringify(groupsBatch);
-    var responseJSON = new HttpBooksApiRequest(`${bookId}/groups/batch`).setMethod('post').setPayload(groupsBatchJSON).fetch().getContentText();
+
+    Logger.log(groupsBatchJSON)
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/groups/batch`).setMethod('post').setPayload(groupsBatchJSON).fetch().getContentText();
 
     if (responseJSON == null || responseJSON == "") {
       return [];

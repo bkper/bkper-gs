@@ -47,6 +47,7 @@ enum DecimalSeparator {
  * 
  * @public
  */
+
 enum Permission {
 
   /**
@@ -62,12 +63,12 @@ enum Permission {
   /**
    * Record and delete drafts only. Useful to collect data only
    */
-  RECORD_ONLY = "RECORD_ONLY",
+  RECORDER = "RECORDER",
 
   /**
    * View transactions, accounts, record and delete drafts
    */
-  POST = "POST",
+  POSTER = "POSTER",
 
   /**
    * Manage accounts, transactions, book configuration and sharing

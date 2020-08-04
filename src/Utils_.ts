@@ -1,6 +1,7 @@
 namespace Utils_ {
 
-  export function round(num: number, fractionDigits: number): number {
+  export function round(number: number | string, fractionDigits: number): number {
+    let num = +number;
     if (num == null) {
       num = 0;
     }
@@ -110,7 +111,7 @@ namespace Utils_ {
     return value;
   }
 
-  export function wrapObjects<E extends Object>(wrapper: E, wrappeds: Array<E>): Array<E> {
+  export function wrapObjects<E extends Object>(wrapper: E, wrappeds: Array<Object>): Array<E> {
     var newObjects = [];
     if (wrappeds != null) {
       for (var i = 0; i < wrappeds.length; i++) {
@@ -121,9 +122,9 @@ namespace Utils_ {
     return newObjects;
   }
   
-  export function wrapObject<E extends Object>(wrapper:E, wrapped:E): E {
+  export function wrapObject<E extends Object>(wrapper:E, wrapped: Object): E {
     if (wrapped == null) {
-      wrapped = new Object() as E;
+      wrapped = new Object();
     }
     var w = Object.create(wrapper);
     w.wrapped = wrapped;

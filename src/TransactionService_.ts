@@ -10,7 +10,7 @@ namespace TransactionService_ {
     if (query == null) {
       query = "";
     }
-    var request = new HttpBooksApiRequest(`${book.getId()}/transactions`);
+    var request = new HttpBooksApiV3Request(`${book.getId()}/transactions`);
     request.addParam('query', query);
     request.addParam('limit', limit);
     if (cursor != null) {
@@ -28,7 +28,7 @@ namespace TransactionService_ {
     if (responseJSON == null || responseJSON == "") {
       transactionResponse;
     }    
-    var transactionsPlain = JSON.parse(responseJSON);
+    var transactionsPlain: bkper.TransactionList = JSON.parse(responseJSON);
 
     if (transactionsPlain == null) {
       return transactionResponse;
@@ -36,8 +36,8 @@ namespace TransactionService_ {
     transactionResponse.items = Utils_.wrapObjects(new Transaction(), transactionsPlain.items);
     book.configureTransactions_(transactionResponse.items);
     transactionResponse.cursor = transactionsPlain.cursor;
-    if (transactionsPlain.accountId) {
-      transactionResponse.account = book.getAccount(transactionsPlain.accountId)
+    if (transactionsPlain.account) {
+      transactionResponse.account = book.getAccount(transactionsPlain.account)
     }
     return transactionResponse;
   }
@@ -63,7 +63,7 @@ namespace TransactionService_ {
     }
     var body = "text=" +  encodeURIComponent(text);
 
-    return new HttpBooksApiRequest(`${book.getId()}/drafts`)
+    return new HttpBooksApiV2Request(`${book.getId()}/drafts`)
           .setMethod('post')
           .setPayload(body)
           .setContentType('application/x-www-form-urlencoded; charset=UTF-8')

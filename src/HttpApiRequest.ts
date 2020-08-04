@@ -53,16 +53,15 @@ function setOAuthTokenProvider(tokenProvider: OAuthTokenProvider) {
 class HttpApiRequest  {
 
   private httpRequest: Bkper.HttpRequest;
-
+  
   constructor(path: string) {
-    this.httpRequest = HttpRequestApp.newRequest(`https://app.bkper.com/_ah/api/bkper/v2/${path}`);
+    this.httpRequest = HttpRequestApp.newRequest(`https://app.bkper.com/_ah/api/bkper/${path}`);
   }
 
   public setMethod(method: GoogleAppsScript.URL_Fetch.HttpMethod) {
     this.httpRequest.setMethod(method);
     return this;
   }
-  
 
   public setHeader(name: string, value: string) {
     this.httpRequest.setHeader(name, value);
@@ -134,8 +133,14 @@ class HttpApiRequest  {
   }
 }
 
-class HttpBooksApiRequest extends HttpApiRequest {
+class HttpBooksApiV2Request extends HttpApiRequest {
   constructor(service: string) {
-    super(`ledgers/${service}`)
+    super(`v2/ledgers/${service}`)
+  }
+}
+
+class HttpBooksApiV3Request extends HttpApiRequest {
+  constructor(service: string) {
+    super(`v3/books/${service}`)
   }
 }

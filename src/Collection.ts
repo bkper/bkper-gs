@@ -5,9 +5,9 @@
  */
 class Collection {
 
-  wrapped: bkper.CollectionV2Payload
+  wrapped: bkper.Collection
 
-  constructor(wrapped: bkper.CollectionV2Payload) {
+  constructor(wrapped: bkper.Collection) {
     this.wrapped = wrapped;
   }
 

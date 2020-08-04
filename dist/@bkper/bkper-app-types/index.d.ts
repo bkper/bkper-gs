@@ -416,6 +416,8 @@ declare namespace Bkper {
          * If all other accounts in same group is in another group, the account will also be added to the other group.
          *
          * @returns The created Account object
+         *
+         * @deprecated 
          */
         createAccount(name: string, group?: string, description?: string): Account;
 
@@ -577,11 +579,6 @@ declare namespace Bkper {
         getProperty(...keys: string[]): string;
 
         /**
-         * Gets all saved queries from this book
-         */
-        getSavedQueries(): {id: string, query: string, title: string}[];
-
-        /**
          * @returns The time zone of the book
          */
         getTimeZone(): string;
@@ -686,7 +683,7 @@ declare namespace Bkper {
         getNormalizedName(): string;
 
         /**
-         * Gets the custom properties stored in this Account
+         * Gets the custom properties stored in this Group
          */
         getProperties(): any;
 
@@ -1168,12 +1165,12 @@ declare namespace Bkper {
         /**
          * View transactions, accounts, record and delete drafts
          */
-        POST = "POST",
+        POSTER = "POSTER",
 
         /**
          * Record and delete drafts only. Useful to collect data only
          */
-        RECORD_ONLY = "RECORD_ONLY",
+        RECORDER = "RECORDER",
 
         /**
          * View transactions, accounts and balances.

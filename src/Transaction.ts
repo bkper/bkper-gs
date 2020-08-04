@@ -8,7 +8,7 @@
  */
 class Transaction {
 
-  wrapped: bkper.TransactionV2Payload
+  wrapped: bkper.Transaction
 
   book: Book;
 
@@ -18,7 +18,6 @@ class Transaction {
   private informedDateValue: number;
   private informedDateText: string;
   private postDate: Date;
-  private alreadyPosted: boolean;
 
   /**
    * @returns The id of the Transaction
@@ -31,7 +30,7 @@ class Transaction {
    * @returns True if transaction was already posted to the accounts. False if is still a Draft.
    */
   public isPosted(): boolean {
-    return this.wrapped.posted;
+    return !this.wrapped.draft;
   }
 
   /**
@@ -108,7 +107,7 @@ class Transaction {
    * @returns The amount of the transaction
    */
   public getAmount(): number {
-    return this.wrapped.amount;
+    return this.wrapped.amount != null && this.wrapped.amount.trim() != '' ? +this.wrapped.amount : null;
   }
 
   /**
@@ -234,17 +233,17 @@ class Transaction {
    * @returns The date time user has recorded/posted this transaction, formatted according to the date pattern of [[Book]].
    */
   public getPostDateText(): string {
-    return Utilities.formatDate(this.getPostDate(), this.book.getLocale(), this.book.getDatePattern() + " HH:mm:ss")
+    return Utilities.formatDate(this.getPostDate(), this.book.getTimeZone(), this.book.getDatePattern() + " HH:mm:ss")
   }
 
 
   //EVOLVED BALANCES
   private getCaEvolvedBalance_(): number {
-    return this.wrapped.caBal;
+    return this.wrapped.creditAccount != null && this.wrapped.creditAccount.balance != null ? +this.wrapped.creditAccount.balance : null;
   }
 
   private getDaEvolvedBalance_(): number {
-    return this.wrapped.daBal;
+    return this.wrapped.debitAccount != null && this.wrapped.debitAccount.balance != null ? +this.wrapped.debitAccount.balance : null;
   }
 
   /**
@@ -275,19 +274,13 @@ class Transaction {
   }
 
   configure_(): void {
-    var creditAccount = this.book.getAccount(this.wrapped.creditAccId);
-    var debitAccount = this.book.getAccount(this.wrapped.debitAccId);
+    var creditAccount = this.wrapped.creditAccount != null ? this.book.getAccount(this.wrapped.creditAccount.id) : null;
+    var debitAccount = this.wrapped.debitAccount != null ? this.book.getAccount(this.wrapped.debitAccount.id) : null;
     this.creditAccount = creditAccount;
     this.debitAccount = debitAccount;
-    this.informedDateValue = this.wrapped.informedDateValue;
-    this.informedDateText = this.wrapped.informedDateText;
-    this.postDate = new Date(new Number(this.wrapped.postDateMs).valueOf());
-
-    if (this.isPosted()) {
-      this.alreadyPosted = true;
-    } else {
-      this.alreadyPosted = false;
-    }
+    this.informedDateValue = this.wrapped.dateValue;
+    this.informedDateText = this.wrapped.dateFormatted;
+    this.postDate = new Date(new Number(this.wrapped.createdAt).valueOf());
   }
 
 }

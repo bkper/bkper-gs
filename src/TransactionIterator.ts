@@ -11,7 +11,6 @@ class TransactionIterator {
   private currentPage: TransactionPage_
   private nextPage: TransactionPage_
   private lastCursor: string
-  private alreadyProcessedAccountFilter: boolean
 
   constructor(book: Book, query?: string) {
     this.book = book
@@ -22,7 +21,6 @@ class TransactionIterator {
     this.currentPage = null;
     this.nextPage = null;
     this.lastCursor = null;
-    this.alreadyProcessedAccountFilter = false
   }
 
   /**

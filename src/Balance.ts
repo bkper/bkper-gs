@@ -5,11 +5,11 @@
  */
 class Balance {
 
-  private wrapped: bkper.BalanceV2Payload;
+  private wrapped: bkper.Balance;
 
   private container: BalancesContainer;
 
-  constructor(container: BalancesContainer, balancePlain: bkper.BalanceV2Payload) {
+  constructor(container: BalancesContainer, balancePlain: bkper.Balance) {
     this.container = container;
     this.wrapped = balancePlain;
   }
@@ -82,42 +82,42 @@ class Balance {
    * The cumulative balance to the date, since the first transaction posted.
    */
   public getCumulativeBalance(): number {
-    return this.wrapped.cumulativeBalance;
+    return +this.wrapped.cumulativeBalance;
   }
 
   /**
    * The cumulative checked balance to the date, since the first transaction posted.
    */
   public getCheckedCumulativeBalance(): number {
-    return this.wrapped.checkedCumulativeBalance;
+    return +this.wrapped.checkedCumulativeBalance;
   }
 
   /**
    * The balance on the date period.
    */
   public getPeriodBalance(): number {
-    return this.wrapped.periodBalance;
+    return +this.wrapped.periodBalance;
   }
 
   /**
    * The checked balance on the date period.
    */
   public getCheckedPeriodBalance(): number {
-    return this.wrapped.checkedPeriodBalance;
+    return +this.wrapped.checkedPeriodBalance;
   }
 
   /**
    * The unchecked cumulative balance to the date, since the first transaction posted.
    */
   public getUncheckedCumulativeBalance(): number {
-    return this.wrapped.uncheckedCumulativeBalance;
+    return +this.wrapped.uncheckedCumulativeBalance;
   }
 
   /**
     * The unchecked balance on the date period.
     */
   public getUncheckedPeriodBalance(): number {
-    return this.wrapped.uncheckedPeriodBalance;
+    return +this.wrapped.uncheckedPeriodBalance;
   }
 
 

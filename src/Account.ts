@@ -11,7 +11,7 @@
  */
 class Account {
 
-  wrapped: bkper.AccountV2Payload;
+  wrapped: bkper.Account;
 
   book: Book;
 
@@ -31,9 +31,12 @@ class Account {
 
   /**
    * Gets the account description
+   * 
+   * @deprecated Use properties instead
+   * 
    */
   public getDescription(): string {
-    return this.wrapped.description;
+    return this.getProperty('description');
   }
 
   /**
@@ -47,7 +50,7 @@ class Account {
    * @return The type for of this account
    */
   public getType(): AccountType {
-    return this.wrapped.type;
+    return this.wrapped.type as AccountType;
   }
 
   /**
@@ -117,7 +120,7 @@ class Account {
    * Tell if this account is Active or otherwise Archived
    */
   public isActive(): boolean {
-    return this.wrapped.active;
+    return !this.wrapped.archived;
   };
 
   /**
@@ -166,9 +169,9 @@ class Account {
    */  
   public getGroups(): Group[] {
     let groups = new Array<Group>();
-    if (this.wrapped.groupsIds != null) {
-      for (var i = 0; i < this.wrapped.groupsIds.length; i++) {
-        let groupId = this.wrapped.groupsIds[i];
+    if (this.wrapped.groups != null) {
+      for (var i = 0; i < this.wrapped.groups.length; i++) {
+        let groupId = this.wrapped.groups[i];
         let group = this.book.getGroup(groupId);
         groups.push(group);
       }
@@ -200,12 +203,12 @@ class Account {
   }
 
   private isInGroupObject_(group: Group): boolean {
-    if (this.wrapped.groupsIds == null) {
+    if (this.wrapped.groups == null) {
       return false;
     }
 
-    for (var i = 0; i < this.wrapped.groupsIds.length; i++) {
-      if (this.wrapped.groupsIds[i] == group.getId()) {
+    for (var i = 0; i < this.wrapped.groups.length; i++) {
+      if (this.wrapped.groups[i] == group.getId()) {
         return true;
       }
     }

@@ -86,6 +86,9 @@ declare namespace Bkper {
 
         /**
          * Gets the account description
+         *
+         * @deprecated Use properties instead
+         * 
          */
         getDescription(): string;
 

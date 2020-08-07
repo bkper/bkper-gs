@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@bkper/bkper-api-types@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@bkper/bkper-api-types/-/bkper-api-types-3.0.0.tgz#64126c1ae7c1440619225767e63f1d184e76cb0a"
+  integrity sha512-GYAiIpq+RIhisjbVLaB/BK93bLkuyjf46wIe24SNggZ38csfSpgAGIClpZWVbw9ZOAb8dVVrK65eDD2DhyR6mA==
+
 "@bkper/http-request-app-types@^1.0.8":
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/@bkper/http-request-app-types/-/http-request-app-types-1.0.8.tgz#9367ad767031399b235444b8d96364860d4a18df"
@@ -283,10 +288,10 @@ check-error@^1.0.2:
   resolved "https://registry.yarnpkg.com/check-error/-/check-error-1.0.2.tgz#574d312edd88bb5dd8912e9286dd6c0aed4aac82"
   integrity sha1-V00xLt2Iu13YkS6Sht1sCu1KrII=
 
-clasp-types@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/clasp-types/-/clasp-types-1.3.0.tgz#2044448d128d73f7926e5ebd7ed598cc61c64ef2"
-  integrity sha512-Oz97TsA9MUydOMv8bEsM18IvY7tlxgzVQNRH0UZAzVDGGI0g9K31d0t6f4y9cp/y9o6+DYGCWmdDltuPf/UJEA==
+clasp-types@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/clasp-types/-/clasp-types-1.3.1.tgz#3cffe560b19dcfbfa951dfc4d1330e1814a37f85"
+  integrity sha512-9CvdpKfZ1fVdXA7FMlM2HFy979bHnT5DGrpJmK6S/CrFzvq2c735BY0OPoQ6K2TO7p3vEDTlcKWxXXKkbXgmMQ==
   dependencies:
     commander "^5.1.0"
     fs-extra "^9.0.0"

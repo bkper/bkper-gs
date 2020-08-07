@@ -114,7 +114,12 @@ class HttpApiRequest  {
       } else {
         //ERROR
         let responseText = response.getContentText();
-        let error = JSON.parse(responseText).error;
+        let error;
+        try {
+           error = JSON.parse(responseText).error;
+        } catch (e) {
+          throw responseText;
+        }
         if (response.getResponseCode() == 429 || response.getResponseCode() >= 500) {
           //Retry in case of server error
           if (retries > 4) {

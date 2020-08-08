@@ -29,16 +29,13 @@
     "patch": "yarn version --patch",
     "minor": "yarn version --minor",
     "major": "yarn version --major",
-    "api": "dtsgen -o @types/bkper-api-v3/index.d.ts",
-    "api:prod": "yarn run api --url https://app.bkper.com/openapi.json",
-    "api:dev": "yarn run api  --url https://dev.bkper.com/openapi.json",
-    "api:local": "yarn run api  --url http://localhost:8081/openapi.json",
+    "api": "yarn upgrade @bkper/bkper-api-types --latest",
     "preversion": "run-s build push",
     "postversion": "clasp version $npm_package_version && git push && git push --tags && echo \"Successfully released version $npm_package_version!\"",
     "publish:types": "yarn build && yarn --cwd dist/@bkper/bkper-app-types publish --new-version $npm_package_version --access public"
   },
   "devDependencies": {
-    "@bkper/bkper-api-types": "^3.0.0",
+    "@bkper/bkper-api-types": "^3.1.0",
     "@bkper/http-request-app-types": "^1.0.8",
     "@dtsgenerator/replace-namespace": "^1.3.2",
     "@google/clasp": "^2.3.0",

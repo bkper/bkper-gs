@@ -57,7 +57,7 @@ class Book {
   }
 
   private checkBookLoaded_(): void {
-    if (this.wrapped == null) {
+    if (this.wrapped == null || this.idAccountMap == null || this.idAccountMap == null) {
       this.wrapped = BookService_.loadBookWrapped(this.getId());
       this.configureGroups_(this.wrapped.groups);
       this.configureAccounts_(this.wrapped.accounts);

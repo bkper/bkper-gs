@@ -57,11 +57,21 @@ class Book {
   }
 
   private checkBookLoaded_(): void {
-    if (this.wrapped == null || this.idAccountMap == null || this.idAccountMap == null) {
-      this.wrapped = BookService_.loadBookWrapped(this.getId());
-      this.configureGroups_(this.wrapped.groups);
-      this.configureAccounts_(this.wrapped.accounts);
+    if (this.wrapped == null) {
+      this.loadBook_();
     }
+  }
+
+  private checkAccountsLoaded_(): void {
+    if (this.wrapped == null || this.idAccountMap == null || this.idAccountMap == null) {
+      this.loadBook_();
+    }
+  }
+
+  private loadBook_(): void {
+    this.wrapped = BookService_.loadBookWrapped(this.getId());
+    this.configureGroups_(this.wrapped.groups);
+    this.configureAccounts_(this.wrapped.accounts);
   }
 
   /**
@@ -253,7 +263,7 @@ class Book {
    * Gets all [[Accounts]] of this Book
    */
   public getAccounts(): Account[] {
-    this.checkBookLoaded_();
+    this.checkAccountsLoaded_();
     return this.accounts;
   }
 
@@ -273,7 +283,7 @@ class Book {
 
     idOrName = idOrName + '';
 
-    this.checkBookLoaded_();
+    this.checkAccountsLoaded_();
 
     var account = this.idAccountMap[idOrName];
     if (account == null) {
@@ -375,7 +385,7 @@ class Book {
    * Gets all [[Groups]] of this Book
    */
   public getGroups(): Group[] {
-    this.checkBookLoaded_();
+    this.checkAccountsLoaded_();
     return this.groups;
   }
 
@@ -413,7 +423,7 @@ class Book {
 
     idOrName = idOrName + '';
 
-    this.checkBookLoaded_();
+    this.checkAccountsLoaded_();
 
     var group = this.idGroupMap[idOrName];
     if (group == null) {

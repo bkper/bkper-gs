@@ -435,10 +435,11 @@ class Book {
     }
   }
 
+
   /**
    * Gets all saved queries from this book
    */
-  getSavedQueries(): {id?: string, query?: string, title?: string}[]  {
+  public getSavedQueries(): {id?: string, query?: string, title?: string}[]  {
     if (this.savedQueries == null) {
       this.savedQueries = SavedQueryService_.getSavedQueries(this.getId());
     }

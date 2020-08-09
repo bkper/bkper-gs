@@ -582,6 +582,11 @@ declare namespace Bkper {
         getProperty(...keys: string[]): string;
 
         /**
+         * Gets all saved queries from this book
+         */
+        getSavedQueries(): {id?: string, query?: string, title?: string}[];
+
+        /**
          * @returns The time zone of the book
          */
         getTimeZone(): string;

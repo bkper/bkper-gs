@@ -14,6 +14,7 @@ class Transaction {
 
   private creditAccount: Account;
   private debitAccount: Account;
+  private files: File[];
   private informedDate: Date;
   private informedDateValue: number;
   private informedDateText: string;
@@ -45,6 +46,17 @@ class Transaction {
    */
   public getUrls(): string[] {
     return this.wrapped.urls;
+  }
+
+  public getFiles(): File[] {
+    if (this.files == null) {
+      if (this.wrapped.files && this.wrapped.files.length > 0) {
+        this.files = Utils_.wrapObjects(new File(), this.wrapped.files)
+      } else {
+        this.files = [];
+      }
+    }
+    return this.files;
   }
 
   /**

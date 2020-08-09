@@ -148,6 +148,14 @@ class TransactionsDataTableBuilder {
 
       var urls = transaction.getUrls();
 
+      if (urls == null) {
+        urls = [];
+      }
+      let files = transaction.getFiles();
+      if (files != null) {
+        urls = urls.concat(files.map(f => f.getUrl()))
+      }
+
       if (this.shouldAddUrls && urls != null && urls.length > 0) {
         for (var i = 0; i < urls.length; i++) {
           line.push(urls[i]);

@@ -657,6 +657,35 @@ declare namespace Bkper {
     }
 
     /**
+     * This class defines a File uploaded to a [[Book]].
+     *
+     * A file can be attached to a [[Transaction]] or used to import data.
+     */
+    export interface File {
+
+        /**
+         * Gets the file content type
+         */
+        getContentType(): string;
+
+        /**
+         * Gets the file id
+         */
+        getId(): string;
+
+        /**
+         * Gets the file name
+         */
+        getName(): string;
+
+        /**
+         * Gets the file serving url for accessing via browser
+         */
+        getUrl(): string;
+
+    }
+
+    /**
      * This class defines a Group of [[Accounts]].
      *
      * Accounts can be grouped by different meaning, like Expenses, Revenue, Assets, Liabilities and so on
@@ -757,6 +786,8 @@ declare namespace Bkper {
          * @returns The description of this transaction
          */
         getDescription(): string;
+
+        getFiles(): File[];
 
         /**
          * @returns The id of the Transaction

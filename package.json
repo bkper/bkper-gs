@@ -29,7 +29,7 @@
     "patch": "yarn version --patch",
     "minor": "yarn version --minor",
     "major": "yarn version --major",
-    "upgrade": "yarn upgrade @bkper/bkper-api-types --latest",
+    "upgrade:api": "yarn upgrade @bkper/bkper-api-types --latest",
     "preversion": "run-s build push",
     "postversion": "clasp version $npm_package_version && git push && git push --tags && echo \"Successfully released version $npm_package_version!\"",
     "publish:types": "yarn build && yarn --cwd dist/@bkper/bkper-app-types publish --new-version $npm_package_version --access public"

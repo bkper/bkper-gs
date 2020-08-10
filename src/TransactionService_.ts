@@ -43,35 +43,36 @@ namespace TransactionService_ {
   }
 
   export function record(book: Book, transactions: string | any[] | any[][], timezone?: string): string {
-    var text = "";
+
+    let transactionList: bkper.TransactionList = {
+      items: []
+    }
+
     if (Array.isArray(transactions)) {
-      var hasManyRows = false;
       for (var i = 0; i < transactions.length; i++) {
         var row = transactions[i];
         if (Array.isArray(row)) {
-          transactions[i] = arrayToTransaction_(row, book, timezone);
-          hasManyRows = true;
+          transactionList.items.push(arrayToTransaction_(row, book, timezone))
+        } else if (typeof row == "string") {
+          transactionList.items.push({description: row})
         }
       }
-      if (hasManyRows) {
-        text = transactions.join("\n");
-      } else {
-        text = arrayToTransaction_(transactions, book, timezone);
-      }
     } else if (typeof transactions == "string") {
-      text = transactions;
+      transactionList.items.push({description: transactions})
     }
-    var body = "text=" +  encodeURIComponent(text);
 
-    return new HttpBooksApiV2Request(`${book.getId()}/drafts`)
+    var payload = JSON.stringify(transactionList);
+
+    Logger.log(payload)
+
+    return new HttpBooksApiV3Request(`${book.getId()}/transactions/batch`)
           .setMethod('post')
-          .setPayload(body)
-          .setContentType('application/x-www-form-urlencoded; charset=UTF-8')
+          .setPayload(payload)
           .fetch()
           .getContentText();
   }
 
-  function arrayToTransaction_(row: any[], book: Book, timezone?: string) {
+  function arrayToTransaction_(row: any[], book: Book, timezone?: string): bkper.Transaction {
     for (var j = 0; j < row.length; j++) {
       var cell = row[j];
       if (typeof cell == "string" || typeof cell == "boolean") {
@@ -83,7 +84,7 @@ namespace TransactionService_ {
         row[j] = Utils_.formatValue_(cell, book.getDecimalSeparator(), book.getFractionDigits());
       }
     }
-    return row.join(" ");
+    return {description: row.join(" ")};
   }
 
 

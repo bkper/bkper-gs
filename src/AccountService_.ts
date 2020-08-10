@@ -2,22 +2,22 @@ namespace AccountService_ {
   
   export function createAccountV2(bookId: string, name: string, group?: string, description?: string): void {
     
-    var accountUpdate = new Object() as bkper.AccountCreationV2Payload
+    var accountUpdate = new Object() as any;
     
     accountUpdate.name = name;
     accountUpdate.group = group;
     accountUpdate.description = description;
     
-    var accountUpdateJSON = JSON.stringify(accountUpdate);
+    var payload = JSON.stringify(accountUpdate);
 
-    var responseJSON = new HttpBooksApiV2Request(`${bookId}/accounts`).setMethod('post').setPayload(accountUpdateJSON).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV2Request(`${bookId}/accounts`).setMethod('post').setPayload(payload).fetch().getContentText();
     
     var accountPlain = JSON.parse(responseJSON);
   }
   
   export function createAccount(bookId: string, account: bkper.Account): Account {
-    var accountSaveJSON = JSON.stringify(account);
-    var responseJSON = new HttpBooksApiV3Request(`${bookId}/accounts`).setMethod('post').setPayload(accountSaveJSON).fetch().getContentText();
+    var payload = JSON.stringify(account);
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/accounts`).setMethod('post').setPayload(payload).fetch().getContentText();
     var accountPlain = JSON.parse(responseJSON);
     return Utils_.wrapObject(new Account(), accountPlain);;
   }

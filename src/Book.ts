@@ -307,11 +307,11 @@ class Book {
    */
   public createAccounts(accounts: string[][]): Account[] {
 
-    let accountsPayloads: bkper.AccountSave[] = []
+    let accountsPayloads: bkper.Account[] = []
 
     for (let i = 0; i < accounts.length; i++) {
       const row = accounts[i]
-      const account: bkper.AccountSave = {
+      const account: bkper.Account = {
         name: row[0],
         type: AccountType.ASSET,
         groups: []
@@ -326,7 +326,7 @@ class Book {
         for (let j = 1; j < row.length; j++) {
           const cell = row[j];
           if (this.isType(cell)) {
-            account.type = cell;
+            account.type = cell as AccountType;
           } else {
             let group = this.getGroup(cell);
             if (group != null) {
@@ -394,7 +394,7 @@ class Book {
    */
   public createGroups(groups: string[]): Group[] {
     if (groups.length > 0) {
-      let groupsSave: bkper.GroupSave[] = groups.map(groupName => {return {name: groupName}});
+      let groupsSave: bkper.Group[] = groups.map(groupName => {return {name: groupName}});
       let createdGroups = GroupService_.createGroups(this.getId(), groupsSave);
       this.wrapped = null;
 

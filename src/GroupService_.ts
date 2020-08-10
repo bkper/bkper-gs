@@ -15,13 +15,13 @@ namespace GroupService_ {
   //   return groups;
   // }
 
-  export function createGroups(bookId: string, groupSaveList: bkper.GroupSave[]): Group[] {
+  export function createGroups(bookId: string, groups: bkper.Group[]): Group[] {
 
-    let groupsBatch: bkper.GroupSaveBatch = {
-      items: groupSaveList
+    let groupList: bkper.GroupList = {
+      items: groups
     };
 
-    var groupsBatchJSON = JSON.stringify(groupsBatch);
+    var groupsBatchJSON = JSON.stringify(groupList);
 
     Logger.log(groupsBatchJSON)
     var responseJSON = new HttpBooksApiV3Request(`${bookId}/groups/batch`).setMethod('post').setPayload(groupsBatchJSON).fetch().getContentText();
@@ -34,7 +34,6 @@ namespace GroupService_ {
     if (groupsPlain == null) {
       return [];
     }
-    var groups = Utils_.wrapObjects(new Group(), groupsPlain);
-    return groups;
+    return Utils_.wrapObjects(new Group(), groupsPlain);;
   }
 }

@@ -15,26 +15,24 @@ namespace AccountService_ {
     var accountPlain = JSON.parse(responseJSON);
   }
   
-  export function createAccount(bookId: string, accountSave: bkper.AccountSave): Account {
-    var accountSaveJSON = JSON.stringify(accountSave);
+  export function createAccount(bookId: string, account: bkper.Account): Account {
+    var accountSaveJSON = JSON.stringify(account);
     var responseJSON = new HttpBooksApiV3Request(`${bookId}/accounts`).setMethod('post').setPayload(accountSaveJSON).fetch().getContentText();
     var accountPlain = JSON.parse(responseJSON);
-    var account = Utils_.wrapObject(new Account(), accountPlain);
-    return account;
+    return Utils_.wrapObject(new Account(), accountPlain);;
   }
 
-  export function createAccounts(bookId: string, accountSaveList: bkper.AccountSave[]): Account[] {
-    let accountSaveBatch: bkper.AccountSaveBatch = {
-      items: accountSaveList
+  export function createAccounts(bookId: string, accounts: bkper.Account[]): Account[] {
+    let accountList: bkper.AccountList = {
+      items: accounts
     };
-    var accountSaveBatchJSON = JSON.stringify(accountSaveBatch);
+    var accountSaveBatchJSON = JSON.stringify(accountList);
     var responseJSON = new HttpBooksApiV3Request(`${bookId}/accounts/batch`).setMethod('post').setPayload(accountSaveBatchJSON).fetch().getContentText();
     var accountsPlain = JSON.parse(responseJSON).items;
     if (accountsPlain == null) {
       return [];
     }
-    var accounts = Utils_.wrapObjects(new Account(), accountsPlain);
-    return accounts;
+    return Utils_.wrapObjects(new Account(), accountsPlain);;
     
   }
 

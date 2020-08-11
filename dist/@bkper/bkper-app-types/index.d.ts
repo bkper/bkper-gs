@@ -744,6 +744,11 @@ declare namespace Bkper {
     export interface Transaction {
 
         /**
+         * Perform check transaction
+         */
+        check(): Transaction;
+
+        /**
          * Gets the balance that the [[Account]] has at that day, when listing transactions of that Account.
          *
          * Evolved balances is returned when searching for transactions of a permanent [[Account]].
@@ -853,6 +858,11 @@ declare namespace Bkper {
          * @returns True if transaction was already posted to the accounts. False if is still a Draft.
          */
         isPosted(): boolean;
+
+        /**
+         * Perform uncheck transaction
+         */
+        uncheck(): Transaction;
 
     }
 

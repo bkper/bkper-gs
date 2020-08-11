@@ -285,6 +285,26 @@ class Transaction {
     }
   }
 
+  /**
+   * Perform check transaction
+   */
+  public check(): Transaction {
+    let operation = TransactionService_.checkTransaction(this.book.getId(), this.wrapped);
+    this.wrapped = operation.transaction;
+    this.book.clearAccountsCache();
+    return this;
+  }
+
+  /**
+   * Perform uncheck transaction
+   */  
+  public uncheck(): Transaction {
+    let operation = TransactionService_.uncheckTransaction(this.book.getId(), this.wrapped);
+    this.wrapped = operation.transaction;
+    this.book.clearAccountsCache();
+    return this;
+  }  
+
   configure_(): void {
     var creditAccount = this.wrapped.creditAccount != null ? this.book.getAccount(this.wrapped.creditAccount.id) : null;
     var debitAccount = this.wrapped.debitAccount != null ? this.book.getAccount(this.wrapped.debitAccount.id) : null;
@@ -295,18 +315,5 @@ class Transaction {
     this.postDate = new Date(new Number(this.wrapped.createdAt).valueOf());
   }
 
-  check(): Transaction {
-    let operation = TransactionService_.checkTransaction(this.book.getId(), this.wrapped);
-    this.wrapped = operation.transaction;
-    this.book.clearAccountsCache();
-    return this;
-  }
-
-  uncheck(): Transaction {
-    let operation = TransactionService_.uncheckTransaction(this.book.getId(), this.wrapped);
-    this.wrapped = operation.transaction;
-    this.book.clearAccountsCache();
-    return this;
-  }
 
 }

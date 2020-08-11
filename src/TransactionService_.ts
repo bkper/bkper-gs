@@ -6,6 +6,18 @@ namespace TransactionService_ {
     account: Account
   }
 
+  export function uncheckTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
+    var payload = JSON.stringify(transaction);
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions/uncheck`).setMethod('patch').setPayload(payload).fetch().getContentText();
+    return JSON.parse(responseJSON) as bkper.TransactionOperation;
+  }
+
+  export function checkTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
+    var payload = JSON.stringify(transaction);
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions/check`).setMethod('patch').setPayload(payload).fetch().getContentText();
+    return JSON.parse(responseJSON) as bkper.TransactionOperation;
+  }
+
   export function searchTransactions(book: Book, query: string, limit: number, cursor?: string): TransactionResponse {
     if (query == null) {
       query = "";

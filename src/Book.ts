@@ -217,7 +217,7 @@ class Book {
       timeZone = this.getTimeZone();
     }
     TransactionService_.record(this, transactions, timeZone);
-    this.wrapped = null;
+    this.clearAccountsCache();
   }
 
 
@@ -341,7 +341,7 @@ class Book {
 
     if (accountsPayloads.length > 0) {
       let createdAccounts = AccountService_.createAccounts(this.getId(), accountsPayloads);
-      this.wrapped = null;
+      this.clearBookCache_();
       for (var i = 0; i < createdAccounts.length; i++) {
         var account = createdAccounts[i];
         account.book = this;
@@ -396,7 +396,7 @@ class Book {
     if (groups.length > 0) {
       let groupsSave: bkper.Group[] = groups.map(groupName => {return {name: groupName}});
       let createdGroups = GroupService_.createGroups(this.getId(), groupsSave);
-      this.wrapped = null;
+      this.clearBookCache_();
 
       for (var i = 0; i < createdGroups.length; i++) {
         var group = createdGroups[i];
@@ -407,6 +407,15 @@ class Book {
     }
     return [];
   }  
+
+  clearAccountsCache() {
+    this.accounts = null;
+    this.groups = null;
+  }
+
+  private clearBookCache_() {
+    this.wrapped = null;
+  }
 
   /**
    * Gets a [[Group]] object
@@ -572,7 +581,7 @@ class Book {
    */
   public createAccount(name: string, group?: string, description?: string): Account {
     var account = AccountService_.createAccountV2(this.getId(), name, group, description);
-    this.wrapped = null;
+    this.clearBookCache_();
     return this.getAccount(name);
   }
 

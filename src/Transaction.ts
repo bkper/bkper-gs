@@ -31,7 +31,7 @@ class Transaction {
    * @returns True if transaction was already posted to the accounts. False if is still a Draft.
    */
   public isPosted(): boolean {
-    return !this.wrapped.draft;
+    return this.wrapped.posted;
   }
 
   /**
@@ -293,6 +293,20 @@ class Transaction {
     this.informedDateValue = this.wrapped.dateValue;
     this.informedDateText = this.wrapped.dateFormatted;
     this.postDate = new Date(new Number(this.wrapped.createdAt).valueOf());
+  }
+
+  check(): Transaction {
+    let operation = TransactionService_.checkTransaction(this.book.getId(), this.wrapped);
+    this.wrapped = operation.transaction;
+    this.book.clearAccountsCache();
+    return this;
+  }
+
+  uncheck(): Transaction {
+    let operation = TransactionService_.uncheckTransaction(this.book.getId(), this.wrapped);
+    this.wrapped = operation.transaction;
+    this.book.clearAccountsCache();
+    return this;
   }
 
 }

@@ -115,15 +115,20 @@ class HttpApiRequest  {
         //ERROR
         let responseText = response.getContentText();
         let error;
+        let unknowError = false;
         try {
            error = JSON.parse(responseText).error;
         } catch (e) {
-          throw responseText;
+          unknowError = true;
         }
-        if (response.getResponseCode() == 429 || response.getResponseCode() >= 500) {
+        if (unknowError || response.getResponseCode() == 429 || response.getResponseCode() >= 500) {
           //Retry in case of server error
           if (retries > 4) {
-            throw error.message;
+            if (unknowError) {
+              throw responseText;
+            } else {
+              throw error.message;
+            }
           } else {
             Logger.log("Retrying in " + (sleepTime / 1000) + " secs...");
             Utilities.sleep(sleepTime);

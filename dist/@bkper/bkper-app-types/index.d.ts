@@ -908,9 +908,19 @@ declare namespace Bkper {
         hasTag(tag: string): boolean;
 
         /**
+         * @returns True if transaction is checked
+         */
+        isChecked(): boolean;
+
+        /**
          * @returns True if transaction was already posted to the accounts. False if is still a Draft.
          */
         isPosted(): boolean;
+
+        /**
+         * @returns True if transaction is in trash
+         */
+        isTrashed(): boolean;
 
         /**
          * Remove the Transaction to trash

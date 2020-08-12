@@ -54,6 +54,9 @@ class Transaction {
     return this.wrapped.urls;
   }
 
+  /**
+   * @returns The files attached to the transaction
+   */
   public getFiles(): File[] {
       if (this.wrapped.files && this.wrapped.files.length > 0) {
         return Utils_.wrapObjects(new File(), this.wrapped.files)

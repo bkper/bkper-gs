@@ -7,6 +7,9 @@ namespace Normalizer_ {
       return;
     }
     
+    if (spaceReplacement) {
+      text = text.replace(new RegExp(spaceReplacement, 'g'), " ");
+    }
     text = text.replace(new RegExp("-", 'g'), " ");
     text = text.replace(/ +(?= )/g,'');
 

@@ -409,8 +409,8 @@ class Book {
   }  
 
   clearAccountsCache() {
-    this.accounts = null;
-    this.groups = null;
+    this.idAccountMap = null;
+    this.idGroupMap = null;
   }
 
   private clearBookCache_() {

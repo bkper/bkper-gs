@@ -245,7 +245,6 @@ class Book {
 
   private configureTransaction_(transaction: Transaction) {
     transaction.book = this;
-    transaction.configure_();
     return transaction;
   }
 

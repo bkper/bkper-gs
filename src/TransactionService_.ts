@@ -6,9 +6,9 @@ namespace TransactionService_ {
     account: Account
   }
 
-  export function uncheckTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
+  export function editTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
     var payload = JSON.stringify(transaction);
-    var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions/uncheck`).setMethod('patch').setPayload(payload).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions`).setMethod('put').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }
 
@@ -17,6 +17,25 @@ namespace TransactionService_ {
     var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions/check`).setMethod('patch').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }
+
+  export function uncheckTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
+    var payload = JSON.stringify(transaction);
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions/uncheck`).setMethod('patch').setPayload(payload).fetch().getContentText();
+    return JSON.parse(responseJSON) as bkper.TransactionOperation;
+  }  
+
+  export function removeTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
+    var payload = JSON.stringify(transaction);
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions/remove`).setMethod('patch').setPayload(payload).fetch().getContentText();
+    return JSON.parse(responseJSON) as bkper.TransactionOperation;
+  }  
+
+  export function restoreTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
+    var payload = JSON.stringify(transaction);
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions/restore`).setMethod('patch').setPayload(payload).fetch().getContentText();
+    return JSON.parse(responseJSON) as bkper.TransactionOperation;
+  }  
+
 
   export function searchTransactions(book: Book, query: string, limit: number, cursor?: string): TransactionResponse {
     if (query == null) {

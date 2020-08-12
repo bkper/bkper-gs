@@ -12,14 +12,6 @@ class Transaction {
 
   book: Book;
 
-  private creditAccount: Account;
-  private debitAccount: Account;
-  private files: File[];
-  private informedDate: Date;
-  private informedDateValue: number;
-  private informedDateText: string;
-  private postDate: Date;
-
   /**
    * @returns The id of the Transaction
    */
@@ -32,6 +24,20 @@ class Transaction {
    */
   public isPosted(): boolean {
     return this.wrapped.posted;
+  }
+
+  /**
+   * @returns True if transaction is checked
+   */
+  public isChecked(): boolean {
+    return this.wrapped.checked;
+  }
+
+  /**
+   * @returns True if transaction is in trash
+   */  
+  public isTrashed(): boolean {
+    return this.wrapped.trashed;
   }
 
   /**
@@ -49,14 +55,11 @@ class Transaction {
   }
 
   public getFiles(): File[] {
-    if (this.files == null) {
       if (this.wrapped.files && this.wrapped.files.length > 0) {
-        this.files = Utils_.wrapObjects(new File(), this.wrapped.files)
+        return Utils_.wrapObjects(new File(), this.wrapped.files)
       } else {
-        this.files = [];
+        return [];
       }
-    }
-    return this.files;
   }
 
   /**
@@ -80,7 +83,7 @@ class Transaction {
    * @returns The credit account. The same as origin account.
    */
   public getCreditAccount(): Account {
-    return this.creditAccount;
+    return this.wrapped.creditAccount != null ? this.book.getAccount(this.wrapped.creditAccount.id) : null;;
   }
 
   /**
@@ -92,14 +95,46 @@ class Transaction {
     } else {
       return "";
     }
+  }  
+
+  /**
+   * 
+   * Sets the credit/origin Account of the Transaction. Same as from()
+   * 
+   * @param account Account id, name or object
+   * 
+   * @returns This Transaction, for chainning
+   */
+  public setCreditAccount(account: string | Account): Transaction {
+    if (typeof account == "string") {
+      account = this.book.getAccount(account)
+    }
+    if (account != null && account.getId() != null) {
+      this.wrapped.creditAccount = account.wrapped
+    }
+    return this;
   }
+
+  /**
+   * 
+   * Sets the credit/origin Account of the Transaction. Same as setCreditAccount()
+   * 
+   * @param account Account id, name or object
+   * 
+   * @returns This Transaction, for chainning
+   */
+  public from(account: string | Account): Transaction {
+    return this.setCreditAccount(account);
+  }
+
 
   //DESTINATION ACCOUNT
   /**
    * @returns The debit account. The same as destination account.
+   * 
    */
   public getDebitAccount(): Account {
-    return this.debitAccount;
+    return this.wrapped.debitAccount != null ? this.book.getAccount(this.wrapped.debitAccount.id) : null;
   }
 
   /**
@@ -113,6 +148,36 @@ class Transaction {
     }
   }
 
+  /**
+   * 
+   * Sets the debit/origin Account of the Transaction. Same as to()
+   * 
+   * @param account Account id, name or object
+   * 
+   * @returns This Transaction, for chainning
+   */
+  public setDebitAccount(account: string | Account): Transaction {
+    if (typeof account == "string") {
+      account = this.book.getAccount(account)
+    }
+    if (account != null && account.getId() != null) {
+      this.wrapped.debitAccount = account.wrapped
+    }
+    return this;
+  }
+
+  /**
+   * 
+   * Sets the debit/origin Account of the Transaction. Same as setDebitAccount()
+   * 
+   * @param account Account id, name or object
+   * 
+   * @returns This Transaction, for chainning
+   */
+  public to(account: string | Account): Transaction {
+    return this.setDebitAccount(account);
+  }
+
 
   //AMOUNT
   /**
@@ -120,6 +185,17 @@ class Transaction {
    */
   public getAmount(): number {
     return this.wrapped.amount != null && this.wrapped.amount.trim() != '' ? +this.wrapped.amount : null;
+  }
+
+  /**
+   * 
+   * Sets the amount of the Transaction.
+   * 
+   * @returns This Transaction, for chainning
+   */
+  public setAmount(amount: number): Transaction {
+    this.wrapped.amount = amount+'';
+    return this;
   }
 
   /**
@@ -206,47 +282,74 @@ class Transaction {
     return this.wrapped.description;
   }
 
-
-  //INFORMED DATE
   /**
-   * @returns The date the user informed for this transaction, adjusted to book's time zone
+   * 
+   * Sets the description of the Transaction.
+   * 
+   * @returns This Transaction, for chainning
    */
-  public getInformedDate(): Date {
-    if (this.informedDate == null) {
-      this.informedDate = Utils_.convertValueToDate(this.getInformedDateValue(), this.book.getTimeZoneOffset());
-    }
-    return this.informedDate;
-  }
+  public setDescription(description: string): Transaction {
+    this.wrapped.description = description;
+    return this;
+  }  
 
 
-  /**
-   * @returns The date the user informed for this transaction. The number format is YYYYMMDD
-   */
-  public getInformedDateValue(): number {
-    return this.informedDateValue;
-  }
+  //DATE
 
   /**
-   * @returns The date the user informed for this transaction, formatted according to the date pattern of [[Book]].
+   * @returns The Transaction date, in ISO format yyyy-MM-dd
    */
-  public getInformedDateText(): string {
-    return this.informedDateText;
-  }
-
-  //POST DATE
-  /**
-   * @returns {Date} The date time user has recorded/posted this transaction
-   */
-  public getPostDate(): Date {
-    return this.postDate;
+  public getDate(): string {
+    return this.wrapped.date;
   }
 
   /**
-   * @returns The date time user has recorded/posted this transaction, formatted according to the date pattern of [[Book]].
-   */
-  public getPostDateText(): string {
-    return Utilities.formatDate(this.getPostDate(), this.book.getTimeZone(), this.book.getDatePattern() + " HH:mm:ss")
+   * 
+   * Sets the date of the Transaction, in ISO format yyyy-MM-dd.
+   * 
+   * @returns This Transaction, for chainning
+   */  
+  public setDate(date: string): Transaction {
+    this.wrapped.date = date;
+    return this;
   }
+
+  /**
+   * @returns The Transaction Date object, on the time zone of the [[Book]].
+   */
+  public getDateObject(): Date {
+      return Utils_.convertValueToDate(this.getInformedDateValue(), this.book.getTimeZoneOffset());
+  }
+
+  /**
+   * @returns The Transaction date number, in format YYYYMMDD.
+   */
+  public getDateValue(): number {
+    return this.wrapped.dateValue;
+  }
+  
+  /**
+   * @returns The Transaction date, formatted on the date pattern of the [[Book]].
+   */
+  public getDateFormatted(): string {
+    return this.wrapped.dateFormatted;
+  }
+
+  /**
+   * @returns The date the transaction was created
+   */
+  public getCreatedAt(): Date {
+    return new Date(new Number(this.wrapped.createdAt).valueOf());
+  }
+
+  /**
+   * @returns The date the transaction was created, formatted according to the date pattern of [[Book]].
+   */
+  public getCreatedAtFormatted(): string {
+      return Utilities.formatDate(this.getCreatedAt(), this.book.getTimeZone(), this.book.getDatePattern() + " HH:mm:ss");
+  }
+
+
 
 
   //EVOLVED BALANCES
@@ -305,15 +408,85 @@ class Transaction {
     return this;
   }  
 
-  configure_(): void {
-    var creditAccount = this.wrapped.creditAccount != null ? this.book.getAccount(this.wrapped.creditAccount.id) : null;
-    var debitAccount = this.wrapped.debitAccount != null ? this.book.getAccount(this.wrapped.debitAccount.id) : null;
-    this.creditAccount = creditAccount;
-    this.debitAccount = debitAccount;
-    this.informedDateValue = this.wrapped.dateValue;
-    this.informedDateText = this.wrapped.dateFormatted;
-    this.postDate = new Date(new Number(this.wrapped.createdAt).valueOf());
+  /**
+   * Perform edit transaction
+   */  
+  public edit(): Transaction {
+    let operation = TransactionService_.editTransaction(this.book.getId(), this.wrapped);
+    this.wrapped = operation.transaction;
+    this.book.clearAccountsCache();
+    return this;
+  }  
+
+  /**
+   * Remove the Transaction to trash
+   */  
+  public remove(): Transaction {
+    let operation = TransactionService_.removeTransaction(this.book.getId(), this.wrapped);
+    this.wrapped = operation.transaction;
+    this.book.clearAccountsCache();
+    return this;
+  }  
+
+  /**
+   * Restore the transaction from trash
+   */  
+  public restore(): Transaction {
+    let operation = TransactionService_.restoreTransaction(this.book.getId(), this.wrapped);
+    this.wrapped = operation.transaction;
+    this.book.clearAccountsCache();
+    return this;
+  }  
+
+
+  //DEPRECATED
+
+   /**
+   * @returns The date the user informed for this transaction, adjusted to book's time zone
+   * 
+   * @deprecated Use getDateObject instead
+   */
+  public getInformedDate(): Date {
+    return this.getDateObject();
   }
+
+
+  /**
+   * @returns The date numbe. The number format is YYYYMMDD
+   * 
+   * @deprecated use getDateValue instead
+   */
+  public getInformedDateValue(): number {
+    return this.getDateValue();
+  }
+
+  /**
+   * @returns The date the user informed for this transaction, formatted according to the date pattern of [[Book]].
+   * 
+   * @deprecated use getDateFormatted instead
+   */
+  public getInformedDateText(): string {
+    return this.getDateFormatted();
+  }
+
+
+  /**
+   * @returns {Date} The date time user has recorded/posted this transaction
+   * 
+   * @deprecated use getCreatedAt instead
+   */
+  public getPostDate(): Date {
+    return this.getCreatedAt();
+  }
+
+  /**
+   * @returns The date time user has recorded/posted this transaction, formatted according to the date pattern of [[Book]].
+   * 
+   * @deprecated use getCreatedAtFormatted instead
+   */
+  public getPostDateText(): string {
+    return this.getCreatedAtFormatted();
+  } 
 
 
 }

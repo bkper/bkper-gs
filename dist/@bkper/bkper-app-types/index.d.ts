@@ -749,6 +749,18 @@ declare namespace Bkper {
         check(): Transaction;
 
         /**
+         * Perform edit transaction
+         */
+        edit(): Transaction;
+
+        /**
+         * Sets the credit/origin Account of the Transaction. Same as setCreditAccount()
+         *
+         * @returns This Transaction, for chainning
+         */
+        from(account: string | Account): Transaction;
+
+        /**
          * Gets the balance that the [[Account]] has at that day, when listing transactions of that Account.
          *
          * Evolved balances is returned when searching for transactions of a permanent [[Account]].
@@ -761,6 +773,16 @@ declare namespace Bkper {
          * @returns The amount of the transaction
          */
         getAmount(): number;
+
+        /**
+         * @returns The date the transaction was created
+         */
+        getCreatedAt(): Date;
+
+        /**
+         * @returns The date the transaction was created, formatted according to the date pattern of [[Book]].
+         */
+        getCreatedAtFormatted(): string;
 
         /**
          * @returns The credit account. The same as origin account.
@@ -778,7 +800,28 @@ declare namespace Bkper {
         getCreditAmount(account: Account | string): number;
 
         /**
+         * @returns The Transaction date, in ISO format yyyy-MM-dd
+         */
+        getDate(): string;
+
+        /**
+         * @returns The Transaction date, formatted on the date pattern of the [[Book]].
+         */
+        getDateFormatted(): string;
+
+        /**
+         * @returns The Transaction Date object, on the time zone of the [[Book]].
+         */
+        getDateObject(): Date;
+
+        /**
+         * @returns The Transaction date number, in format YYYYMMDD.
+         */
+        getDateValue(): number;
+
+        /**
          * @returns The debit account. The same as destination account.
+         * 
          */
         getDebitAccount(): Account;
 
@@ -806,16 +849,22 @@ declare namespace Bkper {
 
         /**
          * @returns The date the user informed for this transaction, adjusted to book's time zone
+         *
+         * @deprecated Use getDateObject instead
          */
         getInformedDate(): Date;
 
         /**
          * @returns The date the user informed for this transaction, formatted according to the date pattern of [[Book]].
+         *
+         * @deprecated use getDateFormatted instead
          */
         getInformedDateText(): string;
 
         /**
-         * @returns The date the user informed for this transaction. The number format is YYYYMMDD
+         * @returns The date numbe. The number format is YYYYMMDD
+         *
+         * @deprecated use getDateValue instead
          */
         getInformedDateValue(): number;
 
@@ -831,11 +880,15 @@ declare namespace Bkper {
 
         /**
          * @returns The date time user has recorded/posted this transaction
+         *
+         * @deprecated use getCreatedAt instead
          */
         getPostDate(): Date;
 
         /**
          * @returns The date time user has recorded/posted this transaction, formatted according to the date pattern of [[Book]].
+         *
+         * @deprecated use getCreatedAtFormatted instead
          */
         getPostDateText(): string;
 
@@ -858,6 +911,58 @@ declare namespace Bkper {
          * @returns True if transaction was already posted to the accounts. False if is still a Draft.
          */
         isPosted(): boolean;
+
+        /**
+         * Remove the Transaction to trash
+         */
+        remove(): Transaction;
+
+        /**
+         * Restore the transaction from trash
+         */
+        restore(): Transaction;
+
+        /**
+         * Sets the amount of the Transaction.
+         *
+         * @returns This Transaction, for chainning
+         */
+        setAmount(amount: number): Transaction;
+
+        /**
+         * Sets the credit/origin Account of the Transaction. Same as from()
+         *
+         * @returns This Transaction, for chainning
+         */
+        setCreditAccount(account: string | Account): Transaction;
+
+        /**
+         * Sets the date of the Transaction, in ISO format yyyy-MM-dd.
+         *
+         * @returns This Transaction, for chainning
+         */
+        setDate(date: string): Transaction;
+
+        /**
+         * Sets the debit/origin Account of the Transaction. Same as to()
+         *
+         * @returns This Transaction, for chainning
+         */
+        setDebitAccount(account: string | Account): Transaction;
+
+        /**
+         * Sets the description of the Transaction.
+         *
+         * @returns This Transaction, for chainning
+         */
+        setDescription(description: string): Transaction;
+
+        /**
+         * Sets the debit/origin Account of the Transaction. Same as setDebitAccount()
+         *
+         * @returns This Transaction, for chainning
+         */
+        to(account: string | Account): Transaction;
 
         /**
          * Perform uncheck transaction

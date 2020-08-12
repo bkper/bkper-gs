@@ -412,7 +412,7 @@ class Transaction {
   }  
 
   /**
-   * Perform edit transaction
+   * Perform edit transaction, applying pending changes
    */  
   public edit(): Transaction {
     let operation = TransactionService_.editTransaction(this.book.getId(), this.wrapped);
@@ -422,7 +422,7 @@ class Transaction {
   }  
 
   /**
-   * Remove the Transaction to trash
+   * Remove the transaction, sending to trash
    */  
   public remove(): Transaction {
     let operation = TransactionService_.removeTransaction(this.book.getId(), this.wrapped);

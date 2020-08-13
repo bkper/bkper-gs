@@ -557,6 +557,13 @@ class Book {
     return new TransactionIterator(this, query);
   }
 
+  public getTransaction(id: string): Transaction {
+    let wrapped = TransactionService_.getTransaction(this.getId(), id);
+    let transaction = Utils_.wrapObject(new Transaction(), wrapped);
+    this.configureTransaction_(transaction);
+    return transaction;
+  }
+
 
 
 

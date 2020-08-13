@@ -8,13 +8,19 @@ class TransactionPage_ {
 
   constructor(book: Book, query: string, lastCursor: string) {
 
-    var transactionResponse = TransactionService_.searchTransactions(book, query, 1000, lastCursor);
+    var transactionList = TransactionService_.searchTransactions(book, query, 1000, lastCursor);
 
-    this.account = transactionResponse.account;
-    this.transactions = transactionResponse.items;
-    this.cursor = transactionResponse.cursor;
+    if (transactionList.items == null) {
+      transactionList.items = [];
+    }
+
+    this.transactions = Utils_.wrapObjects(new Transaction(), transactionList.items);
+    book.configureTransactions_(this.transactions);
+    this.cursor = transactionList.cursor;
+    if (transactionList.account) {
+      this.account = book.getAccount(transactionList.account)
+    }
     this.index = 0;
-  
     if (this.transactions == null || this.transactions.length == 0 || this.cursor == null || this.cursor == "") {
       this.reachEnd = true;
     } else {

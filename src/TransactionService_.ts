@@ -1,11 +1,5 @@
 namespace TransactionService_ {
 
-  export interface TransactionResponse {
-    items: Transaction[]
-    cursor: string
-    account: Account
-  }
-
   export function editTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
     var payload = JSON.stringify(transaction);
     var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions`).setMethod('put').setPayload(payload).fetch().getContentText();
@@ -36,8 +30,12 @@ namespace TransactionService_ {
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }  
 
+  export function getTransaction(bookId: string, id: string): bkper.Transaction {
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions/${id}`).setMethod('get').fetch().getContentText();
+    return JSON.parse(responseJSON) as bkper.Transaction;
+  }  
 
-  export function searchTransactions(book: Book, query: string, limit: number, cursor?: string): TransactionResponse {
+  export function searchTransactions(book: Book, query: string, limit: number, cursor?: string): bkper.TransactionList {
     if (query == null) {
       query = "";
     }
@@ -49,28 +47,7 @@ namespace TransactionService_ {
     }
 
     var responseJSON = request.fetch().getContentText();
-    
-    var transactionResponse: TransactionResponse = {
-      items: [],
-      cursor: null,
-      account: null
-    };
-    
-    if (responseJSON == null || responseJSON == "") {
-      transactionResponse;
-    }    
-    var transactionsPlain: bkper.TransactionList = JSON.parse(responseJSON);
-
-    if (transactionsPlain == null) {
-      return transactionResponse;
-    }
-    transactionResponse.items = Utils_.wrapObjects(new Transaction(), transactionsPlain.items);
-    book.configureTransactions_(transactionResponse.items);
-    transactionResponse.cursor = transactionsPlain.cursor;
-    if (transactionsPlain.account) {
-      transactionResponse.account = book.getAccount(transactionsPlain.account)
-    }
-    return transactionResponse;
+    return JSON.parse(responseJSON);
   }
 
   export function record(book: Book, transactions: string | any[] | any[][], timezone?: string): string {

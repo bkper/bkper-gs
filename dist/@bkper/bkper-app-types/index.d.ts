@@ -596,6 +596,8 @@ declare namespace Bkper {
          */
         getTimeZoneOffset(): number;
 
+        getTransaction(id: string): Transaction;
+
         /**
          * Get Book transactions based on a query.
          *
@@ -749,7 +751,7 @@ declare namespace Bkper {
         check(): Transaction;
 
         /**
-         * Perform edit transaction
+         * Perform edit transaction, applying pending changes
          */
         edit(): Transaction;
 
@@ -840,6 +842,9 @@ declare namespace Bkper {
          */
         getDescription(): string;
 
+        /**
+         * @returns The files attached to the transaction
+         */
         getFiles(): File[];
 
         /**
@@ -923,7 +928,7 @@ declare namespace Bkper {
         isTrashed(): boolean;
 
         /**
-         * Remove the Transaction to trash
+         * Remove the transaction, sending to trash
          */
         remove(): Transaction;
 

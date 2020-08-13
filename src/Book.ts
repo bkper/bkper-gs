@@ -557,6 +557,9 @@ class Book {
     return new TransactionIterator(this, query);
   }
 
+  /**
+   * Retrieve a transaction by id
+   */
   public getTransaction(id: string): Transaction {
     let wrapped = TransactionService_.getTransaction(this.getId(), id);
     let transaction = Utils_.wrapObject(new Transaction(), wrapped);

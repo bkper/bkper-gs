@@ -1,6 +1,6 @@
 namespace TransactionService_ {
 
-  export function editTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
+  export function updateTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
     var payload = JSON.stringify(transaction);
     var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions`).setMethod('put').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.TransactionOperation;

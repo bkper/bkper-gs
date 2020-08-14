@@ -596,6 +596,9 @@ declare namespace Bkper {
          */
         getTimeZoneOffset(): number;
 
+        /**
+         * Retrieve a transaction by id
+         */
         getTransaction(id: string): Transaction;
 
         /**
@@ -749,11 +752,6 @@ declare namespace Bkper {
          * Perform check transaction
          */
         check(): Transaction;
-
-        /**
-         * Perform edit transaction, applying pending changes
-         */
-        edit(): Transaction;
 
         /**
          * Sets the credit/origin Account of the Transaction. Same as setCreditAccount()
@@ -983,6 +981,11 @@ declare namespace Bkper {
          * Perform uncheck transaction
          */
         uncheck(): Transaction;
+
+        /**
+         * Upddate transaction, applying pending changes
+         */
+        update(): Transaction;
 
     }
 

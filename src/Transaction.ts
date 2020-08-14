@@ -412,10 +412,10 @@ class Transaction {
   }  
 
   /**
-   * Perform edit transaction, applying pending changes
+   * Upddate transaction, applying pending changes
    */  
-  public edit(): Transaction {
-    let operation = TransactionService_.editTransaction(this.book.getId(), this.wrapped);
+  public update(): Transaction {
+    let operation = TransactionService_.updateTransaction(this.book.getId(), this.wrapped);
     this.wrapped = operation.transaction;
     this.book.clearAccountsCache();
     return this;
@@ -490,6 +490,10 @@ class Transaction {
   public getPostDateText(): string {
     return this.getCreatedAtFormatted();
   } 
+
+  edit(): Transaction {
+    return this.update();
+  }
 
 
 }

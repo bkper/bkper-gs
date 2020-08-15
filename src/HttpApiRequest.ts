@@ -107,7 +107,22 @@ class HttpApiRequest  {
     var retries = 0;
     var sleepTime = 1000;
     while (true) {
-      var response = this.httpRequest.fetch();
+      let response;
+      try {
+        response = this.httpRequest.fetch();
+      } catch (addressUnavailable) {
+        //Error on fetch service
+        if (retries > 4) {
+            throw addressUnavailable;
+        } else {
+          Logger.log("Retrying in " + (sleepTime / 1000) + " secs...");
+          Utilities.sleep(sleepTime);
+          sleepTime = sleepTime * 2;
+          retries++;
+          continue;
+        }
+      }
+
       if (response.getResponseCode() >= 200 && response.getResponseCode() < 300) {
         //OK
         return response;      

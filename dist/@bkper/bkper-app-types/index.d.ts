@@ -71,14 +71,26 @@ declare namespace Bkper {
     export interface Account {
 
         /**
-         * Gets the balance based on credit nature of this Account
+         * Add a group to the Account.
          *
-         * @returns The balance of this account
+         * @returns This Account, for chainning.
+         */
+        addGroup(group: string | Group): Account;
+
+        /**
+         * Perform create new account.
+         */
+        create(): Account;
+
+        /**
+         * Gets the balance based on credit nature of this Account.
+         *
+         * @returns The balance of this account.
          */
         getBalance(raw?: boolean): number;
 
         /**
-         * Gets the checked balance based on credit nature of this Account
+         * Gets the checked balance based on credit nature of this Account.
          *
          * @returns The checked balance of this Account
          */
@@ -98,22 +110,22 @@ declare namespace Bkper {
         getGroups(): Group[];
 
         /**
-         * Gets the account internal id
+         * Gets the account internal id.
          */
         getId(): string;
 
         /**
-         * Gets the account name
+         * Gets the account name.
          */
         getName(): string;
 
         /**
-         * @returns The name of this account without spaces and special characters
+         * @returns The name of this account without spaces or special characters.
          */
         getNormalizedName(): string;
 
         /**
-         * Gets the custom properties stored in this Account
+         * Gets the custom properties stored in this Account.
          */
         getProperties(): any;
 
@@ -123,12 +135,12 @@ declare namespace Bkper {
         getProperty(...keys: string[]): string;
 
         /**
-         * @returns The type for of this account
+         * @returns The type for of this account.
          */
         getType(): AccountType;
 
         /**
-         * Tell if this account is Active or otherwise Archived
+         * Tell if this account is Active or otherwise Archived.
          */
         isActive(): boolean;
 
@@ -171,6 +183,47 @@ declare namespace Bkper {
          * @returns True if its a permanent Account
          */
         isPermanent(): boolean;
+
+        /**
+         * Perform delete account.
+         */
+        remove(): Account;
+
+        /**
+         * Remove a group from the Account.
+         */
+        removeGroup(group: string | Group): Account;
+
+        /**
+         * Sets the groups of the Account.
+         *
+         * @returns This Account, for chainning.
+         */
+        setGroups(groups: string[] | Group[]): Account;
+
+        /**
+         * Sets the name of the Account.
+         *
+         * @returns This Account, for chainning.
+         */
+        setName(name: string): Account;
+
+        /**
+         * Sets a custom property in the Account.
+         */
+        setProperty(key: string, value: string): Account;
+
+        /**
+         * Sets the type of the Account.
+         *
+         * @returns This Account, for chainning
+         */
+        setType(type: AccountType): Account;
+
+        /**
+         * Perform update account, applying pending changes.
+         */
+        update(): Account;
 
     }
 
@@ -624,6 +677,21 @@ declare namespace Bkper {
         getTransactions(query?: string): TransactionIterator;
 
         /**
+         * Instantiate a new [[Account]]
+         */
+        newAccount(): Account;
+
+        /**
+         * Instantiate a new [[Group]]
+         */
+        newGroup(): Group;
+
+        /**
+         * Instantiate a new [[Transaction]]
+         */
+        newTransaction(): Transaction;
+
+        /**
          * Record [[Transactions]] on the Book.
          *
          * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
@@ -705,6 +773,11 @@ declare namespace Bkper {
     export interface Group {
 
         /**
+         * Perform create new group.
+         */
+        create(): Group;
+
+        /**
          * @returns All Accounts of this group.
          */
         getAccounts(): Account[];
@@ -739,6 +812,28 @@ declare namespace Bkper {
          */
         hasAccounts(): boolean;
 
+        /**
+         * Perform delete group.
+         */
+        remove(): Group;
+
+        /**
+         * Sets the name of the Group.
+         *
+         * @returns This Group, for chainning.
+         */
+        setName(name: string): Group;
+
+        /**
+         * Sets a custom property in the Group.
+         */
+        setProperty(key: string, value: string): Group;
+
+        /**
+         * Perform update group, applying pending changes.
+         */
+        update(): Group;
+
     }
 
     /**
@@ -749,14 +844,26 @@ declare namespace Bkper {
     export interface Transaction {
 
         /**
-         * Perform check transaction
+         * Add a urls to the Transaction. Url starts with https://
+         *
+         * @returns This Transaction, for chainning.
+         */
+        addUrl(url: string): Transaction;
+
+        /**
+         * Perform check transaction.
          */
         check(): Transaction;
 
         /**
-         * Sets the credit/origin Account of the Transaction. Same as setCreditAccount()
+         * Perform create new draft transaction.
+         */
+        create(): Transaction;
+
+        /**
+         * Sets the credit/origin Account of the Transaction. Same as setCreditAccount().
          *
-         * @returns This Transaction, for chainning
+         * @returns This Transaction, for chainning.
          */
         from(account: string | Account): Transaction;
 
@@ -770,12 +877,12 @@ declare namespace Bkper {
         getAccountBalance(raw?: boolean): number;
 
         /**
-         * @returns The amount of the transaction
+         * @returns The amount of the transaction.
          */
         getAmount(): number;
 
         /**
-         * @returns The date the transaction was created
+         * @returns The date the transaction was created.
          */
         getCreatedAt(): Date;
 
@@ -795,12 +902,12 @@ declare namespace Bkper {
         getCreditAccountName(): string;
 
         /**
-         * Get the absolute amount of this transaction if the given account is at the credit side, else null
+         * Get the absolute amount of this transaction if the given account is at the credit side, else null.
          */
         getCreditAmount(account: Account | string): number;
 
         /**
-         * @returns The Transaction date, in ISO format yyyy-MM-dd
+         * @returns The Transaction date, in ISO format yyyy-MM-dd.
          */
         getDate(): string;
 
@@ -831,29 +938,29 @@ declare namespace Bkper {
         getDebitAccountName(): string;
 
         /**
-         * Gets the absolute amount of this transaction if the given account is at the debit side, else null
+         * Gets the absolute amount of this transaction if the given account is at the debit side, else null.
          */
         getDebitAmount(account: Account | string): number;
 
         /**
-         * @returns The description of this transaction
+         * @returns The description of this transaction.
          */
         getDescription(): string;
 
         /**
-         * @returns The files attached to the transaction
+         * @returns The files attached to the transaction.
          */
         getFiles(): File[];
 
         /**
-         * @returns The id of the Transaction
+         * @returns The id of the Transaction.
          */
         getId(): string;
 
         /**
-         * @returns The date the user informed for this transaction, adjusted to book's time zone
+         * @returns The date the user informed for this transaction, adjusted to book's time zone.
          *
-         * @deprecated Use getDateObject instead
+         * @deprecated Use getDateObject instead.
          */
         getInformedDate(): Date;
 
@@ -865,9 +972,9 @@ declare namespace Bkper {
         getInformedDateText(): string;
 
         /**
-         * @returns The date numbe. The number format is YYYYMMDD
+         * @returns The date numbe. The number format is YYYYMMDD.
          *
-         * @deprecated use getDateValue instead
+         * @deprecated use getDateValue instead.
          */
         getInformedDateValue(): number;
 
@@ -882,36 +989,36 @@ declare namespace Bkper {
         getOtherAccountName(account: string | Account): string;
 
         /**
-         * @returns The date time user has recorded/posted this transaction
+         * @returns The date time user has recorded/posted this transaction.
          *
-         * @deprecated use getCreatedAt instead
+         * @deprecated use getCreatedAt instead.
          */
         getPostDate(): Date;
 
         /**
          * @returns The date time user has recorded/posted this transaction, formatted according to the date pattern of [[Book]].
          *
-         * @deprecated use getCreatedAtFormatted instead
+         * @deprecated use getCreatedAtFormatted instead.
          */
         getPostDateText(): string;
 
         /**
-         * @returns All #hashtags used on the transaction
+         * @returns All #hashtags used on the transaction.
          */
         getTags(): string[];
 
         /**
-         * @returns All urls of the transaction
+         * @returns All urls of the transaction.
          */
         getUrls(): string[];
 
         /**
-         * Check if the transaction has the specified tag
+         * Check if the transaction has the specified tag.
          */
         hasTag(tag: string): boolean;
 
         /**
-         * @returns True if transaction is checked
+         * @returns True if transaction is checked.
          */
         isChecked(): boolean;
 
@@ -921,31 +1028,36 @@ declare namespace Bkper {
         isPosted(): boolean;
 
         /**
-         * @returns True if transaction is in trash
+         * @returns True if transaction is in trash.
          */
         isTrashed(): boolean;
 
         /**
-         * Remove the transaction, sending to trash
+         * Perform post transaction, changing credit and debit [[Account]] balances.
+         */
+        post(): Transaction;
+
+        /**
+         * Remove the transaction, sending to trash.
          */
         remove(): Transaction;
 
         /**
-         * Restore the transaction from trash
+         * Restore the transaction from trash.
          */
         restore(): Transaction;
 
         /**
          * Sets the amount of the Transaction.
          *
-         * @returns This Transaction, for chainning
+         * @returns This Transaction, for chainning.
          */
         setAmount(amount: number): Transaction;
 
         /**
-         * Sets the credit/origin Account of the Transaction. Same as from()
+         * Sets the credit/origin Account of the Transaction. Same as from().
          *
-         * @returns This Transaction, for chainning
+         * @returns This Transaction, for chainning.
          */
         setCreditAccount(account: string | Account): Transaction;
 
@@ -957,33 +1069,40 @@ declare namespace Bkper {
         setDate(date: string): Transaction;
 
         /**
-         * Sets the debit/origin Account of the Transaction. Same as to()
+         * Sets the debit/origin Account of the Transaction. Same as to().
          *
-         * @returns This Transaction, for chainning
+         * @returns This Transaction, for chainning.
          */
         setDebitAccount(account: string | Account): Transaction;
 
         /**
          * Sets the description of the Transaction.
          *
-         * @returns This Transaction, for chainning
+         * @returns This Transaction, for chainning.
          */
         setDescription(description: string): Transaction;
 
         /**
-         * Sets the debit/origin Account of the Transaction. Same as setDebitAccount()
+         * Sets the Transaction urls. Url starts with https://
          *
-         * @returns This Transaction, for chainning
+         * @returns This Transaction, for chainning.
+         */
+        setUrls(urls: string[]): Transaction;
+
+        /**
+         * Sets the debit/origin Account of the Transaction. Same as setDebitAccount().
+         *
+         * @returns This Transaction, for chainning.
          */
         to(account: string | Account): Transaction;
 
         /**
-         * Perform uncheck transaction
+         * Perform uncheck transaction.
          */
         uncheck(): Transaction;
 
         /**
-         * Upddate transaction, applying pending changes
+         * Upddate transaction, applying pending changes.
          */
         update(): Transaction;
 

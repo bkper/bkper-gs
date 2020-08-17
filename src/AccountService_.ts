@@ -15,11 +15,21 @@ namespace AccountService_ {
     var accountPlain = JSON.parse(responseJSON);
   }
   
-  export function createAccount(bookId: string, account: bkper.Account): Account {
+  export function createAccount(bookId: string, account: bkper.Account): bkper.Account {
     var payload = JSON.stringify(account);
     var responseJSON = new HttpBooksApiV3Request(`${bookId}/accounts`).setMethod('post').setPayload(payload).fetch().getContentText();
-    var accountPlain = JSON.parse(responseJSON);
-    return Utils_.wrapObject(new Account(), accountPlain);;
+    return JSON.parse(responseJSON);
+  }
+
+  export function updateAccount(bookId: string, account: bkper.Account): bkper.Account {
+    var payload = JSON.stringify(account);
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/accounts`).setMethod('put').setPayload(payload).fetch().getContentText();
+    return JSON.parse(responseJSON);
+  }
+
+  export function deleteAccount(bookId: string, account: bkper.Account): bkper.Account {
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/accounts/${account.id}`).setMethod('delete').fetch().getContentText();
+    return JSON.parse(responseJSON);
   }
 
   export function createAccounts(bookId: string, accounts: bkper.Account[]): Account[] {

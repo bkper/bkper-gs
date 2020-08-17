@@ -28,10 +28,25 @@ class Group {
   }
 
   /**
+   * 
+   * Sets the name of the Group.
+   * 
+   * @returns This Group, for chainning.
+   */    
+  public setName(name: string): Group {
+    this.wrapped.name = name;
+    return this;
+  }  
+
+  /**
    * @returns The name of this group without spaces and special characters
    */
   public getNormalizedName(): string {
-    return this.wrapped.normalizedName;
+    if (this.wrapped.normalizedName) {
+      return this.wrapped.normalizedName;
+    } else {
+      return Normalizer_.normalizeText(this.getName())
+    }
   }
 
 
@@ -81,5 +96,49 @@ class Group {
     }
     return null;
   }
+
+  /**
+   * Sets a custom property in the Group.
+   * 
+   * @param key The property key
+   * @param value The property value
+   */
+  public setProperty(key: string, value: string): Group {
+    if (this.wrapped.properties == null) {
+      this.wrapped.properties = {};
+    }
+    this.wrapped.properties[key] = value;
+    return this;
+  }
   
+
+
+  /**
+   * Perform create new group.
+   */
+  public create(): Group {
+    this.wrapped = GroupService_.createGroup(this.book.getId(), this.wrapped);
+    this.book.clearAccountsCache();
+    return this;
+  }   
+
+  /**
+   * Perform update group, applying pending changes.
+   */
+  public update(): Group {
+    this.wrapped = GroupService_.updateGroup(this.book.getId(), this.wrapped);
+    this.book.clearAccountsCache();
+    return this;
+
+  }   
+  
+  /**
+   * Perform delete group.
+   */
+  public remove(): Group {
+    this.wrapped = GroupService_.deleteGroup(this.book.getId(), this.wrapped);
+    this.book.clearAccountsCache();
+    return this;
+  }   
+
 }

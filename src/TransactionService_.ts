@@ -1,8 +1,20 @@
 namespace TransactionService_ {
+  
+  export function createTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
+    var payload = JSON.stringify(transaction);
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions`).setMethod('post').setPayload(payload).fetch().getContentText();
+    return JSON.parse(responseJSON) as bkper.TransactionOperation;
+  }
 
   export function updateTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
     var payload = JSON.stringify(transaction);
     var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions`).setMethod('put').setPayload(payload).fetch().getContentText();
+    return JSON.parse(responseJSON) as bkper.TransactionOperation;
+  }  
+
+  export function postTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
+    var payload = JSON.stringify(transaction);
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions/post`).setMethod('patch').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }
 

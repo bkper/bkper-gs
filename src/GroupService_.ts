@@ -1,19 +1,22 @@
 namespace GroupService_ {
-  // export function getGroups(bookId: string): Group[] {
 
-  //   var responseJSON = new HttpBooksApiV2Request(`${bookId}/groups`).fetch().getContentText();
+  export function createGroup(bookId: string, group: bkper.Group): bkper.Group {
+    var payload = JSON.stringify(group);
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/groups`).setMethod('post').setPayload(payload).fetch().getContentText();
+    return JSON.parse(responseJSON);
+  }
 
-  //   if (responseJSON == null || responseJSON == "") {
-  //     return [];
-  //   }
+  export function updateGroup(bookId: string, group: bkper.Group): bkper.Group {
+    var payload = JSON.stringify(group);
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/groups`).setMethod('put').setPayload(payload).fetch().getContentText();
+    return JSON.parse(responseJSON);
+  }
 
-  //   var groupsPlain = JSON.parse(responseJSON).items;
-  //   if (groupsPlain == null) {
-  //     return [];
-  //   }
-  //   var groups = Utils_.wrapObjects(new Group(), groupsPlain);
-  //   return groups;
-  // }
+  export function deleteGroup(bookId: string, group: bkper.Group): bkper.Group {
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}/groups/${group.id}`).setMethod('delete').fetch().getContentText();
+    return JSON.parse(responseJSON);
+  }
+
 
   export function createGroups(bookId: string, groups: bkper.Group[]): Group[] {
 

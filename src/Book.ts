@@ -249,14 +249,32 @@ class Book {
   }
 
 
-  // private transactionPosted_(transaction: Transaction) {
-  //   var creditAccount = this.getAccount(transaction.wrapped.creditAccId);
-  //   creditAccount.wrapped.balance = transaction.wrapped.caBal;
+  /**
+   * Instantiate a new [[Transaction]]
+   */
+  public newTransaction(): Transaction {
+    let transaction = Utils_.wrapObject(new Transaction(), {});
+    this.configureTransaction_(transaction);
+    return transaction;
+  }
 
-  //   var debitAccount = this.getAccount(transaction.wrapped.debitAccId);
-  //   debitAccount.wrapped.balance = transaction.wrapped.daBal;
-  //   transaction.configure_();
-  // }
+  /**
+   * Instantiate a new [[Account]]
+   */  
+  public newAccount(): Account {
+    let account = Utils_.wrapObject(new Account(), {});
+    account.book = this;
+    return account;
+  }
+
+  /**
+   * Instantiate a new [[Group]]
+   */  
+  public newGroup(): Group {
+    let group = Utils_.wrapObject(new Group(), {});
+    group.book = this;
+    return group;
+  }
 
   /**
    * Gets all [[Accounts]] of this Book
@@ -292,6 +310,7 @@ class Book {
 
     return account;
   }
+
 
 
   /**
@@ -566,8 +585,6 @@ class Book {
     this.configureTransaction_(transaction);
     return transaction;
   }
-
-
 
 
 

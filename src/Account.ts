@@ -16,45 +16,62 @@ class Account {
   book: Book;
 
   /**
-   * Gets the account internal id
+   * Gets the account internal id.
    */
   public getId(): string {
     return this.wrapped.id;
   }
 
   /**
-   * Gets the account name
+   * Gets the account name.
    */
   public getName(): string {
     return this.wrapped.name;
   }
 
   /**
-   * Gets the account description
    * 
-   * @deprecated Use properties instead
+   * Sets the name of the Account.
    * 
-   */
-  public getDescription(): string {
-    return this.getProperty('description');
+   * @returns This Account, for chainning.
+   */    
+  public setName(name: string): Account {
+    this.wrapped.name = name;
+    return this;
   }
 
+
   /**
-   * @returns The name of this account without spaces and special characters
+   * @returns The name of this account without spaces or special characters.
    */
   public getNormalizedName(): string {
-    return this.wrapped.normalizedName;
+    if (this.wrapped.normalizedName) {
+      return this.wrapped.normalizedName;
+    } else {
+      return Normalizer_.normalizeText(this.getName())
+    }
   }
 
   /**
-   * @return The type for of this account
+   * @return The type for of this account.
    */
   public getType(): AccountType {
     return this.wrapped.type as AccountType;
   }
 
   /**
-   * Gets the custom properties stored in this Account
+   * 
+   * Sets the type of the Account.
+   * 
+   * @returns This Account, for chainning
+   */   
+  public setType(type: AccountType): Account {
+    this.wrapped.type = type;
+    return this;
+  }
+
+  /**
+   * Gets the custom properties stored in this Account.
    */  
   public getProperties(): any {
     return this.wrapped.properties != null ?  this.wrapped.properties : {};
@@ -77,11 +94,25 @@ class Account {
   }
 
   /**
-   * Gets the balance based on credit nature of this Account
+   * Sets a custom property in the Account.
+   * 
+   * @param key The property key
+   * @param value The property value
+   */
+  public setProperty(key: string, value: string): Account {
+    if (this.wrapped.properties == null) {
+      this.wrapped.properties = {};
+    }
+    this.wrapped.properties[key] = value;
+    return this;
+  }
+
+  /**
+   * Gets the balance based on credit nature of this Account.
    *  
    * @param raw True to get the raw balance, no matter the credit nature of this Account.
    * 
-   * @returns The balance of this account
+   * @returns The balance of this account.
    */
   public getBalance(raw?: boolean): number {
     var balance = 0;
@@ -97,7 +128,7 @@ class Account {
   }
 
   /**
-   * Gets the checked balance based on credit nature of this Account
+   * Gets the checked balance based on credit nature of this Account.
    * 
    * @param raw True to get the raw balance, no matter the credit nature of this Account.
    * 
@@ -117,7 +148,7 @@ class Account {
   }
   
   /**
-   * Tell if this account is Active or otherwise Archived
+   * Tell if this account is Active or otherwise Archived.
    */
   public isActive(): boolean {
     return !this.wrapped.archived;
@@ -177,7 +208,74 @@ class Account {
       }
     }
     return groups;
-  }  
+  }
+
+  /**
+   * Sets the groups of the Account.
+   * 
+   * @returns This Account, for chainning.
+   */  
+  public setGroups(groups: string[] | Group[]): Account {
+    this.wrapped.groups = null;
+    if (groups != null) {
+      groups.forEach((group: string | Group) => this.addGroup(group))
+    }
+    return this;
+  }
+  
+  /**
+   * Add a group to the Account.
+   * 
+   * @returns This Account, for chainning.
+   */
+  public addGroup(group: string | Group): Account {
+    if (this.wrapped.groups == null) {
+      this.wrapped.groups = [];
+    }
+
+    let groupObject: Group = null;
+    if (group instanceof Group) {
+      groupObject = group;
+    } else if (typeof group == "string") {
+      groupObject = this.book.getGroup(group);
+    }
+
+    if (groupObject) {
+      this.wrapped.groups.push(groupObject.getId())
+    }
+
+    return this;
+  }
+
+  /**
+   * Remove a group from the Account.
+   */
+  public removeGroup(group: string | Group): Account {
+    Logger.log(`GROUPS BEFORE: ${this.wrapped.groups}`)
+
+    if (this.wrapped.groups != null) {
+      let groupObject: Group = null;
+      if (group instanceof Group) {
+        groupObject = group;
+      } else if (typeof group == "string") {
+        groupObject = this.book.getGroup(group);
+      }
+      if (groupObject) {
+        for (let i = 0; i < this.wrapped.groups.length; i++) {
+          const groupId = this.wrapped.groups[i];
+          Logger.log(`VERIFY REMOVE: ${groupId} - ${groupObject.getId()}`)
+          if (groupId == groupObject.getId()) {
+            this.wrapped.groups.splice(i, 1);
+          }
+        }
+      }
+    }
+
+    Logger.log(`GROUPS AFTER: ${this.wrapped.groups}`)
+
+    return this;
+
+  }
 
   /**
    * Tell if this account is in the [[Group]]
@@ -215,7 +313,45 @@ class Account {
     return false;
   }
 
+  /**
+   * Perform create new account.
+   */
+  public create(): Account {
+    this.wrapped = AccountService_.createAccount(this.book.getId(), this.wrapped);
+    this.book.clearAccountsCache();
+    return this;
+  }   
+
+  /**
+   * Perform update account, applying pending changes.
+   */
+  public update(): Account {
+    this.wrapped = AccountService_.updateAccount(this.book.getId(), this.wrapped);
+    this.book.clearAccountsCache();
+    return this;
+
+  }   
+
+  /**
+   * Perform delete account.
+   */
+  public remove(): Account {
+    this.wrapped = AccountService_.deleteAccount(this.book.getId(), this.wrapped);
+    this.book.clearAccountsCache();
+    return this;
+  }   
 
 
+  //DEPRECATED
+
+  /**
+   * Gets the account description
+   * 
+   * @deprecated Use properties instead
+   * 
+   */
+  public getDescription(): string {
+    return this.getProperty('description');
+  }
 
 }

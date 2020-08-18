@@ -82,7 +82,9 @@ class Transaction {
     if (this.wrapped.urls == null) {
       this.wrapped.urls = [];
     }
-    this.wrapped.urls.push(url);
+    if (url) {
+      this.wrapped.urls.push(url);
+    }
     return this;
   }
 

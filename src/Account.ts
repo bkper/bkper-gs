@@ -78,6 +78,18 @@ class Account {
   }
 
   /**
+   * Sets the custom properties of the Account
+   * 
+   * @param properties Object with key/value pair properties
+   * 
+   * @returns This Account, for chainning. 
+   */
+  public setProperties(properties: {[name: string]: string}): Account {
+    this.wrapped.properties = properties;
+    return this;
+  }
+
+  /**
    * Gets the property value for given keys. First property found will be retrieved
    * 
    * @param keys The property key
@@ -98,6 +110,8 @@ class Account {
    * 
    * @param key The property key
    * @param value The property value
+   * 
+   * @returns This Account, for chainning. 
    */
   public setProperty(key: string, value: string): Account {
     if (this.wrapped.properties == null) {

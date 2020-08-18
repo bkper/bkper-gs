@@ -82,6 +82,18 @@ class Group {
   }
 
   /**
+   * Sets the custom properties of the Group
+   * 
+   * @param properties Object with key/value pair properties
+   * 
+   * @returns This Group, for chainning. 
+   */
+  public setProperties(properties: {[name: string]: string}): Group {
+    this.wrapped.properties = properties;
+    return this;
+  }
+
+  /**
    * Gets the property value for given keys. First property found will be retrieved
    * 
    * @param keys The property key

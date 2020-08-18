@@ -288,10 +288,10 @@ check-error@^1.0.2:
   resolved "https://registry.yarnpkg.com/check-error/-/check-error-1.0.2.tgz#574d312edd88bb5dd8912e9286dd6c0aed4aac82"
   integrity sha1-V00xLt2Iu13YkS6Sht1sCu1KrII=
 
-clasp-types@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/clasp-types/-/clasp-types-1.3.1.tgz#3cffe560b19dcfbfa951dfc4d1330e1814a37f85"
-  integrity sha512-9CvdpKfZ1fVdXA7FMlM2HFy979bHnT5DGrpJmK6S/CrFzvq2c735BY0OPoQ6K2TO7p3vEDTlcKWxXXKkbXgmMQ==
+clasp-types@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/clasp-types/-/clasp-types-1.4.0.tgz#d5f9ac8e648cd72f41b3b2d6198e73c76267b0da"
+  integrity sha512-fc0eQ4BHLyAll4HFEk7odCg8FAI2awJsTvqTO3ATUQ9S51cATo2icM3xlKn1462F5x9GF2DiIXutN270J1s/kA==
   dependencies:
     commander "^5.1.0"
     fs-extra "^9.0.0"

@@ -263,6 +263,7 @@ class Book {
    */  
   public newAccount(): Account {
     let account = Utils_.wrapObject(new Account(), {});
+    account.setArchived(false);
     account.book = this;
     return account;
   }

@@ -160,13 +160,24 @@ class Account {
       return Utils_.getRepresentativeValue(balance, this.isCredit());
     }
   }
-  
+
   /**
-   * Tell if this account is Active or otherwise Archived.
+   * Tell if this account is Archived.
+   */  
+  public isArchived(): boolean {
+    return this.wrapped.archived;
+  }
+
+  /**
+   * Set account archived/unarchived.
+   * 
+   * @returns This Account, for chainning.
    */
-  public isActive(): boolean {
-    return !this.wrapped.archived;
-  };
+  public setArchived(archived: boolean): Account {
+    this.wrapped.archived = archived;
+    return this;
+  }
+  
 
   /**
    * 
@@ -367,5 +378,14 @@ class Account {
   public getDescription(): string {
     return this.getProperty('description');
   }
+
+  /**
+   * Tell if this account is Active or otherwise Archived.
+   * 
+   *  @deprecated Use isArchived instead
+   */
+  public isActive(): boolean {
+    return !this.wrapped.archived;
+  };
 
 }

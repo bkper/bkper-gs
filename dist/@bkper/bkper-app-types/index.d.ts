@@ -141,8 +141,15 @@ declare namespace Bkper {
 
         /**
          * Tell if this account is Active or otherwise Archived.
+         *
+         * @deprecated Use isArchived instead
          */
         isActive(): boolean;
+
+        /**
+         * Tell if this account is archived.
+         */
+        isArchived(): boolean;
 
         /**
          * Tell if the account has a Credit nature or Debit otherwise
@@ -193,6 +200,13 @@ declare namespace Bkper {
          * Remove a group from the Account.
          */
         removeGroup(group: string | Group): Account;
+
+        /**
+         * Set account archived/unarchived.
+         *
+         * @returns This Account, for chainning.
+         */
+        setArchived(archived: boolean): Account;
 
         /**
          * Sets the groups of the Account.

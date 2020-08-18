@@ -162,7 +162,7 @@ class Account {
   }
 
   /**
-   * Tell if this account is Archived.
+   * Tell if this account is archived.
    */  
   public isArchived(): boolean {
     return this.wrapped.archived;

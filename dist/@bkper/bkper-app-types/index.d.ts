@@ -209,7 +209,16 @@ declare namespace Bkper {
         setName(name: string): Account;
 
         /**
+         * Sets the custom properties of the Account
+         *
+         * @returns This Account, for chainning.
+         */
+        setProperties(properties: {[name: string]: string}): Account;
+
+        /**
          * Sets a custom property in the Account.
+         *
+         * @returns This Account, for chainning.
          */
         setProperty(key: string, value: string): Account;
 
@@ -823,6 +832,13 @@ declare namespace Bkper {
          * @returns This Group, for chainning.
          */
         setName(name: string): Group;
+
+        /**
+         * Sets the custom properties of the Group
+         *
+         * @returns This Group, for chainning.
+         */
+        setProperties(properties: {[name: string]: string}): Group;
 
         /**
          * Sets a custom property in the Group.

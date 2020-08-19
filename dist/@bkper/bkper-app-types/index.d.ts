@@ -874,7 +874,14 @@ declare namespace Bkper {
     export interface Transaction {
 
         /**
-         * Add a urls to the Transaction. Url starts with https://
+         * Add a remote id to the Transaction.
+         *
+         * @returns This Transaction, for chainning.
+         */
+        addRemoteId(remoteId: string): Transaction;
+
+        /**
+         * Add a url to the Transaction. Url starts with https://
          *
          * @returns This Transaction, for chainning.
          */
@@ -1031,6 +1038,13 @@ declare namespace Bkper {
          * @deprecated use getCreatedAtFormatted instead.
          */
         getPostDateText(): string;
+
+        /**
+         * Remote ids are used to avoid duplication.
+         *
+         * @returns The remote ids of the Transaction.
+         */
+        getRemoteIds(): string[];
 
         /**
          * @returns All #hashtags used on the transaction.

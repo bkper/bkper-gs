@@ -258,6 +258,12 @@ class Transaction {
    * @returns This Transaction, for chainning.
    */
   public setAmount(amount: number): Transaction {
+    if (amount == 0) {
+      return this;
+    }
+    if (amount < 0) {
+      amount = amount * -1;
+    }
     this.wrapped.amount = amount+'';
     return this;
   }

@@ -20,6 +20,32 @@ class Transaction {
   }
 
   /**
+   * Remote ids are used to avoid duplication.
+   * 
+   * @returns The remote ids of the Transaction.
+   */
+  public getRemoteIds(): string[] {
+    return this.wrapped.remoteIds;
+  }
+
+  /**
+   * Add a remote id to the Transaction.
+   * 
+   * @param remoteId The remote id to add.
+   * 
+   * @returns This Transaction, for chainning.
+   */
+  public addRemoteId(remoteId: string): Transaction {
+    if (this.wrapped.remoteIds == null) {
+      this.wrapped.remoteIds = [];
+    }
+    if (remoteId) {
+      this.wrapped.remoteIds.push(remoteId);
+    }
+    return this;
+  }  
+
+  /**
    * @returns True if transaction was already posted to the accounts. False if is still a Draft.
    */
   public isPosted(): boolean {
@@ -47,6 +73,7 @@ class Transaction {
     return this.wrapped.tags;
   }
 
+
   /**
    * @returns All urls of the transaction.
    */
@@ -72,7 +99,7 @@ class Transaction {
   }
 
   /**
-   * Add a urls to the Transaction. Url starts with https://
+   * Add a url to the Transaction. Url starts with https://
    * 
    * @param url The url to add.
    * 

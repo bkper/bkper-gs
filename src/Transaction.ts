@@ -258,7 +258,7 @@ class Transaction {
    * @returns This Transaction, for chainning.
    */
   public setAmount(amount: number): Transaction {
-    if (amount == 0) {
+    if (amount == 0 || isNaN(amount) || !isFinite(amount)) {
       return this;
     }
     if (amount < 0) {

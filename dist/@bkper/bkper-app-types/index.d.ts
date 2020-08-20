@@ -140,6 +140,13 @@ declare namespace Bkper {
         getType(): AccountType;
 
         /**
+         * Tell if the Account has any transaction already posted.
+         *
+         * Accounts with transaction posted, even with zero balance, can only be archived.
+         */
+        hasTransactionPosted(): boolean;
+
+        /**
          * Tell if this account is Active or otherwise Archived.
          *
          * @deprecated Use isArchived instead

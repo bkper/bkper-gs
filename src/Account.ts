@@ -177,6 +177,15 @@ class Account {
     this.wrapped.archived = archived;
     return this;
   }
+
+  /**
+   * Tell if the Account has any transaction already posted.
+   * 
+   * Accounts with transaction posted, even with zero balance, can only be archived.
+   */
+  public hasTransactionPosted(): boolean {
+    return this.wrapped.hasTransactionPosted;
+  }
   
 
   /**

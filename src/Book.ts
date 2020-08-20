@@ -86,7 +86,7 @@ class Book {
    * @return The collection of this book
    */
   public getCollection(): Collection {
-    this.checkBookLoaded_();
+    this.checkAccountsLoaded_();
     if (this.wrapped.collection != null && this.collection == null) {
       this.collection = new Collection(this.wrapped.collection);
     }

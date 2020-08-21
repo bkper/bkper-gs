@@ -285,7 +285,6 @@ class Account {
    * Remove a group from the Account.
    */
   public removeGroup(group: string | Group): Account {
-    Logger.log(`GROUPS BEFORE: ${this.wrapped.groups}`)
 
     if (this.wrapped.groups != null) {
       let groupObject: Group = null;
@@ -297,15 +296,12 @@ class Account {
       if (groupObject) {
         for (let i = 0; i < this.wrapped.groups.length; i++) {
           const groupId = this.wrapped.groups[i];
-          Logger.log(`VERIFY REMOVE: ${groupId} - ${groupObject.getId()}`)
           if (groupId == groupObject.getId()) {
             this.wrapped.groups.splice(i, 1);
           }
         }
       }
     }
-
-    Logger.log(`GROUPS AFTER: ${this.wrapped.groups}`)
 
     return this;
 

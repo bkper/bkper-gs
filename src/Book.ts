@@ -18,7 +18,7 @@ class Book {
   private idGroupMap: any;
   private nameGroupMap: any;
   private savedQueries: bkper.Query[];
-  
+
 
   constructor(id: string, wrapped?: bkper.Book) {
     this.id = id;
@@ -138,10 +138,10 @@ class Book {
 
   /**
    * Gets the custom properties stored in this Book
-   */  
+   */
   public getProperties(): any {
     this.checkBookLoaded_();
-    return this.wrapped.properties != null ?  this.wrapped.properties : {};
+    return this.wrapped.properties != null ? this.wrapped.properties : {};
   }
 
   /**
@@ -154,14 +154,14 @@ class Book {
 
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
-      let value = this.wrapped.properties != null ?  this.wrapped.properties[key] : null 
+      let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
       if (value != null && value.trim() != '') {
         return value;
       }
     }
 
     return null;
-  }  
+  }
 
 
   /**
@@ -205,6 +205,7 @@ class Book {
    * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
    * 
    * Example: 
+   * 
    * ```js
    * book.record("#gas 63.23");
    * ```
@@ -251,6 +252,22 @@ class Book {
 
   /**
    * Instantiate a new [[Transaction]]
+   * 
+   * Example:
+   * 
+   * ```js
+   * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+   * 
+   * book.newTransaction()
+   *  .setDate('2013-01-25')
+   *  .setDescription("Filling tank of my truck")
+   *  .from('Credit Card')
+   *  .to('Gas')
+   *  .setAmount(126.50)
+   *  .create();
+   * 
+   * ```
+   * 
    */
   public newTransaction(): Transaction {
     let transaction = Utils_.wrapObject(new Transaction(), {});
@@ -260,7 +277,19 @@ class Book {
 
   /**
    * Instantiate a new [[Account]]
-   */  
+   * 
+   * Example:
+   * ```
+   * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+   * 
+   * book.newAccount()
+   *  .setName('Some New Account')
+   *  .setType('INCOMING')
+   *  .addGroup('Revenue').addGroup('Salary')
+   *  .setProperties({prop_a: 'A', prop_b: 'B'})
+   *  .create();
+   * ```
+   */
   public newAccount(): Account {
     let account = Utils_.wrapObject(new Account(), {});
     account.setArchived(false);
@@ -270,7 +299,17 @@ class Book {
 
   /**
    * Instantiate a new [[Group]]
-   */  
+   * 
+   * Example:
+   * ```
+   * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+   * 
+   * book.newGroup()
+   *  .setName('Some New Group')
+   *  .setProperty('key', 'value')
+   *  .create();
+   * ```
+   */
   public newGroup(): Group {
     let group = Utils_.wrapObject(new Group(), {});
     group.book = this;
@@ -364,7 +403,7 @@ class Book {
       for (var i = 0; i < createdAccounts.length; i++) {
         var account = createdAccounts[i];
         account.book = this;
-      }      
+      }
       return createdAccounts;
     }
 
@@ -385,7 +424,7 @@ class Book {
       return true;
     }
     return false;
-  }  
+  }
 
   private configureAccounts_(accounts: bkper.Account[]): void {
     this.accounts = Utils_.wrapObjects(new Account(), accounts);
@@ -413,7 +452,7 @@ class Book {
    */
   public createGroups(groups: string[]): Group[] {
     if (groups.length > 0) {
-      let groupsSave: bkper.Group[] = groups.map(groupName => {return {name: groupName}});
+      let groupsSave: bkper.Group[] = groups.map(groupName => { return { name: groupName } });
       let createdGroups = GroupService_.createGroups(this.getId(), groupsSave);
       this.clearBookCache_();
 
@@ -425,7 +464,7 @@ class Book {
       return createdGroups;
     }
     return [];
-  }  
+  }
 
   clearAccountsCache() {
     this.idAccountMap = null;
@@ -477,7 +516,7 @@ class Book {
   /**
    * Gets all saved queries from this book
    */
-  public getSavedQueries(): {id?: string, query?: string, title?: string}[]  {
+  public getSavedQueries(): { id?: string, query?: string, title?: string }[] {
     if (this.savedQueries == null) {
       this.savedQueries = SavedQueryService_.getSavedQueries(this.getId());
     }
@@ -522,7 +561,7 @@ class Book {
    * 
    * @return Accounts data table builder.
    * 
-   */  
+   */
   public createAccountsDataTable(): AccountsDataTableBuilder {
     let accounts = this.getAccounts();
     return new AccountsDataTableBuilder(accounts);

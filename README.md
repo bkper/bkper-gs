@@ -1,6 +1,7 @@
 [Bkper]: https://bkper.com/
 [bkper.com]: https://bkper.com
 [Apps and Bots]: https://bkper.com/docs
+[Bkper REST API]: http://bkper.com/docs/#rest-api
 
 [Google Apps Script]: https://developers.google.com/apps-script/reference/
 
@@ -22,7 +23,7 @@
 
 ## BkperApp
 
-BkperApp provides a simple and secure way to access the [Bkper] API through [Google Apps Script] infrastructure.
+BkperApp provides a simple and secure way to access the [Bkper REST API] through [Google Apps Script] infrastructure.
 
 [![clasp](https://img.shields.io/badge/built%20with-clasp-4285f4.svg)](https://github.com/google/clasp)
 [![npm (scoped)](https://img.shields.io/npm/v/@bkper/bkper-app-types?color=%235889e4&label=types)](https://www.npmjs.com/package/@bkper/bkper-app-types)

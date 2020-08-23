@@ -708,16 +708,54 @@ declare namespace Bkper {
 
         /**
          * Instantiate a new [[Account]]
+         *
+         * Example:
+         * ```
+         * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+         * 
+         * book.newAccount()
+         *  .setName('Some New Account')
+         *  .setType('INCOMING')
+         *  .addGroup('Revenue').addGroup('Salary')
+         *  .setProperties({prop_a: 'A', prop_b: 'B'})
+         *  .create();
+         * ```
          */
         newAccount(): Account;
 
         /**
          * Instantiate a new [[Group]]
+         *
+         * Example:
+         * ```
+         * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+         * 
+         * book.newGroup()
+         *  .setName('Some New Group')
+         *  .setProperty('key', 'value')
+         *  .create();
+         * ```
          */
         newGroup(): Group;
 
         /**
          * Instantiate a new [[Transaction]]
+         *
+         * Example:
+         * 
+         * ```js
+         * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+         * 
+         * book.newTransaction()
+         *  .setDate('2013-01-25')
+         *  .setDescription("Filling tank of my truck")
+         *  .from('Credit Card')
+         *  .to('Gas')
+         *  .setAmount(126.50)
+         *  .create();
+         * 
+         * ```
+         * 
          */
         newTransaction(): Transaction;
 
@@ -727,6 +765,7 @@ declare namespace Bkper {
          * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
          * 
          * Example:
+         * 
          * ```js
          * book.record("#gas 63.23");
          * ```

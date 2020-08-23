@@ -279,7 +279,7 @@ class Book {
    * Instantiate a new [[Account]]
    * 
    * Example:
-   * ```
+   * ```js
    * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
    * 
    * book.newAccount()
@@ -301,7 +301,7 @@ class Book {
    * Instantiate a new [[Group]]
    * 
    * Example:
-   * ```
+   * ```js
    * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
    * 
    * book.newGroup()

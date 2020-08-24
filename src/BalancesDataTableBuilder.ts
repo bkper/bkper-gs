@@ -256,7 +256,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
       table = table.map(row => row.slice(1));
     }
 
-    if (this.shouldTranspose) {
+    if (this.shouldTranspose && table.length > 0) {
       table = table[0].map((col: any, i: number) => table.map(row => row[i]));
     }
 
@@ -413,7 +413,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
       table = table.map(row => row.slice(1));
     }
 
-    if (this.shouldTranspose) {
+    if (this.shouldTranspose && table.length > 0) {
       table = table[0].map((col: any, i: number) => table.map(row => row[i]));
     }
 

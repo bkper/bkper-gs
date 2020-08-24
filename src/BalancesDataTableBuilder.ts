@@ -12,7 +12,8 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   private periodicity: Periodicity;
   private balanceCheckedType: BalanceCheckedType;
   private shouldFormatDate: boolean;
-  private showHideDates: boolean;
+  private shouldHideDates: boolean;
+  private shouldHideNames: boolean;
   private shouldFormatValue: boolean;
   private book: Book;
   private shouldExpand: boolean;
@@ -25,7 +26,8 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     this.balanceCheckedType = balanceCheckedType;
     this.balanceType = BalanceType.TOTAL;
     this.shouldFormatDate = false;
-    this.showHideDates = false;
+    this.shouldHideDates = false;
+    this.shouldHideNames = false;
     this.shouldFormatValue = false;
     this.shouldExpand = false;
     this.shouldTranspose = false;
@@ -138,12 +140,22 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   }
 
   /**
-   * Defines whether the dates should be hidden for **PERIOD** or **CUMULATIVE** [[BalanceType]]
+   * Defines whether the dates should be hidden for **PERIOD** or **CUMULATIVE** [[BalanceType]].
    *
    * @returns This builder with respective hide dates option, for chaining.
    */  
-  public hideDates(hide: boolean): BalancesDataTableBuilder{
-    this.showHideDates = hide;
+  public hideDates(hide: boolean): BalancesDataTableBuilder {
+    this.shouldHideDates = hide;
+    return this;
+  }
+
+  /**
+   * Defines whether the [[Accounts]] and [[Groups]] names should be hidden.
+   *
+   * @returns This builder with respective hide names option, for chaining.
+   */    
+  public hideNames(hide: boolean): BalancesDataTableBuilder {
+    this.shouldHideNames = hide;
     return this;
   }
 
@@ -238,6 +250,10 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         line.push(amount);
         table.push(line);
       }
+    }
+
+    if (this.shouldHideNames) {
+      table = table.map(row => row.slice(1));
     }
 
     if (this.shouldTranspose) {
@@ -389,7 +405,11 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     }
 
-    if (this.showHideDates) {
+    if (this.shouldHideNames) {
+      table.shift();
+    }
+
+    if (this.shouldHideDates) {
       table = table.map(row => row.slice(1));
     }
 

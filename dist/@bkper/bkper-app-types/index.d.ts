@@ -388,11 +388,18 @@ declare namespace Bkper {
         formatValues(format: boolean): BalancesDataTableBuilder;
 
         /**
-         * Defines whether the dates should be hidden for **PERIOD** or **CUMULATIVE** [[BalanceType]]
+         * Defines whether the dates should be hidden for **PERIOD** or **CUMULATIVE** [[BalanceType]].
          *
          * @returns This builder with respective hide dates option, for chaining.
          */
         hideDates(hide: boolean): BalancesDataTableBuilder;
+
+        /**
+         * Defines whether the [[Accounts]] and [[Groups]] names should be hidden.
+         *
+         * @returns This builder with respective hide names option, for chaining.
+         */
+        hideNames(hide: boolean): BalancesDataTableBuilder;
 
         /**
          * Defines wheter should rows and columns should be transposed.
@@ -710,7 +717,7 @@ declare namespace Bkper {
          * Instantiate a new [[Account]]
          *
          * Example:
-         * ```
+         * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
          * 
          * book.newAccount()
@@ -727,7 +734,7 @@ declare namespace Bkper {
          * Instantiate a new [[Group]]
          *
          * Example:
-         * ```
+         * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
          * 
          * book.newGroup()

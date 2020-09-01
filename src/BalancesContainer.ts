@@ -97,14 +97,14 @@ interface BalancesContainer {
   /**
    * Gets all child [[BalancesContainers]].
    * 
-   * **NOTE**: Only for Groups balance containers. Accounts and hashtags return empty.
+   * **NOTE**: Only for Group balance containers. Accounts returns null.
    */
   getBalancesContainers(): BalancesContainer[]
 
   /**
    * Gets a specific [[BalancesContainer]].
    * 
-   * **NOTE**: Only for Groups balance containers. Accounts and hashtags return null.
+   * **NOTE**: Only for Group balance containers. Accounts returns null.
    */
   getBalancesContainer(name: string): BalancesContainer;
 
@@ -208,106 +208,6 @@ class AccountBalancesContainer implements BalancesContainer {
     return null;
   }
 }
-
-
-
-
-
-
-//###################### TAG BALANCE CONTAINER ######################
-
-class TagBalancesContainer implements BalancesContainer {
-
-  private wrapped: bkper.TagBalances;
-  private balancesReport: BalancesReport;
-
-  constructor(balancesReport: BalancesReport, balancePlain: bkper.TagBalances) {
-    this.balancesReport = balancesReport;
-    this.wrapped = balancePlain;
-  }
-
-  public getBalancesReport(): BalancesReport {
-    return this.balancesReport;
-  }
-
-  public getName(): string {
-    return this.wrapped.name;
-  }
-
-  public isCredit(): boolean {
-    return true;
-  }
-
-
-  public getCumulativeBalance(): number {
-    return Utils_.round(this.wrapped.cumulativeBalance, this.balancesReport.getBook().getFractionDigits());
-  }
-  public getCumulativeBalanceText(): string {
-    return this.balancesReport.getBook().formatValue(this.getCumulativeBalance());
-  }
-
-  public getCheckedCumulativeBalance(): number {
-    return Utils_.round(this.wrapped.checkedCumulativeBalance, this.balancesReport.getBook().getFractionDigits());
-  }
-  public getCheckedCumulativeBalanceText(): string {
-    return this.balancesReport.getBook().formatValue(this.getCheckedCumulativeBalance());
-  }
-
-
-  public getUncheckedCumulativeBalance(): number {
-    return Utils_.round(this.wrapped.uncheckedCumulativeBalance, this.balancesReport.getBook().getFractionDigits());
-  }
-  public getUncheckedCumulativeBalanceText(): string {
-    return this.balancesReport.getBook().formatValue(this.getUncheckedCumulativeBalance());
-  }
-
-
-  public getPeriodBalance(): number {
-    return Utils_.round(this.wrapped.periodBalance, this.balancesReport.getBook().getFractionDigits());
-  }
-  public getPeriodBalanceText(): string {
-    return this.balancesReport.getBook().formatValue(this.getPeriodBalance());
-  }
-
-
-  public getCheckedPeriodBalance(): number {
-    return Utils_.round(this.wrapped.checkedPeriodBalance, this.balancesReport.getBook().getFractionDigits());
-  }
-  public getCheckedPeriodBalanceText(): string {
-    return this.balancesReport.getBook().formatValue(this.getCheckedPeriodBalance());
-  }
-
-
-  public getUncheckedPeriodBalance(): number {
-    return Utils_.round(this.wrapped.uncheckedPeriodBalance, this.balancesReport.getBook().getFractionDigits());
-  }
-  public getUncheckedPeriodBalanceText(): string {
-    return this.balancesReport.getBook().formatValue(this.getUncheckedPeriodBalance());
-  }
-
-
-  public getBalances(): Balance[] {
-    if (!this.wrapped.balances) {
-      return new Array<Balance>();
-    }    
-    return this.wrapped.balances.map(balancePlain => new Balance(this, balancePlain));
-  }
-
-  public getBalancesContainers(): BalancesContainer[] {
-    return [];
-  }
-
-  public getBalancesContainer(name: string): BalancesContainer {
-    return null;
-  }
-  public createDataTable(): BalancesDataTableBuilder {
-    return new BalancesDataTableBuilder(this.balancesReport.getBook(), [this], this.balancesReport.getPeriodicity(), this.balancesReport.getBalanceCheckedType());
-  }
-}
-
-
-
-
 
 
 

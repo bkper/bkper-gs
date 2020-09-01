@@ -413,7 +413,7 @@ declare namespace Bkper {
          *  |__________|_________|_______|
          * 
          * ```
-         * Two rows, and each [[Group]] | [[Account]] | #hashtag per column.
+         * Two rows, and each [[Account]] or [[Group]] per column.
          * 
          * 
          * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the **transposed** table will be a time table, and the format looks like:
@@ -428,7 +428,7 @@ declare namespace Bkper {
          * 
          * ```
          * 
-         * First column will be teach [[Group]], [[Account]] or #hashtag, and one column for each Date.
+         * First column will be each [[Account]] or [[Group]], and one column for each Date.
          *
          * @returns This builder with respective transposed option, for chaining.
          */
@@ -1304,14 +1304,14 @@ declare namespace Bkper {
         /**
          * Gets a specific [[BalancesContainer]].
          *
-         * **NOTE**: Only for Groups balance containers. Accounts and hashtags return null.
+         * **NOTE**: Only for Group balance containers. Accounts returns null.
          */
         getBalancesContainer(name: string): BalancesContainer;
 
         /**
          * Gets all child [[BalancesContainers]].
          *
-         * **NOTE**: Only for Groups balance containers. Accounts and hashtags return empty.
+         * **NOTE**: Only for Group balance containers. Accounts returns null.
          */
         getBalancesContainers(): BalancesContainer[];
 

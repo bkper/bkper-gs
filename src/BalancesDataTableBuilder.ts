@@ -79,7 +79,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    *  |___________|_________|
    * 
    * ```
-   * Two columns, and each [[Group]] | [[Account]] | #hashtag per line.
+   * Two columns, and each [[Account]] or [[Group]] per line.
    * 
    * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the table will be a time table, and the format looks like:
    * 
@@ -94,7 +94,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    * 
    * ```
    * 
-   * First column will be the Date column, and one column for each [[Group]], [[Account]] or #hashtag.
+   * First column will be the Date column, and one column for each [[Account]] or [[Group]].
    * 
    * @returns This builder with respective balance type, for chaining.
    */
@@ -115,7 +115,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    *  |__________|_________|_______| 
    * 
    * ```
-   * Two rows, and each [[Group]] | [[Account]] | #hashtag per column.
+   * Two rows, and each [[Account]] or [[Group]] per column.
    * 
    * 
    * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the **transposed** table will be a time table, and the format looks like:
@@ -130,7 +130,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
    * 
    * ```
    * 
-   * First column will be teach [[Group]], [[Account]] or #hashtag, and one column for each Date.
+   * First column will be each [[Account]] or [[Group]], and one column for each Date.
    * 
    * @returns This builder with respective transposed option, for chaining.
    */

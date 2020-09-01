@@ -11,7 +11,6 @@ class BalancesReport {
   private book: Book;
   private groupBalancesContainers: GroupBalancesContainer[];
   private accountBalancesContainers: AccountBalancesContainer[];
-  private tagBalancesContainers: TagBalancesContainer[];
 
 
   constructor(book: Book, balancesReportPlain: bkper.Balances) {
@@ -19,7 +18,6 @@ class BalancesReport {
     this.wrapped = balancesReportPlain;
     this.groupBalancesContainers = null;
     this.accountBalancesContainers = null;
-    this.tagBalancesContainers = null;
   }
 
   /**
@@ -43,9 +41,6 @@ class BalancesReport {
     var containers = new Array<BalancesContainer>();
     if (this.getAccountBalancesContainers() != null) {
       containers = containers.concat(this.getAccountBalancesContainers());
-    }
-    if (this.getTagBalancesContainers() != null) {
-      containers = containers.concat(this.getTagBalancesContainers());
     }
     if (this.getGroupBalancesContainers() != null) {
       containers = containers.concat(this.getGroupBalancesContainers());
@@ -85,18 +80,6 @@ class BalancesReport {
       }
     }
     return this.accountBalancesContainers;
-  }
-
-  private getTagBalancesContainers(): TagBalancesContainer[] {
-    if (this.tagBalancesContainers == null && this.wrapped.tagBalances != null) {
-      this.tagBalancesContainers = [];
-      for (var i = 0; i < this.wrapped.tagBalances.length; i++) {
-        var tagBalance = this.wrapped.tagBalances[i];
-        var tagBalancesContainer = new TagBalancesContainer(this, tagBalance);
-        this.tagBalancesContainers.push(tagBalancesContainer);
-      }
-    }
-    return this.tagBalancesContainers;
   }
 
 

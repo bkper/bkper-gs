@@ -142,6 +142,59 @@ class Transaction {
     return false;
   }
 
+
+  /**
+   * Gets the custom properties stored in this Transaction.
+   */  
+  public getProperties(): any {
+    return this.wrapped.properties != null ?  this.wrapped.properties : {};
+  }
+
+  /**
+   * Sets the custom properties of the Transaction
+   * 
+   * @param properties Object with key/value pair properties
+   * 
+   * @returns This Transaction, for chainning. 
+   */
+  public setProperties(properties: {[name: string]: string}): Transaction {
+    this.wrapped.properties = properties;
+    return this;
+  }
+
+  /**
+   * Gets the property value for given keys. First property found will be retrieved
+   * 
+   * @param keys The property key
+   */
+  public getProperty(...keys: string[]): string {
+    for (let index = 0; index < keys.length; index++) {
+      const key = keys[index];
+      let value = this.wrapped.properties != null ?  this.wrapped.properties[key] : null 
+      if (value != null && value.trim() != '') {
+        return value;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Sets a custom property in the Transaction.
+   * 
+   * @param key The property key
+   * @param value The property value
+   * 
+   * @returns This Transaction, for chainning. 
+   */
+  public setProperty(key: string, value: string): Transaction {
+    if (this.wrapped.properties == null) {
+      this.wrapped.properties = {};
+    }
+    this.wrapped.properties[key] = value;
+    return this;
+  }
+
+
   //ORIGIN ACCOUNT
   /**
    * @returns The credit account. The same as origin account.

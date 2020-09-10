@@ -1093,6 +1093,16 @@ declare namespace Bkper {
         getPostDateText(): string;
 
         /**
+         * Gets the custom properties stored in this Transaction.
+         */
+        getProperties(): any;
+
+        /**
+         * Gets the property value for given keys. First property found will be retrieved
+         */
+        getProperty(...keys: string[]): string;
+
+        /**
          * Remote ids are used to avoid duplication.
          *
          * @returns The remote ids of the Transaction.
@@ -1178,6 +1188,20 @@ declare namespace Bkper {
          * @returns This Transaction, for chainning.
          */
         setDescription(description: string): Transaction;
+
+        /**
+         * Sets the custom properties of the Transaction
+         *
+         * @returns This Transaction, for chainning.
+         */
+        setProperties(properties: {[name: string]: string}): Transaction;
+
+        /**
+         * Sets a custom property in the Transaction.
+         *
+         * @returns This Transaction, for chainning.
+         */
+        setProperty(key: string, value: string): Transaction;
 
         /**
          * Sets the Transaction urls. Url starts with https://

@@ -122,8 +122,21 @@ class Group {
     this.wrapped.properties[key] = value;
     return this;
   }
-  
 
+  /**
+   * Tell if the Group is hidden on main transactions menu
+   */
+  public isHidden(): boolean {
+    return this.wrapped.hidden;
+  }
+
+  /**
+   *  Hide/Show group on main menu.
+   */
+  public setHidden(hidden: boolean): Group {
+    this.wrapped.hidden = hidden;
+    return this;
+  }
 
   /**
    * Perform create new group.

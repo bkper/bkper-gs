@@ -889,9 +889,19 @@ declare namespace Bkper {
         hasAccounts(): boolean;
 
         /**
+         * Tell if the Group is hidden on main transactions menu
+         */
+        isHidden(): boolean;
+
+        /**
          * Perform delete group.
          */
         remove(): Group;
+
+        /**
+         *  Hide/Show group on main menu.
+         */
+        setHidden(hidden: boolean): Group;
 
         /**
          * Sets the name of the Group.

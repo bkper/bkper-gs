@@ -602,7 +602,7 @@ class Book {
    * Example:
    * 
    * ```js
-   * var book = BkperApp.loadBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+   * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
    *
    * var transactions = book.getTransactions("account:CreditCard after:28/01/2013 before:29/01/2013");
    *

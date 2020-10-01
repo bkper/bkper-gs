@@ -701,7 +701,7 @@ declare namespace Bkper {
          * Example:
          * 
          * ```js
-         * var book = BkperApp.loadBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+         * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
          * 
          * var transactions = book.getTransactions("account:CreditCard after:28/01/2013 before:29/01/2013");
          * 
@@ -1241,6 +1241,19 @@ declare namespace Bkper {
 
     /**
      * An iterator that allows scripts to iterate over a potentially large collection of transactions.
+     *
+     * Example:
+     * 
+     * ```js
+     * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+     * 
+     * var transactionIterator = book.getTransactions("account:CreditCard after:28/01/2013 before:29/01/2013");
+     * 
+     * while (transactionIterator.hasNext()) {
+     *  var transaction = transactions.next();
+     *  Logger.log(transaction.getDescription());
+     * }
+     * ```
      */
     export interface TransactionIterator {
 

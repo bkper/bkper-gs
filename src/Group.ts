@@ -116,10 +116,25 @@ class Group {
    * @param value The property value
    */
   public setProperty(key: string, value: string): Group {
+    if (key == null || key.trim() == '') {
+      return this;
+    }    
     if (this.wrapped.properties == null) {
       this.wrapped.properties = {};
     }
     this.wrapped.properties[key] = value;
+    return this;
+  }
+
+  /**
+   * Delete a custom property
+   * 
+   * @param key The property key
+   * 
+   * @returns This Group, for chainning. 
+   */
+  public deleteProperty(key: string): Group {
+    this.setProperty(key, null);
     return this;
   }
 

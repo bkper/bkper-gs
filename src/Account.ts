@@ -105,6 +105,7 @@ class Account {
     return null;
   }
 
+
   /**
    * Sets a custom property in the Account.
    * 
@@ -114,10 +115,25 @@ class Account {
    * @returns This Account, for chainning. 
    */
   public setProperty(key: string, value: string): Account {
+    if (key == null || key.trim() == '') {
+      return this;
+    }    
     if (this.wrapped.properties == null) {
       this.wrapped.properties = {};
     }
     this.wrapped.properties[key] = value;
+    return this;
+  }
+
+  /**
+   * Delete a custom property
+   * 
+   * @param key The property key
+   * 
+   * @returns This Account, for chainning. 
+   */
+  public deleteProperty(key: string): Account {
+    this.setProperty(key, null);
     return this;
   }
 

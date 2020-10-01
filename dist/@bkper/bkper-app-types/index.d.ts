@@ -83,6 +83,13 @@ declare namespace Bkper {
         create(): Account;
 
         /**
+         * Delete a custom property
+         *
+         * @returns This Account, for chainning.
+         */
+        deleteProperty(key: string): Account;
+
+        /**
          * Gets the balance based on credit nature of this Account.
          *
          * @returns The balance of this account.
@@ -854,6 +861,13 @@ declare namespace Bkper {
         create(): Group;
 
         /**
+         * Delete a custom property
+         *
+         * @returns This Group, for chainning.
+         */
+        deleteProperty(key: string): Group;
+
+        /**
          * @returns All Accounts of this group.
          */
         getAccounts(): Account[];
@@ -959,6 +973,13 @@ declare namespace Bkper {
          * Perform create new draft transaction.
          */
         create(): Transaction;
+
+        /**
+         * Delete a custom property
+         *
+         * @returns This Transaction, for chainning.
+         */
+        deleteProperty(key: string): Transaction;
 
         /**
          * Sets the credit/origin Account of the Transaction. Same as setCreditAccount().

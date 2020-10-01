@@ -187,12 +187,27 @@ class Transaction {
    * @returns This Transaction, for chainning. 
    */
   public setProperty(key: string, value: string): Transaction {
+    if (key == null || key.trim() == '') {
+      return this;
+    }    
     if (this.wrapped.properties == null) {
       this.wrapped.properties = {};
     }
     this.wrapped.properties[key] = value;
     return this;
   }
+
+  /**
+   * Delete a custom property
+   * 
+   * @param key The property key
+   * 
+   * @returns This Transaction, for chainning. 
+   */
+  public deleteProperty(key: string): Transaction {
+    this.setProperty(key, null);
+    return this;
+  }  
 
 
   //ORIGIN ACCOUNT

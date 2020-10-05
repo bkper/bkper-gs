@@ -222,7 +222,7 @@ class Book {
   }
 
   /**
-   * Trigger Book balances audit async process.
+   * Trigger Book balances [audit async process](https://help.bkper.com/en/articles/4412038-balances-audit).
    */
   public audit(): void {
     BookService_.audit(this);

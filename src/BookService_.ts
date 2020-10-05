@@ -43,6 +43,10 @@ namespace BookService_ {
     return bookPlain;
   }
 
+  export function audit(book: Book): void {
+    new HttpBooksApiV3Request(`${book.getId()}/audit`).setMethod('patch').fetch();
+  }
+
 }
 
 

@@ -221,6 +221,13 @@ class Book {
     this.clearAccountsCache();
   }
 
+  /**
+   * Trigger Book balances audit async process.
+   */
+  public audit(): void {
+    BookService_.audit(this);
+  }
+
 
   /**
    * Resumes a transaction iteration using a continuation token from a previous iterator.

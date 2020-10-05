@@ -500,6 +500,11 @@ declare namespace Bkper {
     export interface Book {
 
         /**
+         * Trigger Book balances audit async process.
+         */
+        audit(): void;
+
+        /**
          * Resumes a transaction iteration using a continuation token from a previous iterator.
          *
          * @returns a collection of transactions that remained in a previous iterator when the continuation token was generated

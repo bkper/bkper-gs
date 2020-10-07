@@ -29,7 +29,7 @@ BkperApp provides a simple and secure way to access the [Bkper REST API] through
 [![npm (scoped)](https://img.shields.io/npm/v/@bkper/bkper-app-types?color=%235889e4&label=types)](https://www.npmjs.com/package/@bkper/bkper-app-types)
 
 
-With BkperApp you can build [Apps and Bots] to your Books to create bookkeeping and accounting solutions on G Suite, such as the Bkper [Add-on for Google Sheets], simple automations or advanced solutions, and you can manage your scripts in the [Dashboard].
+With BkperApp you can build [Apps and Bots] to your Books to create bookkeeping and accounting solutions on Google Workspace, such as the Bkper [Add-on for Google Sheets], simple automations or advanced solutions, and you can manage your scripts in the [Dashboard].
 
 It works the same way your favorite Google Apps Script library works, like [CalendarApp], [DocumentApp], [SpreadsheetApp] and the like.
 

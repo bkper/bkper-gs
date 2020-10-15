@@ -46,6 +46,23 @@ namespace Utils_ {
     }
   }
   
+  export function parseValue(value: string, decimalSeparator: DecimalSeparator): number {
+    if (value == null){
+        return null;
+    } 
+    
+    if (!isNaN(+value) && isFinite(+value)) {
+      return +value;
+    }
+
+    if (decimalSeparator == DecimalSeparator.DOT) {
+      value = value.replace(/\,/g, '');
+    } else {
+      value = value.replace(/\./g, '').replace(/\,/g, '.');
+    }
+    return +value;
+  }  
+
   export function convertValueToDate(dateValue: number, offsetInMinutes: number): Date {
     if (dateValue == null) {
       return new Date();
@@ -73,6 +90,7 @@ namespace Utils_ {
     date.setTime(date.getTime() + offsetInMinutes*60*1000 );    
     return date;
   } 
+
   
   export function formatDate(date: Date, pattern: string, timeZone: string): string {
     if (date == null || !(Object.prototype.toString.call(date) === '[object Date]')) {
@@ -85,6 +103,58 @@ namespace Utils_ {
     
     var formatedDate = Utilities.formatDate(date, timeZone, pattern);
     return formatedDate;
+  }
+
+  export function formatDateISO(date: Date, timeZone: string): string {
+    if (date == null || !(Object.prototype.toString.call(date) === '[object Date]')) {
+      return '';
+    }
+    
+    if (timeZone == null || timeZone == "") {
+      timeZone = Session.getScriptTimeZone();
+    }    
+    
+    var formatedDate = Utilities.formatDate(date, timeZone, 'yyyy-MM-dd');
+    return formatedDate;
+  }
+
+  export function parseDate(date: string, pattern: string, offsetInMinutes: number): Date {
+    if (pattern == 'dd/MM/yyyy') {
+      let split = date.split('/');
+      if (split.length == 3) {
+        let year = +split[2];
+        let month = +split[1];
+        let day = +split[0];
+        return createDate(year, month, day, offsetInMinutes);
+      }
+    } else if (pattern == 'MM/dd/yyyy') {
+      let split = date.split('/');
+      if (split.length == 3) {
+        let year = +split[2];
+        let month = +split[0];
+        let day = +split[1];
+        return createDate(year, month, day, offsetInMinutes);
+      }      
+    } else if (pattern == 'yyyy/MM/dd') {
+      let split = date.split('/');
+      if (split.length == 3) {
+        let year = +split[0];
+        let month = +split[1];
+        let day = +split[2];
+        return createDate(year, month, day, offsetInMinutes);
+      }   
+    } else if (pattern == 'yyyy-MM-dd') {
+      let split = date.split('-');
+      if (split.length == 3) {
+        let year = +split[0];
+        let month = +split[1];
+        let day = +split[2];
+        return createDate(year, month, day, offsetInMinutes);
+      }   
+    }
+    let now = new Date()
+    return createDate(now.getFullYear(), now.getMonth()+1, now.getDate(), offsetInMinutes);
+
   }
 
   export function getDateFormatterPattern(datePattern: string, periodicity: Periodicity): string {

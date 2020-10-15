@@ -500,7 +500,7 @@ declare namespace Bkper {
     export interface Book {
 
         /**
-         * Trigger Book balances audit async process.
+         * Trigger [Balances Audit](https://help.bkper.com/en/articles/4412038-balances-audit) async process.
          */
         audit(): void;
 
@@ -1195,7 +1195,7 @@ declare namespace Bkper {
          *
          * @returns This Transaction, for chainning.
          */
-        setAmount(amount: number): Transaction;
+        setAmount(amount: number | string): Transaction;
 
         /**
          * Sets the credit/origin Account of the Transaction. Same as from().
@@ -1205,11 +1205,11 @@ declare namespace Bkper {
         setCreditAccount(account: string | Account): Transaction;
 
         /**
-         * Sets the date of the Transaction, in ISO format yyyy-MM-dd.
+         * Sets the date of the Transaction.
          *
          * @returns This Transaction, for chainning
          */
-        setDate(date: string): Transaction;
+        setDate(date: string | Date): Transaction;
 
         /**
          * Sets the debit/origin Account of the Transaction. Same as to().

@@ -325,14 +325,21 @@ class Transaction {
    * 
    * @returns This Transaction, for chainning.
    */
-  public setAmount(amount: number): Transaction {
-    if (amount == 0 || isNaN(amount) || !isFinite(amount)) {
-      return this;
+  public setAmount(amount: number | string): Transaction {
+    
+    if (typeof amount == "string") {
+      amount = Utils_.parseValue(amount, this.book.getDecimalSeparator())+'';
     }
-    if (amount < 0) {
-      amount = amount * -1;
+    
+    if (!isNaN(+amount)) {
+      if (amount == 0 || !isFinite(+amount)) {
+        return this;
+      }
+      if (+amount < 0) {
+        amount = +amount * -1;
+      }
+      this.wrapped.amount = amount+'';
     }
-    this.wrapped.amount = amount+'';
     return this;
   }
 
@@ -443,12 +450,21 @@ class Transaction {
 
   /**
    * 
-   * Sets the date of the Transaction, in ISO format yyyy-MM-dd.
+   * Sets the date of the Transaction.
    * 
    * @returns This Transaction, for chainning
    */  
-  public setDate(date: string): Transaction {
-    this.wrapped.date = date;
+  public setDate(date: string | Date): Transaction {
+    if (typeof date == "string") {
+      if(date.indexOf('/') > 0) {
+        let dateObject = Utils_.parseDate(date, this.book.getDatePattern(), this.book.getTimeZoneOffset())
+        this.wrapped.date = Utils_.formatDateISO(dateObject, this.book.getTimeZone())
+      } else if (date.indexOf('-')) {
+        this.wrapped.date = date;
+      }
+    } else if (Object.prototype.toString.call(date) === '[object Date]') {
+      this.wrapped.date = Utils_.formatDateISO(date, this.book.getTimeZone())
+    }
     return this;
   }
 
@@ -486,8 +502,6 @@ class Transaction {
   public getCreatedAtFormatted(): string {
       return Utilities.formatDate(this.getCreatedAt(), this.book.getTimeZone(), this.book.getDatePattern() + " HH:mm:ss");
   }
-
-
 
 
   //EVOLVED BALANCES

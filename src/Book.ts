@@ -176,6 +176,7 @@ class Book {
     return Utils_.formatDate(date, this.getDatePattern(), timeZone);
   }
 
+
   /**
    * 
    * Formats a value according to [[DecimalSeparator]] and fraction digits of the Book.
@@ -187,6 +188,7 @@ class Book {
   public formatValue(value: number): string {
     return Utils_.formatValue_(value, this.getDecimalSeparator(), this.getFractionDigits());
   }
+
 
   /**
    * Rounds a value according to the number of fraction digits of the Book

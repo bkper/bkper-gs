@@ -202,6 +202,19 @@ class Book {
   }
 
   /**
+   * Create [[Transactions]] on the Book, in batch. 
+   */
+  public batchCreateTransactions(transactions: Transaction[]): Transaction[] {
+    let transactionPayloads: bkper.Transaction[] = [];
+    transactions.forEach(tx => transactionPayloads.push(tx.wrapped))
+    transactionPayloads = TransactionService_.createTransactionsBatch(this.getId(), transactionPayloads);
+    transactions = Utils_.wrapObjects(new Transaction(), transactionPayloads);
+    this.configureTransactions_(transactions);
+    this.clearAccountsCache();
+    return transactions;
+  }
+
+  /**
    * Record [[Transactions]] on the Book. 
    * 
    * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
@@ -214,6 +227,7 @@ class Book {
    * 
    * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
    * @param timeZone The time zone to format dates.
+   * @deprecated
    */
   public record(transactions: string | any[] | any[][], timeZone?: string): void {
     if (timeZone == null || timeZone.trim() == "") {
@@ -361,6 +375,27 @@ class Book {
   }
 
 
+  /**
+   * Create [[Accounts]] on the Book, in batch.
+   */
+  public batchCreateAccounts(accounts: Account[]): Account[] {
+    let accountsPayloads: bkper.Account[] = []
+    for (const account of accounts) {
+      accountsPayloads.push(account.wrapped);
+    }
+    if (accountsPayloads.length > 0) {
+      let createdAccountsPlain = AccountService_.createAccounts(this.getId(), accountsPayloads);
+      let createdAccounts = Utils_.wrapObjects(new Account(), createdAccountsPlain);
+      this.clearBookCache_();
+      for (var i = 0; i < createdAccounts.length; i++) {
+        var account = createdAccounts[i];
+        account.book = this;
+      }
+      return createdAccounts;
+    }
+    return [];
+  }
+
 
   /**
    * Create [[Accounts]] on the Book, in batch.
@@ -370,6 +405,8 @@ class Book {
    * The other columns will be used to find a matching [[AccountType]].
    * 
    * Names matching existent accounts will be skipped.
+   * 
+   * @deprecated
    * 
    */
   public createAccounts(accounts: string[][]): Account[] {
@@ -407,7 +444,8 @@ class Book {
     }
 
     if (accountsPayloads.length > 0) {
-      let createdAccounts = AccountService_.createAccounts(this.getId(), accountsPayloads);
+      let createdAccountsPlain = AccountService_.createAccounts(this.getId(), accountsPayloads);
+      let createdAccounts = Utils_.wrapObjects(new Account(), createdAccountsPlain);
       this.clearBookCache_();
       for (var i = 0; i < createdAccounts.length; i++) {
         var account = createdAccounts[i];
@@ -458,6 +496,26 @@ class Book {
 
   /**
    * Create [[Groups]] on the Book, in batch.
+   */
+  public batchCreateGroups(groups: Group[]): Group[] {
+    if (groups.length > 0) {
+      let groupsSave: bkper.Group[] = groups.map(g => { return g.wrapped });
+      let createdGroups = GroupService_.createGroups(this.getId(), groupsSave);
+      this.clearBookCache_();
+
+      for (var i = 0; i < createdGroups.length; i++) {
+        var group = createdGroups[i];
+        group.book = this;
+      }
+
+      return createdGroups;
+    }
+    return [];
+  }
+
+  /**
+   * Create [[Groups]] on the Book, in batch.
+   * @deprecated
    */
   public createGroups(groups: string[]): Group[] {
     if (groups.length > 0) {

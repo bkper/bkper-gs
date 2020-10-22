@@ -32,7 +32,7 @@ namespace AccountService_ {
     return JSON.parse(responseJSON);
   }
 
-  export function createAccounts(bookId: string, accounts: bkper.Account[]): Account[] {
+  export function createAccounts(bookId: string, accounts: bkper.Account[]): bkper.Account[] {
     let accountList: bkper.AccountList = {
       items: accounts
     };
@@ -42,7 +42,7 @@ namespace AccountService_ {
     if (accountsPlain == null) {
       return [];
     }
-    return Utils_.wrapObjects(new Account(), accountsPlain);;
+    return accountsPlain;
     
   }
 

@@ -6,6 +6,23 @@ namespace TransactionService_ {
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }
 
+  export function createTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): bkper.Transaction[] {
+
+    let transactionList: bkper.TransactionList = {
+      items: transactions
+    }
+    var payload = JSON.stringify(transactionList);
+
+    let responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions/batch`)
+          .setMethod('post')
+          .setPayload(payload)
+          .fetch()
+          .getContentText();
+
+    transactionList = JSON.parse(responseJSON);
+    return transactionList != null && transactionList.items != null ? transactionList.items : [];
+  }
+
   export function updateTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
     var payload = JSON.stringify(transaction);
     var responseJSON = new HttpBooksApiV3Request(`${bookId}/transactions`).setMethod('put').setPayload(payload).fetch().getContentText();
@@ -62,6 +79,9 @@ namespace TransactionService_ {
     return JSON.parse(responseJSON);
   }
 
+  /**
+   * @deprecated 
+   */
   export function record(book: Book, transactions: string | any[] | any[][], timezone?: string): string {
 
     let transactionList: bkper.TransactionList = {
@@ -92,6 +112,9 @@ namespace TransactionService_ {
           .getContentText();
   }
 
+  /**
+   * @deprecated 
+   */  
   function arrayToTransaction_(row: any[], book: Book, timezone?: string): bkper.Transaction {
     for (var j = 0; j < row.length; j++) {
       var cell = row[j];
@@ -106,7 +129,6 @@ namespace TransactionService_ {
     }
     return {description: row.join(" ")};
   }
-
 
 
 }

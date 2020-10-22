@@ -505,6 +505,21 @@ declare namespace Bkper {
         audit(): void;
 
         /**
+         * Create [[Accounts]] on the Book, in batch.
+         */
+        batchCreateAccounts(accounts: Account[]): Account[];
+
+        /**
+         * Create [[Groups]] on the Book, in batch.
+         */
+        batchCreateGroups(groups: Group[]): Group[];
+
+        /**
+         * Create [[Transactions]] on the Book, in batch.
+         */
+        batchCreateTransactions(transactions: Transaction[]): Transaction[];
+
+        /**
          * Resumes a transaction iteration using a continuation token from a previous iterator.
          *
          * @returns a collection of transactions that remained in a previous iterator when the continuation token was generated
@@ -534,6 +549,8 @@ declare namespace Bkper {
          * The other columns will be used to find a matching [[AccountType]].
          * 
          * Names matching existent accounts will be skipped.
+         *
+         * @deprecated 
          * 
          */
         createAccounts(accounts: string[][]): Account[];
@@ -565,6 +582,8 @@ declare namespace Bkper {
 
         /**
          * Create [[Groups]] on the Book, in batch.
+         *
+         * @deprecated 
          */
         createGroups(groups: string[]): Group[];
 
@@ -788,6 +807,8 @@ declare namespace Bkper {
          * ```js
          * book.record("#gas 63.23");
          * ```
+         *
+         * @deprecated 
          */
         record(transactions: string | any[] | any[][], timeZone?: string): void;
 

@@ -214,28 +214,6 @@ class Book {
     return transactions;
   }
 
-  /**
-   * Record [[Transactions]] on the Book. 
-   * 
-   * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
-   * 
-   * Example: 
-   * 
-   * ```js
-   * book.record("#gas 63.23");
-   * ```
-   * 
-   * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
-   * @param timeZone The time zone to format dates.
-   * @deprecated
-   */
-  public record(transactions: string | any[] | any[][], timeZone?: string): void {
-    if (timeZone == null || timeZone.trim() == "") {
-      timeZone = this.getTimeZone();
-    }
-    TransactionService_.record(this, transactions, timeZone);
-    this.clearAccountsCache();
-  }
 
   /**
    * Trigger [Balances Audit](https://help.bkper.com/en/articles/4412038-balances-audit) async process.
@@ -397,81 +375,6 @@ class Book {
   }
 
 
-  /**
-   * Create [[Accounts]] on the Book, in batch.
-   * 
-   * The first column of the matrix will be used as the [[Account]] name.
-   * 
-   * The other columns will be used to find a matching [[AccountType]].
-   * 
-   * Names matching existent accounts will be skipped.
-   * 
-   * @deprecated
-   * 
-   */
-  public createAccounts(accounts: string[][]): Account[] {
-
-    let accountsPayloads: bkper.Account[] = []
-
-    for (let i = 0; i < accounts.length; i++) {
-      const row = accounts[i]
-      const account: bkper.Account = {
-        name: row[0],
-        type: AccountType.ASSET,
-        groups: []
-      }
-
-      if (this.getAccount(account.name)) {
-        //Account already created. Skip.
-        continue;
-      }
-
-      if (row.length > 1) {
-        for (let j = 1; j < row.length; j++) {
-          const cell = row[j];
-          if (this.isType(cell)) {
-            account.type = cell as AccountType;
-          } else {
-            let group = this.getGroup(cell);
-            if (group != null) {
-              account.groups.push(group.getId());
-            }
-          }
-        }
-      }
-
-      accountsPayloads.push(account)
-    }
-
-    if (accountsPayloads.length > 0) {
-      let createdAccountsPlain = AccountService_.createAccounts(this.getId(), accountsPayloads);
-      let createdAccounts = Utils_.wrapObjects(new Account(), createdAccountsPlain);
-      this.clearBookCache_();
-      for (var i = 0; i < createdAccounts.length; i++) {
-        var account = createdAccounts[i];
-        account.book = this;
-      }
-      return createdAccounts;
-    }
-
-    return [];
-  }
-
-  private isType(groupOrType: string): boolean {
-    if (groupOrType == AccountType.ASSET) {
-      return true;
-    }
-    if (groupOrType == AccountType.LIABILITY) {
-      return true;
-    }
-    if (groupOrType == AccountType.INCOMING) {
-      return true;
-    }
-    if (groupOrType == AccountType.OUTGOING) {
-      return true;
-    }
-    return false;
-  }
 
   private configureAccounts_(accounts: bkper.Account[]): void {
     this.accounts = Utils_.wrapObjects(new Account(), accounts);
@@ -500,26 +403,6 @@ class Book {
   public batchCreateGroups(groups: Group[]): Group[] {
     if (groups.length > 0) {
       let groupsSave: bkper.Group[] = groups.map(g => { return g.wrapped });
-      let createdGroups = GroupService_.createGroups(this.getId(), groupsSave);
-      this.clearBookCache_();
-
-      for (var i = 0; i < createdGroups.length; i++) {
-        var group = createdGroups[i];
-        group.book = this;
-      }
-
-      return createdGroups;
-    }
-    return [];
-  }
-
-  /**
-   * Create [[Groups]] on the Book, in batch.
-   * @deprecated
-   */
-  public createGroups(groups: string[]): Group[] {
-    if (groups.length > 0) {
-      let groupsSave: bkper.Group[] = groups.map(groupName => { return { name: groupName } });
       let createdGroups = GroupService_.createGroups(this.getId(), groupsSave);
       this.clearBookCache_();
 
@@ -731,4 +614,127 @@ class Book {
   search(query?: string): TransactionIterator {
     return this.getTransactions(query);
   }
+
+    /**
+   * Record [[Transactions]] on the Book. 
+   * 
+   * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
+   * 
+   * Example: 
+   * 
+   * ```js
+   * book.record("#gas 63.23");
+   * ```
+   * 
+   * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
+   * @param timeZone The time zone to format dates.
+   * @deprecated
+   */
+  public record(transactions: string | any[] | any[][], timeZone?: string): void {
+    if (timeZone == null || timeZone.trim() == "") {
+      timeZone = this.getTimeZone();
+    }
+    TransactionService_.record(this, transactions, timeZone);
+    this.clearAccountsCache();
+  }
+
+  /**
+   * Create [[Accounts]] on the Book, in batch.
+   * 
+   * The first column of the matrix will be used as the [[Account]] name.
+   * 
+   * The other columns will be used to find a matching [[AccountType]].
+   * 
+   * Names matching existent accounts will be skipped.
+   * 
+   * @deprecated
+   * 
+   */
+  public createAccounts(accounts: string[][]): Account[] {
+
+    let accountsPayloads: bkper.Account[] = []
+
+    for (let i = 0; i < accounts.length; i++) {
+      const row = accounts[i]
+      const account: bkper.Account = {
+        name: row[0],
+        type: AccountType.ASSET,
+        groups: []
+      }
+
+      if (this.getAccount(account.name)) {
+        //Account already created. Skip.
+        continue;
+      }
+
+      if (row.length > 1) {
+        for (let j = 1; j < row.length; j++) {
+          const cell = row[j];
+          if (this.isType(cell)) {
+            account.type = cell as AccountType;
+          } else {
+            let group = this.getGroup(cell);
+            if (group != null) {
+              account.groups.push(group.getId());
+            }
+          }
+        }
+      }
+
+      accountsPayloads.push(account)
+    }
+
+    if (accountsPayloads.length > 0) {
+      let createdAccountsPlain = AccountService_.createAccounts(this.getId(), accountsPayloads);
+      let createdAccounts = Utils_.wrapObjects(new Account(), createdAccountsPlain);
+      this.clearBookCache_();
+      for (var i = 0; i < createdAccounts.length; i++) {
+        var account = createdAccounts[i];
+        account.book = this;
+      }
+      return createdAccounts;
+    }
+
+    return [];
+  }
+
+  /**
+   * @deprecated
+   */
+  private isType(groupOrType: string): boolean {
+    if (groupOrType == AccountType.ASSET) {
+      return true;
+    }
+    if (groupOrType == AccountType.LIABILITY) {
+      return true;
+    }
+    if (groupOrType == AccountType.INCOMING) {
+      return true;
+    }
+    if (groupOrType == AccountType.OUTGOING) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Create [[Groups]] on the Book, in batch.
+   * @deprecated
+   */
+  public createGroups(groups: string[]): Group[] {
+    if (groups.length > 0) {
+      let groupsSave: bkper.Group[] = groups.map(groupName => { return { name: groupName } });
+      let createdGroups = GroupService_.createGroups(this.getId(), groupsSave);
+      this.clearBookCache_();
+
+      for (var i = 0; i < createdGroups.length; i++) {
+        var group = createdGroups[i];
+        group.book = this;
+      }
+
+      return createdGroups;
+    }
+    return [];
+  }
+
 }

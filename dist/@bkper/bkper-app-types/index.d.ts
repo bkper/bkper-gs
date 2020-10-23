@@ -798,6 +798,11 @@ declare namespace Bkper {
         newTransaction(): Transaction;
 
         /**
+         * Parse a value string according to [[DecimalSeparator]] and fraction digits of the Book.
+         */
+        parseValue(value: string): number;
+
+        /**
          * Record [[Transactions]] on the Book.
          *
          * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).

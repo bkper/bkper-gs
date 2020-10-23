@@ -178,7 +178,6 @@ class Book {
 
 
   /**
-   * 
    * Formats a value according to [[DecimalSeparator]] and fraction digits of the Book.
    * 
    * @param value The value to be formatted.
@@ -187,6 +186,13 @@ class Book {
    */
   public formatValue(value: number): string {
     return Utils_.formatValue_(value, this.getDecimalSeparator(), this.getFractionDigits());
+  }
+
+  /**
+   * Parse a value string according to [[DecimalSeparator]] and fraction digits of the Book.
+   */
+  public parseValue(value: string): number {
+    return Utils_.parseValue(value, this.getDecimalSeparator());
   }
 
 

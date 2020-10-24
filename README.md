@@ -19,7 +19,7 @@
 [DocumentApp]: https://developers.google.com/apps-script/reference/document/document-app
 [SpreadsheetApp]: https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app
 
-[Add-on for Google Sheets]: https://gsuite.google.com/marketplace/app/bkper/360398463400
+[Add-on for Google Sheets]: https://workspace.google.com/marketplace/app/bkper/360398463400
 
 ## BkperApp
 

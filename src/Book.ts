@@ -173,6 +173,9 @@ class Book {
    * @return The date formated
    */
   public formatDate(date: Date, timeZone?: string): string {
+    if (timeZone == null || timeZone.trim() == "") {
+      timeZone = this.getTimeZone();
+    }
     return Utils_.formatDate(date, this.getDatePattern(), timeZone);
   }
 

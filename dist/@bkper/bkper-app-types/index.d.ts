@@ -1029,6 +1029,11 @@ declare namespace Bkper {
         getAccountBalance(raw?: boolean): number;
 
         /**
+         * @returns The id of the agent that created this transaction
+         */
+        getAgentId(): string;
+
+        /**
          * @returns The amount of the transaction.
          */
         getAmount(): number;

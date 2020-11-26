@@ -20,6 +20,13 @@ class Transaction {
   }
 
   /**
+   * @returns The id of the agent that created this transaction
+   */
+  public getAgentId(): string {
+    return this.wrapped.agentId;
+  }
+
+  /**
    * Remote ids are used to avoid duplication.
    * 
    * @returns The remote ids of the Transaction.

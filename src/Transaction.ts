@@ -127,10 +127,47 @@ class Transaction {
    */
   public getFiles(): File[] {
       if (this.wrapped.files && this.wrapped.files.length > 0) {
-        return Utils_.wrapObjects(new File(), this.wrapped.files)
+        const files = Utils_.wrapObjects(new File(), this.wrapped.files);
+        if (files != null) {
+          for (const file of files) {
+            file.book = this.book;
+          }
+        }
+        return files
       } else {
         return [];
       }
+  }
+
+  /**
+   * 
+   * Adds a file attachment to the Transaction.
+   * 
+   * Files not previously created in the Book will be automatically created. 
+   * 
+   * @param file The file to add
+   * 
+   * @returns This Transaction, for chainning.
+   */
+  public addFile(file: File|GoogleAppsScript.Base.Blob): Transaction {
+
+    //@ts-ignore
+    if (file.copyBlob) {
+      file = this.book.newFile().setBlob(file as GoogleAppsScript.Base.Blob);
+    }
+    file = file as File;
+
+    if (this.wrapped.files == null) {
+      this.wrapped.files = [];
+    }
+
+    //Make sure file is already created
+    if (file.getId() == null || file.book.getId() != this.book.getId()) {
+      file.book = this.book;
+      file = file.create();
+    }
+    this.wrapped.files.push(file.wrapped)
+    return this;
   }
 
   /**

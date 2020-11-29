@@ -585,7 +585,23 @@ class Book {
     return transaction;
   }
 
-
+  /**
+   * Instantiate a new [[File]]
+   * 
+   * Example:
+   * ```js
+   * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+   * 
+   * book.newFile()
+   *  .setBlob(UrlFetchApp.fetch('https://bkper.com/images/index/integrations4.png').getBlob())
+   *  .create();
+   * ```
+   */
+  public newFile(): File {
+    let file = Utils_.wrapObject(new File(), {});
+    file.book = this;
+    return file;
+  }
 
 
 

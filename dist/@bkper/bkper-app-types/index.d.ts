@@ -762,6 +762,20 @@ declare namespace Bkper {
         newAccount(): Account;
 
         /**
+         * Instantiate a new [[File]]
+         *
+         * Example:
+         * ```js
+         * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+         * 
+         * book.newFile()
+         *  .setBlob(UrlFetchApp.fetch('https://bkper.com/images/index/integrations4.png').getBlob())
+         *  .create();
+         * ```
+         */
+        newFile(): File;
+
+        /**
          * Instantiate a new [[Group]]
          *
          * Example:
@@ -851,29 +865,77 @@ declare namespace Bkper {
     /**
      * This class defines a File uploaded to a [[Book]].
      *
-     * A file can be attached to a [[Transaction]] or used to import data.
+     * A File can be attached to a [[Transaction]] or used to import data.
      */
     export interface File {
 
         /**
-         * Gets the file content type
+         * Perform create new File.
+         */
+        create(): File;
+
+        /**
+         * Gets the Blob from this file
+         */
+        getBlob(): GoogleAppsScript.Base.Blob;
+
+        /**
+         * Gets the file content Base64 encoded
+         */
+        getContent(): string;
+
+        /**
+         * Gets the File content type
          */
         getContentType(): string;
 
         /**
-         * Gets the file id
+         * Gets the File id
          */
         getId(): string;
 
         /**
-         * Gets the file name
+         * Gets the File name
          */
         getName(): string;
+
+        /**
+         * Gets the file size in bytes
+         */
+        getSize(): number;
 
         /**
          * Gets the file serving url for accessing via browser
          */
         getUrl(): string;
+
+        /**
+         * Sets the File properties from a Blob
+         *
+         * @returns This File, for chainning.
+         */
+        setBlob(blob: GoogleAppsScript.Base.Blob): File;
+
+        /**
+         * Sets the File content Base64 encoded.
+         *
+         * @returns This File, for chainning.
+         */
+        setContent(content: string): File;
+
+        /**
+         * Sets the File content type.
+         *
+         * @returns This File, for chainning.
+         */
+        setContentType(contentType: string): File;
+
+        /**
+         * Sets the name of the File.
+         *
+         * @returns This File, for chainning.
+         */
+        setName(name: string): File;
 
     }
 
@@ -980,6 +1042,15 @@ declare namespace Bkper {
      * A Transaction is the main entity on the [Double Entry](http://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) [Bookkeeping](http://en.wikipedia.org/wiki/Bookkeeping) system.
      */
     export interface Transaction {
+
+        /**
+         * Adds a file attachment to the Transaction.
+         *
+         * Files not previously created in the Book will be automatically created.
+         *
+         * @returns This Transaction, for chainning.
+         */
+        addFile(file: File | GoogleAppsScript.Base.Blob): Transaction;
 
         /**
          * Add a remote id to the Transaction.

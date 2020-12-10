@@ -651,6 +651,11 @@ declare namespace Bkper {
         getDecimalSeparator(): DecimalSeparator;
 
         /**
+         * Retrieve a file by id
+         */
+        getFile(id: string): File;
+
+        /**
          * @returns The number of fraction digits (decimal places) supported by this Book
          */
         getFractionDigits(): number;

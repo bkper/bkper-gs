@@ -603,6 +603,15 @@ class Book {
     return file;
   }
 
+  /** 
+   * Retrieve a file by id
+   */
+  public getFile(id: string): File {
+    let wrapped = FileService_.getFile(this.getId(), id);
+    let file = Utils_.wrapObject(new File(), wrapped);
+    return file;
+  }
+
 
 
   //DEPRECATED

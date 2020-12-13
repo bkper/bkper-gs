@@ -134,7 +134,7 @@ declare namespace Bkper {
         /**
          * Gets the custom properties stored in this Account.
          */
-        getProperties(): any;
+        getProperties(): {[key: string]: string};
 
         /**
          * Gets the property value for given keys. First property found will be retrieved
@@ -241,7 +241,7 @@ declare namespace Bkper {
          *
          * @returns This Account, for chainning.
          */
-        setProperties(properties: {[name: string]: string}): Account;
+        setProperties(properties: {[key: string]: string}): Account;
 
         /**
          * Sets a custom property in the Account.
@@ -988,7 +988,7 @@ declare namespace Bkper {
         /**
          * Gets the custom properties stored in this Group
          */
-        getProperties(): any;
+        getProperties(): {[key: string]: string};
 
         /**
          * Gets the property value for given keys. First property found will be retrieved
@@ -1027,7 +1027,7 @@ declare namespace Bkper {
          *
          * @returns This Group, for chainning.
          */
-        setProperties(properties: {[name: string]: string}): Group;
+        setProperties(properties: {[key: string]: string}): Group;
 
         /**
          * Sets a custom property in the Group.
@@ -1238,7 +1238,7 @@ declare namespace Bkper {
         /**
          * Gets the custom properties stored in this Transaction.
          */
-        getProperties(): any;
+        getProperties(): {[key: string]: string};
 
         /**
          * Gets the property value for given keys. First property found will be retrieved
@@ -1337,7 +1337,7 @@ declare namespace Bkper {
          *
          * @returns This Transaction, for chainning.
          */
-        setProperties(properties: {[name: string]: string}): Transaction;
+        setProperties(properties: {[key: string]: string}): Transaction;
 
         /**
          * Sets a custom property in the Transaction.

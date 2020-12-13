@@ -73,7 +73,7 @@ class Account {
   /**
    * Gets the custom properties stored in this Account.
    */  
-  public getProperties(): any {
+  public getProperties(): {[key: string]: string} {
     return this.wrapped.properties != null ?  this.wrapped.properties : {};
   }
 
@@ -84,7 +84,7 @@ class Account {
    * 
    * @returns This Account, for chainning. 
    */
-  public setProperties(properties: {[name: string]: string}): Account {
+  public setProperties(properties: {[key: string]: string}): Account {
     this.wrapped.properties = properties;
     return this;
   }

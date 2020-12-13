@@ -77,7 +77,7 @@ class Group {
   /**
    * Gets the custom properties stored in this Group
    */  
-  public getProperties(): any {
+  public getProperties(): {[key: string]: string} {
     return this.wrapped.properties != null ?  this.wrapped.properties : {};
   }
 
@@ -88,7 +88,7 @@ class Group {
    * 
    * @returns This Group, for chainning. 
    */
-  public setProperties(properties: {[name: string]: string}): Group {
+  public setProperties(properties: {[key: string]: string}): Group {
     this.wrapped.properties = properties;
     return this;
   }

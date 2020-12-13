@@ -700,7 +700,7 @@ declare namespace Bkper {
         /**
          * Gets the custom properties stored in this Book
          */
-        getProperties(): any;
+        getProperties(): {[key: string]: string};
 
         /**
          * Gets the property value for given keys. First property found will be retrieved
@@ -713,7 +713,7 @@ declare namespace Bkper {
         getSavedQueries(): {id?: string, query?: string, title?: string}[];
 
         /**
-         * @returns The time zone of the book
+         * @returns The time zone of the Book
          */
         getTimeZone(): string;
 
@@ -842,6 +842,60 @@ declare namespace Bkper {
          * @returns The value rounded
          */
         round(value: number): number;
+
+        /**
+         * Sets the date pattern of the Book.
+         *
+         * @returns This Book, for chainning.
+         */
+        setDatePattern(datePattern: "dd/MM/yyyy" | "MM/dd/yyyy" | "yyyy/MM/dd"): Book;
+
+        /**
+         * Sets the decimal separator of the Book
+         *
+         * @returns This Book, for chainning.
+         */
+        setDecimalSeparator(decimalSeparator: DecimalSeparator): Book;
+
+        /**
+         * Sets the number of fraction digits (decimal places) supported by this Book
+         *
+         * @returns This Book, for chainning.
+         */
+        setFractionDigits(fractionDigits: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8): Book;
+
+        /**
+         * Sets the name of the Book.
+         *
+         * @returns This Book, for chainning.
+         */
+        setName(name: string): Book;
+
+        /**
+         * Sets the custom properties of the Book
+         *
+         * @returns This Book, for chainning.
+         */
+        setProperties(properties: {[key: string]: string}): Book;
+
+        /**
+         * Sets a custom property in the Book.
+         *
+         * @returns This Book, for chainning.
+         */
+        setProperty(key: string, value: string): Book;
+
+        /**
+         * Sets the time zone of the Book
+         *
+         * @returns This Book, for chainning.
+         */
+        setTimeZone(timeZone: string): Book;
+
+        /**
+         * Perform update Book, applying pending changes.
+         */
+        update(): Book;
 
     }
 

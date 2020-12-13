@@ -43,6 +43,12 @@ namespace BookService_ {
     return bookPlain;
   }
 
+  export function updateBook(bookId: string, book: bkper.Book): bkper.Book {
+    var payload = JSON.stringify(book);
+    var responseJSON = new HttpBooksApiV3Request(`${bookId}`).setMethod('put').setPayload(payload).fetch().getContentText();
+    return JSON.parse(responseJSON);
+  }
+
   export function audit(book: Book): void {
     new HttpBooksApiV3Request(`${book.getId()}/audit`).setMethod('patch').fetch();
   }

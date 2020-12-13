@@ -41,11 +41,33 @@ class Book {
   }
 
   /**
+   * 
+   * Sets the name of the Book.
+   * 
+   * @returns This Book, for chainning.
+   */    
+  public setName(name: string): Book {
+    this.wrapped.name = name;
+    return this;
+  }
+  
+  /**
    * @return The number of fraction digits (decimal places) supported by this Book
    */
   public getFractionDigits(): number {
     this.checkBookLoaded_();
     return this.wrapped.fractionDigits;
+  }
+
+  /**
+   * 
+   * Sets the number of fraction digits (decimal places) supported by this Book
+   * 
+   * @returns This Book, for chainning.
+   */     
+  public setFractionDigits(fractionDigits: 1|2|3|4|5|6|7|8): Book {
+    this.wrapped.fractionDigits = fractionDigits;
+    return this;
   }
 
   /**
@@ -103,6 +125,20 @@ class Book {
   }
 
   /**
+   * 
+   * Sets the date pattern of the Book. 
+   * 
+   * @returns This Book, for chainning.
+   */    
+  public setDatePattern(datePattern: "dd/MM/yyyy" | "MM/dd/yyyy" | "yyyy/MM/dd"): Book {
+    this.wrapped.datePattern = datePattern;
+    return this;
+  }  
+
+
+ 
+
+  /**
    * @return The decimal separator of the Book
    */
   public getDecimalSeparator(): DecimalSeparator {
@@ -110,13 +146,35 @@ class Book {
     return this.wrapped.decimalSeparator as DecimalSeparator;
   }
 
+  /**
+   * 
+   * Sets the decimal separator of the Book
+   * 
+   * @returns This Book, for chainning.
+   */    
+  public setDecimalSeparator(decimalSeparator: DecimalSeparator): Book {
+    this.wrapped.decimalSeparator = decimalSeparator;
+    return this;
+  }
+
 
   /**
-   * @return The time zone of the book
+   * @return The time zone of the Book
    */
   public getTimeZone(): string {
     this.checkBookLoaded_();
     return this.wrapped.timeZone;
+  }
+
+  /**
+   * 
+   * Sets the time zone of the Book
+   * 
+   * @returns This Book, for chainning.
+   */    
+  public setTimeZone(timeZone: string): Book {
+    this.wrapped.timeZone = timeZone;
+    return this;
   }
 
   /**
@@ -139,7 +197,7 @@ class Book {
   /**
    * Gets the custom properties stored in this Book
    */
-  public getProperties(): any {
+  public getProperties(): {[key: string]: string} {
     this.checkBookLoaded_();
     return this.wrapped.properties != null ? this.wrapped.properties : {};
   }
@@ -161,6 +219,38 @@ class Book {
     }
 
     return null;
+  }
+
+  /**
+   * Sets the custom properties of the Book
+   * 
+   * @param properties Object with key/value pair properties
+   * 
+   * @returns This Book, for chainning. 
+   */
+  public setProperties(properties: {[key: string]: string}): Book {
+    this.wrapped.properties = properties;
+    return this;
+  }
+
+  /**
+   * Sets a custom property in the Book.
+   * 
+   * @param key The property key
+   * @param value The property value
+   * 
+   * @returns This Book, for chainning. 
+   */
+  public setProperty(key: string, value: string): Book {
+    if (key == null || key.trim() == '') {
+      return this;
+    }    
+    this.checkBookLoaded_();
+    if (this.wrapped.properties == null) {
+      this.wrapped.properties = {};
+    }
+    this.wrapped.properties[key] = value;
+    return this;
   }
 
 
@@ -612,6 +702,13 @@ class Book {
     return file;
   }
 
+  /**
+   * Perform update Book, applying pending changes.
+   */
+  public update(): Book {
+    this.wrapped = BookService_.updateBook(this.getId(), this.wrapped);
+    return this;
+  }   
 
 
   //DEPRECATED

@@ -65,7 +65,7 @@ class Book {
    * 
    * @returns This Book, for chainning.
    */     
-  public setFractionDigits(fractionDigits: 1|2|3|4|5|6|7|8): Book {
+  public setFractionDigits(fractionDigits: number): Book {
     this.wrapped.fractionDigits = fractionDigits;
     return this;
   }
@@ -117,7 +117,7 @@ class Book {
 
 
   /**
-   * @return The date pattern of the Book. Example: dd/MM/yyyy
+   * @return The date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
    */
   public getDatePattern(): string {
     this.checkBookLoaded_();
@@ -126,11 +126,11 @@ class Book {
 
   /**
    * 
-   * Sets the date pattern of the Book. 
+   * Sets the date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
    * 
    * @returns This Book, for chainning.
    */    
-  public setDatePattern(datePattern: "dd/MM/yyyy" | "MM/dd/yyyy" | "yyyy/MM/dd"): Book {
+  public setDatePattern(datePattern: string): Book {
     this.wrapped.datePattern = datePattern;
     return this;
   }  

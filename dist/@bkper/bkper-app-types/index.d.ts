@@ -641,7 +641,7 @@ declare namespace Bkper {
         getCollection(): Collection;
 
         /**
-         * @returns The date pattern of the Book. Example: dd/MM/yyyy
+         * @returns The date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
          */
         getDatePattern(): string;
 
@@ -844,11 +844,11 @@ declare namespace Bkper {
         round(value: number): number;
 
         /**
-         * Sets the date pattern of the Book.
+         * Sets the date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
          *
          * @returns This Book, for chainning.
          */
-        setDatePattern(datePattern: "dd/MM/yyyy" | "MM/dd/yyyy" | "yyyy/MM/dd"): Book;
+        setDatePattern(datePattern: string): Book;
 
         /**
          * Sets the decimal separator of the Book
@@ -862,7 +862,7 @@ declare namespace Bkper {
          *
          * @returns This Book, for chainning.
          */
-        setFractionDigits(fractionDigits: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8): Book;
+        setFractionDigits(fractionDigits: number): Book;
 
         /**
          * Sets the name of the Book.

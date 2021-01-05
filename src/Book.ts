@@ -199,7 +199,7 @@ class Book {
    */
   public getProperties(): {[key: string]: string} {
     this.checkBookLoaded_();
-    return this.wrapped.properties != null ? this.wrapped.properties : {};
+    return this.wrapped.properties != null ? {...this.wrapped.properties} : {};
   }
 
   /**
@@ -229,7 +229,7 @@ class Book {
    * @returns This Book, for chainning. 
    */
   public setProperties(properties: {[key: string]: string}): Book {
-    this.wrapped.properties = properties;
+    this.wrapped.properties = {...properties};
     return this;
   }
 

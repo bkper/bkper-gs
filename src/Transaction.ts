@@ -191,7 +191,7 @@ class Transaction {
    * Gets the custom properties stored in this Transaction.
    */  
   public getProperties(): {[key: string]: string} {
-    return this.wrapped.properties != null ?  this.wrapped.properties : {};
+    return this.wrapped.properties != null ?  {...this.wrapped.properties} : {};
   }
 
   /**
@@ -202,7 +202,7 @@ class Transaction {
    * @returns This Transaction, for chainning. 
    */
   public setProperties(properties: {[key: string]: string}): Transaction {
-    this.wrapped.properties = properties;
+    this.wrapped.properties = {...properties};
     return this;
   }
 

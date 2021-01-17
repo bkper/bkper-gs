@@ -29,7 +29,7 @@ function getBooks(): Book[] {
 
 
 function normalizeName(name: string): string {
-  return Normalizer_.normalizeText(name, "_");
+  return Utils_.normalizeText(name, "_");
 }
 
 

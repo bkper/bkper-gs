@@ -94,14 +94,14 @@ declare namespace Bkper {
          *
          * @returns The balance of this account.
          */
-        getBalance(raw?: boolean): number;
+        getBalance(raw?: boolean): Big;
 
         /**
          * Gets the checked balance based on credit nature of this Account.
          *
          * @returns The checked balance of this Account
          */
-        getCheckedBalance(raw?: boolean): number;
+        getCheckedBalance(raw?: boolean): Big;
 
         /**
          * Gets the account description
@@ -291,17 +291,17 @@ declare namespace Bkper {
         /**
          * The cumulative checked balance to the date, since the first transaction posted.
          */
-        getCheckedCumulativeBalance(): number;
+        getCheckedCumulativeBalance(): Big;
 
         /**
          * The checked balance on the date period.
          */
-        getCheckedPeriodBalance(): number;
+        getCheckedPeriodBalance(): Big;
 
         /**
          * The cumulative balance to the date, since the first transaction posted.
          */
-        getCumulativeBalance(): number;
+        getCumulativeBalance(): Big;
 
         /**
          * Date object constructed based on [[Book]] time zone offset. Usefull for
@@ -344,17 +344,17 @@ declare namespace Bkper {
         /**
          * The balance on the date period.
          */
-        getPeriodBalance(): number;
+        getPeriodBalance(): Big;
 
         /**
          * The unchecked cumulative balance to the date, since the first transaction posted.
          */
-        getUncheckedCumulativeBalance(): number;
+        getUncheckedCumulativeBalance(): Big;
 
         /**
          * The unchecked balance on the date period.
          */
-        getUncheckedPeriodBalance(): number;
+        getUncheckedPeriodBalance(): Big;
 
         /**
          * The year of the balance
@@ -493,6 +493,13 @@ declare namespace Bkper {
     }
 
     /**
+     * Arbitrary-precision Decimal type.
+     *
+     * Wrapper of the decimal.js-light library https://www.npmjs.com/package/big.js
+     * 
+     * Official documentation: http://mikemcl.github.io/big.js/
+     */
+    /**
      * A Book represents [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
      *
      * It contains all [[Accounts]] where [[Transactions]] are recorded/posted;
@@ -616,7 +623,7 @@ declare namespace Bkper {
          *
          * @returns The value formated
          */
-        formatValue(value: number): string;
+        formatValue(value: Big): string;
 
         /**
          * Gets an [[Account]] object
@@ -819,7 +826,7 @@ declare namespace Bkper {
         /**
          * Parse a value string according to [[DecimalSeparator]] and fraction digits of the Book.
          */
-        parseValue(value: string): number;
+        parseValue(value: string): Big;
 
         /**
          * Record [[Transactions]] on the Book.
@@ -841,7 +848,7 @@ declare namespace Bkper {
          *
          * @returns The value rounded
          */
-        round(value: number): number;
+        round(value: Big): Big;
 
         /**
          * Sets the date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
@@ -1156,7 +1163,7 @@ declare namespace Bkper {
          * 
          * Only comes with the last posted transaction of the day.
          */
-        getAccountBalance(raw?: boolean): number;
+        getAccountBalance(raw?: boolean): Big;
 
         /**
          * @returns The id of the agent that created this transaction
@@ -1166,7 +1173,7 @@ declare namespace Bkper {
         /**
          * @returns The amount of the transaction.
          */
-        getAmount(): number;
+        getAmount(): Big;
 
         /**
          * @returns The date the transaction was created.
@@ -1191,7 +1198,7 @@ declare namespace Bkper {
         /**
          * Get the absolute amount of this transaction if the given account is at the credit side, else null.
          */
-        getCreditAmount(account: Account | string): number;
+        getCreditAmount(account: Account | string): Big;
 
         /**
          * @returns The Transaction date, in ISO format yyyy-MM-dd.
@@ -1227,7 +1234,7 @@ declare namespace Bkper {
         /**
          * Gets the absolute amount of this transaction if the given account is at the debit side, else null.
          */
-        getDebitAmount(account: Account | string): number;
+        getDebitAmount(account: Account | string): Big;
 
         /**
          * @returns The description of this transaction.
@@ -1557,7 +1564,7 @@ declare namespace Bkper {
         /**
          * The cumulative checked balance to the date, since the first transaction posted.
          */
-        getCheckedCumulativeBalance(): number;
+        getCheckedCumulativeBalance(): Big;
 
         /**
          * The cumulative checked balance formatted according to [[Book]] decimal format and fraction digits.
@@ -1567,7 +1574,7 @@ declare namespace Bkper {
         /**
          * The checked balance on the date period.
          */
-        getCheckedPeriodBalance(): number;
+        getCheckedPeriodBalance(): Big;
 
         /**
          * The checked balance on the date period formatted according to [[Book]] decimal format and fraction digits
@@ -1577,7 +1584,7 @@ declare namespace Bkper {
         /**
          * The cumulative balance to the date, since the first transaction posted.
          */
-        getCumulativeBalance(): number;
+        getCumulativeBalance(): Big;
 
         /**
          * The cumulative balance formatted according to [[Book]] decimal format and fraction digits.
@@ -1592,7 +1599,7 @@ declare namespace Bkper {
         /**
          * The balance on the date period.
          */
-        getPeriodBalance(): number;
+        getPeriodBalance(): Big;
 
         /**
          * The balance on the date period formatted according to [[Book]] decimal format and fraction digits
@@ -1602,7 +1609,7 @@ declare namespace Bkper {
         /**
          * The cumulative unchecked balance to the date, since the first transaction posted.
          */
-        getUncheckedCumulativeBalance(): number;
+        getUncheckedCumulativeBalance(): Big;
 
         /**
          * The cumulative unchecked balance formatted according to [[Book]] decimal format and fraction digits.
@@ -1612,7 +1619,7 @@ declare namespace Bkper {
         /**
          * The unchecked balance on the date period.
          */
-        getUncheckedPeriodBalance(): number;
+        getUncheckedPeriodBalance(): Big;
 
         /**
          * The unchecked balance on the date period formatted according to [[Book]] decimal format and fraction digits

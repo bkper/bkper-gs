@@ -203,7 +203,7 @@ class TransactionsDataTableBuilder {
 
       if (transaction.getAmount() != null) {
 
-        var amount: string | number = transaction.getAmount();
+        var amount: string | Big = transaction.getAmount();
 
         if (this.shouldFormatValues) {
           amount = Utils_.formatValue_(transaction.getAmount(), iterator.getBook().getDecimalSeparator(), iterator.getBook().getFractionDigits());
@@ -223,7 +223,7 @@ class TransactionsDataTableBuilder {
 
       if (account.isPermanent()) {
         if (transaction.getAccountBalance() != null) {
-          var balance: string | number = transaction.getAccountBalance();
+          var balance: string | Big = transaction.getAccountBalance();
           if (this.shouldFormatValues) {
             balance = Utils_.formatValue_(balance, iterator.getBook().getDecimalSeparator(), iterator.getBook().getFractionDigits());
           };

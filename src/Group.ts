@@ -45,7 +45,7 @@ class Group {
     if (this.wrapped.normalizedName) {
       return this.wrapped.normalizedName;
     } else {
-      return Normalizer_.normalizeText(this.getName())
+      return Utils_.normalizeText(this.getName())
     }
   }
 

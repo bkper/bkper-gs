@@ -187,11 +187,11 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     this.balancesContainers.sort((a, b) => {
       if (a != null && b != null) {
         if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
-          return b.getCheckedCumulativeBalance() - a.getCheckedCumulativeBalance();
+          return b.getCheckedCumulativeBalance().minus(a.getCheckedCumulativeBalance()).toNumber();
         } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
-          return b.getUncheckedCumulativeBalance() - a.getUncheckedCumulativeBalance();
+          return b.getUncheckedCumulativeBalance().minus(a.getUncheckedCumulativeBalance()).toNumber();
         } else {
-          return b.getCumulativeBalance() - a.getCumulativeBalance();
+          return b.getCumulativeBalance().minus(a.getCumulativeBalance()).toNumber();
         }
       }
       return -1;
@@ -205,11 +205,11 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
           subContainers.sort((a, b) => {
             if (a != null && b != null) {
               if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
-                return b.getCheckedCumulativeBalance() - a.getCheckedCumulativeBalance();
+                return b.getCheckedCumulativeBalance().minus(a.getCheckedCumulativeBalance()).toNumber();
               } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
-                return b.getUncheckedCumulativeBalance() - a.getUncheckedCumulativeBalance();
+                return b.getUncheckedCumulativeBalance().minus(a.getUncheckedCumulativeBalance()).toNumber();
               } else {
-                return b.getCumulativeBalance() - a.getCumulativeBalance();
+                return b.getCumulativeBalance().minus(a.getCumulativeBalance()).toNumber();
               }              
             }
             return -1;
@@ -367,7 +367,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         for (var j = 1; j < row.length; j++) {
           var cell = row[j];
           if (cell == "null_amount") {
-            var amount: any = 0;
+            var amount: any = new Big(0);
             if (this.shouldFormatValue) {
               amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
             }
@@ -380,7 +380,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
           if (cell == "null_amount" && cumulativeBalance) {
             row[j] = lastRow[j];
           } else if (cell == "null_amount") {
-            var amount: any = 0;
+            var amount: any = new Big(0);
             if (this.shouldFormatValue) {
               amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
             }

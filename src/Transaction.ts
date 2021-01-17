@@ -359,8 +359,8 @@ class Transaction {
   /**
    * @returns The amount of the transaction.
    */
-  public getAmount(): number {
-    return this.wrapped.amount != null && this.wrapped.amount.trim() != '' ? +this.wrapped.amount : null;
+  public getAmount(): Big {
+    return this.wrapped.amount != null && this.wrapped.amount.trim() != '' ? new Big(this.wrapped.amount) : null;
   }
 
   /**
@@ -392,7 +392,7 @@ class Transaction {
    * 
    * @param account The account object, id or name.
    */
-  public getCreditAmount(account: Account | string): number {
+  public getCreditAmount(account: Account | string): Big {
     let accountObject = this.getAccount_(account);
     if (this.isCreditOnTransaction_(accountObject)) {
       return this.getAmount();
@@ -405,7 +405,7 @@ class Transaction {
    * 
    * @param account The account object, id or name.
    */
-  public getDebitAmount(account: Account | string): number {
+  public getDebitAmount(account: Account | string): Big {
     let accountObject = this.getAccount_(account);
     if (this.isDebitOnTransaction_(accountObject)) {
       return this.getAmount();
@@ -549,12 +549,12 @@ class Transaction {
 
 
   //EVOLVED BALANCES
-  private getCaEvolvedBalance_(): number {
-    return this.wrapped.creditAccount != null && this.wrapped.creditAccount.balance != null ? +this.wrapped.creditAccount.balance : null;
+  private getCaEvolvedBalance_(): Big {
+    return this.wrapped.creditAccount != null && this.wrapped.creditAccount.balance != null ? new Big(this.wrapped.creditAccount.balance) : null;
   }
 
-  private getDaEvolvedBalance_(): number {
-    return this.wrapped.debitAccount != null && this.wrapped.debitAccount.balance != null ? +this.wrapped.debitAccount.balance : null;
+  private getDaEvolvedBalance_(): Big {
+    return this.wrapped.debitAccount != null && this.wrapped.debitAccount.balance != null ? new Big(this.wrapped.debitAccount.balance) : null;
   }
 
   /**
@@ -566,7 +566,7 @@ class Transaction {
    * 
    * @param raw True to get the raw balance, no matter the credit nature of the [[Account]].
    */
-  public getAccountBalance(raw?: boolean): number {
+  public getAccountBalance(raw?: boolean): Big {
     var accountBalance = this.getCaEvolvedBalance_();
     var isCa = true;
     if (accountBalance == null) {

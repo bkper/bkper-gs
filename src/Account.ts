@@ -48,7 +48,7 @@ class Account {
     if (this.wrapped.normalizedName) {
       return this.wrapped.normalizedName;
     } else {
-      return Normalizer_.normalizeText(this.getName())
+      return Utils_.normalizeText(this.getName())
     }
   }
 
@@ -144,8 +144,8 @@ class Account {
    * 
    * @returns The balance of this account.
    */
-  public getBalance(raw?: boolean): number {
-    var balance = 0;
+  public getBalance(raw?: boolean): Big {
+    var balance = new Big('0');
     if (this.wrapped.balance != null) {
       balance = Utils_.round(this.wrapped.balance, this.book.getFractionDigits());
     }
@@ -164,8 +164,8 @@ class Account {
    * 
    * @returns The checked balance of this Account
    */
-  public getCheckedBalance(raw?: boolean): number {
-    var balance = 0;
+  public getCheckedBalance(raw?: boolean): Big {
+    var balance = new Big('0');
     if (this.wrapped.balance != null) {
       balance = Utils_.round(this.wrapped.checkedBalance, this.book.getFractionDigits());
     }

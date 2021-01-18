@@ -2,9 +2,9 @@
 
 /**
  * 
- * Arbitrary-precision Decimal type. 
+ * Arbitrary-precision number. 
  * 
- * Wrapper of the decimal.js-light library https://www.npmjs.com/package/big.js
+ * Wrapper of the big.js library https://www.npmjs.com/package/big.js
  * 
  * Official documentation: http://mikemcl.github.io/big.js/
  * 

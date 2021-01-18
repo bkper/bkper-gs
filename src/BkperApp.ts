@@ -27,6 +27,14 @@ function getBooks(): Book[] {
   return BookService_.listBooks().map(bookV2 => { return new Book(bookV2.id, bookV2) });
 }
 
+/**
+ * Create a new [[Amount]] wrapping a given number, or arbitrary-precision math calculations.
+ * 
+ * @param n The number to wrapp
+ */
+function newAmount(n: number | string | Amount): Amount {
+  return new Amount(n);
+}
 
 function normalizeName(name: string): string {
   return Utils_.normalizeText(name, "_");

@@ -1453,7 +1453,7 @@ declare namespace Bkper {
          *
          * @returns This Transaction, for chainning.
          */
-        setAmount(amount: number | string): Transaction;
+        setAmount(amount: Amount | number | string): Transaction;
 
         /**
          * Sets the credit/origin Account of the Transaction. Same as from().

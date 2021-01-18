@@ -31,6 +31,8 @@ function getBooks(): Book[] {
  * Create a new [[Amount]] wrapping a given number, or arbitrary-precision math calculations.
  * 
  * @param n The number to wrapp
+ * 
+ * @public
  */
 function newAmount(n: number | string | Amount): Amount {
   return new Amount(n);

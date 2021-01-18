@@ -44,6 +44,11 @@ declare namespace Bkper {
         getBooks(): Book[];
 
         /**
+         * Create a new [[Amount]] wrapping a given number, or arbitrary-precision math calculations.
+         */
+        newAmount(n: number | string | Amount): Amount;
+
+        /**
          * Sets the API key to identify the agent.
          *
          * API keys are intended for agent identification only, not for authentication. [Learn more](https://cloud.google.com/endpoints/docs/frameworks/java/when-why-api-key)

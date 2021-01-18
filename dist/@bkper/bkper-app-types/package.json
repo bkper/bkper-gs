@@ -1,6 +1,6 @@
 {
   "name": "@bkper/bkper-app-types",
-  "version": "3.8.1",
+  "version": "3.8.2",
   "description": "Typescript definitions for BkperApp",
   "homepage": "https://bkper.com/docs/#bkperapp",
   "repository": {

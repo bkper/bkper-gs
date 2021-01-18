@@ -369,21 +369,23 @@ class Transaction {
    * 
    * @returns This Transaction, for chainning.
    */
-  public setAmount(amount: number | string): Transaction {
-    
+  public setAmount(amount: Amount | number | string): Transaction {
+
     if (typeof amount == "string") {
       amount = Utils_.parseValue(amount, this.book.getDecimalSeparator())+'';
+      this.wrapped.amount = amount.toString();
+      return this;
     }
-    
-    if (!isNaN(+amount)) {
-      if (amount == 0 || !isFinite(+amount)) {
-        return this;
-      }
-      if (+amount < 0) {
-        amount = +amount * -1;
-      }
-      this.wrapped.amount = amount+'';
+
+    amount = new Amount(amount);
+
+    if (amount.eq(0)) {
+      this.wrapped.amount = null;
+      return this;
     }
+
+    this.wrapped.amount = amount.abs().toString();
+
     return this;
   }
 
@@ -610,7 +612,7 @@ class Transaction {
    */
   public check(): Transaction {
     let operation = TransactionService_.checkTransaction(this.book.getId(), this.wrapped);
-    this.wrapped = operation.transaction;
+    this.wrapped.checked = operation.transaction.checked;
     this.book.clearAccountsCache();
     return this;
   }
@@ -620,7 +622,7 @@ class Transaction {
    */  
   public uncheck(): Transaction {
     let operation = TransactionService_.uncheckTransaction(this.book.getId(), this.wrapped);
-    this.wrapped = operation.transaction;
+    this.wrapped.checked = operation.transaction.checked;
     this.book.clearAccountsCache();
     return this;
   }  
@@ -640,7 +642,7 @@ class Transaction {
    */  
   public remove(): Transaction {
     let operation = TransactionService_.removeTransaction(this.book.getId(), this.wrapped);
-    this.wrapped = operation.transaction;
+    this.wrapped.trashed = operation.transaction.trashed;
     this.book.clearAccountsCache();
     return this;
   }  
@@ -650,7 +652,7 @@ class Transaction {
    */  
   public restore(): Transaction {
     let operation = TransactionService_.restoreTransaction(this.book.getId(), this.wrapped);
-    this.wrapped = operation.transaction;
+    this.wrapped.trashed = operation.transaction.trashed;
     this.book.clearAccountsCache();
     return this;
   }  

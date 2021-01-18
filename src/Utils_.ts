@@ -2,18 +2,18 @@ namespace Utils_ {
 
   var diacriticsMap_: any = null;
 
-  export function round(number: Big | string, fractionDigits: number): Big {
+  export function round(number: Amount | string, fractionDigits: number): Amount {
     if (number == null) {
-      number = new Big('0');
+      number = new Amount('0');
     }
     if (fractionDigits != null) {
-      return new Big(number).round(fractionDigits);
+      return new Amount(number).round(fractionDigits);
     } else {
-      return new Big(number).round(2);
+      return new Amount(number).round(2);
     }
   }
 
-  export function formatValue_(value: Big | string, decimalSeparator: DecimalSeparator, fractionDigits: number): string {
+  export function formatValue_(value: Amount | string, decimalSeparator: DecimalSeparator, fractionDigits: number): string {
 
     if (value == null) {
       return "";
@@ -23,7 +23,7 @@ namespace Utils_ {
       if (value.trim() == '') {
         return "";
       }
-      value = new Big(value);
+      value = new Amount(value);
     }
 
     if (value == null) {
@@ -42,13 +42,13 @@ namespace Utils_ {
     }
   }
 
-  export function parseValue(value: string, decimalSeparator: DecimalSeparator): Big {
+  export function parseValue(value: string, decimalSeparator: DecimalSeparator): Amount {
     if (value == null) {
       return null;
     }
 
     if (!isNaN(+value) && isFinite(+value)) {
-      return new Big(value);
+      return new Amount(value);
     }
 
     if (decimalSeparator == DecimalSeparator.DOT) {
@@ -56,7 +56,7 @@ namespace Utils_ {
     } else {
       value = value.replace(/\./g, '').replace(/\,/g, '.');
     }
-    return new Big(value);
+    return new Amount(value);
   }
 
   export function convertValueToDate(dateValue: number, offsetInMinutes: number): Date {
@@ -165,14 +165,14 @@ namespace Utils_ {
     return pattern;
   }
 
-  export function getRepresentativeValue(value: Big, credit: boolean): Big {
+  export function getRepresentativeValue(value: Amount, credit: boolean): Amount {
 
     if (value == null) {
-      return new Big(0);
+      return new Amount(0);
     }
   
     if (credit != null && !credit) {
-      return value.mul(-1);
+      return value.times(-1);
     }
     return value;
   }

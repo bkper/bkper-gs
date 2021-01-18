@@ -367,7 +367,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         for (var j = 1; j < row.length; j++) {
           var cell = row[j];
           if (cell == "null_amount") {
-            var amount: any = new Big(0);
+            var amount: any = new Amount(0);
             if (this.shouldFormatValue) {
               amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
             }
@@ -380,7 +380,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
           if (cell == "null_amount" && cumulativeBalance) {
             row[j] = lastRow[j];
           } else if (cell == "null_amount") {
-            var amount: any = new Big(0);
+            var amount: any = new Amount(0);
             if (this.shouldFormatValue) {
               amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
             }

@@ -81,43 +81,43 @@ class Balance {
   /**
    * The cumulative balance to the date, since the first transaction posted.
    */
-  public getCumulativeBalance(): Big {
-    return new Big(this.wrapped.cumulativeBalance);
+  public getCumulativeBalance(): Amount {
+    return new Amount(this.wrapped.cumulativeBalance);
   }
 
   /**
    * The cumulative checked balance to the date, since the first transaction posted.
    */
-  public getCheckedCumulativeBalance(): Big {
-    return new Big(this.wrapped.checkedCumulativeBalance);
+  public getCheckedCumulativeBalance(): Amount {
+    return new Amount(this.wrapped.checkedCumulativeBalance);
   }
 
   /**
    * The balance on the date period.
    */
-  public getPeriodBalance(): Big {
-    return new Big(this.wrapped.periodBalance);
+  public getPeriodBalance(): Amount {
+    return new Amount(this.wrapped.periodBalance);
   }
 
   /**
    * The checked balance on the date period.
    */
-  public getCheckedPeriodBalance(): Big {
-    return new Big(this.wrapped.checkedPeriodBalance);
+  public getCheckedPeriodBalance(): Amount {
+    return new Amount(this.wrapped.checkedPeriodBalance);
   }
 
   /**
    * The unchecked cumulative balance to the date, since the first transaction posted.
    */
-  public getUncheckedCumulativeBalance(): Big {
-    return new Big(this.wrapped.uncheckedCumulativeBalance);
+  public getUncheckedCumulativeBalance(): Amount {
+    return new Amount(this.wrapped.uncheckedCumulativeBalance);
   }
 
   /**
     * The unchecked balance on the date period.
     */
-  public getUncheckedPeriodBalance(): Big {
-    return new Big(this.wrapped.uncheckedPeriodBalance);
+  public getUncheckedPeriodBalance(): Amount {
+    return new Amount(this.wrapped.uncheckedPeriodBalance);
   }
 
 

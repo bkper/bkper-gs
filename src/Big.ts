@@ -1,4 +1,5 @@
 
+
 /**
  * 
  * Arbitrary-precision Decimal type. 
@@ -7,7 +8,8 @@
  * 
  * Official documentation: http://mikemcl.github.io/big.js/
  * 
- * @public
+ * @internal
+ * 
  */
 declare class Big {
 

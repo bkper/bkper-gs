@@ -277,14 +277,14 @@ class Book {
    * 
    * @return The value formated
    */
-  public formatValue(value: Big): string {
+  public formatValue(value: Amount): string {
     return Utils_.formatValue_(value, this.getDecimalSeparator(), this.getFractionDigits());
   }
 
   /**
    * Parse a value string according to [[DecimalSeparator]] and fraction digits of the Book.
    */
-  public parseValue(value: string): Big {
+  public parseValue(value: string): Amount {
     return Utils_.parseValue(value, this.getDecimalSeparator());
   }
 
@@ -296,7 +296,7 @@ class Book {
    * 
    * @returns The value rounded
    */
-  public round(value: Big): Big {
+  public round(value: Amount): Amount {
     return Utils_.round(value, this.getFractionDigits());
   }
 

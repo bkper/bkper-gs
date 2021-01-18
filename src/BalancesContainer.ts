@@ -37,7 +37,7 @@ interface BalancesContainer {
   /**
    * The cumulative balance to the date, since the first transaction posted.
    */
-  getCumulativeBalance(): Big;
+  getCumulativeBalance(): Amount;
   /**
    * The cumulative balance formatted according to [[Book]] decimal format and fraction digits.
    */
@@ -47,7 +47,7 @@ interface BalancesContainer {
   /**
    * The cumulative checked balance to the date, since the first transaction posted.
    */
-  getCheckedCumulativeBalance(): Big;
+  getCheckedCumulativeBalance(): Amount;
   /**
    * The cumulative checked balance formatted according to [[Book]] decimal format and fraction digits.
    */
@@ -57,7 +57,7 @@ interface BalancesContainer {
   /**
    * The cumulative unchecked balance to the date, since the first transaction posted.
    */
-  getUncheckedCumulativeBalance(): Big;
+  getUncheckedCumulativeBalance(): Amount;
   /**
    * The cumulative unchecked balance formatted according to [[Book]] decimal format and fraction digits.
    */
@@ -67,7 +67,7 @@ interface BalancesContainer {
   /**
    * The balance on the date period.
    */
-  getPeriodBalance(): Big;
+  getPeriodBalance(): Amount;
   /**
    * The balance on the date period formatted according to [[Book]] decimal format and fraction digits
    */
@@ -77,7 +77,7 @@ interface BalancesContainer {
   /**
    * The checked balance on the date period.
    */
-  getCheckedPeriodBalance(): Big;
+  getCheckedPeriodBalance(): Amount;
   /**
    * The checked balance on the date period formatted according to [[Book]] decimal format and fraction digits
    */
@@ -87,7 +87,7 @@ interface BalancesContainer {
   /**
    * The unchecked balance on the date period.
    */
-  getUncheckedPeriodBalance(): Big;
+  getUncheckedPeriodBalance(): Amount;
   /**
    * The unchecked balance on the date period formatted according to [[Book]] decimal format and fraction digits
    */
@@ -138,7 +138,7 @@ class AccountBalancesContainer implements BalancesContainer {
     return this.wrapped.credit;
   }
 
-  public getCumulativeBalance(): Big {
+  public getCumulativeBalance(): Amount {
     var balance = Utils_.round(this.wrapped.cumulativeBalance, this.balancesReport.getBook().getFractionDigits());
     balance = Utils_.getRepresentativeValue(balance, this.isCredit());
     return balance;
@@ -147,7 +147,7 @@ class AccountBalancesContainer implements BalancesContainer {
     return this.balancesReport.getBook().formatValue(this.getCumulativeBalance());
   }
 
-  public getCheckedCumulativeBalance(): Big {
+  public getCheckedCumulativeBalance(): Amount {
     var balance = Utils_.round(this.wrapped.checkedCumulativeBalance, this.balancesReport.getBook().getFractionDigits());
     balance = Utils_.getRepresentativeValue(balance, this.isCredit());
     return balance;
@@ -156,7 +156,7 @@ class AccountBalancesContainer implements BalancesContainer {
     return this.balancesReport.getBook().formatValue(this.getCheckedCumulativeBalance());
   }
 
-  public getUncheckedCumulativeBalance(): Big {
+  public getUncheckedCumulativeBalance(): Amount {
     var balance = Utils_.round(this.wrapped.uncheckedCumulativeBalance, this.balancesReport.getBook().getFractionDigits());
     balance = Utils_.getRepresentativeValue(balance, this.isCredit());
     return balance;
@@ -165,7 +165,7 @@ class AccountBalancesContainer implements BalancesContainer {
     return this.balancesReport.getBook().formatValue(this.getUncheckedCumulativeBalance());
   }
 
-  public getPeriodBalance(): Big {
+  public getPeriodBalance(): Amount {
     var balance = Utils_.round(this.wrapped.periodBalance, this.balancesReport.getBook().getFractionDigits());
     return Utils_.getRepresentativeValue(balance, this.isCredit());
   }
@@ -173,7 +173,7 @@ class AccountBalancesContainer implements BalancesContainer {
     return this.balancesReport.getBook().formatValue(this.getPeriodBalance());
   }
 
-  public getCheckedPeriodBalance(): Big {
+  public getCheckedPeriodBalance(): Amount {
     var balance = Utils_.round(this.wrapped.checkedPeriodBalance, this.balancesReport.getBook().getFractionDigits());
     return Utils_.getRepresentativeValue(balance, this.isCredit());
   }
@@ -181,7 +181,7 @@ class AccountBalancesContainer implements BalancesContainer {
     return this.balancesReport.getBook().formatValue(this.getCheckedPeriodBalance());
   }
 
-  public getUncheckedPeriodBalance(): Big {
+  public getUncheckedPeriodBalance(): Amount {
     var balance = Utils_.round(this.wrapped.uncheckedPeriodBalance, this.balancesReport.getBook().getFractionDigits());
     return Utils_.getRepresentativeValue(balance, this.isCredit());
   }
@@ -242,7 +242,7 @@ class GroupBalancesContainer implements BalancesContainer {
   }
 
 
-  public getCumulativeBalance(): Big {
+  public getCumulativeBalance(): Amount {
     var balance = Utils_.round(this.wrapped.cumulativeBalance, this.balancesReport.getBook().getFractionDigits());
     return Utils_.getRepresentativeValue(balance, this.isCredit());
   }
@@ -251,7 +251,7 @@ class GroupBalancesContainer implements BalancesContainer {
   }
 
 
-  public getCheckedCumulativeBalance(): Big {
+  public getCheckedCumulativeBalance(): Amount {
     var balance = Utils_.round(this.wrapped.checkedCumulativeBalance, this.balancesReport.getBook().getFractionDigits());
     return Utils_.getRepresentativeValue(balance, this.isCredit());
   }
@@ -260,7 +260,7 @@ class GroupBalancesContainer implements BalancesContainer {
   }
 
 
-  public getUncheckedCumulativeBalance(): Big {
+  public getUncheckedCumulativeBalance(): Amount {
     var balance = Utils_.round(this.wrapped.uncheckedCumulativeBalance, this.balancesReport.getBook().getFractionDigits());
     return Utils_.getRepresentativeValue(balance, this.isCredit());
   }
@@ -269,7 +269,7 @@ class GroupBalancesContainer implements BalancesContainer {
   }
 
 
-  public getPeriodBalance(): Big {
+  public getPeriodBalance(): Amount {
     var balance = Utils_.round(this.wrapped.periodBalance, this.balancesReport.getBook().getFractionDigits());
     return Utils_.getRepresentativeValue(balance, this.isCredit());
   }
@@ -278,7 +278,7 @@ class GroupBalancesContainer implements BalancesContainer {
   }  
 
 
-  public getCheckedPeriodBalance(): Big {
+  public getCheckedPeriodBalance(): Amount {
     var balance = Utils_.round(this.wrapped.checkedPeriodBalance, this.balancesReport.getBook().getFractionDigits());
     return Utils_.getRepresentativeValue(balance, this.isCredit());
   }
@@ -286,7 +286,7 @@ class GroupBalancesContainer implements BalancesContainer {
     return this.balancesReport.getBook().formatValue(this.getCheckedPeriodBalance());
   }    
 
-  public getUncheckedPeriodBalance(): Big {
+  public getUncheckedPeriodBalance(): Amount {
     var balance = Utils_.round(this.wrapped.uncheckedPeriodBalance, this.balancesReport.getBook().getFractionDigits());
     return Utils_.getRepresentativeValue(balance, this.isCredit());
   }

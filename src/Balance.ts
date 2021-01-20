@@ -40,7 +40,7 @@ class Balance {
   }
 
   /**
-   * Date object constructed based on [[Book]] time zone offset. Usefull for 
+   * Get Date object.
    * 
    * If Month or Day is zero, the date will be constructed with first Month (January) or Day (1).
    */
@@ -55,7 +55,7 @@ class Balance {
     if (day == null || day == 0) {
       month++;
     }
-    var date = Utils_.createDate(year, month, day, this.container.getBalancesReport().getBook().getTimeZoneOffset());
+    var date = Utils_.createDate(year, month, day);
     return date;
   }
 

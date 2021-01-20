@@ -59,14 +59,14 @@ namespace Utils_ {
     return new Amount(value);
   }
 
-  export function convertValueToDate(dateValue: number, offsetInMinutes: number): Date {
+  export function convertValueToDate(dateValue: number): Date {
     if (dateValue == null) {
       return new Date();
     }
     var year = dateValue / 10000;
     var month = (dateValue / 100) % 100;
     var day = dateValue % 100;
-    var date = createDate(year, month, day, offsetInMinutes);
+    var date = createDate(year, month, day);
     return date;
   }
 
@@ -81,9 +81,9 @@ namespace Utils_ {
     }
   }
 
-  export function createDate(year: number, month: number, day: number, offsetInMinutes: number): Date {
+  export function createDate(year: number, month: number, day: number): Date {
     var date = new Date(year, month - 1, day);
-    date.setTime(date.getTime() + offsetInMinutes * 60 * 1000);
+    date.setTime(date.getTime());
     return date;
   }
 
@@ -114,14 +114,14 @@ namespace Utils_ {
     return formatedDate;
   }
 
-  export function parseDate(date: string, pattern: string, offsetInMinutes: number): Date {
+  export function parseDate(date: string, pattern: string): Date {
     if (pattern == 'dd/MM/yyyy') {
       let split = date.split('/');
       if (split.length == 3) {
         let year = +split[2];
         let month = +split[1];
         let day = +split[0];
-        return createDate(year, month, day, offsetInMinutes);
+        return createDate(year, month, day);
       }
     } else if (pattern == 'MM/dd/yyyy') {
       let split = date.split('/');
@@ -129,7 +129,7 @@ namespace Utils_ {
         let year = +split[2];
         let month = +split[0];
         let day = +split[1];
-        return createDate(year, month, day, offsetInMinutes);
+        return createDate(year, month, day);
       }
     } else if (pattern == 'yyyy/MM/dd') {
       let split = date.split('/');
@@ -137,7 +137,7 @@ namespace Utils_ {
         let year = +split[0];
         let month = +split[1];
         let day = +split[2];
-        return createDate(year, month, day, offsetInMinutes);
+        return createDate(year, month, day);
       }
     } else if (pattern == 'yyyy-MM-dd') {
       let split = date.split('-');
@@ -145,11 +145,11 @@ namespace Utils_ {
         let year = +split[0];
         let month = +split[1];
         let day = +split[2];
-        return createDate(year, month, day, offsetInMinutes);
+        return createDate(year, month, day);
       }
     }
     let now = new Date()
-    return createDate(now.getFullYear(), now.getMonth() + 1, now.getDate(), offsetInMinutes);
+    return createDate(now.getFullYear(), now.getMonth() + 1, now.getDate());
 
   }
 

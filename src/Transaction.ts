@@ -503,7 +503,7 @@ class Transaction {
   public setDate(date: string | Date): Transaction {
     if (typeof date == "string") {
       if(date.indexOf('/') > 0) {
-        let dateObject = Utils_.parseDate(date, this.book.getDatePattern())
+        let dateObject = Utils_.parseDate(date, this.book.getDatePattern(), this.book.getTimeZoneOffset())
         this.wrapped.date = Utils_.formatDateISO(dateObject, this.book.getTimeZone())
       } else if (date.indexOf('-')) {
         this.wrapped.date = date;
@@ -515,10 +515,10 @@ class Transaction {
   }
 
   /**
-   * @returns The Transaction Date object.
+   * @returns The Transaction Date object, on the time zone of the [[Book]].
    */
   public getDateObject(): Date {
-      return Utils_.convertValueToDate(this.getDateValue());
+      return Utils_.convertValueToDate(this.getInformedDateValue(), this.book.getTimeZoneOffset());
   }
 
   /**

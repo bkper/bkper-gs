@@ -134,7 +134,7 @@ class TransactionsDataTableBuilder {
           var fractionDigits = iterator.getBook().getFractionDigits();
           line.push(Utils_.formatValue_(transaction.getAmount(), decimalSeparator, fractionDigits));
         } else {
-          line.push(transaction.getAmount());
+          line.push(transaction.getAmount().toNumber());
         }
       } else {
         line.push("");

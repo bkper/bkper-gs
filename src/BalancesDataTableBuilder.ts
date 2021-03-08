@@ -348,6 +348,8 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
           amount = Utils_.round(amount, this.book.getFractionDigits());
           if (this.shouldFormatValue) {
             amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
+          } else {
+            amount = amount.toNumber();
           }
         }
         row.push(amount);
@@ -370,6 +372,8 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             var amount: any = new Amount(0);
             if (this.shouldFormatValue) {
               amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
+            } else {
+              amount = amount.toNumber();
             }
             row[j] = amount;
           }
@@ -383,6 +387,8 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             var amount: any = new Amount(0);
             if (this.shouldFormatValue) {
               amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
+            } else {
+              amount = amount.toNumber();
             }
             row[j] = amount;
           }

@@ -1397,6 +1397,11 @@ declare namespace Bkper {
         getProperty(...keys: string[]): string;
 
         /**
+         * Gets the custom properties keys stored in this Transaction.
+         */
+        getPropertyKeys(): string[];
+
+        /**
          * Remote ids are used to avoid duplication.
          *
          * @returns The remote ids of the Transaction.
@@ -1605,6 +1610,15 @@ declare namespace Bkper {
          * @returns The account, when filtering by a single account.
          */
         getAccount(): Account;
+
+        getHeaderLine(): string[];
+
+        /**
+         * Defines whether include custom transaction properties.
+         *
+         * @returns This builder with respective add attachment option, for chaining.
+         */
+        includeProperties(include: boolean): TransactionsDataTableBuilder;
 
         /**
          * Defines whether include attachments and url links.

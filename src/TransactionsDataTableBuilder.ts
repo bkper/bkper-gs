@@ -182,7 +182,7 @@ class TransactionsDataTableBuilder {
       if (this.shouldFormatDates) {
         line.push(transaction.getDateFormatted());
       } else {
-        line.push(transaction.getDate());
+        line.push(transaction.getDateObject());
       }
 
       line.push(transaction.getCreditAccountName());
@@ -263,7 +263,7 @@ class TransactionsDataTableBuilder {
       if (this.shouldFormatDates) {
         line.push(transaction.getDateFormatted());
       } else {
-        line.push(transaction.getDate());
+        line.push(transaction.getDateObject());
       }
 
       if (transaction.getCreditAccount() != null && transaction.getDebitAccount() != null) {

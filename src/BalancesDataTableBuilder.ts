@@ -240,11 +240,11 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
           }
         } else {
             if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
-              amount = balances.getCheckedCumulativeBalance();
+              amount = balances.getCheckedCumulativeBalance().toNumber();
             } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
-              amount = balances.getUncheckedCumulativeBalance();
+              amount = balances.getUncheckedCumulativeBalance().toNumber();
             } else {
-              amount = balances.getCumulativeBalance();
+              amount = balances.getCumulativeBalance().toNumber();
             }
         }
         line.push(amount);

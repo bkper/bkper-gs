@@ -5,16 +5,24 @@
  */
 class TransactionsDataTableBuilder {
 
-  private transactionIterator: TransactionIterator;
   private shouldFormatDates: boolean;
   private shouldFormatValues: boolean;
   private shouldAddUrls: boolean;
+  private shouldAddProperties: boolean;
+  private transactionIterator: TransactionIterator;
+  private transactions: Array<Transaction>;
+  private book: Book;
+  private account: Account;
+  private propertyKeys: string[];
 
   constructor(transactionIterator: TransactionIterator) {
     this.transactionIterator = transactionIterator;
+    this.book = transactionIterator.getBook();
+    this.account = transactionIterator.getAccount();
     this.shouldFormatDates = false;
     this.shouldFormatValues = false;
     this.shouldAddUrls = false;
+    this.shouldAddProperties = false;
   }
 
   /**
@@ -48,23 +56,36 @@ class TransactionsDataTableBuilder {
   }
 
   /**
-   * @returns The account, when filtering by a single account.
-   */  
-  public getAccount(): Account {
-    return this.transactionIterator.getAccount();
+   * Defines whether include custom transaction properties.
+   * 
+   * @returns This builder with respective add attachment option, for chaining.
+   */
+  public includeProperties(include: boolean): TransactionsDataTableBuilder {
+    this.shouldAddProperties = include;
+    return this;
   }
 
   /**
-   * @returns A two-dimensional array containing all [[Transactions]].
-   */
-  public build(): any[][] {
-    var account = this.transactionIterator.getAccount();
-    var header = new Array();
-    var transactions = new Array();
-    var finalArray = new Array();
-    var headerLine = new Array();
+   * @returns The account, when filtering by a single account.
+   */  
+  public getAccount(): Account {
+    return this.account;
+  }
 
-    if (account != null) {
+  private getTransactions(): Array<Transaction> {
+    if (this.transactions == null) {
+      this.transactions = [];
+      while (this.transactionIterator.hasNext()) {
+        this.transactions.push(this.transactionIterator.next());
+      }
+    }
+    return this.transactions;
+  }
+
+  public getHeaderLine(): string[] {
+    var headerLine: string[] = [];
+
+    if (this.account != null) {
 
       headerLine.push("Date");
       headerLine.push("Account");
@@ -72,16 +93,21 @@ class TransactionsDataTableBuilder {
       headerLine.push("Debit");
       headerLine.push("Credit");
 
-      transactions = this.getExtract2DArray_(this.transactionIterator, account);
-      if (account.isPermanent()) {
+      if (this.account.isPermanent()) {
         headerLine.push("Balance");
       }
 
       headerLine.push("Recorded at");
+
+      if (this.shouldAddProperties) {
+        for (const key of this.getPropertyKeys()) {
+          headerLine.push(key)
+        }
+      }
+
       if (this.shouldAddUrls) {
         headerLine.push("Attachment");
       }
-      header.push(headerLine);
     } else {
       headerLine.push("Date");
       headerLine.push("Origin");
@@ -90,34 +116,73 @@ class TransactionsDataTableBuilder {
       headerLine.push("Amount");
       headerLine.push("Recorded at");
 
+      if (this.shouldAddProperties) {
+        for (const key of this.getPropertyKeys()) {
+          headerLine.push(key)
+        }
+      }      
+
       if (this.shouldAddUrls) {
         headerLine.push("Attachment");
       }
-      transactions = this.get2DArray_(this.transactionIterator);
-      header.push(headerLine);
+    }
+    return headerLine;
+  }
+
+
+  /**
+   * @returns A two-dimensional array containing all [[Transactions]].
+   */
+  public build(): any[][] {
+    var header = new Array();
+    var dataTable = new Array();
+    let headerLine = this.getHeaderLine();
+
+    if (this.account != null) {
+      dataTable = this.getExtract2DArray_(this.account);
+    } else {
+      dataTable = this.get2DArray_();
     }
 
-    if (transactions.length > 0) {
-      transactions.splice(0, 0, headerLine);
-      transactions = Utils_.convertInMatrix(transactions);
-      return transactions;
+    header.push(headerLine);
+
+    if (dataTable.length > 0) {
+      dataTable.splice(0, 0, headerLine);
+      dataTable = Utils_.convertInMatrix(dataTable);
+      return dataTable;
     } else {
       return [headerLine];
     }
   }
 
-  private get2DArray_(iterator: TransactionIterator) {
-    var transactions = new Array();
+  private getPropertyKeys(): string[] {
+    if (this.propertyKeys == null) {
+      this.propertyKeys = []
+      for (const transaction of this.getTransactions()) {
+        for (const key of transaction.getPropertyKeys()) {
+          if (this.propertyKeys.indexOf(key) <= -1) {
+            // does not contain
+            this.propertyKeys.push(key)
+          }
+        }
+      }
+      this.propertyKeys = this.propertyKeys.sort();
+    }
+    return this.propertyKeys;
+  }
 
-    while (iterator.hasNext()) {
-      var transaction = iterator.next();
+  private get2DArray_() {
 
+    var dataTable = new Array();
+
+    for (const transaction of this.getTransactions()) {
+      
       var line = new Array();
 
       if (this.shouldFormatDates) {
-        line.push(transaction.getInformedDateText());
+        line.push(transaction.getDateFormatted());
       } else {
-        line.push(transaction.getInformedDate());
+        line.push(transaction.getDate());
       }
 
       line.push(transaction.getCreditAccountName());
@@ -130,8 +195,8 @@ class TransactionsDataTableBuilder {
       }
       if (transaction.getAmount() != null) {
         if (this.shouldFormatValues) {
-          var decimalSeparator = iterator.getBook().getDecimalSeparator();
-          var fractionDigits = iterator.getBook().getFractionDigits();
+          var decimalSeparator = this.book.getDecimalSeparator();
+          var fractionDigits = this.book.getFractionDigits();
           line.push(Utils_.formatValue_(transaction.getAmount(), decimalSeparator, fractionDigits));
         } else {
           line.push(transaction.getAmount().toNumber());
@@ -141,10 +206,16 @@ class TransactionsDataTableBuilder {
       }
 
       if (this.shouldFormatDates) {
-        line.push(transaction.getPostDateText());
+        line.push(transaction.getCreatedAtFormatted());
       } else {
-        line.push(transaction.getPostDate());
+        line.push(transaction.getCreatedAt());
       }
+
+
+      if (this.shouldAddProperties) {
+        this.addPropertiesToLine(line, transaction);
+      }      
+
 
       var urls = transaction.getUrls();
 
@@ -164,23 +235,35 @@ class TransactionsDataTableBuilder {
         line.push("");
       }
 
-      transactions.push(line);
+      dataTable.push(line);
     }
 
-    return transactions;
+    return dataTable;
   }
 
-  private getExtract2DArray_(iterator: TransactionIterator, account: Account): any[][] {
-    var transactions = new Array<Array<any>>();
+  private addPropertiesToLine(line: any[], transaction: Transaction) {
+    let lineLength = line.length;
+    for (const key of this.getPropertyKeys()) {
+      line.push("");
+    }
+    for (const key of transaction.getPropertyKeys()) {
+      let index = this.getPropertyKeys().indexOf(key) + lineLength;
+      line[index] = transaction.getProperty(key);
+    }
+  }
 
-    while (iterator.hasNext()) {
-      var transaction = iterator.next();
+  private getExtract2DArray_(account: Account): any[][] {
+
+    var dataTable = new Array<Array<any>>();
+
+    for (const transaction of this.getTransactions()) {
+
       var line = new Array();
 
       if (this.shouldFormatDates) {
-        line.push(transaction.getInformedDateText());
+        line.push(transaction.getDateFormatted());
       } else {
-        line.push(transaction.getInformedDate());
+        line.push(transaction.getDate());
       }
 
       if (transaction.getCreditAccount() != null && transaction.getDebitAccount() != null) {
@@ -206,7 +289,7 @@ class TransactionsDataTableBuilder {
         var amount: string | Amount = transaction.getAmount();
 
         if (this.shouldFormatValues) {
-          amount = Utils_.formatValue_(transaction.getAmount(), iterator.getBook().getDecimalSeparator(), iterator.getBook().getFractionDigits());
+          amount = Utils_.formatValue_(transaction.getAmount(), this.book.getDecimalSeparator(), this.book.getFractionDigits());
         };
 
         if (this.isCreditOnTransaction_(transaction, account)) {
@@ -225,7 +308,7 @@ class TransactionsDataTableBuilder {
         if (transaction.getAccountBalance() != null) {
           var balance: string | Amount = transaction.getAccountBalance();
           if (this.shouldFormatValues) {
-            balance = Utils_.formatValue_(balance, iterator.getBook().getDecimalSeparator(), iterator.getBook().getFractionDigits());
+            balance = Utils_.formatValue_(balance, this.book.getDecimalSeparator(), this.book.getFractionDigits());
           };
           line.push(balance);
         } else {
@@ -234,10 +317,14 @@ class TransactionsDataTableBuilder {
       }
 
       if (this.shouldFormatDates) {
-        line.push(transaction.getPostDateText());
+        line.push(transaction.getCreatedAtFormatted());
       } else {
-        line.push(transaction.getPostDate());
+        line.push(transaction.getCreatedAt());
       }
+
+      if (this.shouldAddProperties) {
+        this.addPropertiesToLine(line, transaction);
+      }  
 
       var urls = transaction.getUrls();
       if (this.shouldAddUrls && urls != null && urls.length > 0) {
@@ -248,9 +335,9 @@ class TransactionsDataTableBuilder {
         line.push("");
       }
 
-      transactions.push(line);
+      dataTable.push(line);
     }
-    return transactions;
+    return dataTable;
   }
 
   private isCreditOnTransaction_(transaction: Transaction, account: Account) {

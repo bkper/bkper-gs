@@ -195,6 +195,23 @@ class Transaction {
   }
 
   /**
+   * Gets the custom properties keys stored in this Transaction.
+   */  
+  public getPropertyKeys(): string[] {
+    let properties = this.getProperties();
+    let propertyKeys:string[] = []
+    if (properties) {
+      for (var key in properties) {
+        if (Object.prototype.hasOwnProperty.call(properties, key)) {
+            propertyKeys.push(key)
+        }
+      }
+    }
+    propertyKeys = propertyKeys.sort();
+    return propertyKeys;
+  }
+
+  /**
    * Sets the custom properties of the Transaction
    * 
    * @param properties Object with key/value pair properties

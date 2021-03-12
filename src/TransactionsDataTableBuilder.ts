@@ -284,11 +284,13 @@ class TransactionsDataTableBuilder {
 
       if (transaction.getAmount() != null) {
 
-        var amount: string | Amount = transaction.getAmount();
+        var amount: string | number | Amount = transaction.getAmount();
 
         if (this.shouldFormatValues) {
           amount = Utils_.formatValue_(transaction.getAmount(), this.book.getDecimalSeparator(), this.book.getFractionDigits());
-        };
+        } else {
+          amount = amount.toNumber()
+        }
 
         if (this.isCreditOnTransaction_(transaction, account)) {
           line.push("");
@@ -304,10 +306,12 @@ class TransactionsDataTableBuilder {
 
       if (account.isPermanent()) {
         if (transaction.getAccountBalance() != null) {
-          var balance: string | Amount = transaction.getAccountBalance();
+          var balance: string | number | Amount = transaction.getAccountBalance();
           if (this.shouldFormatValues) {
             balance = Utils_.formatValue_(balance, this.book.getDecimalSeparator(), this.book.getFractionDigits());
-          };
+          } else {
+            balance = balance.toNumber()
+          }
           line.push(balance);
         } else {
           line.push("");

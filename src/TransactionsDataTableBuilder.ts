@@ -12,13 +12,11 @@ class TransactionsDataTableBuilder {
   private transactionIterator: TransactionIterator;
   private transactions: Array<Transaction>;
   private book: Book;
-  private account: Account;
   private propertyKeys: string[];
 
   constructor(transactionIterator: TransactionIterator) {
     this.transactionIterator = transactionIterator;
     this.book = transactionIterator.getBook();
-    this.account = transactionIterator.getAccount();
     this.shouldFormatDates = false;
     this.shouldFormatValues = false;
     this.shouldAddUrls = false;
@@ -69,7 +67,7 @@ class TransactionsDataTableBuilder {
    * @returns The account, when filtering by a single account.
    */  
   public getAccount(): Account {
-    return this.account;
+    return this.transactionIterator.getAccount();
   }
 
   private getTransactions(): Array<Transaction> {
@@ -85,7 +83,7 @@ class TransactionsDataTableBuilder {
   public getHeaderLine(): string[] {
     var headerLine: string[] = [];
 
-    if (this.account != null) {
+    if (this.getAccount() != null) {
 
       headerLine.push("Date");
       headerLine.push("Account");
@@ -93,7 +91,7 @@ class TransactionsDataTableBuilder {
       headerLine.push("Debit");
       headerLine.push("Credit");
 
-      if (this.account.isPermanent()) {
+      if (this.getAccount().isPermanent()) {
         headerLine.push("Balance");
       }
 
@@ -138,8 +136,8 @@ class TransactionsDataTableBuilder {
     var dataTable = new Array();
     let headerLine = this.getHeaderLine();
 
-    if (this.account != null) {
-      dataTable = this.getExtract2DArray_(this.account);
+    if (this.getAccount() != null) {
+      dataTable = this.getExtract2DArray_(this.getAccount());
     } else {
       dataTable = this.get2DArray_();
     }

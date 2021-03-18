@@ -10,7 +10,6 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   private balanceType: BalanceType;
   private balancesContainers: BalancesContainer[];
   private periodicity: Periodicity;
-  private balanceCheckedType: BalanceCheckedType;
   private shouldFormatDate: boolean;
   private shouldHideDates: boolean;
   private shouldHideNames: boolean;
@@ -19,11 +18,10 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   private shouldExpand: boolean;
   private shouldTranspose: boolean
 
-  constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity, balanceCheckedType: BalanceCheckedType) {
+  constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity) {
     this.book = book;
     this.balancesContainers = balancesContainers;
     this.periodicity = periodicity;
-    this.balanceCheckedType = balanceCheckedType;
     this.balanceType = BalanceType.TOTAL;
     this.shouldFormatDate = false;
     this.shouldHideDates = false;
@@ -186,13 +184,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     this.balancesContainers.sort((a, b) => {
       if (a != null && b != null) {
-        if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
-          return b.getCheckedCumulativeBalance().minus(a.getCheckedCumulativeBalance()).toNumber();
-        } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
-          return b.getUncheckedCumulativeBalance().minus(a.getUncheckedCumulativeBalance()).toNumber();
-        } else {
-          return b.getCumulativeBalance().minus(a.getCumulativeBalance()).toNumber();
-        }
+        return b.getCumulativeBalance().minus(a.getCumulativeBalance()).toNumber();
       }
       return -1;
     });
@@ -204,13 +196,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         if (subContainers != null) {
           subContainers.sort((a, b) => {
             if (a != null && b != null) {
-              if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
-                return b.getCheckedCumulativeBalance().minus(a.getCheckedCumulativeBalance()).toNumber();
-              } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
-                return b.getUncheckedCumulativeBalance().minus(a.getUncheckedCumulativeBalance()).toNumber();
-              } else {
-                return b.getCumulativeBalance().minus(a.getCumulativeBalance()).toNumber();
-              }              
+              return b.getCumulativeBalance().minus(a.getCumulativeBalance()).toNumber();
             }
             return -1;
           });
@@ -231,21 +217,9 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         line.push(name);
         var amount;
         if (this.shouldFormatValue) {
-          if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
-            amount = balances.getCheckedCumulativeBalanceText();
-          } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
-            amount = balances.getUncheckedCumulativeBalanceText();
-          } else {
             amount = balances.getCumulativeBalanceText();
-          }
         } else {
-            if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
-              amount = balances.getCheckedCumulativeBalance().toNumber();
-            } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
-              amount = balances.getUncheckedCumulativeBalance().toNumber();
-            } else {
-              amount = balances.getCumulativeBalance().toNumber();
-            }
+            amount = balances.getCumulativeBalance().toNumber();
         }
         line.push(amount);
         table.push(line);
@@ -310,21 +284,9 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
           }
           var amount;
           if (cumulativeBalance) {
-            if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
-              amount = balance.getCheckedCumulativeBalance();
-            } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
-              amount = balance.getUncheckedCumulativeBalance();
-            } else {
-              amount = balance.getCumulativeBalance();
-            }            
+            amount = balance.getCumulativeBalance();
           } else {
-            if (this.balanceCheckedType == BalanceCheckedType.CHECKED_BALANCE) {
-              amount = balance.getCheckedPeriodBalance();
-            } else if (this.balanceCheckedType == BalanceCheckedType.UNCHECKED_BALANCE) {
-              amount = balance.getUncheckedPeriodBalance();
-            } else {
-              amount = balance.getPeriodBalance();
-            }            
+            amount = balance.getPeriodBalance();
           }
           indexEntry[balancesContainer.getName()] = Utils_.getRepresentativeValue(amount, balancesContainer.isCredit());
         }

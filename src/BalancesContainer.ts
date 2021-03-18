@@ -45,26 +45,6 @@ interface BalancesContainer {
 
 
   /**
-   * The cumulative checked balance to the date, since the first transaction posted.
-   */
-  getCheckedCumulativeBalance(): Amount;
-  /**
-   * The cumulative checked balance formatted according to [[Book]] decimal format and fraction digits.
-   */
-  getCheckedCumulativeBalanceText(): string;
-
-
-  /**
-   * The cumulative unchecked balance to the date, since the first transaction posted.
-   */
-  getUncheckedCumulativeBalance(): Amount;
-  /**
-   * The cumulative unchecked balance formatted according to [[Book]] decimal format and fraction digits.
-   */
-  getUncheckedCumulativeBalanceText(): string;
-
-
-  /**
    * The balance on the date period.
    */
   getPeriodBalance(): Amount;
@@ -72,26 +52,6 @@ interface BalancesContainer {
    * The balance on the date period formatted according to [[Book]] decimal format and fraction digits
    */
   getPeriodBalanceText(): string;
-
-
-  /**
-   * The checked balance on the date period.
-   */
-  getCheckedPeriodBalance(): Amount;
-  /**
-   * The checked balance on the date period formatted according to [[Book]] decimal format and fraction digits
-   */
-  getCheckedPeriodBalanceText(): string;
-
-
-  /**
-   * The unchecked balance on the date period.
-   */
-  getUncheckedPeriodBalance(): Amount;
-  /**
-   * The unchecked balance on the date period formatted according to [[Book]] decimal format and fraction digits
-   */
-  getUncheckedPeriodBalanceText(): string;
 
 
   /**
@@ -198,7 +158,7 @@ class AccountBalancesContainer implements BalancesContainer {
   }
 
   public createDataTable(): BalancesDataTableBuilder {
-    return new BalancesDataTableBuilder(this.balancesReport.getBook(), [this], this.balancesReport.getPeriodicity(), this.balancesReport.getBalanceCheckedType());
+    return new BalancesDataTableBuilder(this.balancesReport.getBook(), [this], this.balancesReport.getPeriodicity());
   }
 
   public getBalancesContainers(): BalancesContainer[] {
@@ -218,15 +178,13 @@ class GroupBalancesContainer implements BalancesContainer {
   private wrapped: bkper.GroupBalances
   private accountBalances: AccountBalancesContainer[];
   private periodicity: Periodicity;
-  private balanceCheckedType: BalanceCheckedType;
 
   private balancesReport: BalancesReport;
 
-  constructor(balancesReport: BalancesReport, groupBalancesPlain: bkper.GroupBalances, periodicity: Periodicity, balanceCheckedType: BalanceCheckedType) {
+  constructor(balancesReport: BalancesReport, groupBalancesPlain: bkper.GroupBalances, periodicity: Periodicity) {
     this.balancesReport = balancesReport;
     this.wrapped = groupBalancesPlain;
     this.periodicity = periodicity;
-    this.balanceCheckedType = balanceCheckedType;
   }
 
   public getBalancesReport(): BalancesReport {
@@ -303,7 +261,7 @@ class GroupBalancesContainer implements BalancesContainer {
   }
 
   public createDataTable() {
-    return new BalancesDataTableBuilder(this.balancesReport.getBook(), this.getBalancesContainers(), this.periodicity, this.balanceCheckedType);
+    return new BalancesDataTableBuilder(this.balancesReport.getBook(), this.getBalancesContainers(), this.periodicity);
   }
 
   public getBalancesContainers(): BalancesContainer[] {

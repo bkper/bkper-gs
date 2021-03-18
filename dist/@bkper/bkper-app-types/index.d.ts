@@ -20,8 +20,6 @@ declare namespace Bkper {
 
         BalanceType: typeof BalanceType;
 
-        BalanceCheckedType: typeof BalanceCheckedType;
-
         AccountType: typeof AccountType;
 
         /**
@@ -386,16 +384,6 @@ declare namespace Bkper {
     export interface Balance {
 
         /**
-         * The cumulative checked balance to the date, since the first transaction posted.
-         */
-        getCheckedCumulativeBalance(): Amount;
-
-        /**
-         * The checked balance on the date period.
-         */
-        getCheckedPeriodBalance(): Amount;
-
-        /**
          * The cumulative balance to the date, since the first transaction posted.
          */
         getCumulativeBalance(): Amount;
@@ -442,16 +430,6 @@ declare namespace Bkper {
          * The balance on the date period.
          */
         getPeriodBalance(): Amount;
-
-        /**
-         * The unchecked cumulative balance to the date, since the first transaction posted.
-         */
-        getUncheckedCumulativeBalance(): Amount;
-
-        /**
-         * The unchecked balance on the date period.
-         */
-        getUncheckedPeriodBalance(): Amount;
 
         /**
          * The year of the balance
@@ -556,11 +534,6 @@ declare namespace Bkper {
          * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]].
          */
         createDataTable(): BalancesDataTableBuilder;
-
-        /**
-         * The [[BalanceCheckedType]] of the query used to generate the report.
-         */
-        getBalanceCheckedType(): BalanceCheckedType;
 
         /**
          * Gets a specific [[BalancesContainers]].
@@ -1666,26 +1639,6 @@ declare namespace Bkper {
         getBalancesReport(): BalancesReport;
 
         /**
-         * The cumulative checked balance to the date, since the first transaction posted.
-         */
-        getCheckedCumulativeBalance(): Amount;
-
-        /**
-         * The cumulative checked balance formatted according to [[Book]] decimal format and fraction digits.
-         */
-        getCheckedCumulativeBalanceText(): string;
-
-        /**
-         * The checked balance on the date period.
-         */
-        getCheckedPeriodBalance(): Amount;
-
-        /**
-         * The checked balance on the date period formatted according to [[Book]] decimal format and fraction digits
-         */
-        getCheckedPeriodBalanceText(): string;
-
-        /**
          * The cumulative balance to the date, since the first transaction posted.
          */
         getCumulativeBalance(): Amount;
@@ -1709,26 +1662,6 @@ declare namespace Bkper {
          * The balance on the date period formatted according to [[Book]] decimal format and fraction digits
          */
         getPeriodBalanceText(): string;
-
-        /**
-         * The cumulative unchecked balance to the date, since the first transaction posted.
-         */
-        getUncheckedCumulativeBalance(): Amount;
-
-        /**
-         * The cumulative unchecked balance formatted according to [[Book]] decimal format and fraction digits.
-         */
-        getUncheckedCumulativeBalanceText(): string;
-
-        /**
-         * The unchecked balance on the date period.
-         */
-        getUncheckedPeriodBalance(): Amount;
-
-        /**
-         * The unchecked balance on the date period formatted according to [[Book]] decimal format and fraction digits
-         */
-        getUncheckedPeriodBalanceText(): string;
 
         /**
          * Gets the credit nature of the BalancesContainer, based on [[Account]], [[Group]] or #hashtag this container represents.
@@ -1785,30 +1718,6 @@ declare namespace Bkper {
          * Outgoing account type
          */
         OUTGOING = "OUTGOING",
-
-    }
-
-    /**
-     * Enum that represents queried balances of checked/unchecked transactions.
-     *
-     * The type is obtained from parsing the **is:checked is:unchecked** query operator.
-     */
-    export enum BalanceCheckedType {
-
-        /**
-         * Balances of is:checked transactions only.
-         */
-        CHECKED_BALANCE = "CHECKED_BALANCE",
-
-        /**
-         *  Balances of all transactions, no matter its checked or unchecked state.
-         */
-        FULL_BALANCE = "FULL_BALANCE",
-
-        /**
-         * Balances of is:unchecked transactions only.
-         */
-        UNCHECKED_BALANCE = "UNCHECKED_BALANCE",
 
     }
 

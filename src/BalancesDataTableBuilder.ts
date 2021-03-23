@@ -16,7 +16,8 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   private shouldFormatValue: boolean;
   private book: Book;
   private shouldExpand: boolean;
-  private shouldTranspose: boolean
+  private shouldTranspose: boolean;
+  private shouldTrial: boolean;
 
   constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity) {
     this.book = book;
@@ -29,6 +30,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     this.shouldFormatValue = false;
     this.shouldExpand = false;
     this.shouldTranspose = false;
+    this.shouldTrial = false;
   }
 
   /**
@@ -53,7 +55,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   }
   
   /**
-   * Defines wheter Groups should expand its child accounts.
+   * Defines whether Groups should expand its child accounts.
    * 
    * @returns This builder with respective expanded option, for chaining.
    */
@@ -102,7 +104,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   }
 
   /**
-   * Defines wheter should rows and columns should be transposed.
+   * Defines whether should rows and columns should be transposed.
    * 
    * For **TOTAL** [[BalanceType]], the **transposed** table looks like:
    * 
@@ -157,6 +159,17 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     return this;
   }
 
+  
+  /**
+   * Defines whether should split **TOTAL** [[BalanceType]] into debit and credit.
+   * 
+   * @returns This builder with respective trial option, for chaining.
+   */
+   public trial(trial: boolean): BalancesDataTableBuilder {
+    this.shouldTrial = trial;
+    return this;
+  }  
+
 
   /**
    * 
@@ -184,7 +197,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     this.balancesContainers.sort((a, b) => {
       if (a != null && b != null) {
-        return b.getCumulativeBalance().minus(a.getCumulativeBalance()).toNumber();
+        return a.getName().toLowerCase().localeCompare(b.getName().toLowerCase());
       }
       return -1;
     });
@@ -196,7 +209,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         if (subContainers != null) {
           subContainers.sort((a, b) => {
             if (a != null && b != null) {
-              return b.getCumulativeBalance().minus(a.getCumulativeBalance()).toNumber();
+              return a.getName().toLowerCase().localeCompare(b.getName().toLowerCase());
             }
             return -1;
           });
@@ -215,13 +228,21 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         var line = new Array();
         var name = balances.getName();
         line.push(name);
-        var amount;
-        if (this.shouldFormatValue) {
-            amount = balances.getCumulativeBalanceText();
+        if (this.shouldTrial) {
+          if (this.shouldFormatValue) {
+            line.push(balances.getCumulativeDebitText());
+            line.push(balances.getCumulativeCreditText());
+          } else {
+            line.push(balances.getCumulativeDebit().toNumber());
+            line.push(balances.getCumulativeCredit().toNumber());
+          }
         } else {
-            amount = balances.getCumulativeBalance().toNumber();
+          if (this.shouldFormatValue) {
+            line.push(balances.getCumulativeBalanceText());
+          } else {
+            line.push(balances.getCumulativeBalance().toNumber());
+          }
         }
-        line.push(amount);
         table.push(line);
       }
     }

@@ -79,11 +79,26 @@ class Balance {
   }
 
   /**
-   * The cumulative balance to the date, since the first transaction posted.
+   * The cumulative balance to the date.
    */
   public getCumulativeBalance(): Amount {
     return new Amount(this.wrapped.cumulativeBalance);
   }
+
+  /**
+   * The cumulative credit to the date.
+   */
+  public getCumulativeCredit(): Amount {
+    return new Amount(this.wrapped.cumulativeCredit);
+  }
+
+  /**
+   * The cumulative debit to the date.
+   */
+  public getCumulativeDebit(): Amount {
+    return new Amount(this.wrapped.cumulativeDebit);
+  }
+
 
   /**
    * The balance on the date period.
@@ -92,6 +107,20 @@ class Balance {
     return new Amount(this.wrapped.periodBalance);
   }
 
+
+  /**
+   * The credit on the date period.
+   */
+   public getPeriodCredit(): Amount {
+    return new Amount(this.wrapped.periodCredit);
+  }
+
+  /**
+   * The debit on the date period.
+   */
+   public getPeriodDebit(): Amount {
+    return new Amount(this.wrapped.periodDebit);
+  }
 
 
 }

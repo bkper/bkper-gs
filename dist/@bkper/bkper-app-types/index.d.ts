@@ -384,9 +384,19 @@ declare namespace Bkper {
     export interface Balance {
 
         /**
-         * The cumulative balance to the date, since the first transaction posted.
+         * The cumulative balance to the date.
          */
         getCumulativeBalance(): Amount;
+
+        /**
+         * The cumulative credit to the date.
+         */
+        getCumulativeCredit(): Amount;
+
+        /**
+         * The cumulative debit to the date.
+         */
+        getCumulativeDebit(): Amount;
 
         /**
          * Date object constructed based on [[Book]] time zone offset. Usefull for
@@ -432,6 +442,16 @@ declare namespace Bkper {
         getPeriodBalance(): Amount;
 
         /**
+         * The credit on the date period.
+         */
+        getPeriodCredit(): Amount;
+
+        /**
+         * The debit on the date period.
+         */
+        getPeriodDebit(): Amount;
+
+        /**
          * The year of the balance
          */
         getYear(): number;
@@ -449,7 +469,7 @@ declare namespace Bkper {
         build(): any[][];
 
         /**
-         * Defines wheter Groups should expand its child accounts.
+         * Defines whether Groups should expand its child accounts.
          *
          * @returns This builder with respective expanded option, for chaining.
          */
@@ -484,7 +504,7 @@ declare namespace Bkper {
         hideNames(hide: boolean): BalancesDataTableBuilder;
 
         /**
-         * Defines wheter should rows and columns should be transposed.
+         * Defines whether should rows and columns should be transposed.
          *
          * For **TOTAL** [[BalanceType]], the **transposed** table looks like:
          * 
@@ -515,6 +535,13 @@ declare namespace Bkper {
          * @returns This builder with respective transposed option, for chaining.
          */
         transposed(transposed: boolean): BalancesDataTableBuilder;
+
+        /**
+         * Defines whether should split **TOTAL** [[BalanceType]] into debit and credit.
+         *
+         * @returns This builder with respective trial option, for chaining.
+         */
+        trial(trial: boolean): BalancesDataTableBuilder;
 
         /**
          * Fluent method to set the [[BalanceType]] for the builder.
@@ -1639,7 +1666,7 @@ declare namespace Bkper {
         getBalancesReport(): BalancesReport;
 
         /**
-         * The cumulative balance to the date, since the first transaction posted.
+         * The cumulative balance to the date.
          */
         getCumulativeBalance(): Amount;
 
@@ -1647,6 +1674,26 @@ declare namespace Bkper {
          * The cumulative balance formatted according to [[Book]] decimal format and fraction digits.
          */
         getCumulativeBalanceText(): string;
+
+        /**
+         * The cumulative credit to the date.
+         */
+        getCumulativeCredit(): Amount;
+
+        /**
+         * The cumulative credit formatted according to [[Book]] decimal format and fraction digits.
+         */
+        getCumulativeCreditText(): string;
+
+        /**
+         * The cumulative debit to the date.
+         */
+        getCumulativeDebit(): Amount;
+
+        /**
+         * The cumulative credit formatted according to [[Book]] decimal format and fraction digits.
+         */
+        getCumulativeDebitText(): string;
 
         /**
          * The [[Account]] name, [[Group]] name or #hashtag
@@ -1662,6 +1709,26 @@ declare namespace Bkper {
          * The balance on the date period formatted according to [[Book]] decimal format and fraction digits
          */
         getPeriodBalanceText(): string;
+
+        /**
+         * The credit on the date period.
+         */
+        getPeriodCredit(): Amount;
+
+        /**
+         * The credit on the date period formatted according to [[Book]] decimal format and fraction digits
+         */
+        getPeriodCreditText(): string;
+
+        /**
+         * The debit on the date period.
+         */
+        getPeriodDebit(): Amount;
+
+        /**
+         * The debit on the date period formatted according to [[Book]] decimal format and fraction digits
+         */
+        getPeriodDebitText(): string;
 
         /**
          * Gets the credit nature of the BalancesContainer, based on [[Account]], [[Group]] or #hashtag this container represents.

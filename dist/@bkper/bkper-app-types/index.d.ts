@@ -504,6 +504,13 @@ declare namespace Bkper {
         hideNames(hide: boolean): BalancesDataTableBuilder;
 
         /**
+         * Defines whether should force use of period balances for **TOTAL** [[BalanceType]].
+         *
+         * @returns This builder with respective trial option, for chaining.
+         */
+        period(period: boolean): BalancesDataTableBuilder;
+
+        /**
          * Defines whether should rows and columns should be transposed.
          *
          * For **TOTAL** [[BalanceType]], the **transposed** table looks like:

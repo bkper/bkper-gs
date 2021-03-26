@@ -18,6 +18,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   private shouldExpand: boolean;
   private shouldTranspose: boolean;
   private shouldTrial: boolean;
+  private shouldPeriod: boolean;
 
   constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity) {
     this.book = book;
@@ -31,6 +32,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     this.shouldExpand = false;
     this.shouldTranspose = false;
     this.shouldTrial = false;
+    this.shouldPeriod = false;
   }
 
   /**
@@ -169,6 +171,16 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     this.shouldTrial = trial;
     return this;
   }  
+  
+  /**
+   * Defines whether should force use of period balances for **TOTAL** [[BalanceType]].
+   * 
+   * @returns This builder with respective trial option, for chaining.
+   */
+   public period(period: boolean): BalancesDataTableBuilder {
+    this.shouldPeriod = period;
+    return this;
+  }  
 
 
   /**
@@ -230,17 +242,35 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         line.push(name);
         if (this.shouldTrial) {
           if (this.shouldFormatValue) {
-            line.push(balances.getCumulativeDebitText());
-            line.push(balances.getCumulativeCreditText());
+            if (this.shouldPeriod) {
+              line.push(balances.getPeriodDebitText());
+              line.push(balances.getPeriodCreditText());
+            } else {
+              line.push(balances.getCumulativeDebitText());
+              line.push(balances.getCumulativeCreditText());
+            }
           } else {
-            line.push(balances.getCumulativeDebit().toNumber());
-            line.push(balances.getCumulativeCredit().toNumber());
+            if (this.shouldPeriod) {
+              line.push(balances.getPeriodDebit().toNumber());
+              line.push(balances.getPeriodCredit().toNumber());
+            } else {
+              line.push(balances.getPeriodDebit().toNumber());
+              line.push(balances.getPeriodCredit().toNumber());
+            }
           }
         } else {
           if (this.shouldFormatValue) {
-            line.push(balances.getCumulativeBalanceText());
+            if (this.shouldPeriod) {
+              line.push(balances.getPeriodBalanceText());
+            } else {
+              line.push(balances.getCumulativeBalanceText());
+            }
           } else {
-            line.push(balances.getCumulativeBalance().toNumber());
+            if (this.shouldPeriod) {
+              line.push(balances.getPeriodBalance().toNumber());
+            } else {
+              line.push(balances.getCumulativeBalance().toNumber());
+            }
           }
         }
         table.push(line);

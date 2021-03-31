@@ -787,6 +787,11 @@ declare namespace Bkper {
         getLastUpdateMs(): number;
 
         /**
+         * @returns The lock date of the Book in ISO format yyyy-MM-dd
+         */
+        getLockDate(): string;
+
+        /**
          * @returns The name of this Book
          */
         getName(): string;
@@ -967,6 +972,13 @@ declare namespace Bkper {
          * @returns This Book, for chainning.
          */
         setFractionDigits(fractionDigits: number): Book;
+
+        /**
+         * Sets the lock date of the Book in ISO format yyyy-MM-dd.
+         *
+         * @returns This Book, for chainning.
+         */
+        setLockDate(lockDate: string): Book;
 
         /**
          * Sets the name of the Book.

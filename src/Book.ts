@@ -185,6 +185,28 @@ class Book {
     return this.wrapped.timeZoneOffset;
   }
 
+    /**
+   * @return The lock date of the Book in ISO format yyyy-MM-dd
+   */
+     public getLockDate(): string {
+      this.checkBookLoaded_();
+      return this.wrapped.lockDate;
+    }
+  
+    /**
+     * 
+     * Sets the lock date of the Book in ISO format yyyy-MM-dd.
+     * 
+     * @returns This Book, for chainning.
+     */    
+    public setLockDate(lockDate: string): Book {
+      if (lockDate == null) {
+        lockDate = "1900-00-00";
+      }
+      this.wrapped.lockDate = lockDate;
+      return this;
+    }  
+
   /**
    * @return The last update date of the book, in in milliseconds
    */

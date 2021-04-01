@@ -9,10 +9,13 @@ class TransactionsDataTableBuilder {
   private shouldFormatValues: boolean;
   private shouldAddUrls: boolean;
   private shouldAddProperties: boolean;
+  private shouldAddIds: boolean;
   private transactionIterator: TransactionIterator;
   private transactions: Array<Transaction>;
   private book: Book;
   private propertyKeys: string[];
+  private attachmentHeaders: string[];
+  private remoteIdHeaders: string[];
 
   constructor(transactionIterator: TransactionIterator) {
     this.transactionIterator = transactionIterator;
@@ -46,7 +49,7 @@ class TransactionsDataTableBuilder {
   /**
    * Defines whether include attachments and url links.
    * 
-   * @returns This builder with respective add attachment option, for chaining.
+   * @returns This builder with respective include attachment option, for chaining.
    */
   public includeUrls(include: boolean): TransactionsDataTableBuilder {
     this.shouldAddUrls = include;
@@ -56,10 +59,20 @@ class TransactionsDataTableBuilder {
   /**
    * Defines whether include custom transaction properties.
    * 
-   * @returns This builder with respective add attachment option, for chaining.
+   * @returns This builder with respective include properties option, for chaining.
    */
   public includeProperties(include: boolean): TransactionsDataTableBuilder {
     this.shouldAddProperties = include;
+    return this;
+  }
+
+  /**
+   * Defines whether include transaction ids.
+   * 
+   * @returns This builder with respective include ids option, for chaining.
+   */
+  public includeIds(include: boolean): TransactionsDataTableBuilder {
+    this.shouldAddIds = include;
     return this;
   }
 
@@ -85,6 +98,10 @@ class TransactionsDataTableBuilder {
 
     if (this.getAccount() != null) {
 
+      if (this.shouldAddIds) {
+        headerLine.push("Id");
+      }
+
       headerLine.push("Date");
       headerLine.push("Account");
       headerLine.push("Description");
@@ -103,10 +120,23 @@ class TransactionsDataTableBuilder {
         }
       }
 
+      if (this.shouldAddIds) {
+        for (const remoteIdHeader of this.getRemoteIdHeaders()) {
+          headerLine.push(remoteIdHeader)
+        }
+      }
+
       if (this.shouldAddUrls) {
-        headerLine.push("Attachment");
+        for (const attachmentHeader of this.getAttachmentHeaders()) {
+          headerLine.push(attachmentHeader)
+        }
       }
     } else {
+
+      if (this.shouldAddIds) {
+        headerLine.push("Id");
+      }
+
       headerLine.push("Date");
       headerLine.push("Origin");
       headerLine.push("Destination");
@@ -118,10 +148,18 @@ class TransactionsDataTableBuilder {
         for (const key of this.getPropertyKeys()) {
           headerLine.push(key)
         }
+      }
+      
+      if (this.shouldAddIds) {
+        for (const remoteIdHeader of this.getRemoteIdHeaders()) {
+          headerLine.push(remoteIdHeader)
+        }
       }      
 
       if (this.shouldAddUrls) {
-        headerLine.push("Attachment");
+        for (const attachmentHeader of this.getAttachmentHeaders()) {
+          headerLine.push(attachmentHeader)
+        }
       }
     }
     return headerLine;
@@ -153,6 +191,33 @@ class TransactionsDataTableBuilder {
     }
   }
 
+  private getAttachmentHeaders(): string[] {
+    if (this.attachmentHeaders == null) {
+      this.attachmentHeaders = []
+      for (const transaction of this.getTransactions()) {
+        let urls = this.getUrls(transaction);
+        if (urls.length > this.attachmentHeaders.length) {
+          this.attachmentHeaders = [];
+          urls.forEach(url => this.attachmentHeaders.push("Attachment"))
+        }
+      }
+    }
+    return this.attachmentHeaders;
+  }
+  private getRemoteIdHeaders(): string[] {
+    if (this.remoteIdHeaders == null) {
+      this.remoteIdHeaders = []
+      for (const transaction of this.getTransactions()) {
+        let remoteIds = transaction.getRemoteIds();
+        if (remoteIds && remoteIds.length > this.remoteIdHeaders.length) {
+          this.remoteIdHeaders = [];
+          remoteIds.forEach(remoteId => this.remoteIdHeaders.push("Remote Id"))
+        }
+      }
+    }
+    return this.remoteIdHeaders;
+  }
+
   private getPropertyKeys(): string[] {
     if (this.propertyKeys == null) {
       this.propertyKeys = []
@@ -176,6 +241,10 @@ class TransactionsDataTableBuilder {
     for (const transaction of this.getTransactions()) {
       
       var line = new Array();
+
+      if (this.shouldAddIds) {
+        line.push(transaction.getId());
+      }      
 
       if (this.shouldFormatDates) {
         line.push(transaction.getDateFormatted());
@@ -214,40 +283,18 @@ class TransactionsDataTableBuilder {
         this.addPropertiesToLine(line, transaction);
       }      
 
-
-      var urls = transaction.getUrls();
-
-      if (urls == null) {
-        urls = [];
-      }
-      let files = transaction.getFiles();
-      if (files != null) {
-        urls = urls.concat(files.map(f => f.getUrl()))
+      if (this.shouldAddIds) {
+        this.addRemoteIdsToLine(line, transaction);
       }
 
-      if (this.shouldAddUrls && urls != null && urls.length > 0) {
-        for (var i = 0; i < urls.length; i++) {
-          line.push(urls[i]);
-        }
-      } else if (this.shouldAddUrls) {
-        line.push("");
+      if (this.shouldAddUrls) {
+        this.addUrlsToLine(line, transaction);
       }
 
       dataTable.push(line);
     }
 
     return dataTable;
-  }
-
-  private addPropertiesToLine(line: any[], transaction: Transaction) {
-    let lineLength = line.length;
-    for (const key of this.getPropertyKeys()) {
-      line.push("");
-    }
-    for (const key of transaction.getPropertyKeys()) {
-      let index = this.getPropertyKeys().indexOf(key) + lineLength;
-      line[index] = transaction.getProperty(key);
-    }
   }
 
   private getExtract2DArray_(account: Account): any[][] {
@@ -257,6 +304,10 @@ class TransactionsDataTableBuilder {
     for (const transaction of this.getTransactions()) {
 
       var line = new Array();
+
+      if (this.shouldAddIds) {
+        line.push(transaction.getId());
+      }
 
       if (this.shouldFormatDates) {
         line.push(transaction.getDateFormatted());
@@ -328,19 +379,42 @@ class TransactionsDataTableBuilder {
         this.addPropertiesToLine(line, transaction);
       }  
 
-      var urls = transaction.getUrls();
-      if (this.shouldAddUrls && urls != null && urls.length > 0) {
-        for (var i = 0; i < urls.length; i++) {
-          line.push(urls[i]);
-        }
-      } else if (this.shouldAddUrls) {
-        line.push("");
+      if (this.shouldAddIds) {
+        this.addRemoteIdsToLine(line, transaction);
+      }
+
+      if (this.shouldAddUrls) {
+        this.addUrlsToLine(line, transaction);
       }
 
       dataTable.push(line);
     }
     return dataTable;
   }
+
+  private addUrlsToLine(line: any[], transaction: Transaction) {
+    let lineLength = line.length;
+    for (const key of this.getAttachmentHeaders()) {
+      line.push("");
+    }
+    let urls = this.getUrls(transaction);
+    for (let index = lineLength; index < lineLength+urls.length; index++) {
+      line[index] = urls[index-lineLength];
+    }
+  }
+
+  private addRemoteIdsToLine(line: any[], transaction: Transaction) {
+    let lineLength = line.length;
+    for (const key of this.getRemoteIdHeaders()) {
+      line.push("");
+    }
+    if (transaction.getRemoteIds()) {
+      for (let index = lineLength; index < lineLength+transaction.getRemoteIds().length; index++) {
+        line[index] = transaction.getRemoteIds()[index-lineLength];
+      }
+    }
+  }
+
 
   private isCreditOnTransaction_(transaction: Transaction, account: Account) {
     if (transaction.getCreditAccount() == null) {
@@ -349,8 +423,29 @@ class TransactionsDataTableBuilder {
     return transaction.getCreditAccount().getId() == account.getId();
   }
 
+  private addPropertiesToLine(line: any[], transaction: Transaction) {
+    let lineLength = line.length;
+    for (const key of this.getPropertyKeys()) {
+      line.push("");
+    }
+    for (const key of transaction.getPropertyKeys()) {
+      let index = this.getPropertyKeys().indexOf(key) + lineLength;
+      line[index] = transaction.getProperty(key);
+    }
+  }
 
 
+  private getUrls(transaction: Transaction):  string[] {
+    var urls = transaction.getUrls();
+    if (urls == null) {
+      urls = [];
+    }
+    let files = transaction.getFiles();
+    if (files != null) {
+      urls = urls.concat(files.map(f => f.getUrl()))
+    }
+    return urls;
+  }
 
 /******************* DEPRECATED METHODS *******************/
 

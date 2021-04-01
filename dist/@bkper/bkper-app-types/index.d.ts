@@ -1633,16 +1633,23 @@ declare namespace Bkper {
         getHeaderLine(): string[];
 
         /**
+         * Defines whether include transaction ids.
+         *
+         * @returns This builder with respective include ids option, for chaining.
+         */
+        includeIds(include: boolean): TransactionsDataTableBuilder;
+
+        /**
          * Defines whether include custom transaction properties.
          *
-         * @returns This builder with respective add attachment option, for chaining.
+         * @returns This builder with respective include properties option, for chaining.
          */
         includeProperties(include: boolean): TransactionsDataTableBuilder;
 
         /**
          * Defines whether include attachments and url links.
          *
-         * @returns This builder with respective add attachment option, for chaining.
+         * @returns This builder with respective include attachment option, for chaining.
          */
         includeUrls(include: boolean): TransactionsDataTableBuilder;
 

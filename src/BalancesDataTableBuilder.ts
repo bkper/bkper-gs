@@ -254,8 +254,8 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
               line.push(balances.getPeriodDebit().toNumber());
               line.push(balances.getPeriodCredit().toNumber());
             } else {
-              line.push(balances.getPeriodDebit().toNumber());
-              line.push(balances.getPeriodCredit().toNumber());
+              line.push(balances.getCumulativeDebit().toNumber());
+              line.push(balances.getCumulativeCredit().toNumber());
             }
           }
         } else {

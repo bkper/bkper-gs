@@ -97,14 +97,14 @@ declare namespace Bkper {
          *
          * @returns The balance of this account.
          */
-        getBalance(raw?: boolean): Amount;
+        getBalance(): Amount;
 
         /**
-         * Gets the checked balance based on credit nature of this Account.
+         * Gets the raw balance, no matter credit nature of this Account.
          *
-         * @returns The checked balance of this Account
+         * @returns The balance of this account.
          */
-        getCheckedBalance(raw?: boolean): Amount;
+        getBalanceRaw(): Amount;
 
         /**
          * Gets the account description
@@ -509,6 +509,13 @@ declare namespace Bkper {
          * @returns This builder with respective trial option, for chaining.
          */
         period(period: boolean): BalancesDataTableBuilder;
+
+        /**
+         * Defines whether should fetch raw balances.
+         *
+         * @returns This builder with respective trial option, for chaining.
+         */
+        raw(raw: boolean): BalancesDataTableBuilder;
 
         /**
          * Defines whether should rows and columns should be transposed.
@@ -1697,6 +1704,16 @@ declare namespace Bkper {
         getCumulativeBalance(): Amount;
 
         /**
+         * The cumulative raw balance to the date.
+         */
+        getCumulativeBalanceRaw(): Amount;
+
+        /**
+         * The cumulative raw balance formatted according to [[Book]] decimal format and fraction digits.
+         */
+        getCumulativeBalanceRawText(): string;
+
+        /**
          * The cumulative balance formatted according to [[Book]] decimal format and fraction digits.
          */
         getCumulativeBalanceText(): string;
@@ -1730,6 +1747,16 @@ declare namespace Bkper {
          * The balance on the date period.
          */
         getPeriodBalance(): Amount;
+
+        /**
+         * The raw balance on the date period.
+         */
+        getPeriodBalanceRaw(): Amount;
+
+        /**
+         * The raw balance on the date period formatted according to [[Book]] decimal format and fraction digits
+         */
+        getPeriodBalanceRawText(): string;
 
         /**
          * The balance on the date period formatted according to [[Book]] decimal format and fraction digits

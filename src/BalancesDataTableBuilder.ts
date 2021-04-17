@@ -184,7 +184,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   }  
 
   /**
-   * Defines whether should fetch raw balances.
+   * Defines whether should show raw balances, no matter the credit nature of the Account or Group.
    * 
    * @returns This builder with respective trial option, for chaining.
    */

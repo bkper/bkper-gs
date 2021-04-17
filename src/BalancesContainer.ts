@@ -39,6 +39,11 @@ interface BalancesContainer {
   getCumulativeBalance(): Amount;
 
   /**
+   * The cumulative raw balance to the date.
+   */
+  getCumulativeBalanceRaw(): Amount;
+
+  /**
    * The cumulative credit to the date.
    */
   getCumulativeCredit(): Amount;
@@ -52,6 +57,11 @@ interface BalancesContainer {
    * The cumulative balance formatted according to [[Book]] decimal format and fraction digits.
    */
   getCumulativeBalanceText(): string;
+
+  /**
+   * The cumulative raw balance formatted according to [[Book]] decimal format and fraction digits.
+   */
+  getCumulativeBalanceRawText(): string;
 
   /**
    * The cumulative credit formatted according to [[Book]] decimal format and fraction digits.
@@ -70,6 +80,11 @@ interface BalancesContainer {
   getPeriodBalance(): Amount;
 
   /**
+   * The raw balance on the date period.
+   */
+  getPeriodBalanceRaw(): Amount;
+
+  /**
    * The credit on the date period.
    */
   getPeriodCredit(): Amount;
@@ -83,6 +98,11 @@ interface BalancesContainer {
    * The balance on the date period formatted according to [[Book]] decimal format and fraction digits
    */
   getPeriodBalanceText(): string;
+
+  /**
+   * The raw balance on the date period formatted according to [[Book]] decimal format and fraction digits
+   */
+  getPeriodBalanceRawText(): string;
 
   /**
    * The credit on the date period formatted according to [[Book]] decimal format and fraction digits
@@ -145,6 +165,11 @@ class AccountBalancesContainer implements BalancesContainer {
     return balance;
   }
 
+  public getCumulativeBalanceRaw(): Amount {
+    var balance = Utils_.round(this.wrapped.cumulativeBalance, this.balancesReport.getBook().getFractionDigits());
+    return balance;
+  }
+
   public getCumulativeCredit(): Amount {
     var balance = Utils_.round(this.wrapped.cumulativeCredit, this.balancesReport.getBook().getFractionDigits());
     return balance;
@@ -158,6 +183,11 @@ class AccountBalancesContainer implements BalancesContainer {
   public getCumulativeBalanceText(): string {
     return this.balancesReport.getBook().formatValue(this.getCumulativeBalance());
   }
+  
+  public getCumulativeBalanceRawText(): string {
+    return this.balancesReport.getBook().formatValue(this.getCumulativeBalanceRaw());
+  }
+
   public getCumulativeCreditText(): string {
     return this.balancesReport.getBook().formatValue(this.getCumulativeCredit());
   }
@@ -170,6 +200,10 @@ class AccountBalancesContainer implements BalancesContainer {
     var balance = Utils_.round(this.wrapped.periodBalance, this.balancesReport.getBook().getFractionDigits());
     return Utils_.getRepresentativeValue(balance, this.isCredit());
   }
+  public getPeriodBalanceRaw(): Amount {
+    var balance = Utils_.round(this.wrapped.periodBalance, this.balancesReport.getBook().getFractionDigits());
+    return balance;
+  }
   public getPeriodCredit(): Amount {
     var balance = Utils_.round(this.wrapped.periodCredit, this.balancesReport.getBook().getFractionDigits());
     return balance;
@@ -181,6 +215,9 @@ class AccountBalancesContainer implements BalancesContainer {
 
   public getPeriodBalanceText(): string {
     return this.balancesReport.getBook().formatValue(this.getPeriodBalance());
+  }
+  public getPeriodBalanceRawText(): string {
+    return this.balancesReport.getBook().formatValue(this.getPeriodBalanceRaw());
   }
   public getPeriodCreditText(): string {
     return this.balancesReport.getBook().formatValue(this.getPeriodCredit());
@@ -238,11 +275,14 @@ class GroupBalancesContainer implements BalancesContainer {
     return this.wrapped.credit;
   }
 
-
-
   public getCumulativeBalance(): Amount {
     var balance = Utils_.round(this.wrapped.cumulativeBalance, this.balancesReport.getBook().getFractionDigits());
     balance = Utils_.getRepresentativeValue(balance, this.isCredit());
+    return balance;
+  }
+
+  public getCumulativeBalanceRaw(): Amount {
+    var balance = Utils_.round(this.wrapped.cumulativeBalance, this.balancesReport.getBook().getFractionDigits());
     return balance;
   }
 
@@ -259,6 +299,9 @@ class GroupBalancesContainer implements BalancesContainer {
   public getCumulativeBalanceText(): string {
     return this.balancesReport.getBook().formatValue(this.getCumulativeBalance());
   }
+  public getCumulativeBalanceRawText(): string {
+    return this.balancesReport.getBook().formatValue(this.getCumulativeBalanceRaw());
+  }
   public getCumulativeCreditText(): string {
     return this.balancesReport.getBook().formatValue(this.getCumulativeCredit());
   }
@@ -271,6 +314,10 @@ class GroupBalancesContainer implements BalancesContainer {
     var balance = Utils_.round(this.wrapped.periodBalance, this.balancesReport.getBook().getFractionDigits());
     return Utils_.getRepresentativeValue(balance, this.isCredit());
   }
+  public getPeriodBalanceRaw(): Amount {
+    var balance = Utils_.round(this.wrapped.periodBalance, this.balancesReport.getBook().getFractionDigits());
+    return balance;
+  }
   public getPeriodCredit(): Amount {
     var balance = Utils_.round(this.wrapped.periodCredit, this.balancesReport.getBook().getFractionDigits());
     return balance;
@@ -282,6 +329,9 @@ class GroupBalancesContainer implements BalancesContainer {
 
   public getPeriodBalanceText(): string {
     return this.balancesReport.getBook().formatValue(this.getPeriodBalance());
+  }
+  public getPeriodBalanceRawText(): string {
+    return this.balancesReport.getBook().formatValue(this.getPeriodBalanceRaw());
   }
   public getPeriodCreditText(): string {
     return this.balancesReport.getBook().formatValue(this.getPeriodCredit());

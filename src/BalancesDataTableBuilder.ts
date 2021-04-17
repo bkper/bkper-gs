@@ -19,6 +19,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   private shouldTranspose: boolean;
   private shouldTrial: boolean;
   private shouldPeriod: boolean;
+  private shouldRaw = false;
 
   constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity) {
     this.book = book;
@@ -182,6 +183,16 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     return this;
   }  
 
+  /**
+   * Defines whether should fetch raw balances.
+   * 
+   * @returns This builder with respective trial option, for chaining.
+   */
+   public raw(raw: boolean): BalancesDataTableBuilder {
+    this.shouldRaw = raw;
+    return this;
+  }  
+
 
   /**
    * 
@@ -261,15 +272,32 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         } else {
           if (this.shouldFormatValue) {
             if (this.shouldPeriod) {
-              line.push(balances.getPeriodBalanceText());
+              if (this.shouldRaw) {
+                line.push(balances.getPeriodBalanceRawText());
+              } else {
+                line.push(balances.getPeriodBalanceText());
+              }
             } else {
-              line.push(balances.getCumulativeBalanceText());
+              if (this.shouldRaw) {
+                line.push(balances.getCumulativeBalanceRawText());
+              } else {
+                line.push(balances.getCumulativeBalanceText());
+              }
             }
           } else {
             if (this.shouldPeriod) {
-              line.push(balances.getPeriodBalance().toNumber());
+              if (this.shouldRaw) {
+                line.push(balances.getPeriodBalanceRaw().toNumber());
+              } else {
+                line.push(balances.getPeriodBalance().toNumber());
+              }
             } else {
-              line.push(balances.getCumulativeBalance().toNumber());
+              if (this.shouldRaw) {
+                line.push(balances.getCumulativeBalanceRaw().toNumber());
+              } else {
+                line.push(balances.getCumulativeBalance().toNumber());
+              }
+
             }
           }
         }
@@ -339,7 +367,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
           } else {
             amount = balance.getPeriodBalance();
           }
-          indexEntry[balancesContainer.getName()] = Utils_.getRepresentativeValue(amount, balancesContainer.isCredit());
+          indexEntry[balancesContainer.getName()] = this.shouldRaw ? amount : Utils_.getRepresentativeValue(amount, balancesContainer.isCredit());
         }
 
       }

@@ -413,7 +413,7 @@ class Transaction {
    */
   public getCreditAmount(account: Account | string): Amount {
     let accountObject = this.getAccount_(account);
-    if (this.isCreditOnTransaction_(accountObject)) {
+    if (this.isCredit(accountObject)) {
       return this.getAmount();
     }
     return null;
@@ -426,7 +426,7 @@ class Transaction {
    */
   public getDebitAmount(account: Account | string): Amount {
     let accountObject = this.getAccount_(account);
-    if (this.isDebitOnTransaction_(accountObject)) {
+    if (this.isDebit(accountObject)) {
       return this.getAmount();
     }
     return null;
@@ -439,10 +439,10 @@ class Transaction {
    */
   public getOtherAccount(account: Account | string): Account {
     let accountObject = this.getAccount_(account);
-    if (this.isCreditOnTransaction_(accountObject)) {
+    if (this.isCredit(accountObject)) {
       return this.getDebitAccount();
     }
-    if (this.isDebitOnTransaction_(accountObject)) {
+    if (this.isDebit(accountObject)) {
       return this.getCreditAccount();
     }
     return null;
@@ -463,6 +463,26 @@ class Transaction {
     }
   }
 
+  /**
+   * 
+   * Tell if the given account is credit on the transaction
+   * 
+   * @param account The account object
+   */
+  public isCredit(account: Account) {
+    return this.getCreditAccount() != null && account != null && this.getCreditAccount().getNormalizedName() == account.getNormalizedName();
+  }
+
+  /**
+   * 
+   * Tell if the given account is debit on the transaction
+   * 
+   * @param account The account object
+   */  
+  public isDebit(account: Account) {
+    return this.getDebitAccount() != null && account != null && this.getDebitAccount().getNormalizedName() == account.getNormalizedName();
+  }
+
   private getAccount_(account: Account | string): Account {
     if (account == null || account instanceof Account) {
       return account as Account;
@@ -470,13 +490,6 @@ class Transaction {
     return this.book.getAccount(account);
   }
 
-  private isCreditOnTransaction_(account: Account) {
-    return this.getCreditAccount() != null && account != null && this.getCreditAccount().getId() == account.getId();
-  }
-
-  private isDebitOnTransaction_(account: Account) {
-    return this.getDebitAccount() != null && account != null && this.getDebitAccount().getId() == account.getId();
-  }
 
 
   //DESCRIPTION

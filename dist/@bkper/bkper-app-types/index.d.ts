@@ -511,7 +511,7 @@ declare namespace Bkper {
         period(period: boolean): BalancesDataTableBuilder;
 
         /**
-         * Defines whether should fetch raw balances.
+         * Defines whether should show raw balances, no matter the credit nature of the Account or Group.
          *
          * @returns This builder with respective trial option, for chaining.
          */
@@ -1453,6 +1453,16 @@ declare namespace Bkper {
          * @returns True if transaction is checked.
          */
         isChecked(): boolean;
+
+        /**
+         * Tell if the given account is credit on the transaction
+         */
+        isCredit(account: Account): boolean;
+
+        /**
+         * Tell if the given account is debit on the transaction
+         */
+        isDebit(account: Account): boolean;
 
         /**
          * @returns True if transaction was already posted to the accounts. False if is still a Draft.

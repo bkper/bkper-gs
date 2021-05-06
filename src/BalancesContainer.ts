@@ -122,12 +122,6 @@ interface BalancesContainer {
    */
   getBalancesContainers(): BalancesContainer[]
 
-  /**
-   * Gets a specific [[BalancesContainer]].
-   * 
-   * **NOTE**: Only for Group balance containers. Accounts returns null.
-   */
-  getBalancesContainer(name: string): BalancesContainer;
 
   /**
    * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]]
@@ -240,9 +234,7 @@ class AccountBalancesContainer implements BalancesContainer {
   public getBalancesContainers(): BalancesContainer[] {
     return [];
   }
-  public getBalancesContainer(name: string): BalancesContainer {
-    return null;
-  }
+
 }
 
 
@@ -253,14 +245,13 @@ class GroupBalancesContainer implements BalancesContainer {
 
   private wrapped: bkper.GroupBalances
   private accountBalances: AccountBalancesContainer[];
-  private periodicity: Periodicity;
+  private groupBalances: GroupBalancesContainer[];
 
   private balancesReport: BalancesReport;
 
-  constructor(balancesReport: BalancesReport, groupBalancesPlain: bkper.GroupBalances, periodicity: Periodicity) {
+  constructor(balancesReport: BalancesReport, groupBalancesPlain: bkper.GroupBalances) {
     this.balancesReport = balancesReport;
     this.wrapped = groupBalancesPlain;
-    this.periodicity = periodicity;
   }
 
   public getBalancesReport(): BalancesReport {
@@ -348,24 +339,44 @@ class GroupBalancesContainer implements BalancesContainer {
   }
 
   public createDataTable() {
-    return new BalancesDataTableBuilder(this.balancesReport.getBook(), this.getBalancesContainers(), this.periodicity);
+    return new BalancesDataTableBuilder(this.balancesReport.getBook(), this.getBalancesContainers(), this.balancesReport.getPeriodicity());
   }
 
   public getBalancesContainers(): BalancesContainer[] {
+    var containers = new Array<BalancesContainer>();
+    const groupBalances = this.getGroupBalances();
+    if (groupBalances && groupBalances.length > 0) {
+      containers = containers.concat(groupBalances);
+    }   
+    const accountBalances = this.getAccountBalances();
+    if (accountBalances && accountBalances.length > 0) {
+      containers = containers.concat(accountBalances);
+    }
+    return containers;
+  }
+
+  private getAccountBalances(): AccountBalancesContainer[] {
     var accountBalances = this.wrapped.accountBalances;
     if (this.accountBalances == null && accountBalances != null) {
       this.accountBalances = [];
       for (var i = 0; i < accountBalances.length; i++) {
         var accountBalance = accountBalances[i];
-        var accBalances = new AccountBalancesContainer(this.balancesReport, accountBalance);
-        this.accountBalances.push(accBalances);
+        this.accountBalances.push(new AccountBalancesContainer(this.balancesReport, accountBalance));
       }
     }
     return this.accountBalances;
   }
 
-  public getBalancesContainer(name: string): BalancesContainer {
-    return null;
+  private getGroupBalances(): GroupBalancesContainer[] {
+    var groupBalances = this.wrapped.groupBalances;
+    if (this.groupBalances == null && groupBalances != null) {
+      this.groupBalances = [];
+      for (var i = 0; i < groupBalances.length; i++) {
+        var groupBalance = groupBalances[i];
+        this.groupBalances.push(new GroupBalancesContainer(this.balancesReport, groupBalance));
+      }
+    }
+    return this.groupBalances;
   }
 
 }

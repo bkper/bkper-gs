@@ -13,6 +13,12 @@ class Group {
 
   book: Book
 
+  parent: Group
+
+  children: Group[] = [];
+
+  depth: number;
+
   /**
    * @returns The id of this Group
    */
@@ -179,6 +185,50 @@ class Group {
     this.wrapped = GroupService_.deleteGroup(this.book.getId(), this.wrapped);
     this.book.clearAccountsCache();
     return this;
-  }   
+  }
+
+  /**
+   * 
+   * @returns The parent Group
+   */
+  public getParent(): Group {
+    return this.parent;
+  }
+
+  /**
+   * 
+   * @returns The children Groups
+   */
+  public getChildren(): Group[] {
+    return this.children;
+  }
+
+  /**
+   * 
+   * @returns The depth in the parent Group chain up to the root Group
+   */
+   public getDepth():number {
+    if (this.depth == null) {
+        if (this.getParent() != null) {
+            this.depth = this.getParent().getDepth() + 1;
+        } else {
+            this.depth = 0;
+        }
+    }
+    return this.depth;
+}
+  
+  buildGroupTree_(idGroupMap: any) {
+    this.parent = null;
+    this.depth = null;
+    if (this.wrapped.parent != null) {
+        let parentGroup: Group = idGroupMap[this.wrapped.parent.id];
+        if (parentGroup != null) {
+            this.parent = parentGroup;
+            this.parent.children.push(this);
+            this.parent.buildGroupTree_(idGroupMap);
+        }
+    }
+}
 
 }

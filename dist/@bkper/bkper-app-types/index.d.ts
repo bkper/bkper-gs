@@ -1148,6 +1148,16 @@ declare namespace Bkper {
         getAccounts(): Account[];
 
         /**
+         * @returns The children Groups
+         */
+        getChildren(): Group[];
+
+        /**
+         * @returns The depth in the parent Group chain up to the root Group
+         */
+        getDepth(): number;
+
+        /**
          * @returns The id of this Group
          */
         getId(): string;
@@ -1161,6 +1171,11 @@ declare namespace Bkper {
          * @returns The name of this group without spaces and special characters
          */
         getNormalizedName(): string;
+
+        /**
+         * @returns The parent Group
+         */
+        getParent(): Group;
 
         /**
          * Gets the custom properties stored in this Group
@@ -1688,13 +1703,6 @@ declare namespace Bkper {
          * All [[Balances]] of the container
          */
         getBalances(): Balance[];
-
-        /**
-         * Gets a specific [[BalancesContainer]].
-         *
-         * **NOTE**: Only for Group balance containers. Accounts returns null.
-         */
-        getBalancesContainer(name: string): BalancesContainer;
 
         /**
          * Gets all child [[BalancesContainers]].

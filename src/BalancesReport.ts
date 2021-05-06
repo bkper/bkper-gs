@@ -81,7 +81,7 @@ class BalancesReport {
       this.groupBalancesContainers = [];
       for (var i = 0; i < this.wrapped.groupBalances.length; i++) {
         var grouBalances = this.wrapped.groupBalances[i];
-        var accGroupBalances = new GroupBalancesContainer(this, grouBalances, this.getPeriodicity());
+        var accGroupBalances = new GroupBalancesContainer(this, grouBalances);
         this.groupBalancesContainers.push(accGroupBalances);
       }
     }

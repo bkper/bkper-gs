@@ -581,6 +581,11 @@ class Book {
       this.idGroupMap[group.getId()] = group;
       this.nameGroupMap[normalizeName(group.getName())] = group;
     }
+    for (var i = 0; i < this.groups.length; i++) {
+      var group = this.groups[i];
+      group.buildGroupTree_(this.idGroupMap)
+    }
+
   }
 
 

@@ -1812,6 +1812,21 @@ declare namespace Bkper {
          */
         isCredit(): boolean;
 
+        /**
+         * Tell if this balance container if from an [[Account]]
+         */
+        isFromAccount(): boolean;
+
+        /**
+         * Tell if this balance container if from a [[Group]]
+         */
+        isFromGroup(): boolean;
+
+        /**
+         * Tell if the balance container is from a parent group
+         */
+        isFromParentGroup(): boolean;
+
     }
 
     /**

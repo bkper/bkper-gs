@@ -34,6 +34,21 @@ interface BalancesContainer {
   isCredit(): boolean;
 
   /**
+   * Tell if this balance container if from an [[Account]] 
+   */
+  isFromAccount(): boolean;
+
+  /**
+   * Tell if this balance container if from a [[Group]] 
+   */  
+  isFromGroup(): boolean;
+
+  /**
+   * Tell if the balance container is from a parent group
+   */
+  isFromParentGroup(): boolean;
+
+  /**
    * The cumulative balance to the date.
    */
   getCumulativeBalance(): Amount;
@@ -139,6 +154,18 @@ class AccountBalancesContainer implements BalancesContainer {
   constructor(balancesReport: BalancesReport, balancePlain: bkper.AccountBalances) {
     this.balancesReport = balancesReport
     this.wrapped = balancePlain;
+  }
+  
+  isFromAccount(): boolean {
+    return true;
+  }
+
+  isFromGroup(): boolean {
+    return false;
+  }
+
+  public isFromParentGroup(): boolean {
+    return false;
   }
 
   public getBalancesReport(): BalancesReport {
@@ -252,6 +279,18 @@ class GroupBalancesContainer implements BalancesContainer {
   constructor(balancesReport: BalancesReport, groupBalancesPlain: bkper.GroupBalances) {
     this.balancesReport = balancesReport;
     this.wrapped = groupBalancesPlain;
+  }
+      
+  isFromAccount(): boolean {
+    return false;
+  }
+
+  isFromGroup(): boolean {
+    return true;
+  }
+
+  public isFromParentGroup(): boolean {
+    return this.getGroupBalances() != null && this.getAccountBalances().length > 0;
   }
 
   public getBalancesReport(): BalancesReport {
@@ -378,5 +417,6 @@ class GroupBalancesContainer implements BalancesContainer {
     }
     return this.groupBalances;
   }
+
 
 }

@@ -290,7 +290,7 @@ class GroupBalancesContainer implements BalancesContainer {
   }
 
   public isFromParentGroup(): boolean {
-    return this.getGroupBalances() != null && this.getAccountBalances().length > 0;
+    return this.getGroupBalances() != null && this.getGroupBalances().length > 0;
   }
 
   public getBalancesReport(): BalancesReport {

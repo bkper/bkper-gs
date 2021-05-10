@@ -137,6 +137,12 @@ interface BalancesContainer {
    */
   getBalancesContainers(): BalancesContainer[]
 
+  /**
+   * Gets a specific [[BalancesContainer]].
+   * 
+   * **NOTE**: Only for Group balance containers. Accounts returns null.
+   */
+   getBalancesContainer(name: string): BalancesContainer;  
 
   /**
    * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]]
@@ -253,6 +259,9 @@ class AccountBalancesContainer implements BalancesContainer {
     return [];
   }
 
+  getBalancesContainer(name: string): BalancesContainer {
+    return null;
+  }
 }
 
 
@@ -398,6 +407,21 @@ class GroupBalancesContainer implements BalancesContainer {
       }
     }
     return this.groupBalances;
+  }
+
+  getBalancesContainer(name: string): BalancesContainer {
+    if (name == null) {
+      return null;
+    }
+    let containers = this.getBalancesContainers();
+    if (containers) {
+      for (const container of containers) {
+        if (container.getName().toLowerCase() == name.toLowerCase()) {
+          return container;
+        }
+      }
+    }
+    return null;
   }
 
 

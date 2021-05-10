@@ -1705,6 +1705,13 @@ declare namespace Bkper {
         getBalances(): Balance[];
 
         /**
+         * Gets a specific [[BalancesContainer]].
+         *
+         * **NOTE**: Only for Group balance containers. Accounts returns null.
+         */
+        getBalancesContainer(name: string): BalancesContainer;
+
+        /**
          * Gets all child [[BalancesContainers]].
          *
          * **NOTE**: Only for Group balance containers. Accounts returns null.

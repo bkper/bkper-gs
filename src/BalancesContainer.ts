@@ -181,24 +181,19 @@ class AccountBalancesContainer implements BalancesContainer {
   }
 
   public getCumulativeBalance(): Amount {
-    var balance = Utils_.round(this.wrapped.cumulativeBalance, this.balancesReport.getBook().getFractionDigits());
-    balance = Utils_.getRepresentativeValue(balance, this.isCredit());
-    return balance;
+    return Utils_.getRepresentativeValue(new Amount(this.wrapped.cumulativeBalance), this.isCredit());
   }
 
   public getCumulativeBalanceRaw(): Amount {
-    var balance = Utils_.round(this.wrapped.cumulativeBalance, this.balancesReport.getBook().getFractionDigits());
-    return balance;
+    return new Amount(this.wrapped.cumulativeBalance);
   }
 
   public getCumulativeCredit(): Amount {
-    var balance = Utils_.round(this.wrapped.cumulativeCredit, this.balancesReport.getBook().getFractionDigits());
-    return balance;
+    return new Amount(this.wrapped.cumulativeCredit);
   }
 
   public getCumulativeDebit(): Amount {
-    var balance = Utils_.round(this.wrapped.cumulativeDebit, this.balancesReport.getBook().getFractionDigits());
-    return balance;
+    return new Amount(this.wrapped.cumulativeDebit);
   }
   
   public getCumulativeBalanceText(): string {
@@ -218,20 +213,16 @@ class AccountBalancesContainer implements BalancesContainer {
 
 
   public getPeriodBalance(): Amount {
-    var balance = Utils_.round(this.wrapped.periodBalance, this.balancesReport.getBook().getFractionDigits());
-    return Utils_.getRepresentativeValue(balance, this.isCredit());
+    return Utils_.getRepresentativeValue(new Amount(this.wrapped.periodBalance), this.isCredit());
   }
   public getPeriodBalanceRaw(): Amount {
-    var balance = Utils_.round(this.wrapped.periodBalance, this.balancesReport.getBook().getFractionDigits());
-    return balance;
+    return new Amount(this.wrapped.periodBalance);
   }
   public getPeriodCredit(): Amount {
-    var balance = Utils_.round(this.wrapped.periodCredit, this.balancesReport.getBook().getFractionDigits());
-    return balance;
+    return new Amount(this.wrapped.periodCredit);
   }
   public getPeriodDebit(): Amount {
-    var balance = Utils_.round(this.wrapped.periodDebit, this.balancesReport.getBook().getFractionDigits());
-    return balance;
+    return new Amount(this.wrapped.periodDebit);
   }
 
   public getPeriodBalanceText(): string {
@@ -306,24 +297,19 @@ class GroupBalancesContainer implements BalancesContainer {
   }
 
   public getCumulativeBalance(): Amount {
-    var balance = Utils_.round(this.wrapped.cumulativeBalance, this.balancesReport.getBook().getFractionDigits());
-    balance = Utils_.getRepresentativeValue(balance, this.isCredit());
-    return balance;
+    return Utils_.getRepresentativeValue(new Amount(this.wrapped.cumulativeBalance), this.isCredit());
   }
 
   public getCumulativeBalanceRaw(): Amount {
-    var balance = Utils_.round(this.wrapped.cumulativeBalance, this.balancesReport.getBook().getFractionDigits());
-    return balance;
+    return new Amount(this.wrapped.cumulativeBalance);
   }
 
   public getCumulativeCredit(): Amount {
-    var balance = Utils_.round(this.wrapped.cumulativeCredit, this.balancesReport.getBook().getFractionDigits());
-    return balance;
+    return new Amount(this.wrapped.cumulativeCredit);
   }
 
   public getCumulativeDebit(): Amount {
-    var balance = Utils_.round(this.wrapped.cumulativeDebit, this.balancesReport.getBook().getFractionDigits());
-    return balance;
+    return new Amount(this.wrapped.cumulativeDebit);
   }
   
   public getCumulativeBalanceText(): string {
@@ -341,20 +327,16 @@ class GroupBalancesContainer implements BalancesContainer {
 
 
   public getPeriodBalance(): Amount {
-    var balance = Utils_.round(this.wrapped.periodBalance, this.balancesReport.getBook().getFractionDigits());
-    return Utils_.getRepresentativeValue(balance, this.isCredit());
+    return Utils_.getRepresentativeValue(new Amount(this.wrapped.periodBalance), this.isCredit());
   }
   public getPeriodBalanceRaw(): Amount {
-    var balance = Utils_.round(this.wrapped.periodBalance, this.balancesReport.getBook().getFractionDigits());
-    return balance;
+    return new Amount(this.wrapped.periodBalance);
   }
   public getPeriodCredit(): Amount {
-    var balance = Utils_.round(this.wrapped.periodCredit, this.balancesReport.getBook().getFractionDigits());
-    return balance;
+    return new Amount(this.wrapped.periodCredit);
   }
   public getPeriodDebit(): Amount {
-    var balance = Utils_.round(this.wrapped.periodDebit, this.balancesReport.getBook().getFractionDigits());
-    return balance;
+    return new Amount(this.wrapped.periodDebit);
   }
 
   public getPeriodBalanceText(): string {

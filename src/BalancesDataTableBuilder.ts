@@ -386,7 +386,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         if (amount == null) {
           amount = "null_amount";
         } else {
-          amount = Utils_.round(amount, this.book.getFractionDigits());
+          amount = new Amount(amount);
           if (this.shouldFormatValue) {
             amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
           } else {

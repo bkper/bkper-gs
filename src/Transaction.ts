@@ -610,7 +610,7 @@ class Transaction {
         var account = isCa ? this.getCreditAccount() : this.getDebitAccount();
         accountBalance = Utils_.getRepresentativeValue(accountBalance, account.isCredit());
       }
-      return Utils_.round(accountBalance, this.book.getFractionDigits());
+      return new Amount(accountBalance);
     } else {
       return null;
     }

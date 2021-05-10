@@ -145,7 +145,7 @@ class Account {
   public getBalance(): Amount {
     var balance = new Amount('0');
     if (this.wrapped.balance != null) {
-      balance = Utils_.round(this.wrapped.balance, this.book.getFractionDigits());
+      balance = new Amount(this.wrapped.balance);
     }
     return Utils_.getRepresentativeValue(balance, this.isCredit());
   }
@@ -158,7 +158,7 @@ class Account {
   public getBalanceRaw(): Amount {
     var balance = new Amount('0');
     if (this.wrapped.balance != null) {
-      balance = Utils_.round(this.wrapped.balance, this.book.getFractionDigits());
+      balance = new Amount(this.wrapped.balance);
     }
     return balance;
   }

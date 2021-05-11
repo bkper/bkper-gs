@@ -1769,6 +1769,11 @@ declare namespace Bkper {
         getName(): string;
 
         /**
+         * The parent BalanceContainer
+         */
+        getParent(): BalancesContainer;
+
+        /**
          * The balance on the date period.
          */
         getPeriodBalance(): Amount;

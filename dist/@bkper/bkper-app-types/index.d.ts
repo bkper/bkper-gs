@@ -579,7 +579,7 @@ declare namespace Bkper {
         /**
          * Gets a specific [[BalancesContainers]].
          */
-        getBalancesContainer(groupName: string): BalancesContainer;
+        getBalancesContainer(name: string): BalancesContainer;
 
         /**
          * Gets all [[BalancesContainers]] of the report.

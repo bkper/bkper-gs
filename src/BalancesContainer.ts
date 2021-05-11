@@ -13,9 +13,21 @@ interface BalancesContainer {
   getBalancesReport(): BalancesReport;
 
   /**
-   * The [[Account]] name, [[Group]] name or #hashtag
+   * The [[Account]] name, [[Group]] name
    */
   getName(): string;
+
+
+
+  /**
+   * The [[Group]] associated with this container
+   */
+  getGroup(): Group;
+
+  /**
+   * The [[Account]] associated with this container
+   */
+  getAccount(): Account;
 
   /**
    * All [[Balances]] of the container
@@ -173,6 +185,14 @@ class AccountBalancesContainer implements BalancesContainer {
   getParent(): BalancesContainer {
     return this.parent;
   }
+
+  getGroup(): Group {
+    return this.balancesReport.getBook().getGroup(this.getName());
+  }
+
+  getAccount(): Account {
+    return this.balancesReport.getBook().getAccount(this.getName())
+  }
   
   isFromAccount(): boolean {
     return true;
@@ -298,6 +318,14 @@ class GroupBalancesContainer implements BalancesContainer {
   getParent(): BalancesContainer {
     return this.parent;
   }
+
+  getGroup(): Group {
+    return this.balancesReport.getBook().getGroup(this.getName());
+  }
+
+  getAccount(): Account {
+    return this.balancesReport.getBook().getAccount(this.getName())
+  }  
       
   isFromAccount(): boolean {
     return false;

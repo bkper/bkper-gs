@@ -68,7 +68,7 @@ class BalancesReport {
       this.accountBalancesContainers = [];
       for (var i = 0; i < this.wrapped.accountBalances.length; i++) {
         var accountBalance = this.wrapped.accountBalances[i];
-        var accountBalancesReport = new AccountBalancesContainer(this, accountBalance);
+        var accountBalancesReport = new AccountBalancesContainer(null, this, accountBalance);
         this.accountBalancesContainers.push(accountBalancesReport);
       }
     }
@@ -81,7 +81,7 @@ class BalancesReport {
       this.groupBalancesContainers = [];
       for (var i = 0; i < this.wrapped.groupBalances.length; i++) {
         var grouBalances = this.wrapped.groupBalances[i];
-        var accGroupBalances = new GroupBalancesContainer(this, grouBalances);
+        var accGroupBalances = new GroupBalancesContainer(null, this, grouBalances);
         this.groupBalancesContainers.push(accGroupBalances);
       }
     }

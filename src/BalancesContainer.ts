@@ -22,6 +22,12 @@ interface BalancesContainer {
    */
   getBalances(): Balance[];
 
+
+  /**
+   * The parent BalanceContainer
+   */
+  getParent(): BalancesContainer;
+
   /**
    * Gets the credit nature of the BalancesContainer, based on [[Account]], [[Group]] or #hashtag this container represents.
    * 
@@ -155,11 +161,17 @@ class AccountBalancesContainer implements BalancesContainer {
 
   private wrapped: bkper.AccountBalances;
   private balancesReport: BalancesReport;
+  private parent: BalancesContainer;
 
 
-  constructor(balancesReport: BalancesReport, balancePlain: bkper.AccountBalances) {
+  constructor(parent: BalancesContainer, balancesReport: BalancesReport, balancePlain: bkper.AccountBalances) {
+    this.parent = parent;
     this.balancesReport = balancesReport
     this.wrapped = balancePlain;
+  }
+
+  getParent(): BalancesContainer {
+    return this.parent;
   }
   
   isFromAccount(): boolean {
@@ -271,14 +283,20 @@ class AccountBalancesContainer implements BalancesContainer {
 class GroupBalancesContainer implements BalancesContainer {
 
   private wrapped: bkper.GroupBalances
+  private parent: BalancesContainer;
   private accountBalances: AccountBalancesContainer[];
   private groupBalances: GroupBalancesContainer[];
 
   private balancesReport: BalancesReport;
 
-  constructor(balancesReport: BalancesReport, groupBalancesPlain: bkper.GroupBalances) {
+  constructor(parent: BalancesContainer, balancesReport: BalancesReport, groupBalancesPlain: bkper.GroupBalances) {
+    this.parent = parent;
     this.balancesReport = balancesReport;
     this.wrapped = groupBalancesPlain;
+  }
+
+  getParent(): BalancesContainer {
+    return this.parent;
   }
       
   isFromAccount(): boolean {
@@ -391,7 +409,7 @@ class GroupBalancesContainer implements BalancesContainer {
       this.accountBalances = [];
       for (var i = 0; i < accountBalances.length; i++) {
         var accountBalance = accountBalances[i];
-        this.accountBalances.push(new AccountBalancesContainer(this.balancesReport, accountBalance));
+        this.accountBalances.push(new AccountBalancesContainer(this, this.balancesReport, accountBalance));
       }
     }
     return this.accountBalances;
@@ -403,7 +421,7 @@ class GroupBalancesContainer implements BalancesContainer {
       this.groupBalances = [];
       for (var i = 0; i < groupBalances.length; i++) {
         var groupBalance = groupBalances[i];
-        this.groupBalances.push(new GroupBalancesContainer(this.balancesReport, groupBalance));
+        this.groupBalances.push(new GroupBalancesContainer(this, this.balancesReport, groupBalance));
       }
     }
     return this.groupBalances;

@@ -1700,6 +1700,11 @@ declare namespace Bkper {
         createDataTable(): BalancesDataTableBuilder;
 
         /**
+         * The [[Account]] associated with this container
+         */
+        getAccount(): Account;
+
+        /**
          * All [[Balances]] of the container
          */
         getBalances(): Balance[];
@@ -1764,7 +1769,12 @@ declare namespace Bkper {
         getCumulativeDebitText(): string;
 
         /**
-         * The [[Account]] name, [[Group]] name or #hashtag
+         * The [[Group]] associated with this container
+         */
+        getGroup(): Group;
+
+        /**
+         * The [[Account]] name, [[Group]] name
          */
         getName(): string;
 

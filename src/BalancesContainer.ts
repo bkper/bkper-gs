@@ -58,7 +58,7 @@ interface BalancesContainer {
 
   /**
    * Tell if this balance container if from a [[Group]] 
-   */  
+   */
   isFromGroup(): boolean;
 
   /**
@@ -160,7 +160,7 @@ interface BalancesContainer {
    * 
    * **NOTE**: Only for Group balance containers. Accounts returns null.
    */
-   getBalancesContainer(name: string): BalancesContainer;  
+  getBalancesContainer(name: string): BalancesContainer;
 
   /**
    * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]]
@@ -193,7 +193,7 @@ class AccountBalancesContainer implements BalancesContainer {
   getAccount(): Account {
     return this.balancesReport.getBook().getAccount(this.getName())
   }
-  
+
   isFromAccount(): boolean {
     return true;
   }
@@ -233,11 +233,11 @@ class AccountBalancesContainer implements BalancesContainer {
   public getCumulativeDebit(): Amount {
     return new Amount(this.wrapped.cumulativeDebit);
   }
-  
+
   public getCumulativeBalanceText(): string {
     return this.balancesReport.getBook().formatValue(this.getCumulativeBalance());
   }
-  
+
   public getCumulativeBalanceRawText(): string {
     return this.balancesReport.getBook().formatValue(this.getCumulativeBalanceRaw());
   }
@@ -325,8 +325,8 @@ class GroupBalancesContainer implements BalancesContainer {
 
   getAccount(): Account {
     return this.balancesReport.getBook().getAccount(this.getName())
-  }  
-      
+  }
+
   isFromAccount(): boolean {
     return false;
   }
@@ -366,7 +366,7 @@ class GroupBalancesContainer implements BalancesContainer {
   public getCumulativeDebit(): Amount {
     return new Amount(this.wrapped.cumulativeDebit);
   }
-  
+
   public getCumulativeBalanceText(): string {
     return this.balancesReport.getBook().formatValue(this.getCumulativeBalance());
   }
@@ -423,7 +423,7 @@ class GroupBalancesContainer implements BalancesContainer {
     const groupBalances = this.getGroupBalances();
     if (groupBalances && groupBalances.length > 0) {
       containers = containers.concat(groupBalances);
-    }   
+    }
     const accountBalances = this.getAccountBalances();
     if (accountBalances && accountBalances.length > 0) {
       containers = containers.concat(accountBalances);
@@ -459,13 +459,19 @@ class GroupBalancesContainer implements BalancesContainer {
     if (name == null) {
       return null;
     }
-    let containers = this.getBalancesContainers();
-    if (containers) {
-      for (const container of containers) {
-        if (container.getName().toLowerCase() == name.toLowerCase()) {
-          return container;
-        }
+    return this.searchTree(this, name);
+  }
+
+  private searchTree(element: BalancesContainer, name: string): BalancesContainer {
+    if (element.getName() == name) {
+      return element;
+    } else if (element.getBalancesContainers() != null) {
+      var i;
+      var result = null;
+      for (i = 0; result == null && i < element.getBalancesContainers().length; i++) {
+        result = this.searchTree(element.getBalancesContainers()[i], name);
       }
+      return result;
     }
     return null;
   }

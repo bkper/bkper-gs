@@ -93,17 +93,24 @@ class BalancesReport {
    * 
    * @param name The [[Account]] name, [[Group]] name or #hashtag.
    */
-  public getBalancesContainer(groupName: string): BalancesContainer {
-    var groupBalances = this.getBalancesContainers();
-    if (groupBalances == null) {
+  public getBalancesContainer(name: string): BalancesContainer {
+    var rootContainers = this.getBalancesContainers();
+    if (rootContainers == null) {
       return null;
     }
 
-    for (var i = 0; i < groupBalances.length; i++) {
-      if (groupName == groupBalances[i].getName()) {
-        return groupBalances[i];
+    for (var i = 0; i < rootContainers.length; i++) {
+      const rootContainer = rootContainers[i];
+      if (name == rootContainer.getName()) {
+        return rootContainers[i];
+      } else {
+        var foundContainer = rootContainer.getBalancesContainer(name);
+        if (foundContainer) {
+          return foundContainer;
+        }
       }
     }
+    return null;
   }
 
 }

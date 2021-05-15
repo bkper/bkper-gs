@@ -89,14 +89,14 @@ class BalancesReport {
   }
 
   /**
-   * Gets a specific [[BalancesContainers]].
+   * Gets a specific [[BalancesContainer]]. 
    * 
-   * @param name The [[Account]] name, [[Group]] name or #hashtag.
+   * @param name The [[Account]] name, [[Group]] name.
    */
   public getBalancesContainer(name: string): BalancesContainer {
     var rootContainers = this.getBalancesContainers();
     if (rootContainers == null) {
-      return null;
+      throw `${name} not found.`;
     }
 
     for (var i = 0; i < rootContainers.length; i++) {
@@ -110,7 +110,7 @@ class BalancesReport {
         }
       }
     }
-    return null;
+    throw `${name} not found.`;
   }
 
 }

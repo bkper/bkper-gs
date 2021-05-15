@@ -577,7 +577,7 @@ declare namespace Bkper {
         createDataTable(): BalancesDataTableBuilder;
 
         /**
-         * Gets a specific [[BalancesContainers]].
+         * Gets a specific [[BalancesContainer]].
          */
         getBalancesContainer(name: string): BalancesContainer;
 

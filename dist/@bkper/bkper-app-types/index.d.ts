@@ -1839,6 +1839,11 @@ declare namespace Bkper {
         getProperty(...keys: string[]): string;
 
         /**
+         * Tell if the balance container is from a parent group
+         */
+        hasGroupBalances(): boolean;
+
+        /**
          * Gets the credit nature of the BalancesContainer, based on [[Account]], [[Group]] or #hashtag this container represents.
          *
          * For [[Account]], the credit nature will be the same as the one from the Account
@@ -1858,11 +1863,6 @@ declare namespace Bkper {
          * Tell if this balance container if from a [[Group]]
          */
         isFromGroup(): boolean;
-
-        /**
-         * Tell if the balance container is from a parent group
-         */
-        isFromParentGroup(): boolean;
 
     }
 

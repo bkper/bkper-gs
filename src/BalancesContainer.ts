@@ -64,7 +64,7 @@ interface BalancesContainer {
   /**
    * Tell if the balance container is from a parent group
    */
-  isFromParentGroup(): boolean;
+  hasGroupBalances(): boolean;
 
   /**
    * The cumulative balance to the date.
@@ -215,7 +215,7 @@ class AccountBalancesContainer implements BalancesContainer {
     return false;
   }
 
-  public isFromParentGroup(): boolean {
+  public hasGroupBalances(): boolean {
     return false;
   }
 
@@ -363,7 +363,7 @@ class GroupBalancesContainer implements BalancesContainer {
     return true;
   }
 
-  public isFromParentGroup(): boolean {
+  public hasGroupBalances(): boolean {
     return this.getGroupBalances() != null && this.getGroupBalances().length > 0;
   }
 

@@ -53,7 +53,7 @@ declare namespace Bkper {
          * 
          * See how to create your api key [here](https://cloud.google.com/docs/authentication/api-keys).
          */
-        setApiKey(key: string): void;
+        setApiKey(key: string | null): void;
 
         /**
          * Sets the [[OAuthTokenProvider]].
@@ -1193,6 +1193,11 @@ declare namespace Bkper {
         hasAccounts(): boolean;
 
         /**
+         * Tell if this group is a has any children
+         */
+        hasChildren(): boolean;
+
+        /**
          * Tell if the Group is hidden on main transactions menu
          */
         isHidden(): boolean;
@@ -1822,6 +1827,16 @@ declare namespace Bkper {
          * The debit on the date period formatted according to [[Book]] decimal format and fraction digits
          */
         getPeriodDebitText(): string;
+
+        /**
+         * Gets the custom properties stored in this Account or Group.
+         */
+        getProperties(): {[key: string]: string};
+
+        /**
+         * Gets the property value for given keys. First property found will be retrieved
+         */
+        getProperty(...keys: string[]): string;
 
         /**
          * Gets the credit nature of the BalancesContainer, based on [[Account]], [[Group]] or #hashtag this container represents.

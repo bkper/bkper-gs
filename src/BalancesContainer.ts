@@ -166,6 +166,19 @@ interface BalancesContainer {
    * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]]
    */
   createDataTable(): BalancesDataTableBuilder;
+
+  /**
+   * Gets the custom properties stored in this Account or Group.
+   */  
+   getProperties(): {[key: string]: string};
+   
+  /**
+   * 
+   * Gets the property value for given keys. First property found will be retrieved
+   * 
+   * @param keys The property key
+   */
+   getProperty(...keys: string[]): string;
 }
 //###################### ACCOUNT BALANCE CONTAINER ######################
 
@@ -291,7 +304,22 @@ class AccountBalancesContainer implements BalancesContainer {
     return [];
   }
 
-  getBalancesContainer(name: string): BalancesContainer {
+  public getProperties(): { [key: string]: string } {
+    return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
+  }
+
+   public getProperty(...keys: string[]): string {
+    for (let index = 0; index < keys.length; index++) {
+      const key = keys[index];
+      let value = this.wrapped.properties != null ?  this.wrapped.properties[key] : null 
+      if (value != null && value.trim() != '') {
+        return value;
+      }
+    }
+    return null;
+  }  
+
+  public getBalancesContainer(name: string): BalancesContainer {
     return null;
   }
 }
@@ -455,6 +483,21 @@ class GroupBalancesContainer implements BalancesContainer {
     return this.groupBalances;
   }
 
+  public getProperties(): { [key: string]: string } {
+    return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
+  }
+  
+  public getProperty(...keys: string[]): string {
+    for (let index = 0; index < keys.length; index++) {
+      const key = keys[index];
+      let value = this.wrapped.properties != null ?  this.wrapped.properties[key] : null 
+      if (value != null && value.trim() != '') {
+        return value;
+      }
+    }
+    return null;
+  }   
+
   getBalancesContainer(name: string): BalancesContainer {
     if (name == null) {
       return null;
@@ -475,6 +518,8 @@ class GroupBalancesContainer implements BalancesContainer {
     }
     return null;
   }
+
+  
 
 
 }

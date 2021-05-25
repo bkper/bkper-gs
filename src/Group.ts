@@ -196,12 +196,21 @@ class Group {
   }
 
   /**
+   * Tell if this group is a has any children
+   */
+  public hasChildren(): boolean {
+    return this.children && this.children.length > 0;
+  }
+
+
+  /**
    * 
    * @returns The children Groups
    */
   public getChildren(): Group[] {
     return this.children;
   }
+
 
   /**
    * 

@@ -32,7 +32,7 @@ interface OAuthTokenProvider {
  * 
  * @public
  */
-function setApiKey(key: string): void {
+function setApiKey(key: string | null | undefined): void {
   API_KEY_ = key;
 }
 

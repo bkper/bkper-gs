@@ -96,7 +96,7 @@ class BalancesReport {
   public getBalancesContainer(name: string): BalancesContainer {
     var rootContainers = this.getBalancesContainers();
     if (rootContainers == null) {
-      throw `${name} not found.`;
+      throw `${name} not found on book ${this.book.getName()}.`;
     }
 
     for (var i = 0; i < rootContainers.length; i++) {
@@ -110,7 +110,7 @@ class BalancesReport {
         }
       }
     }
-    throw `${name} not found.`;
+    throw `${name} not found on book ${this.book.getName()}.`;
   }
 
 }

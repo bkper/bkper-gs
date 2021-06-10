@@ -15,15 +15,23 @@ class Amount {
    */
   public constructor(n: number | string | Amount) {
     this.checkNumberNotNull(n);
-    if (typeof n == "string") {
-      this.wrapped = new Big(n);
-    } else if (n instanceof Amount) {
-      this.wrapped = new Big(n.wrapped)
-    } else if (n.toString) {
-      this.wrapped = new Big(n.toString())
-    } else {
-      this.wrapped = new Big(+n);
+    try {
+      if (typeof n == "string") {
+        this.wrapped = new Big(n);
+      } else if (n instanceof Amount) {
+        this.wrapped = new Big(n.wrapped)
+      } else if (n.toString) {
+        this.wrapped = new Big(n.toString())
+      } else {
+        this.wrapped = new Big(+n);
+      }
+    } catch (err) {
+      this.throwInvalidAmount(n)
     }
+  }
+
+  private throwInvalidAmount(n: any) {
+    throw new Error(`Invalid amount: ${n}`);
   }
 
   /** 
@@ -39,14 +47,18 @@ class Amount {
    */
   public cmp(n: number | string | Amount): -1 | 0 | 1 {
     this.checkNumberNotNull(n);
-    if (typeof n == "string") {
-      return this.wrapped.cmp(n);
-    } else if (n instanceof Amount) {
-      return this.wrapped.cmp(n.wrapped)
-    } else if (n.toString) {
-      return this.wrapped.cmp(n.toString())
-    } else {
-      return this.wrapped.cmp(+n);
+    try {
+      if (typeof n == "string") {
+        return this.wrapped.cmp(n);
+      } else if (n instanceof Amount) {
+        return this.wrapped.cmp(n.wrapped)
+      } else if (n.toString) {
+        return this.wrapped.cmp(n.toString())
+      } else {
+        return this.wrapped.cmp(+n);
+      }
+    } catch (err) {
+      this.throwInvalidAmount(n)
     }
   }
 
@@ -56,16 +68,20 @@ class Amount {
   public div(n: number | string | Amount): Amount {
     this.checkNumberNotNull(n);
     let big: Big;
-    if (typeof n == "string") {
-      big = this.wrapped.div(n);
-    } else if (n instanceof Amount) {
-      big = this.wrapped.div(n.wrapped)
-    } else if (n.toString) {
-      big = this.wrapped.div(n.toString())
-    } else {
-      big = this.wrapped.div(+n);
+    try {
+      if (typeof n == "string") {
+        big = this.wrapped.div(n);
+      } else if (n instanceof Amount) {
+        big = this.wrapped.div(n.wrapped)
+      } else if (n.toString) {
+        big = this.wrapped.div(n.toString())
+      } else {
+        big = this.wrapped.div(+n);
+      }
+      return this.wrap(big);
+    } catch (err) {
+      this.throwInvalidAmount(n)
     }
-    return this.wrap(big);
   }
 
   /**
@@ -73,14 +89,18 @@ class Amount {
    */
   public eq(n: number | string | Amount): boolean {
     this.checkNumberNotNull(n);
-    if (typeof n == "string") {
-      return this.wrapped.eq(n);
-    } else if (n instanceof Amount) {
-      return this.wrapped.eq(n.wrapped)
-    } else if (n.toString) {
-      return this.wrapped.eq(n.toString())
-    } else {
-      return this.wrapped.eq(+n);
+    try {
+      if (typeof n == "string") {
+        return this.wrapped.eq(n);
+      } else if (n instanceof Amount) {
+        return this.wrapped.eq(n.wrapped)
+      } else if (n.toString) {
+        return this.wrapped.eq(n.toString())
+      } else {
+        return this.wrapped.eq(+n);
+      }
+    } catch (err) {
+      this.throwInvalidAmount(n)
     }
   }
 
@@ -89,14 +109,18 @@ class Amount {
    */
   public gt(n: number | string | Amount): boolean {
     this.checkNumberNotNull(n);
-    if (typeof n == "string") {
-      return this.wrapped.gt(n);
-    } else if (n instanceof Amount) {
-      return this.wrapped.gt(n.wrapped)
-    } else if (n.toString) {
-      return this.wrapped.gt(n.toString())
-    } else {
-      return this.wrapped.gt(+n);
+    try {
+      if (typeof n == "string") {
+        return this.wrapped.gt(n);
+      } else if (n instanceof Amount) {
+        return this.wrapped.gt(n.wrapped)
+      } else if (n.toString) {
+        return this.wrapped.gt(n.toString())
+      } else {
+        return this.wrapped.gt(+n);
+      }
+    } catch (err) {
+      this.throwInvalidAmount(n)
     }
   }
 
@@ -105,15 +129,18 @@ class Amount {
    */
   public gte(n: number | string | Amount): boolean {
     this.checkNumberNotNull(n);
-    if (typeof n == "string") {
-      return this.wrapped.gte(n);
-    } else if (n instanceof Amount) {
-      return this.wrapped.gte(n.wrapped)
-    } else if (n.toString) {
-      return this.wrapped.gte(n.toString())
-    } else {
-      return this.wrapped.gte(+n);
-
+    try {
+      if (typeof n == "string") {
+        return this.wrapped.gte(n);
+      } else if (n instanceof Amount) {
+        return this.wrapped.gte(n.wrapped)
+      } else if (n.toString) {
+        return this.wrapped.gte(n.toString())
+      } else {
+        return this.wrapped.gte(+n);
+      }
+    } catch (err) {
+      this.throwInvalidAmount(n)
     }
   }
 
@@ -123,14 +150,19 @@ class Amount {
    */
   public lt(n: number | string | Amount): boolean {
     this.checkNumberNotNull(n);
-    if (typeof n == "string") {
-      return this.wrapped.lt(n);
-    } else if (n instanceof Amount) {
-      return this.wrapped.lt(n.wrapped)
-    } else if (n.toString) {
-      return this.wrapped.lt(n.toString())
-    } else {
-      return this.wrapped.lt(+n);
+    try {
+
+      if (typeof n == "string") {
+        return this.wrapped.lt(n);
+      } else if (n instanceof Amount) {
+        return this.wrapped.lt(n.wrapped)
+      } else if (n.toString) {
+        return this.wrapped.lt(n.toString())
+      } else {
+        return this.wrapped.lt(+n);
+      }
+    } catch (err) {
+      this.throwInvalidAmount(n)
     }
   }
 
@@ -140,14 +172,19 @@ class Amount {
    */
   public lte(n: number | string | Amount): boolean {
     this.checkNumberNotNull(n);
-    if (typeof n == "string") {
-      return this.wrapped.lte(n);
-    } else if (n instanceof Amount) {
-      return this.wrapped.lte(n.wrapped)
-    } else if (n.toString) {
-      return this.wrapped.lte(n.toString())
-    } else {
-      return this.wrapped.lte(+n);
+    try {
+
+      if (typeof n == "string") {
+        return this.wrapped.lte(n);
+      } else if (n instanceof Amount) {
+        return this.wrapped.lte(n.wrapped)
+      } else if (n.toString) {
+        return this.wrapped.lte(n.toString())
+      } else {
+        return this.wrapped.lte(+n);
+      }
+    } catch (err) {
+      this.throwInvalidAmount(n)
     }
   }
 
@@ -157,17 +194,20 @@ class Amount {
   public plus(n: number | string | Amount): Amount {
     this.checkNumberNotNull(n);
     let big: Big;
-    if (typeof n == "string") {
-      big = this.wrapped.plus(n);
-    } else if (n instanceof Amount) {
-      big = this.wrapped.plus(n.wrapped)
-    } else if (n.toString) {
-      big = this.wrapped.plus(n.toString())
-    } else {
-      big = this.wrapped.plus(+n);
-
+    try {
+      if (typeof n == "string") {
+        big = this.wrapped.plus(n);
+      } else if (n instanceof Amount) {
+        big = this.wrapped.plus(n.wrapped)
+      } else if (n.toString) {
+        big = this.wrapped.plus(n.toString())
+      } else {
+        big = this.wrapped.plus(+n);
+      }
+      return this.wrap(big);
+    } catch (err) {
+      this.throwInvalidAmount(n)
     }
-    return this.wrap(big);
   }
 
   /**
@@ -176,16 +216,20 @@ class Amount {
   public minus(n: number | string | Amount): Amount {
     this.checkNumberNotNull(n);
     let big: Big;
-    if (typeof n == "string") {
-      big = this.wrapped.minus(n);
-    } else if (n instanceof Amount) {
-      big = this.wrapped.minus(n.wrapped)
-    } else if (n.toString) {
-      big = this.wrapped.minus(n.toString())
-    } else {
-      big = this.wrapped.minus(+n);
+    try {
+      if (typeof n == "string") {
+        big = this.wrapped.minus(n);
+      } else if (n instanceof Amount) {
+        big = this.wrapped.minus(n.wrapped)
+      } else if (n.toString) {
+        big = this.wrapped.minus(n.toString())
+      } else {
+        big = this.wrapped.minus(+n);
+      }
+      return this.wrap(big);
+    } catch (err) {
+      this.throwInvalidAmount(n)
     }
-    return this.wrap(big);
   }
 
   /**
@@ -197,16 +241,20 @@ class Amount {
   public mod(n: number | string | Amount): Amount {
     this.checkNumberNotNull(n);
     let big: Big;
-    if (typeof n == "string") {
-      big = this.wrapped.mod(n);
-    } else if (n instanceof Amount) {
-      big = this.wrapped.mod(n.wrapped)
-    } else if (n.toString) {
-      big = this.wrapped.mod(n.toString())
-    } else {
-      big = this.wrapped.mod(+n);
+    try {
+      if (typeof n == "string") {
+        big = this.wrapped.mod(n);
+      } else if (n instanceof Amount) {
+        big = this.wrapped.mod(n.wrapped)
+      } else if (n.toString) {
+        big = this.wrapped.mod(n.toString())
+      } else {
+        big = this.wrapped.mod(+n);
+      }
+      return this.wrap(big);
+    } catch (err) {
+      this.throwInvalidAmount(n)
     }
-    return this.wrap(big);
   }
 
 
@@ -226,16 +274,21 @@ class Amount {
   public times(n: number | string | Amount): Amount {
     this.checkNumberNotNull(n);
     let big: Big;
-    if (typeof n == "string") {
-      big = this.wrapped.times(n);
-    } else if (n instanceof Amount) {
-      big = this.wrapped.times(n.wrapped)
-    } else if (n.toString) {
-      big = this.wrapped.times(n.toString())
-    } else {
-      big = this.wrapped.times(+n);
+    try {
+
+      if (typeof n == "string") {
+        big = this.wrapped.times(n);
+      } else if (n instanceof Amount) {
+        big = this.wrapped.times(n.wrapped)
+      } else if (n.toString) {
+        big = this.wrapped.times(n.toString())
+      } else {
+        big = this.wrapped.times(+n);
+      }
+      return this.wrap(big);
+    } catch (err) {
+      this.throwInvalidAmount(n)
     }
-    return this.wrap(big);
   }
 
   /**
@@ -263,7 +316,7 @@ class Amount {
   /** @internal */
   private checkNumberNotNull(amount: string | number | Amount) {
     if (amount == null) {
-      throw new Error(`Invalid number: null`);
+      throw new Error(`Invalid amount: null`);
     }
   }
 

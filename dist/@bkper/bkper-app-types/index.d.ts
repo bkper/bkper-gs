@@ -1220,6 +1220,13 @@ declare namespace Bkper {
         setName(name: string): Group;
 
         /**
+         * Sets the parent Group.
+         *
+         * @returns This Group, for chainning.
+         */
+        setParent(group: Group): Group;
+
+        /**
          * Sets the custom properties of the Group
          *
          * @returns This Group, for chainning.

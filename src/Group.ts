@@ -196,6 +196,20 @@ class Group {
   }
 
   /**
+   * Sets the parent Group.
+   * 
+   * @returns This Group, for chainning.
+   */
+  public setParent(group: Group): Group {
+    if (group) {
+      this.wrapped.parent = { id: group.getId(), name: group.getName(), normalizedName: group.getNormalizedName() };
+    } else {
+      this.wrapped.parent = null;
+    }
+    return this;
+  }
+
+  /**
    * Tell if this group is a has any children
    */
   public hasChildren(): boolean {

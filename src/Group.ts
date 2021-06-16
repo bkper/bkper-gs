@@ -86,7 +86,6 @@ class Group {
       this.idAccountMap = {}
     }
     if (!this.idAccountMap[account.getId()]){
-      console.log(`Adding account ${account.getName()} to group ${this.getName()}`)
       this.idAccountMap[account.getId()] = account
       this.accounts.push(account)
     }

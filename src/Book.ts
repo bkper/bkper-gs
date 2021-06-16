@@ -13,10 +13,10 @@ class Book {
   private accounts: Account[];
   private groups: Group[];
   private collection: Collection;
-  private idAccountMap: any;
-  private nameAccountMap: any;
-  private idGroupMap: any;
-  private nameGroupMap: any;
+  private idAccountMap: {[key: string]: Account};
+  private nameAccountMap: {[key: string]: Account};
+  private idGroupMap: {[key: string]: Group};
+  private nameGroupMap: {[key: string]: Group};
   private savedQueries: bkper.Query[];
 
 
@@ -499,13 +499,21 @@ class Book {
 
   private configureAccounts_(accounts: bkper.Account[]): void {
     this.accounts = Utils_.wrapObjects(new Account(), accounts);
-    this.idAccountMap = new Object();
-    this.nameAccountMap = new Object();
+    this.idAccountMap = {};
+    this.nameAccountMap = {};
     for (var i = 0; i < this.accounts.length; i++) {
       var account = this.accounts[i];
       account.book = this;
       this.idAccountMap[account.getId()] = account;
       this.nameAccountMap[account.getNormalizedName()] = account;
+      if (account.wrapped.groups) {
+        for (const groupId of account.wrapped.groups) {
+          let group: Group = this.idGroupMap[groupId];
+          if (group) {
+            group.addAccount(account)
+          }
+        }
+      }      
     }
   }
 
@@ -573,8 +581,8 @@ class Book {
 
   private configureGroups_(groups: bkper.Group[]): void {
     this.groups = Utils_.wrapObjects(new Group(), groups);
-    this.idGroupMap = new Object();
-    this.nameGroupMap = new Object();
+    this.idGroupMap = {};
+    this.nameGroupMap = {};
     for (var i = 0; i < this.groups.length; i++) {
       var group = this.groups[i];
       group.book = this;

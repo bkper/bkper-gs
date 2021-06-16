@@ -16,6 +16,9 @@ class Group {
   parent: Group
 
   children: Group[] = [];
+  private accounts: Account[];
+  private idAccountMap: {[key: string]: Account};
+
 
   depth: number;
 
@@ -68,14 +71,25 @@ class Group {
    * @returns All Accounts of this group.
    */
   public getAccounts(): Account[] {
-    var accounts = [];
-    var accs = this.book.getAccounts();
-    for (var i = 0; i < accs.length; i++) {
-      if (accs[i].isInGroup(this)) {
-        accounts.push(accs[i]);
-      }
+    this.book.getAccounts();
+    if (!this.accounts) {
+      this.accounts = []
     }
-    return accounts;
+    return this.accounts;
+  }
+
+  addAccount(account: Account): void {
+    if (!this.accounts){
+      this.accounts = []
+    }
+    if (!this.idAccountMap) {
+      this.idAccountMap = {}
+    }
+    if (!this.idAccountMap[account.getId()]){
+      console.log(`Adding account ${account.getName()} to group ${this.getName()}`)
+      this.idAccountMap[account.getId()] = account
+      this.accounts.push(account)
+    }
   }
 
 

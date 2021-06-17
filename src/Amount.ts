@@ -17,6 +17,7 @@ class Amount {
     this.checkNumberNotNull(n);
     try {
       if (typeof n == "string") {
+        n = n.trim();
         this.wrapped = new Big(n);
       } else if (n instanceof Amount) {
         this.wrapped = new Big(n.wrapped)
@@ -49,6 +50,7 @@ class Amount {
     this.checkNumberNotNull(n);
     try {
       if (typeof n == "string") {
+        n = n.trim();
         return this.wrapped.cmp(n);
       } else if (n instanceof Amount) {
         return this.wrapped.cmp(n.wrapped)
@@ -70,6 +72,7 @@ class Amount {
     let big: Big;
     try {
       if (typeof n == "string") {
+        n = n.trim();
         big = this.wrapped.div(n);
       } else if (n instanceof Amount) {
         big = this.wrapped.div(n.wrapped)
@@ -91,6 +94,7 @@ class Amount {
     this.checkNumberNotNull(n);
     try {
       if (typeof n == "string") {
+        n = n.trim();
         return this.wrapped.eq(n);
       } else if (n instanceof Amount) {
         return this.wrapped.eq(n.wrapped)
@@ -111,6 +115,7 @@ class Amount {
     this.checkNumberNotNull(n);
     try {
       if (typeof n == "string") {
+        n = n.trim();
         return this.wrapped.gt(n);
       } else if (n instanceof Amount) {
         return this.wrapped.gt(n.wrapped)
@@ -131,6 +136,7 @@ class Amount {
     this.checkNumberNotNull(n);
     try {
       if (typeof n == "string") {
+        n = n.trim();
         return this.wrapped.gte(n);
       } else if (n instanceof Amount) {
         return this.wrapped.gte(n.wrapped)
@@ -153,6 +159,7 @@ class Amount {
     try {
 
       if (typeof n == "string") {
+        n = n.trim();
         return this.wrapped.lt(n);
       } else if (n instanceof Amount) {
         return this.wrapped.lt(n.wrapped)
@@ -175,6 +182,7 @@ class Amount {
     try {
 
       if (typeof n == "string") {
+        n = n.trim();
         return this.wrapped.lte(n);
       } else if (n instanceof Amount) {
         return this.wrapped.lte(n.wrapped)
@@ -196,6 +204,7 @@ class Amount {
     let big: Big;
     try {
       if (typeof n == "string") {
+        n = n.trim();
         big = this.wrapped.plus(n);
       } else if (n instanceof Amount) {
         big = this.wrapped.plus(n.wrapped)
@@ -218,6 +227,7 @@ class Amount {
     let big: Big;
     try {
       if (typeof n == "string") {
+        n = n.trim();
         big = this.wrapped.minus(n);
       } else if (n instanceof Amount) {
         big = this.wrapped.minus(n.wrapped)
@@ -243,6 +253,7 @@ class Amount {
     let big: Big;
     try {
       if (typeof n == "string") {
+        n = n.trim();
         big = this.wrapped.mod(n);
       } else if (n instanceof Amount) {
         big = this.wrapped.mod(n.wrapped)
@@ -277,6 +288,7 @@ class Amount {
     try {
 
       if (typeof n == "string") {
+        n = n.trim();
         big = this.wrapped.times(n);
       } else if (n instanceof Amount) {
         big = this.wrapped.times(n.wrapped)

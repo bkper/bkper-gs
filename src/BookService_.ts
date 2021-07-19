@@ -2,7 +2,7 @@ namespace BookService_ {
 
   export function listBooks(): bkper.Book[] {
 
-    var responseJSON = new HttpBooksApiV3Request('').fetch().getContentText();
+    var responseJSON = new HttpBooksApiV4Request('').fetch().getContentText();
     
     if (responseJSON == null || responseJSON == "") {
       return [];
@@ -37,7 +37,7 @@ namespace BookService_ {
     if (bookId == null) {
       throw new Error("Book id null!");
     }
-    let responseJSON = new HttpBooksApiV3Request(bookId).fetch().getContentText();
+    let responseJSON = new HttpBooksApiV4Request(bookId).fetch().getContentText();
 
     var bookPlain = JSON.parse(responseJSON);
     return bookPlain;
@@ -45,12 +45,12 @@ namespace BookService_ {
 
   export function updateBook(bookId: string, book: bkper.Book): bkper.Book {
     var payload = JSON.stringify(book);
-    var responseJSON = new HttpBooksApiV3Request(`${bookId}`).setMethod('put').setPayload(payload).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV4Request(`${bookId}`).setMethod('put').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON);
   }
 
   export function audit(book: Book): void {
-    new HttpBooksApiV3Request(`${book.getId()}/audit`).setMethod('patch').fetch();
+    new HttpBooksApiV4Request(`${book.getId()}/audit`).setMethod('patch').fetch();
   }
 
 }

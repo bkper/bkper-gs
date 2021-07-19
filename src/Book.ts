@@ -80,20 +80,20 @@ class Book {
 
   private checkBookLoaded_(): void {
     if (this.wrapped == null) {
-      this.loadBook_();
+      this.wrapped = BookService_.loadBookWrapped(this.getId());
     }
   }
 
   private checkAccountsLoaded_(): void {
-    if (this.wrapped == null || this.idAccountMap == null || this.idAccountMap == null) {
-      this.loadBook_();
+    this.checkBookLoaded_()
+    if (this.idGroupMap == null) {
+      let groups = GroupService_.listGroups(this.getId());
+      this.configureGroups_(groups);
     }
-  }
-
-  private loadBook_(): void {
-    this.wrapped = BookService_.loadBookWrapped(this.getId());
-    this.configureGroups_(this.wrapped.groups);
-    this.configureAccounts_(this.wrapped.accounts);
+    if (this.idAccountMap == null) {
+      let accounts = AccountService_.listAccounts(this.getId());
+      this.configureAccounts_(accounts);
+    }
   }
 
   /**
@@ -485,7 +485,7 @@ class Book {
     if (accountsPayloads.length > 0) {
       let createdAccountsPlain = AccountService_.createAccounts(this.getId(), accountsPayloads);
       let createdAccounts = Utils_.wrapObjects(new Account(), createdAccountsPlain);
-      this.clearBookCache_();
+      this.clearAccountsCache();
       for (var i = 0; i < createdAccounts.length; i++) {
         var account = createdAccounts[i];
         account.book = this;
@@ -532,8 +532,10 @@ class Book {
   public batchCreateGroups(groups: Group[]): Group[] {
     if (groups.length > 0) {
       let groupsSave: bkper.Group[] = groups.map(g => { return g.wrapped });
-      let createdGroups = GroupService_.createGroups(this.getId(), groupsSave);
-      this.clearBookCache_();
+      let groupsPlain = GroupService_.createGroups(this.getId(), groupsSave);
+      let createdGroups = Utils_.wrapObjects(new Group(), groupsPlain);
+      
+      this.clearAccountsCache();
 
       for (var i = 0; i < createdGroups.length; i++) {
         var group = createdGroups[i];
@@ -548,10 +550,6 @@ class Book {
   clearAccountsCache() {
     this.idAccountMap = null;
     this.idGroupMap = null;
-  }
-
-  private clearBookCache_() {
-    this.wrapped = null;
   }
 
   /**
@@ -763,7 +761,7 @@ class Book {
    */
   public createAccount(name: string, group?: string, description?: string): Account {
     var account = AccountService_.createAccountV2(this.getId(), name, group, description);
-    this.clearBookCache_();
+    this.clearAccountsCache();
     return this.getAccount(name);
   }
 
@@ -853,7 +851,7 @@ class Book {
     if (accountsPayloads.length > 0) {
       let createdAccountsPlain = AccountService_.createAccounts(this.getId(), accountsPayloads);
       let createdAccounts = Utils_.wrapObjects(new Account(), createdAccountsPlain);
-      this.clearBookCache_();
+      this.clearAccountsCache();
       for (var i = 0; i < createdAccounts.length; i++) {
         var account = createdAccounts[i];
         account.book = this;
@@ -890,8 +888,10 @@ class Book {
   public createGroups(groups: string[]): Group[] {
     if (groups.length > 0) {
       let groupsSave: bkper.Group[] = groups.map(groupName => { return { name: groupName } });
-      let createdGroups = GroupService_.createGroups(this.getId(), groupsSave);
-      this.clearBookCache_();
+      let groupsPlain = GroupService_.createGroups(this.getId(), groupsSave);
+      let createdGroups = Utils_.wrapObjects(new Group(), groupsPlain);
+      
+      this.clearAccountsCache();
 
       for (var i = 0; i < createdGroups.length; i++) {
         var group = createdGroups[i];

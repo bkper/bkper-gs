@@ -17,18 +17,18 @@ namespace AccountService_ {
   
   export function createAccount(bookId: string, account: bkper.Account): bkper.Account {
     var payload = JSON.stringify(account);
-    var responseJSON = new HttpBooksApiV3Request(`${bookId}/accounts`).setMethod('post').setPayload(payload).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV4Request(`${bookId}/accounts`).setMethod('post').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON);
   }
 
   export function updateAccount(bookId: string, account: bkper.Account): bkper.Account {
     var payload = JSON.stringify(account);
-    var responseJSON = new HttpBooksApiV3Request(`${bookId}/accounts`).setMethod('put').setPayload(payload).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV4Request(`${bookId}/accounts`).setMethod('put').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON);
   }
 
   export function deleteAccount(bookId: string, account: bkper.Account): bkper.Account {
-    var responseJSON = new HttpBooksApiV3Request(`${bookId}/accounts/${account.id}`).setMethod('delete').fetch().getContentText();
+    var responseJSON = new HttpBooksApiV4Request(`${bookId}/accounts/${account.id}`).setMethod('delete').fetch().getContentText();
     return JSON.parse(responseJSON);
   }
 
@@ -37,7 +37,17 @@ namespace AccountService_ {
       items: accounts
     };
     var accountSaveBatchJSON = JSON.stringify(accountList);
-    var responseJSON = new HttpBooksApiV3Request(`${bookId}/accounts/batch`).setMethod('post').setPayload(accountSaveBatchJSON).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV4Request(`${bookId}/accounts/batch`).setMethod('post').setPayload(accountSaveBatchJSON).fetch().getContentText();
+    var accountsPlain = JSON.parse(responseJSON).items;
+    if (accountsPlain == null) {
+      return [];
+    }
+    return accountsPlain;
+    
+  }
+
+  export function listAccounts(bookId: string): bkper.Account[] {
+    var responseJSON = new HttpBooksApiV4Request(`${bookId}/accounts`).setMethod('get').fetch().getContentText();
     var accountsPlain = JSON.parse(responseJSON).items;
     if (accountsPlain == null) {
       return [];

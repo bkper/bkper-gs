@@ -164,8 +164,8 @@ class HttpBooksApiV2Request extends HttpApiRequest {
   }
 }
 
-class HttpBooksApiV3Request extends HttpApiRequest {
+class HttpBooksApiV4Request extends HttpApiRequest {
   constructor(service: string) {
-    super(`v3/books/${service}`)
+    super(`v4/books/${service}`)
   }
 }

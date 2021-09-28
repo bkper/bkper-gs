@@ -13,10 +13,10 @@ class Book {
   private accounts: Account[];
   private groups: Group[];
   private collection: Collection;
-  private idAccountMap: {[key: string]: Account};
-  private nameAccountMap: {[key: string]: Account};
-  private idGroupMap: {[key: string]: Group};
-  private nameGroupMap: {[key: string]: Group};
+  private idAccountMap: { [key: string]: Account };
+  private nameAccountMap: { [key: string]: Account };
+  private idGroupMap: { [key: string]: Group };
+  private nameGroupMap: { [key: string]: Group };
   private savedQueries: bkper.Query[];
 
 
@@ -45,12 +45,12 @@ class Book {
    * Sets the name of the Book.
    * 
    * @returns This Book, for chainning.
-   */    
+   */
   public setName(name: string): Book {
     this.wrapped.name = name;
     return this;
   }
-  
+
   /**
    * @return The number of fraction digits (decimal places) supported by this Book
    */
@@ -64,7 +64,7 @@ class Book {
    * Sets the number of fraction digits (decimal places) supported by this Book
    * 
    * @returns This Book, for chainning.
-   */     
+   */
   public setFractionDigits(fractionDigits: number): Book {
     this.wrapped.fractionDigits = fractionDigits;
     return this;
@@ -129,14 +129,14 @@ class Book {
    * Sets the date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
    * 
    * @returns This Book, for chainning.
-   */    
+   */
   public setDatePattern(datePattern: string): Book {
     this.wrapped.datePattern = datePattern;
     return this;
-  }  
+  }
 
 
- 
+
 
   /**
    * @return The decimal separator of the Book
@@ -151,7 +151,7 @@ class Book {
    * Sets the decimal separator of the Book
    * 
    * @returns This Book, for chainning.
-   */    
+   */
   public setDecimalSeparator(decimalSeparator: DecimalSeparator): Book {
     this.wrapped.decimalSeparator = decimalSeparator;
     return this;
@@ -171,7 +171,7 @@ class Book {
    * Sets the time zone of the Book
    * 
    * @returns This Book, for chainning.
-   */    
+   */
   public setTimeZone(timeZone: string): Book {
     this.wrapped.timeZone = timeZone;
     return this;
@@ -185,27 +185,27 @@ class Book {
     return this.wrapped.timeZoneOffset;
   }
 
-    /**
-   * @return The lock date of the Book in ISO format yyyy-MM-dd
+  /**
+ * @return The lock date of the Book in ISO format yyyy-MM-dd
+ */
+  public getLockDate(): string {
+    this.checkBookLoaded_();
+    return this.wrapped.lockDate;
+  }
+
+  /**
+   * 
+   * Sets the lock date of the Book in ISO format yyyy-MM-dd.
+   * 
+   * @returns This Book, for chainning.
    */
-     public getLockDate(): string {
-      this.checkBookLoaded_();
-      return this.wrapped.lockDate;
+  public setLockDate(lockDate: string): Book {
+    if (lockDate == null) {
+      lockDate = "1900-00-00";
     }
-  
-    /**
-     * 
-     * Sets the lock date of the Book in ISO format yyyy-MM-dd.
-     * 
-     * @returns This Book, for chainning.
-     */    
-    public setLockDate(lockDate: string): Book {
-      if (lockDate == null) {
-        lockDate = "1900-00-00";
-      }
-      this.wrapped.lockDate = lockDate;
-      return this;
-    }  
+    this.wrapped.lockDate = lockDate;
+    return this;
+  }
 
   /**
    * @return The last update date of the book, in in milliseconds
@@ -219,9 +219,9 @@ class Book {
   /**
    * Gets the custom properties stored in this Book
    */
-  public getProperties(): {[key: string]: string} {
+  public getProperties(): { [key: string]: string } {
     this.checkBookLoaded_();
-    return this.wrapped.properties != null ? {...this.wrapped.properties} : {};
+    return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
   }
 
   /**
@@ -250,8 +250,8 @@ class Book {
    * 
    * @returns This Book, for chainning. 
    */
-  public setProperties(properties: {[key: string]: string}): Book {
-    this.wrapped.properties = {...properties};
+  public setProperties(properties: { [key: string]: string }): Book {
+    this.wrapped.properties = { ...properties };
     return this;
   }
 
@@ -266,7 +266,7 @@ class Book {
   public setProperty(key: string, value: string): Book {
     if (key == null || key.trim() == '') {
       return this;
-    }    
+    }
     this.checkBookLoaded_();
     if (this.wrapped.properties == null) {
       this.wrapped.properties = {};
@@ -291,35 +291,42 @@ class Book {
     return Utils_.formatDate(date, this.getDatePattern(), timeZone);
   }
 
+  /**
+   * Parse a date string according to date pattern and timezone of the Book.
+   */
+  public parseDate(date: string): Date {
+    return Utils_.parseDate(date, this.getDatePattern(), this.getTimeZoneOffset());
+  }
+
 
   /**
-   * Formats a value according to [[DecimalSeparator]] and fraction digits of the Book.
+   * Formats an amount according to [[DecimalSeparator]] and fraction digits of the Book.
    * 
-   * @param value The value to be formatted.
+   * @param amount The amount to be formatted.
    * 
    * @return The value formated
    */
-  public formatValue(value: Amount): string {
-    return Utils_.formatValue_(value, this.getDecimalSeparator(), this.getFractionDigits());
+  public formatAmount(amount: Amount): string {
+    return Utils_.formatValue_(amount, this.getDecimalSeparator(), this.getFractionDigits());
   }
 
   /**
-   * Parse a value string according to [[DecimalSeparator]] and fraction digits of the Book.
+   * Parse an amount string according to [[DecimalSeparator]] and fraction digits of the Book.
    */
-  public parseValue(value: string): Amount {
+  public parseAmount(value: string): Amount {
     return Utils_.parseValue(value, this.getDecimalSeparator());
   }
 
 
   /**
-   * Rounds a value according to the number of fraction digits of the Book
+   * Rounds an amount according to the number of fraction digits of the Book
    * 
-   * @param value The value to be rounded
+   * @param amount The amount to be rounded
    * 
-   * @returns The value rounded
+   * @returns The amount rounded
    */
-  public round(value: Amount): Amount {
-    return Utils_.round(value, this.getFractionDigits());
+  public round(amount: Amount): Amount {
+    return Utils_.round(amount, this.getFractionDigits());
   }
 
   /**
@@ -513,7 +520,7 @@ class Book {
             group.addAccount(account)
           }
         }
-      }      
+      }
     }
   }
 
@@ -534,7 +541,7 @@ class Book {
       let groupsSave: bkper.Group[] = groups.map(g => { return g.wrapped });
       let groupsPlain = GroupService_.createGroups(this.getId(), groupsSave);
       let createdGroups = Utils_.wrapObjects(new Group(), groupsPlain);
-      
+
       this.clearAccountsCache();
 
       for (var i = 0; i < createdGroups.length; i++) {
@@ -741,10 +748,31 @@ class Book {
   public update(): Book {
     this.wrapped = BookService_.updateBook(this.getId(), this.wrapped);
     return this;
-  }   
+  }
 
 
   //DEPRECATED
+  /**
+   * Formats a value according to [[DecimalSeparator]] and fraction digits of the Book.
+   * 
+   * @param value The value to be formatted.
+   * 
+   * @return The value formated
+   * 
+   * @deprecated
+   */
+  public formatValue(value: Amount): string {
+    return this.formatAmount(value);
+  }
+
+  /**
+   * Parse a value string according to [[DecimalSeparator]] and fraction digits of the Book.
+   * 
+   * @deprecated
+   */
+  public parseValue(value: string): Amount {
+    return this.parseAmount(value);
+  }
 
   /**
    * Create an [[Account]] in this book. 
@@ -779,21 +807,21 @@ class Book {
     return this.getTransactions(query);
   }
 
-    /**
-   * Record [[Transactions]] on the Book. 
-   * 
-   * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
-   * 
-   * Example: 
-   * 
-   * ```js
-   * book.record("#gas 63.23");
-   * ```
-   * 
-   * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
-   * @param timeZone The time zone to format dates.
-   * @deprecated
-   */
+  /**
+ * Record [[Transactions]] on the Book. 
+ * 
+ * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
+ * 
+ * Example: 
+ * 
+ * ```js
+ * book.record("#gas 63.23");
+ * ```
+ * 
+ * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
+ * @param timeZone The time zone to format dates.
+ * @deprecated
+ */
   public record(transactions: string | any[] | any[][], timeZone?: string): void {
     if (timeZone == null || timeZone.trim() == "") {
       timeZone = this.getTimeZone();
@@ -890,7 +918,7 @@ class Book {
       let groupsSave: bkper.Group[] = groups.map(groupName => { return { name: groupName } });
       let groupsPlain = GroupService_.createGroups(this.getId(), groupsSave);
       let createdGroups = Utils_.wrapObjects(new Group(), groupsPlain);
-      
+
       this.clearAccountsCache();
 
       for (var i = 0; i < createdGroups.length; i++) {

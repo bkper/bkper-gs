@@ -716,6 +716,13 @@ declare namespace Bkper {
         createTransactionsDataTable(query?: string): TransactionsDataTableBuilder;
 
         /**
+         * Formats an amount according to [[DecimalSeparator]] and fraction digits of the Book.
+         *
+         * @returns The value formated
+         */
+        formatAmount(amount: Amount): string;
+
+        /**
          * Formats a date according to date pattern of the Book.
          *
          * @returns The date formated
@@ -726,6 +733,8 @@ declare namespace Bkper {
          * Formats a value according to [[DecimalSeparator]] and fraction digits of the Book.
          *
          * @returns The value formated
+         *
+         * @deprecated 
          */
         formatValue(value: Amount): string;
 
@@ -933,7 +942,19 @@ declare namespace Bkper {
         newTransaction(): Transaction;
 
         /**
+         * Parse an amount string according to [[DecimalSeparator]] and fraction digits of the Book.
+         */
+        parseAmount(value: string): Amount;
+
+        /**
+         * Parse a date string according to date pattern and timezone of the Book.
+         */
+        parseDate(date: string): Date;
+
+        /**
          * Parse a value string according to [[DecimalSeparator]] and fraction digits of the Book.
+         *
+         * @deprecated 
          */
         parseValue(value: string): Amount;
 
@@ -953,11 +974,11 @@ declare namespace Bkper {
         record(transactions: string | any[] | any[][], timeZone?: string): void;
 
         /**
-         * Rounds a value according to the number of fraction digits of the Book
+         * Rounds an amount according to the number of fraction digits of the Book
          *
-         * @returns The value rounded
+         * @returns The amount rounded
          */
-        round(value: Amount): Amount;
+        round(amount: Amount): Amount;
 
         /**
          * Sets the date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd

@@ -2,7 +2,7 @@ namespace TransactionService_ {
   
   export function createTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
     var payload = JSON.stringify(transaction);
-    var responseJSON = new HttpBooksApiV4Request(`${bookId}/transactions`).setMethod('post').setPayload(payload).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions`).setMethod('post').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }
 
@@ -13,7 +13,7 @@ namespace TransactionService_ {
     }
     var payload = JSON.stringify(transactionList);
 
-    let responseJSON = new HttpBooksApiV4Request(`${bookId}/transactions/batch`)
+    let responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/batch`)
           .setMethod('post')
           .setPayload(payload)
           .fetch()
@@ -25,42 +25,42 @@ namespace TransactionService_ {
 
   export function updateTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
     var payload = JSON.stringify(transaction);
-    var responseJSON = new HttpBooksApiV4Request(`${bookId}/transactions`).setMethod('put').setPayload(payload).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions`).setMethod('put').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }  
 
   export function postTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
     var payload = JSON.stringify(transaction);
-    var responseJSON = new HttpBooksApiV4Request(`${bookId}/transactions/post`).setMethod('patch').setPayload(payload).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/post`).setMethod('patch').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }
 
   export function checkTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
     var payload = JSON.stringify(transaction);
-    var responseJSON = new HttpBooksApiV4Request(`${bookId}/transactions/check`).setMethod('patch').setPayload(payload).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/check`).setMethod('patch').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }
 
   export function uncheckTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
     var payload = JSON.stringify(transaction);
-    var responseJSON = new HttpBooksApiV4Request(`${bookId}/transactions/uncheck`).setMethod('patch').setPayload(payload).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/uncheck`).setMethod('patch').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }  
 
   export function removeTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
     var payload = JSON.stringify(transaction);
-    var responseJSON = new HttpBooksApiV4Request(`${bookId}/transactions/remove`).setMethod('patch').setPayload(payload).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/remove`).setMethod('patch').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }  
 
   export function restoreTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
     var payload = JSON.stringify(transaction);
-    var responseJSON = new HttpBooksApiV4Request(`${bookId}/transactions/restore`).setMethod('patch').setPayload(payload).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/restore`).setMethod('patch').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }  
 
   export function getTransaction(bookId: string, id: string): bkper.Transaction {
-    var responseJSON = new HttpBooksApiV4Request(`${bookId}/transactions/${id}`).setMethod('get').fetch().getContentText();
+    var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/${id}`).setMethod('get').fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.Transaction;
   }  
 
@@ -68,7 +68,7 @@ namespace TransactionService_ {
     if (query == null) {
       query = "";
     }
-    var request = new HttpBooksApiV4Request(`${book.getId()}/transactions`);
+    var request = new HttpBooksApiV5Request(`${book.getId()}/transactions`);
     request.addParam('query', query);
     request.addParam('limit', limit);
     if (cursor != null) {
@@ -105,7 +105,7 @@ namespace TransactionService_ {
 
     Logger.log(payload)
 
-    return new HttpBooksApiV4Request(`${book.getId()}/transactions/batch`)
+    return new HttpBooksApiV5Request(`${book.getId()}/transactions/batch`)
           .setMethod('post')
           .setPayload(payload)
           .fetch()

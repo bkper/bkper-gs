@@ -1,7 +1,7 @@
 namespace SavedQueryService_ {
 
   export function getSavedQueries(bookId: string): bkper.Query[] {
-    var responseJSON = new HttpBooksApiV4Request(`${bookId}/queries`).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV5Request(`${bookId}/queries`).fetch().getContentText();
     var savedQueriesPlain = JSON.parse(responseJSON);
     if (savedQueriesPlain == null || savedQueriesPlain.items == null) {
       return [];

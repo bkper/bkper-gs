@@ -239,7 +239,7 @@ class Account {
     if (this.wrapped.groups != null) {
       for (var i = 0; i < this.wrapped.groups.length; i++) {
         let groupId = this.wrapped.groups[i];
-        let group = this.book.getGroup(groupId);
+        let group = this.book.getGroup(groupId.id);
         groups.push(group);
       }
     }
@@ -277,7 +277,7 @@ class Account {
     }
 
     if (groupObject) {
-      this.wrapped.groups.push(groupObject.getId())
+      this.wrapped.groups.push(groupObject.wrapped)
     }
 
     return this;
@@ -297,8 +297,8 @@ class Account {
       }
       if (groupObject) {
         for (let i = 0; i < this.wrapped.groups.length; i++) {
-          const groupId = this.wrapped.groups[i];
-          if (groupId == groupObject.getId()) {
+          const group = this.wrapped.groups[i];
+          if (group == groupObject.getId()) {
             this.wrapped.groups.splice(i, 1);
           }
         }

@@ -514,8 +514,8 @@ class Book {
       this.idAccountMap[account.getId()] = account;
       this.nameAccountMap[account.getNormalizedName()] = account;
       if (account.wrapped.groups) {
-        for (const groupId of account.wrapped.groups) {
-          let group: Group = this.idGroupMap[groupId];
+        for (const accountGroup of account.wrapped.groups) {
+          let group: Group = this.idGroupMap[accountGroup.id];
           if (group) {
             group.addAccount(account)
           }
@@ -867,7 +867,7 @@ class Book {
           } else {
             let group = this.getGroup(cell);
             if (group != null) {
-              account.groups.push(group.getId());
+              account.groups.push(group.wrapped);
             }
           }
         }

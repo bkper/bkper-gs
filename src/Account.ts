@@ -298,7 +298,7 @@ class Account {
       if (groupObject) {
         for (let i = 0; i < this.wrapped.groups.length; i++) {
           const group = this.wrapped.groups[i];
-          if (group == groupObject.getId()) {
+          if (group.id == groupObject.getId()) {
             this.wrapped.groups.splice(i, 1);
           }
         }
@@ -338,7 +338,7 @@ class Account {
     }
 
     for (var i = 0; i < this.wrapped.groups.length; i++) {
-      if (this.wrapped.groups[i] == group.getId()) {
+      if (this.wrapped.groups[i].id == group.getId()) {
         return true;
       }
     }

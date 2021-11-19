@@ -203,11 +203,11 @@ class AccountBalancesContainer implements BalancesContainer {
   }
 
   getGroup(): Group {
-    return this.balancesReport.getBook().getGroup(this.getName());
+    return this.balancesReport.getBook().getGroup(this.getNormalizedName());
   }
 
   getAccount(): Account {
-    return this.balancesReport.getBook().getAccount(this.getName())
+    return this.balancesReport.getBook().getAccount(this.getNormalizedName())
   }
 
   isFromAccount(): boolean {

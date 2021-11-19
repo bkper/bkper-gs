@@ -348,11 +348,11 @@ class GroupBalancesContainer implements BalancesContainer {
   }
 
   getGroup(): Group {
-    return this.balancesReport.getBook().getGroup(this.getName());
+    return this.balancesReport.getBook().getGroup(this.getNormalizedName());
   }
 
   getAccount(): Account {
-    return this.balancesReport.getBook().getAccount(this.getName())
+    return this.balancesReport.getBook().getAccount(this.getNormalizedName())
   }
 
   isFromAccount(): boolean {
@@ -373,6 +373,10 @@ class GroupBalancesContainer implements BalancesContainer {
 
   public getName(): string {
     return this.wrapped.name;
+  }
+
+  public getNormalizedName(): string {
+    return this.wrapped.normalizedName;
   }
 
   public isCredit(): boolean {

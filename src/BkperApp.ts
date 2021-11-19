@@ -38,6 +38,11 @@ function newAmount(n: number | string | Amount): Amount {
   return new Amount(n);
 }
 
+/**
+ * Normalize a name
+ * 
+ * @public
+ */
 function normalizeName(name: string): string {
   return Utils_.normalizeText(name, "_");
 }

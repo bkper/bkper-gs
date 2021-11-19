@@ -47,6 +47,11 @@ declare namespace Bkper {
         newAmount(n: number | string | Amount): Amount;
 
         /**
+         * Normalize a name
+         */
+        normalizeName(name: string): string;
+
+        /**
          * Sets the API key to identify the agent.
          *
          * API keys are intended for agent identification only, not for authentication. [Learn more](https://cloud.google.com/endpoints/docs/frameworks/java/when-why-api-key)

@@ -473,8 +473,10 @@ class Book {
 
     var account = this.idAccountMap[idOrName];
     if (account == null) {
-      var normalizedIdOfName = normalizeName(idOrName);
-      account = this.nameAccountMap[normalizedIdOfName];
+      account = this.nameAccountMap[idOrName];
+      if (account == null) {
+        account = this.nameAccountMap[normalizeName(idOrName)];
+      }
     }
 
     return account;
@@ -578,7 +580,10 @@ class Book {
 
     var group = this.idGroupMap[idOrName];
     if (group == null) {
-      group = this.nameGroupMap[normalizeName(idOrName)];
+      group = this.nameGroupMap[idOrName];
+      if (group == null) {
+        group = this.nameGroupMap[normalizeName(idOrName)];
+      }
     }
 
     return group;

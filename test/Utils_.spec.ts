@@ -13,8 +13,11 @@ describe('Utils_', () => {
     it('should clear multiple spaces', () => {
       expect(Utils_.normalizeText("Á é     î õ ú   -   ão    ", "_")).to.equal("a_e_i_o_u_ao");
     });
-    it('should normalize with space and dash', () => {
+    it('should normalize with underline and space', () => {
       expect(Utils_.normalizeText("Anticipo_ IRAE", "_")).to.equal("anticipo_irae");
+    });
+    it('should normalize with space and dash', () => {
+      expect(Utils_.normalizeText("520111 Freight Charges - Intergroup", "_")).to.equal("520111_freight_charges_intergroup");
     });
   });
 

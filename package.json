@@ -1,6 +1,6 @@
 {
   "name": "@bkper/bkper-app",
-  "version": "3.10.26",
+  "version": "3.10.27",
   "description": "Google Apps Script library for Bkper",
   "homepage": "https://bkper.com/docs/#bkperapp",
   "repository": {

@@ -13,11 +13,14 @@ interface BalancesContainer {
   getBalancesReport(): BalancesReport;
 
   /**
-   * The [[Account]] name, [[Group]] name
+   * The [[Account]] or [[Group]] name
    */
   getName(): string;
 
-
+  /**
+   * The [[Account]] or [[Group]] name without spaces or special characters.
+   */
+  getNormalizedName(): string;
 
   /**
    * The [[Group]] associated with this container
@@ -225,6 +228,10 @@ class AccountBalancesContainer implements BalancesContainer {
 
   public getName(): string {
     return this.wrapped.name;
+  }
+
+  public getNormalizedName(): string {
+    return this.wrapped.normalizedName;
   }
 
   public isCredit() {

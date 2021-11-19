@@ -1812,9 +1812,14 @@ declare namespace Bkper {
         getGroup(): Group;
 
         /**
-         * The [[Account]] name, [[Group]] name
+         * The [[Account]] or [[Group]] name
          */
         getName(): string;
+
+        /**
+         * The [[Account]] or [[Group]] name without spaces or special characters.
+         */
+        getNormalizedName(): string;
 
         /**
          * The parent BalanceContainer

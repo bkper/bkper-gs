@@ -212,6 +212,7 @@ class Book {
    * @returns The start month when YEAR period set
    */    
    public getPeriodStartMonth(): Month {
+    this.checkBookLoaded_();
     return this.wrapped.periodStartMonth as Month;
   }
 

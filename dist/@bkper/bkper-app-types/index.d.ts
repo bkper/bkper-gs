@@ -16,6 +16,8 @@ declare namespace Bkper {
 
         Periodicity: typeof Periodicity;
 
+        Month: typeof Month;
+
         DecimalSeparator: typeof DecimalSeparator;
 
         BalanceType: typeof BalanceType;
@@ -823,6 +825,11 @@ declare namespace Bkper {
         getOwnerName(): string;
 
         /**
+         * @returns The start month when YEAR period set
+         */
+        getPeriodStartMonth(): Month;
+
+        /**
          * @returns The permission for the current user
          */
         getPermission(): Permission;
@@ -1019,6 +1026,13 @@ declare namespace Bkper {
          * @returns This Book, for chainning.
          */
         setName(name: string): Book;
+
+        /**
+         * Sets the start month when YEAR period set
+         *
+         * @returns This Book, for chainning.
+         */
+        setPeriodStartMonth(month: Month): Book;
 
         /**
          * Sets the custom properties of the Book
@@ -1985,6 +1999,37 @@ declare namespace Bkper {
          * .
          */
         DOT = "DOT",
+
+    }
+
+    /**
+     * Enum that represents a Month.
+     */
+    export enum Month {
+
+        APRIL = "APRIL",
+
+        AUGUST = "AUGUST",
+
+        DECEMBER = "DECEMBER",
+
+        FEBRUARY = "FEBRUARY",
+
+        JANUARY = "JANUARY",
+
+        JULY = "JULY",
+
+        JUNE = "JUNE",
+
+        MARCH = "MARCH",
+
+        MAY = "MAY",
+
+        NOVEMBER = "NOVEMBER",
+
+        OCTOBER = "OCTOBER",
+
+        SEPTEMBER = "SEPTEMBER",
 
     }
 

@@ -207,6 +207,25 @@ class Book {
     return this;
   }
 
+  
+  /**
+   * @returns The start month when YEAR period set
+   */    
+   public getPeriodStartMonth(): Month {
+    return this.wrapped.periodStartMonth as Month;
+  }
+
+  /**
+   * Sets the start month when YEAR period set
+   * 
+   * @returns This Book, for chainning.
+   */     
+  public setPeriodStartMonth(month: Month): Book {
+    this.wrapped.periodStartMonth = month;
+    return this;
+  }
+
+
   /**
    * @return The last update date of the book, in in milliseconds
    */

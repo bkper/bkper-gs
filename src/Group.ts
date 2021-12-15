@@ -58,6 +58,33 @@ class Group {
     }
   }
 
+  /**
+   * Tell if this is a credit (Incoming and Liabities) group
+   */
+  public isCredit(): boolean {
+    return this.wrapped.credit;
+  }
+
+  /**
+   * Tell if this is a permanent (Assets and Liabilities) group
+   */
+  public isPermanent(): boolean {
+    return this.wrapped.permanent;
+  }
+
+  /**
+   * Tell if this is a permanent group
+   */
+  public isMixed(): boolean {
+    return this.wrapped.mixed;
+  }
+
+  /**
+   * The type of the group based on its accounts
+   */
+  public getType(): AccountType {
+    return this.wrapped.type as AccountType;
+  }
 
   /**
    * @returns True if this group has any account in it

@@ -1228,6 +1228,11 @@ declare namespace Bkper {
         getProperty(...keys: string[]): string;
 
         /**
+         * The type of the group based on its accounts
+         */
+        getType(): AccountType;
+
+        /**
          * @returns True if this group has any account in it
          */
         hasAccounts(): boolean;
@@ -1238,9 +1243,24 @@ declare namespace Bkper {
         hasChildren(): boolean;
 
         /**
+         * Tell if this is a credit (Incoming and Liabities) group
+         */
+        isCredit(): boolean;
+
+        /**
          * Tell if the Group is hidden on main transactions menu
          */
         isHidden(): boolean;
+
+        /**
+         * Tell if this is a permanent group
+         */
+        isMixed(): boolean;
+
+        /**
+         * Tell if this is a permanent (Assets and Liabilities) group
+         */
+        isPermanent(): boolean;
 
         /**
          * Perform delete group.

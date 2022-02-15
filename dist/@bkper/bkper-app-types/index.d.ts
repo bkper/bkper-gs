@@ -1911,6 +1911,11 @@ declare namespace Bkper {
         getProperty(...keys: string[]): string;
 
         /**
+         * The [[Account]] or [[Group]] type
+         */
+        getType(): AccountType;
+
+        /**
          * Tell if the balance container is from a parent group
          */
         hasGroupBalances(): boolean;

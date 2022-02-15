@@ -608,7 +608,7 @@ class Transaction {
     if (accountBalance != null) {
       if (!raw) {
         var account = isCa ? this.getCreditAccount() : this.getDebitAccount();
-        accountBalance = Utils_.getRepresentativeValue(accountBalance, account.isCredit());
+        accountBalance = Utils_.getRepresentativeValue(accountBalance, account.getType());
       }
       return new Amount(accountBalance);
     } else {

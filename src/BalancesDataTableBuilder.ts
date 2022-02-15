@@ -367,7 +367,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
           } else {
             amount = balance.getPeriodBalance();
           }
-          indexEntry[balancesContainer.getName()] = this.shouldRaw ? amount : Utils_.getRepresentativeValue(amount, balancesContainer.isCredit());
+          indexEntry[balancesContainer.getName()] = this.shouldRaw ? amount : Utils_.getRepresentativeValue(amount, balancesContainer.getType());
         }
 
       }

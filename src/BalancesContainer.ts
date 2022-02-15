@@ -32,6 +32,12 @@ interface BalancesContainer {
    */
   getAccount(): Account;
 
+
+  /**
+   * The [[Account]] or [[Group]] type
+   */
+  getType(): AccountType;
+
   /**
    * All [[Balances]] of the container
    */
@@ -203,11 +209,15 @@ class AccountBalancesContainer implements BalancesContainer {
   }
 
   getGroup(): Group {
-    return this.balancesReport.getBook().getGroup(this.getNormalizedName());
+    return null;
   }
 
   getAccount(): Account {
     return this.balancesReport.getBook().getAccount(this.getNormalizedName())
+  }
+
+  getType(): AccountType {
+    return this.getAccount()?.getType()
   }
 
   isFromAccount(): boolean {
@@ -239,7 +249,7 @@ class AccountBalancesContainer implements BalancesContainer {
   }
 
   public getCumulativeBalance(): Amount {
-    return Utils_.getRepresentativeValue(new Amount(this.wrapped.cumulativeBalance), this.isCredit());
+    return Utils_.getRepresentativeValue(new Amount(this.wrapped.cumulativeBalance), this.getType());
   }
 
   public getCumulativeBalanceRaw(): Amount {
@@ -271,7 +281,7 @@ class AccountBalancesContainer implements BalancesContainer {
 
 
   public getPeriodBalance(): Amount {
-    return Utils_.getRepresentativeValue(new Amount(this.wrapped.periodBalance), this.isCredit());
+    return Utils_.getRepresentativeValue(new Amount(this.wrapped.periodBalance), this.getType());
   }
   public getPeriodBalanceRaw(): Amount {
     return new Amount(this.wrapped.periodBalance);
@@ -359,7 +369,11 @@ class GroupBalancesContainer implements BalancesContainer {
   }
 
   getAccount(): Account {
-    return this.balancesReport.getBook().getAccount(this.getNormalizedName())
+    return null
+  }
+
+  getType(): AccountType {
+    return this.getGroup()?.getType();
   }
 
   isFromAccount(): boolean {
@@ -391,7 +405,7 @@ class GroupBalancesContainer implements BalancesContainer {
   }
 
   public getCumulativeBalance(): Amount {
-    return Utils_.getRepresentativeValue(new Amount(this.wrapped.cumulativeBalance), this.isCredit());
+    return Utils_.getRepresentativeValue(new Amount(this.wrapped.cumulativeBalance), this.getType());
   }
 
   public getCumulativeBalanceRaw(): Amount {
@@ -421,7 +435,7 @@ class GroupBalancesContainer implements BalancesContainer {
 
 
   public getPeriodBalance(): Amount {
-    return Utils_.getRepresentativeValue(new Amount(this.wrapped.periodBalance), this.isCredit());
+    return Utils_.getRepresentativeValue(new Amount(this.wrapped.periodBalance), this.getType());
   }
   public getPeriodBalanceRaw(): Amount {
     return new Amount(this.wrapped.periodBalance);

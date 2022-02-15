@@ -165,15 +165,16 @@ namespace Utils_ {
     return pattern;
   }
 
-  export function getRepresentativeValue(value: Amount, credit: boolean): Amount {
+  export function getRepresentativeValue(value: Amount, type: AccountType): Amount {
 
     if (value == null) {
       return new Amount(0);
     }
   
-    if (credit != null && !credit) {
+    if (type == AccountType.ASSET) {
       return value.times(-1);
     }
+
     return value;
   }
 

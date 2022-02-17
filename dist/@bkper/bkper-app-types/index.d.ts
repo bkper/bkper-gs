@@ -723,6 +723,13 @@ declare namespace Bkper {
         createTransactionsDataTable(query?: string): TransactionsDataTableBuilder;
 
         /**
+         * Delete a custom property
+         *
+         * @returns This Book, for chainning.
+         */
+        deleteProperty(key: string): Book;
+
+        /**
          * Formats an amount according to [[DecimalSeparator]] and fraction digits of the Book.
          *
          * @returns The value formated

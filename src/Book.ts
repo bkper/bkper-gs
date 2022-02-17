@@ -295,6 +295,18 @@ class Book {
     return this;
   }
 
+  /**
+   * Delete a custom property
+   * 
+   * @param key The property key
+   * 
+   * @returns This Book, for chainning. 
+   */
+  public deleteProperty(key: string): Book {
+    this.setProperty(key, null);
+    return this;
+  }
+
 
   /**
    * Formats a date according to date pattern of the Book.

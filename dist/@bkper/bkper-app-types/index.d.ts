@@ -1918,11 +1918,6 @@ declare namespace Bkper {
         getProperty(...keys: string[]): string;
 
         /**
-         * The [[Account]] or [[Group]] type
-         */
-        getType(): AccountType;
-
-        /**
          * Tell if the balance container is from a parent group
          */
         hasGroupBalances(): boolean;
@@ -1947,6 +1942,19 @@ declare namespace Bkper {
          * Tell if this balance container if from a [[Group]]
          */
         isFromGroup(): boolean;
+
+        /**
+         * Tell if this balance container is permament, based on the [[Account]] or [[Group]].
+         *
+         * Permanent are the ones which final balance is relevant and keep its balances over time.
+         * 
+         * They are also called [Real Accounts](http://en.wikipedia.org/wiki/Account_(accountancy)#Based_on_periodicity_of_flow)
+         * 
+         * Usually represents assets or liabilities, capable of being perceived by the senses or the mind, like bank accounts, money, debts and so on.
+         *
+         * @returns True if its a permanent Account
+         */
+        isPermanent(): boolean;
 
     }
 

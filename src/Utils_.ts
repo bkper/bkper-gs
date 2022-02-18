@@ -165,13 +165,13 @@ namespace Utils_ {
     return pattern;
   }
 
-  export function getRepresentativeValue(value: Amount, type: AccountType): Amount {
+  export function getRepresentativeValue(value: Amount, permanent: boolean): Amount {
 
     if (value == null) {
       return new Amount(0);
     }
   
-    if (type == AccountType.ASSET) {
+    if (permanent) {
       return value.times(-1);
     }
 

@@ -34,11 +34,6 @@ interface BalancesContainer {
 
 
   /**
-   * The [[Account]] or [[Group]] type
-   */
-  getType(): AccountType;
-
-  /**
    * All [[Balances]] of the container
    */
   getBalances(): Balance[];
@@ -59,6 +54,20 @@ interface BalancesContainer {
    * For #hashtag, the credit nature will be true.
    */
   isCredit(): boolean;
+
+  /**
+   * 
+   * Tell if this balance container is permament, based on the [[Account]] or [[Group]].
+   * 
+   * Permanent are the ones which final balance is relevant and keep its balances over time.
+   *  
+   * They are also called [Real Accounts](http://en.wikipedia.org/wiki/Account_(accountancy)#Based_on_periodicity_of_flow)
+   * 
+   * Usually represents assets or liabilities, capable of being perceived by the senses or the mind, like bank accounts, money, debts and so on.
+   * 
+   * @returns True if its a permanent Account
+   */  
+  isPermanent(): boolean;
 
   /**
    * Tell if this balance container if from an [[Account]] 
@@ -216,10 +225,6 @@ class AccountBalancesContainer implements BalancesContainer {
     return this.balancesReport.getBook().getAccount(this.getNormalizedName())
   }
 
-  getType(): AccountType {
-    return this.getAccount()?.getType()
-  }
-
   isFromAccount(): boolean {
     return true;
   }
@@ -248,8 +253,12 @@ class AccountBalancesContainer implements BalancesContainer {
     return this.wrapped.credit;
   }
 
+  public isPermanent() {
+    return this.wrapped.permanent;
+  }
+
   public getCumulativeBalance(): Amount {
-    return Utils_.getRepresentativeValue(new Amount(this.wrapped.cumulativeBalance), this.getType());
+    return Utils_.getRepresentativeValue(new Amount(this.wrapped.cumulativeBalance), this.isPermanent());
   }
 
   public getCumulativeBalanceRaw(): Amount {
@@ -281,7 +290,7 @@ class AccountBalancesContainer implements BalancesContainer {
 
 
   public getPeriodBalance(): Amount {
-    return Utils_.getRepresentativeValue(new Amount(this.wrapped.periodBalance), this.getType());
+    return Utils_.getRepresentativeValue(new Amount(this.wrapped.periodBalance), this.isPermanent());
   }
   public getPeriodBalanceRaw(): Amount {
     return new Amount(this.wrapped.periodBalance);
@@ -372,9 +381,6 @@ class GroupBalancesContainer implements BalancesContainer {
     return null
   }
 
-  getType(): AccountType {
-    return this.getGroup()?.getType();
-  }
 
   isFromAccount(): boolean {
     return false;
@@ -404,8 +410,12 @@ class GroupBalancesContainer implements BalancesContainer {
     return this.wrapped.credit;
   }
 
+  public isPermanent() {
+    return this.wrapped.permanent;
+  }
+
   public getCumulativeBalance(): Amount {
-    return Utils_.getRepresentativeValue(new Amount(this.wrapped.cumulativeBalance), this.getType());
+    return Utils_.getRepresentativeValue(new Amount(this.wrapped.cumulativeBalance), this.isPermanent());
   }
 
   public getCumulativeBalanceRaw(): Amount {
@@ -435,7 +445,7 @@ class GroupBalancesContainer implements BalancesContainer {
 
 
   public getPeriodBalance(): Amount {
-    return Utils_.getRepresentativeValue(new Amount(this.wrapped.periodBalance), this.getType());
+    return Utils_.getRepresentativeValue(new Amount(this.wrapped.periodBalance), this.isPermanent());
   }
   public getPeriodBalanceRaw(): Amount {
     return new Amount(this.wrapped.periodBalance);

@@ -139,18 +139,18 @@ namespace Utils_ {
         let day = +split[2];
         return createDate(year, month, day, offsetInMinutes);
       }
-    } else if (pattern == 'yyyy-MM-dd') {
+    } else if (date.indexOf('-')) {
       let split = date.split('-');
-      if (split.length == 3) {
-        let year = +split[0];
-        let month = +split[1];
-        let day = +split[2];
-        return createDate(year, month, day, offsetInMinutes);
-      }
+      try {
+        if (split.length == 3) {
+          let year = +split[0];
+          let month = +split[1];
+          let day = +split[2];
+          return createDate(year, month, day, offsetInMinutes);
+        }
+      } catch {}
     }
-    let now = new Date()
-    return createDate(now.getFullYear(), now.getMonth() + 1, now.getDate(), offsetInMinutes);
-
+    throw `Unable to parse date ${date}`
   }
 
   export function getDateFormatterPattern(datePattern: string, periodicity: Periodicity): string {

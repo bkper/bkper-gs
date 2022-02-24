@@ -324,7 +324,9 @@ class Book {
   }
 
   /**
-   * Parse a date string according to date pattern and timezone of the Book.
+   * Parse a date string according to date pattern and timezone of the Book. 
+   * 
+   * Also parse ISO yyyy-mm-dd format.
    */
   public parseDate(date: string): Date {
     return Utils_.parseDate(date, this.getDatePattern(), this.getTimeZoneOffset());

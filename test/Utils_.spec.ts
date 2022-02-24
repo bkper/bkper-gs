@@ -34,6 +34,21 @@ describe('Utils_', () => {
       let value = Utils_.parseDate('25/01/2020', 'dd/MM/yyyy', 0);
       expect(value.toString()).to.equal(new Date(2020, 0, 25).toString());
     });
+    it('should parse ISO', () => {
+      let value = Utils_.parseDate('2020-01-25', null, 0);
+    });
+    it('should throw exception on format error', () => {
+      try {
+        Utils_.parseDate('xxx', null, 0);
+      } catch (error) {
+        expect(error).to.equal('Unable to parse date xxx');
+      }
+      try {
+        Utils_.parseDate('2020x-01-25', "xxxx", 0);
+      } catch (error) {
+        expect(error).to.equal('Unable to parse date 2020x-01-25');
+      }
+    });
 
   });
 

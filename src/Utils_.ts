@@ -139,7 +139,9 @@ namespace Utils_ {
         let day = +split[2];
         return createDate(year, month, day, offsetInMinutes);
       }
-    } else if (date.indexOf('-')) {
+    } 
+    
+    if (date.indexOf('-')) {
       let split = date.split('-');
       try {
         if (split.length == 3) {
@@ -148,8 +150,9 @@ namespace Utils_ {
           let day = +split[2];
           return createDate(year, month, day, offsetInMinutes);
         }
-      } catch {}
+      } catch (error) {}
     }
+
     throw `Unable to parse date ${date}`
   }
 

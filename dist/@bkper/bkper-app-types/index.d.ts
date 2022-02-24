@@ -967,6 +967,8 @@ declare namespace Bkper {
 
         /**
          * Parse a date string according to date pattern and timezone of the Book.
+         *
+         * Also parse ISO yyyy-mm-dd format.
          */
         parseDate(date: string): Date;
 

@@ -391,9 +391,14 @@ declare namespace Bkper {
     export interface Balance {
 
         /**
-         * The cumulative balance to the date.
+         * The cumulative balance to the date, based on the credit nature of the container
          */
         getCumulativeBalance(): Amount;
+
+        /**
+         * The raw cumulative balance to the date.
+         */
+        getCumulativeBalanceRaw(): Amount;
 
         /**
          * The cumulative credit to the date.
@@ -444,9 +449,14 @@ declare namespace Bkper {
         getMonth(): number;
 
         /**
-         * The balance on the date period.
+         * The balance on the date period, based on credit nature of the container.
          */
         getPeriodBalance(): Amount;
+
+        /**
+         * The raw balance on the date period.
+         */
+        getPeriodBalanceRaw(): Amount;
 
         /**
          * The credit on the date period.

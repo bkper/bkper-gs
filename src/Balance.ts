@@ -77,14 +77,21 @@ class Balance {
   public getFuzzyDate(): number {
     return this.wrapped.fuzzyDate;
   }
-
+  
   /**
-   * The cumulative balance to the date.
+   * The cumulative balance to the date, based on the credit nature of the container
    */
   public getCumulativeBalance(): Amount {
-    return new Amount(this.wrapped.cumulativeBalance);
+    return Utils_.getRepresentativeValue(this.getCumulativeBalanceRaw(), this.container.isCredit())
   }
 
+  /**
+   * The raw cumulative balance to the date.
+   */
+  public getCumulativeBalanceRaw(): Amount {
+    return new Amount(this.wrapped.cumulativeBalance);
+  }
+  
   /**
    * The cumulative credit to the date.
    */
@@ -101,9 +108,16 @@ class Balance {
 
 
   /**
-   * The balance on the date period.
+   * The balance on the date period, based on credit nature of the container.
    */
   public getPeriodBalance(): Amount {
+    return Utils_.getRepresentativeValue(this.getPeriodBalanceRaw(), this.container.isCredit());
+  }
+
+  /**
+   * The raw balance on the date period.
+   */
+  public getPeriodBalanceRaw(): Amount {
     return new Amount(this.wrapped.periodBalance);
   }
 

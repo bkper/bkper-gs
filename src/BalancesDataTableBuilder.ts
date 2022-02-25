@@ -383,9 +383,9 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
           }
           var amount;
           if (cumulativeBalance) {
-            amount = balance.getCumulativeBalance();
+            amount = balance.getCumulativeBalanceRaw();
           } else {
-            amount = balance.getPeriodBalance();
+            amount = balance.getPeriodBalanceRaw();
           }
           indexEntry[balancesContainer.getName()] = this.shouldRaw ? amount : this.getRepresentativeBalance(amount, balancesContainer.isPermanent());
         }

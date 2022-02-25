@@ -36,6 +36,26 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     this.shouldPeriod = false;
   }
 
+  private getBalance(balance: Amount, permanent: boolean): number {
+    return this.getRepresentativeBalance(balance, permanent).toNumber();
+  }
+  private getRepresentativeBalance(balance: Amount, permanent: boolean): Amount {
+
+    if (balance == null) {
+      return new Amount(0);
+    }
+  
+    if (permanent) {
+      return balance.times(-1);
+    }
+
+    return balance;
+  }
+
+  private getBalanceText(balance: Amount, permanent: boolean): string {
+    return this.book.formatAmount(this.getRepresentativeBalance(balance, permanent));
+  }
+
   /**
    * Defines whether the dates should be formatted based on date pattern and periodicity of the [[Book]].
    *
@@ -275,13 +295,13 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
               if (this.shouldRaw) {
                 line.push(balances.getPeriodBalanceRawText());
               } else {
-                line.push(balances.getPeriodBalanceText());
+                line.push(this.getBalanceText(balances.getPeriodBalanceRaw(), balances.isPermanent()));
               }
             } else {
               if (this.shouldRaw) {
                 line.push(balances.getCumulativeBalanceRawText());
               } else {
-                line.push(balances.getCumulativeBalanceText());
+                line.push(this.getBalanceText(balances.getCumulativeBalanceRaw(), balances.isPermanent()));
               }
             }
           } else {
@@ -289,13 +309,13 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
               if (this.shouldRaw) {
                 line.push(balances.getPeriodBalanceRaw().toNumber());
               } else {
-                line.push(balances.getPeriodBalance().toNumber());
+                line.push(this.getBalance(balances.getPeriodBalanceRaw(), balances.isPermanent()));
               }
             } else {
               if (this.shouldRaw) {
                 line.push(balances.getCumulativeBalanceRaw().toNumber());
               } else {
-                line.push(balances.getCumulativeBalance().toNumber());
+                line.push(this.getBalance(balances.getCumulativeBalanceRaw(), balances.isPermanent()));
               }
 
             }
@@ -367,7 +387,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
           } else {
             amount = balance.getPeriodBalance();
           }
-          indexEntry[balancesContainer.getName()] = this.shouldRaw ? amount : Utils_.getRepresentativeValue(amount, balancesContainer.isPermanent());
+          indexEntry[balancesContainer.getName()] = this.shouldRaw ? amount : this.getRepresentativeBalance(amount, balancesContainer.isPermanent());
         }
 
       }

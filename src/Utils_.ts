@@ -168,16 +168,15 @@ namespace Utils_ {
     return pattern;
   }
 
-  export function getRepresentativeValue(value: Amount, permanent: boolean): Amount {
+  export function getRepresentativeValue(value: Amount, credit: boolean): Amount {
 
     if (value == null) {
       return new Amount(0);
     }
   
-    if (permanent) {
+    if (credit != null && !credit) {
       return value.times(-1);
     }
-
     return value;
   }
 

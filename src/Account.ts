@@ -147,7 +147,7 @@ class Account {
     if (this.wrapped.balance != null) {
       balance = new Amount(this.wrapped.balance);
     }
-    return Utils_.getRepresentativeValue(balance, this.isPermanent());
+    return Utils_.getRepresentativeValue(balance, this.isCredit());
   }
 
   /**

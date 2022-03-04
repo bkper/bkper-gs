@@ -1,5 +1,5 @@
 /**
- * The container of balances of an [[Account]], [[Group]] or #hashtag
+ * The container of balances of an [[Account]] or [[Group]]
  * 
  * The container is composed of a list of [[Balances]] for a window of time, as well as its period and cumulative totals.
  * 
@@ -45,13 +45,12 @@ interface BalancesContainer {
   getParent(): BalancesContainer;
 
   /**
-   * Gets the credit nature of the BalancesContainer, based on [[Account]], [[Group]] or #hashtag this container represents.
+   * Gets the credit nature of the BalancesContainer, based on [[Account]] or [[Group]].
    * 
    * For [[Account]], the credit nature will be the same as the one from the Account
    * 
    * For [[Group]], the credit nature will be the same, if all accounts containing on it has the same credit nature. False if mixed.
    * 
-   * For #hashtag, the credit nature will be true.
    */
   isCredit(): boolean;
 

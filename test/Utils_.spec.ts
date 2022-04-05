@@ -7,8 +7,17 @@ describe('Utils_', () => {
     it('should normalize accents', () => {
       expect(Utils_.normalizeText("Á é î õ ú ão")).to.equal("a e i o u ao");
     });
+    it('should not normalize slash', () => {
+      expect(Utils_.normalizeText("Á é î/õ/ ú/ ão", "_")).to.equal("a_e_i/o/_u/_ao");
+    });
     it('should normalize with dash', () => {
       expect(Utils_.normalizeText("Á é î-õ ú ão", "_")).to.equal("a_e_i_o_u_ao");
+    });
+    it('should not normalize with dots', () => {
+      expect(Utils_.normalizeText("Á é î.õ. ú ão", "_")).to.equal("a_e_i.o._u_ao");
+    });
+    it('should clear', () => {
+      expect(Utils_.normalizeText("Á ?%*+@@#%!~`'\":;=\\|$^ˆ\\\\\\ é î õ  ú ã\o", "_")).to.equal("a_e_i_o_u_ao");
     });
     it('should clear multiple spaces', () => {
       expect(Utils_.normalizeText("Á é     î õ ú   -   ão    ", "_")).to.equal("a_e_i_o_u_ao");

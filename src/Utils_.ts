@@ -242,8 +242,10 @@ namespace Utils_ {
     if (spaceReplacement) {
       text = text.replace(new RegExp(spaceReplacement, 'g'), " ");
     }
-    text = text.replace(new RegExp("-", 'g'), " ");
-    text = text.replace(/ +(?= )/g,'');
+    text = text
+    .replace(new RegExp("-", 'g'), " ")
+    .replace(new RegExp("[?|%|\*|\+|@|#|%|!|~|`|'|\"|:|;|=|\\|\\\\|\||\$|\^|ˆ]", 'g'), " ")
+    .replace(/ +(?= )/g,'')
 
     text = removeDiacritics(text.trim().toLowerCase());
     

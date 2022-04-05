@@ -17,8 +17,12 @@
   },
   "license": "Apache-2.0",
   "scripts": {
+    "clasp:login": "clasp login && yarn clasp:store",
+    "clasp:store": "cp ~/.clasprc.json ~/.clasprc-bkper.json",
+    "clasp:activate": "cp ~/.clasprc-bkper.json ~/.clasprc.json",    
     "clean": "rimraf build",
     "open": "clasp open",
+    "prepush": "yarn clasp:activate",
     "push": "clasp push",
     "watch": "yarn push --watch",
     "test": "run-s test:*",

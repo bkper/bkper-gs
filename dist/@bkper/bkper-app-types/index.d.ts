@@ -541,9 +541,9 @@ declare namespace Bkper {
          * 
          * ```
          *   _____________________________
-         *  | Expenses | Income  |  ...  |
-         *  | 4568.23  | 5678.93 |  ...  |
-         *  |__________|_________|_______|
+         *  |  Expenses | Income  |  ...  |
+         *  | -4568.23  | 5678.93 |  ...  |
+         *  |___________|_________|_______|
          * 
          * ```
          * Two rows, and each [[Account]] or [[Group]] per column.
@@ -554,7 +554,7 @@ declare namespace Bkper {
          * ```
          *   _______________________________________________________________
          *  |            | 15/01/2014 | 15/02/2014 | 15/03/2014 |    ...    |
-         *  |  Expenses  |  2345.23   |  2345.93   |  2456.45   |    ...    |
+         *  |  Expenses  | -2345.23   | -2345.93   | -2456.45   |    ...    |
          *  |  Income    |  3452.93   |  3456.46   |  3567.87   |    ...    |
          *  |     ...    |     ...    |     ...    |     ...    |    ...    |
          *  |____________|____________|____________|____________|___________|
@@ -1779,7 +1779,7 @@ declare namespace Bkper {
     }
 
     /**
-     * The container of balances of an [[Account]], [[Group]] or #hashtag
+     * The container of balances of an [[Account]] or [[Group]]
      *
      * The container is composed of a list of [[Balances]] for a window of time, as well as its period and cumulative totals.
      */
@@ -1935,13 +1935,12 @@ declare namespace Bkper {
         hasGroupBalances(): boolean;
 
         /**
-         * Gets the credit nature of the BalancesContainer, based on [[Account]], [[Group]] or #hashtag this container represents.
+         * Gets the credit nature of the BalancesContainer, based on [[Account]] or [[Group]].
          *
          * For [[Account]], the credit nature will be the same as the one from the Account
          * 
          * For [[Group]], the credit nature will be the same, if all accounts containing on it has the same credit nature. False if mixed.
          * 
-         * For #hashtag, the credit nature will be true.
          */
         isCredit(): boolean;
 

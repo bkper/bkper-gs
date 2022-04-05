@@ -1,6 +1,6 @@
 {
   "name": "@bkper/bkper-app",
-  "version": "3.14.1",
+  "version": "3.14.2",
   "description": "Google Apps Script library for Bkper",
   "homepage": "https://bkper.com/docs/#bkperapp",
   "repository": {
@@ -19,7 +19,7 @@
   "scripts": {
     "clasp:login": "clasp login && yarn clasp:store",
     "clasp:store": "cp ~/.clasprc.json ~/.clasprc-bkper.json",
-    "clasp:activate": "cp ~/.clasprc-bkper.json ~/.clasprc.json",    
+    "clasp:activate": "cp ~/.clasprc-bkper.json ~/.clasprc.json",
     "clean": "rimraf build",
     "open": "clasp open",
     "prepush": "yarn clasp:activate",

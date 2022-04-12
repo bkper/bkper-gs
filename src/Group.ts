@@ -73,7 +73,7 @@ class Group {
   }
 
   /**
-   * Tell if this is a permanent group
+   * Tell if this is a mixed (Assets/Liabilities or Incoming/Outgoing) group
    */
   public isMixed(): boolean {
     return this.wrapped.mixed;

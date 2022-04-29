@@ -780,6 +780,11 @@ declare namespace Bkper {
         getBalancesReport(query: string): BalancesReport;
 
         /**
+         * @returns The closing date of the Book in ISO format yyyy-MM-dd
+         */
+        getClosingDate(): string;
+
+        /**
          * @returns The collection of this book
          */
         getCollection(): Collection;
@@ -1012,6 +1017,13 @@ declare namespace Bkper {
         round(amount: Amount): Amount;
 
         /**
+         * Sets the lock date of the Book in ISO format yyyy-MM-dd.
+         *
+         * @returns This Book, for chainning.
+         */
+        setClosingDate(closingDate: string): Book;
+
+        /**
          * Sets the date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
          *
          * @returns This Book, for chainning.
@@ -1033,7 +1045,7 @@ declare namespace Bkper {
         setFractionDigits(fractionDigits: number): Book;
 
         /**
-         * Sets the lock date of the Book in ISO format yyyy-MM-dd.
+         * Sets the closing date of the Book in ISO format yyyy-MM-dd.
          *
          * @returns This Book, for chainning.
          */
@@ -1272,7 +1284,7 @@ declare namespace Bkper {
         isHidden(): boolean;
 
         /**
-         * Tell if this is a permanent group
+         * Tell if this is a mixed (Assets/Liabilities or Incoming/Outgoing) group
          */
         isMixed(): boolean;
 

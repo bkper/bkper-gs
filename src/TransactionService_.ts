@@ -57,7 +57,48 @@ namespace TransactionService_ {
     var payload = JSON.stringify(transaction);
     var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/restore`).setMethod('patch').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
-  }  
+  }
+  
+  export function checkTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): void {
+
+    let transactionList: bkper.TransactionList = {
+      items: transactions
+    }
+    var payload = JSON.stringify(transactionList);
+
+    new HttpBooksApiV5Request(`${bookId}/transactions/check/batch`)
+          .setMethod('patch')
+          .setPayload(payload)
+          .fetch()
+  }    
+
+  export function uncheckTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): void {
+
+    let transactionList: bkper.TransactionList = {
+      items: transactions
+    }
+    var payload = JSON.stringify(transactionList);
+
+    new HttpBooksApiV5Request(`${bookId}/transactions/uncheck/batch`)
+          .setMethod('patch')
+          .setPayload(payload)
+          .fetch()
+  }    
+
+  export function removeTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): void {
+
+    let transactionList: bkper.TransactionList = {
+      items: transactions
+    }
+    var payload = JSON.stringify(transactionList);
+
+    new HttpBooksApiV5Request(`${bookId}/transactions/remove/batch`)
+          .setMethod('patch')
+          .setPayload(payload)
+          .fetch()
+  }    
+
+
 
   export function getTransaction(bookId: string, id: string): bkper.Transaction {
     var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/${id}`).setMethod('get').fetch().getContentText();

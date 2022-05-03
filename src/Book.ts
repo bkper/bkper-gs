@@ -387,7 +387,7 @@ class Book {
     }
 
     /**
-     * Create [[Transactions]] on the Book, in batch. 
+     * Batch create [[Transactions]] on the Book. 
      */
     public batchCreateTransactions(transactions: Transaction[]): Transaction[] {
         let transactionPayloads: bkper.Transaction[] = [];
@@ -397,6 +397,33 @@ class Book {
         this.configureTransactions_(transactions);
         this.clearAccountsCache();
         return transactions;
+    }
+
+    /**
+     * Batch check [[Transactions]] on the Book. 
+     */
+    public batchCheckTransactions(transactions: Transaction[]): void {
+        let transactionPayloads: bkper.Transaction[] = [];
+        transactions.forEach(tx => transactionPayloads.push(tx.wrapped))
+        TransactionService_.checkTransactionsBatch(this.getId(), transactionPayloads);
+    }
+
+    /**
+     * Batch uncheck [[Transactions]] on the Book. 
+     */
+    public batchUncheckTransactions(transactions: Transaction[]): void {
+        let transactionPayloads: bkper.Transaction[] = [];
+        transactions.forEach(tx => transactionPayloads.push(tx.wrapped))
+        TransactionService_.uncheckTransactionsBatch(this.getId(), transactionPayloads);
+    }
+
+    /**
+     * Batch remove [[Transactions]] on the Book, sending to trash. 
+     */
+    public batchRemoveTransactions(transactions: Transaction[]): void {
+        let transactionPayloads: bkper.Transaction[] = [];
+        transactions.forEach(tx => transactionPayloads.push(tx.wrapped))
+        TransactionService_.uncheckTransactionsBatch(this.getId(), transactionPayloads);
     }
 
 

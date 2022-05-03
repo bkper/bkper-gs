@@ -418,12 +418,12 @@ class Book {
     }
 
     /**
-     * Batch remove [[Transactions]] on the Book, sending to trash. 
+     * Batch trash [[Transactions]] on the Book. 
      */
-    public batchRemoveTransactions(transactions: Transaction[]): void {
+    public batchTrashTransactions(transactions: Transaction[]): void {
         let transactionPayloads: bkper.Transaction[] = [];
         transactions.forEach(tx => transactionPayloads.push(tx.wrapped))
-        TransactionService_.uncheckTransactionsBatch(this.getId(), transactionPayloads);
+        TransactionService_.trashTransactionsBatch(this.getId(), transactionPayloads);
     }
 
 

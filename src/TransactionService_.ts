@@ -47,15 +47,15 @@ namespace TransactionService_ {
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }  
 
-  export function removeTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
+  export function trashTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
     var payload = JSON.stringify(transaction);
-    var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/remove`).setMethod('patch').setPayload(payload).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/trash`).setMethod('patch').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }  
 
-  export function restoreTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
+  export function untrashTransaction(bookId: string, transaction: bkper.Transaction): bkper.TransactionOperation {
     var payload = JSON.stringify(transaction);
-    var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/restore`).setMethod('patch').setPayload(payload).fetch().getContentText();
+    var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/untrash`).setMethod('patch').setPayload(payload).fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.TransactionOperation;
   }
   
@@ -85,14 +85,14 @@ namespace TransactionService_ {
           .fetch()
   }    
 
-  export function removeTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): void {
+  export function trashTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): void {
 
     let transactionList: bkper.TransactionList = {
       items: transactions
     }
     var payload = JSON.stringify(transactionList);
 
-    new HttpBooksApiV5Request(`${bookId}/transactions/remove/batch`)
+    new HttpBooksApiV5Request(`${bookId}/transactions/trash/batch`)
           .setMethod('patch')
           .setPayload(payload)
           .fetch()

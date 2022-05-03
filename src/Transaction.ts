@@ -668,20 +668,20 @@ class Transaction {
   }    
 
   /**
-   * Remove the transaction, sending to trash.
+   * Perform trash transaction.
    */  
-  public remove(): Transaction {
-    let operation = TransactionService_.removeTransaction(this.book.getId(), this.wrapped);
+  public trash(): Transaction {
+    let operation = TransactionService_.trashTransaction(this.book.getId(), this.wrapped);
     this.wrapped.trashed = operation.transaction.trashed;
     this.book.clearAccountsCache();
     return this;
   }  
 
   /**
-   * Restore the transaction from trash.
+   * Perform untrash transaction.
    */  
-  public restore(): Transaction {
-    let operation = TransactionService_.restoreTransaction(this.book.getId(), this.wrapped);
+  public untrash(): Transaction {
+    let operation = TransactionService_.untrashTransaction(this.book.getId(), this.wrapped);
     this.wrapped.trashed = operation.transaction.trashed;
     this.book.clearAccountsCache();
     return this;
@@ -689,6 +689,28 @@ class Transaction {
 
 
   //DEPRECATED
+
+    /**
+     * Remove the transaction, sending to trash.
+     * @deprecated
+     */
+    public remove(): Transaction {
+        let operation = TransactionService_.trashTransaction(this.book.getId(), this.wrapped);
+        this.wrapped.trashed = operation.transaction.trashed;
+        this.book.clearAccountsCache();
+        return this;
+    }
+
+  /**
+   * Restore the transaction from trash.
+   * @deprecated
+   */  
+   public restore(): Transaction {
+    let operation = TransactionService_.untrashTransaction(this.book.getId(), this.wrapped);
+    this.wrapped.trashed = operation.transaction.trashed;
+    this.book.clearAccountsCache();
+    return this;
+  }      
 
    /**
    * @returns The date the user informed for this transaction, adjusted to book's time zone.

@@ -633,6 +633,11 @@ declare namespace Bkper {
         audit(): void;
 
         /**
+         * Batch check [[Transactions]] on the Book.
+         */
+        batchCheckTransactions(transactions: Transaction[]): void;
+
+        /**
          * Create [[Accounts]] on the Book, in batch.
          */
         batchCreateAccounts(accounts: Account[]): Account[];
@@ -643,9 +648,19 @@ declare namespace Bkper {
         batchCreateGroups(groups: Group[]): Group[];
 
         /**
-         * Create [[Transactions]] on the Book, in batch.
+         * Batch create [[Transactions]] on the Book.
          */
         batchCreateTransactions(transactions: Transaction[]): Transaction[];
+
+        /**
+         * Batch trash [[Transactions]] on the Book.
+         */
+        batchTrashTransactions(transactions: Transaction[]): void;
+
+        /**
+         * Batch uncheck [[Transactions]] on the Book.
+         */
+        batchUncheckTransactions(transactions: Transaction[]): void;
 
         /**
          * Resumes a transaction iteration using a continuation token from a previous iterator.
@@ -1599,11 +1614,15 @@ declare namespace Bkper {
 
         /**
          * Remove the transaction, sending to trash.
+         *
+         * @deprecated 
          */
         remove(): Transaction;
 
         /**
          * Restore the transaction from trash.
+         *
+         * @deprecated 
          */
         restore(): Transaction;
 
@@ -1671,9 +1690,19 @@ declare namespace Bkper {
         to(account: string | Account): Transaction;
 
         /**
+         * Perform trash transaction.
+         */
+        trash(): Transaction;
+
+        /**
          * Perform uncheck transaction.
          */
         uncheck(): Transaction;
+
+        /**
+         * Perform untrash transaction.
+         */
+        untrash(): Transaction;
 
         /**
          * Upddate transaction, applying pending changes.

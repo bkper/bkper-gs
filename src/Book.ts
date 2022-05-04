@@ -251,6 +251,30 @@ class Book {
 
 
     /**
+     * @return The total number of posted transactions 
+     */
+    public getTotalTransactions(): number {
+        this.checkBookLoaded_();
+        return +this.wrapped.totalTransactions;
+    }
+
+    /**
+     * @return The total number of posted transactions on current month
+     */
+    public getTotalTransactionsCurrentMonth(): number {
+        this.checkBookLoaded_();
+        return +this.wrapped.totalTransactionsCurrentMonth;
+    }
+
+    /**
+     * @return The total number of posted transactions on current year
+     */
+    public getTotalTransactionsCurrentYear(): number {
+        this.checkBookLoaded_();
+        return +this.wrapped.totalTransactionsCurrentYear;
+    }
+
+    /**
      * @return The last update date of the book, in in milliseconds
      */
     public getLastUpdateMs(): number {

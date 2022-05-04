@@ -897,6 +897,21 @@ declare namespace Bkper {
         getTimeZoneOffset(): number;
 
         /**
+         * @returns The total number of posted transactions
+         */
+        getTotalTransactions(): number;
+
+        /**
+         * @returns The total number of posted transactions on current month
+         */
+        getTotalTransactionsCurrentMonth(): number;
+
+        /**
+         * @returns The total number of posted transactions on current year
+         */
+        getTotalTransactionsCurrentYear(): number;
+
+        /**
          * Retrieve a transaction by id
          */
         getTransaction(id: string): Transaction;

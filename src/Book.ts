@@ -195,17 +195,17 @@ class Book {
 
     /**
      * 
-     * Sets the closing date of the Book in ISO format yyyy-MM-dd.
+     * Sets the lock date of the Book in ISO format yyyy-MM-dd.
      * 
      * @returns This Book, for chainning.
      */
-     public setLockDate(lockDate: string): Book {
+    public setLockDate(lockDate: string): Book {
         if (lockDate == null) {
             lockDate = "1900-00-00";
         }
         this.wrapped.lockDate = lockDate;
         return this;
-    }    
+    }
 
     /**
      * @return The closing date of the Book in ISO format yyyy-MM-dd
@@ -217,7 +217,7 @@ class Book {
 
     /**
      * 
-     * Sets the lock date of the Book in ISO format yyyy-MM-dd.
+     * Sets the closing date of the Book in ISO format yyyy-MM-dd.
      * 
      * @returns This Book, for chainning.
      */

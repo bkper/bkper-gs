@@ -1047,7 +1047,7 @@ declare namespace Bkper {
         round(amount: Amount): Amount;
 
         /**
-         * Sets the lock date of the Book in ISO format yyyy-MM-dd.
+         * Sets the closing date of the Book in ISO format yyyy-MM-dd.
          *
          * @returns This Book, for chainning.
          */
@@ -1075,7 +1075,7 @@ declare namespace Bkper {
         setFractionDigits(fractionDigits: number): Book;
 
         /**
-         * Sets the closing date of the Book in ISO format yyyy-MM-dd.
+         * Sets the lock date of the Book in ISO format yyyy-MM-dd.
          *
          * @returns This Book, for chainning.
          */
@@ -1287,6 +1287,11 @@ declare namespace Bkper {
          * Gets the property value for given keys. First property found will be retrieved
          */
         getProperty(...keys: string[]): string;
+
+        /**
+         * @returns The root Group
+         */
+        getRoot(): Group;
 
         /**
          * The type of the group based on its accounts

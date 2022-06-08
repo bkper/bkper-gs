@@ -116,10 +116,10 @@ class BalancesReport {
     /**
      * Gets all [[Accounts]] [[BalancesContainers]]. 
      */
-    public getAccountContainers(): BalancesContainer[] {
+    public getAccountsContainers(): BalancesContainer[] {
         let leafContainers: BalancesContainer[] = [];
         for (const container of this.getBalancesContainers()) {
-            leafContainers = leafContainers.concat(container.getAccountContainers());
+            leafContainers = leafContainers.concat(container.getAccountsContainers());
         }
         return leafContainers;
     }

@@ -594,9 +594,14 @@ declare namespace Bkper {
         createDataTable(): BalancesDataTableBuilder;
 
         /**
+         * Gets all [[Accounts]] [[BalancesContainers]].
+         */
+        getAccountContainers(): BalancesContainer[];
+
+        /**
          * Gets a specific [[BalancesContainer]].
          */
-        getBalancesContainer(name: string): BalancesContainer;
+        getBalancesContainer(name: string): BalancesContainer | null;
 
         /**
          * Gets all [[BalancesContainers]] of the report.
@@ -1857,14 +1862,17 @@ declare namespace Bkper {
         getAccount(): Account;
 
         /**
+         * Gets all [[Accounts]] [[BalancesContainers]].
+         */
+        getAccountContainers(): BalancesContainer[];
+
+        /**
          * All [[Balances]] of the container
          */
         getBalances(): Balance[];
 
         /**
          * Gets a specific [[BalancesContainer]].
-         *
-         * **NOTE**: Only for Group balance containers. Accounts returns null.
          */
         getBalancesContainer(name: string): BalancesContainer;
 

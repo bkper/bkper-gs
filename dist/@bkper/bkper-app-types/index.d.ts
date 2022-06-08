@@ -596,7 +596,7 @@ declare namespace Bkper {
         /**
          * Gets all [[Accounts]] [[BalancesContainers]].
          */
-        getAccountContainers(): BalancesContainer[];
+        getAccountsContainers(): BalancesContainer[];
 
         /**
          * Gets a specific [[BalancesContainer]].
@@ -1864,7 +1864,7 @@ declare namespace Bkper {
         /**
          * Gets all [[Accounts]] [[BalancesContainers]].
          */
-        getAccountContainers(): BalancesContainer[];
+        getAccountsContainers(): BalancesContainer[];
 
         /**
          * All [[Balances]] of the container

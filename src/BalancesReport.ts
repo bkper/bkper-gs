@@ -39,8 +39,8 @@ class BalancesReport {
      */
     public getBalancesContainers(): BalancesContainer[] {
         var containers = new Array<BalancesContainer>();
-        if (this.getAccountBalancesContainers() != null) {
-            containers = containers.concat(this.getAccountBalancesContainers());
+        if (this.getRootAccountBalancesContainers() != null) {
+            containers = containers.concat(this.getRootAccountBalancesContainers());
         }
         if (this.getGroupBalancesContainers() != null) {
             containers = containers.concat(this.getGroupBalancesContainers());
@@ -63,7 +63,7 @@ class BalancesReport {
         return this.getGroupBalancesContainers() != null && this.getGroupBalancesContainers().length == 1;
     }
 
-    private getAccountBalancesContainers(): AccountBalancesContainer[] {
+    private getRootAccountBalancesContainers(): AccountBalancesContainer[] {
         if (this.accountBalancesContainers == null && this.wrapped.accountBalances != null) {
             this.accountBalancesContainers = [];
             for (var i = 0; i < this.wrapped.accountBalances.length; i++) {
@@ -114,12 +114,12 @@ class BalancesReport {
     }
 
     /**
-     * Gets all [[Accounts]] [[BalancesContainers]]. 
+     * Gets all [[Account]] [[BalancesContainers]]. 
      */
-    public getAccountsContainers(): BalancesContainer[] {
+    public getAccountBalancesContainers(): BalancesContainer[] {
         let leafContainers: BalancesContainer[] = [];
         for (const container of this.getBalancesContainers()) {
-            leafContainers = leafContainers.concat(container.getAccountsContainers());
+            leafContainers = leafContainers.concat(container.getAccountBalancesContainers());
         }
         return leafContainers;
     }

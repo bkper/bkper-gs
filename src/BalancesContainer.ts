@@ -178,9 +178,9 @@ interface BalancesContainer {
     getBalancesContainer(name: string): BalancesContainer;
 
     /**
-     * Gets all [[Accounts]] [[BalancesContainers]]. 
+     * Gets all [[Account]] [[BalancesContainers]]. 
      */
-    getAccountsContainers(): BalancesContainer[];
+    getAccountBalancesContainers(): BalancesContainer[];
 
     /**
      * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]]
@@ -354,7 +354,7 @@ class AccountBalancesContainer implements BalancesContainer {
         return null;
     }
 
-    public getAccountsContainers(): BalancesContainer[] {
+    public getAccountBalancesContainers(): BalancesContainer[] {
         return [this];
     }
 
@@ -560,7 +560,7 @@ class GroupBalancesContainer implements BalancesContainer {
         return null;
     }
 
-    public getAccountsContainers(): BalancesContainer[] {
+    public getAccountBalancesContainers(): BalancesContainer[] {
         let rootContainers: BalancesContainer[] = [];
         for (const container of this.getBalancesContainers()) {
             this.traverseContainers(container, rootContainers);

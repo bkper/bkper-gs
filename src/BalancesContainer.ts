@@ -175,7 +175,7 @@ interface BalancesContainer {
     /**
      * Gets a specific [[BalancesContainer]].
      */
-    getBalancesContainer(name: string): BalancesContainer;
+    getBalancesContainer(name: string): BalancesContainer | null;
 
     /**
      * Gets all [[Account]] [[BalancesContainers]]. 
@@ -351,7 +351,7 @@ class AccountBalancesContainer implements BalancesContainer {
         if (this.getName() == name) {
             return this;
         }
-        return null;
+        throw `${name} does not match ${this.getName()}`;
     }
 
     public getAccountBalancesContainers(): BalancesContainer[] {
@@ -543,7 +543,7 @@ class GroupBalancesContainer implements BalancesContainer {
         return null;
     }
 
-    getBalancesContainer(name: string): BalancesContainer | null {
+    getBalancesContainer(name: string): BalancesContainer {
         if (name == null) {
             return null;
         }
@@ -551,13 +551,14 @@ class GroupBalancesContainer implements BalancesContainer {
             return this;
         } else if (this.getBalancesContainers() != null) {
             for (const container of this.getBalancesContainers()) {
-                const foundCountainer = container.getBalancesContainer(name);
-                if (foundCountainer != null) {
-                    return foundCountainer;
+                try {
+                    return container.getBalancesContainer(name);
+                } catch (err) {
+                    //Not found. Continue.
                 }
             }
         }
-        return null;
+        throw `${name} not found on group ${this.getName()}`;
     }
 
     public getAccountBalancesContainers(): BalancesContainer[] {

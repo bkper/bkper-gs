@@ -93,7 +93,7 @@ class BalancesReport {
      * 
      * @param name The [[Account]] name, [[Group]] name.
      */
-    public getBalancesContainer(name: string): BalancesContainer | null {
+    public getBalancesContainer(name: string): BalancesContainer {
         var rootContainers = this.getBalancesContainers();
         if (rootContainers == null || rootContainers.length == 0) {
             throw `${name} not found.`;
@@ -104,13 +104,14 @@ class BalancesReport {
             if (name == rootContainer.getName()) {
                 return rootContainers[i];
             } else {
-                var foundContainer = rootContainer.getBalancesContainer(name);
-                if (foundContainer) {
-                    return foundContainer;
+                try {
+                    return rootContainer.getBalancesContainer(name);
+                } catch (err) {
+                    //Not found. Continue.
                 }
             }
         }
-        return null;
+        throw `${name} not found.`;
     }
 
     /**

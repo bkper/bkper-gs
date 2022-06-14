@@ -601,7 +601,7 @@ declare namespace Bkper {
         /**
          * Gets a specific [[BalancesContainer]].
          */
-        getBalancesContainer(name: string): BalancesContainer | null;
+        getBalancesContainer(name: string): BalancesContainer;
 
         /**
          * Gets all [[BalancesContainers]] of the report.
@@ -1874,7 +1874,7 @@ declare namespace Bkper {
         /**
          * Gets a specific [[BalancesContainer]].
          */
-        getBalancesContainer(name: string): BalancesContainer;
+        getBalancesContainer(name: string): BalancesContainer | null;
 
         /**
          * Gets all child [[BalancesContainers]].

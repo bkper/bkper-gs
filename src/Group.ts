@@ -252,7 +252,7 @@ class Group {
      * 
      * @returns This Group, for chainning.
      */
-    public setParent(group: Group): Group {
+    public setParent(group: Group | null): Group {
         if (group) {
             this.wrapped.parent = { id: group.getId(), name: group.getName(), normalizedName: group.getNormalizedName() };
         } else {

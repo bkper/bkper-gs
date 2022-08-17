@@ -1355,7 +1355,7 @@ declare namespace Bkper {
          *
          * @returns This Group, for chainning.
          */
-        setParent(group: Group): Group;
+        setParent(group: Group | null): Group;
 
         /**
          * Sets the custom properties of the Group

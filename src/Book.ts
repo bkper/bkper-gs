@@ -83,6 +83,19 @@ class Book {
             this.wrapped = BookService_.loadBookWrapped(this.getId());
             this.configureGroups_(this.wrapped.groups);
             this.configureAccounts_(this.wrapped.accounts);
+        } else {
+            this.checkAccountsLoaded_();
+        }
+    }
+
+    private checkAccountsLoaded_(): void {
+        if (this.idGroupMap == null) {
+            let groups = GroupService_.listGroups(this.getId());
+            this.configureGroups_(groups);
+        }
+        if (this.idAccountMap == null) {
+            let accounts = AccountService_.listAccounts(this.getId());
+            this.configureAccounts_(accounts);
         }
     }
 

@@ -37,7 +37,7 @@ namespace BookService_ {
     if (bookId == null) {
       throw new Error("Book id null!");
     }
-    let responseJSON = new HttpBooksApiV5Request(bookId).fetch().getContentText();
+    let responseJSON = new HttpBooksApiV5Request(bookId).addParam('loadAccounts', true).fetch().getContentText();
 
     var bookPlain = JSON.parse(responseJSON);
     return bookPlain;

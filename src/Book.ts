@@ -81,18 +81,8 @@ class Book {
     private checkBookLoaded_(): void {
         if (this.wrapped == null) {
             this.wrapped = BookService_.loadBookWrapped(this.getId());
-        }
-    }
-
-    private checkAccountsLoaded_(): void {
-        this.checkBookLoaded_()
-        if (this.idGroupMap == null) {
-            let groups = GroupService_.listGroups(this.getId());
-            this.configureGroups_(groups);
-        }
-        if (this.idAccountMap == null) {
-            let accounts = AccountService_.listAccounts(this.getId());
-            this.configureAccounts_(accounts);
+            this.configureGroups_(this.wrapped.groups);
+            this.configureAccounts_(this.wrapped.accounts);
         }
     }
 
@@ -419,7 +409,7 @@ class Book {
         transactionPayloads = TransactionService_.createTransactionsBatch(this.getId(), transactionPayloads);
         transactions = Utils_.wrapObjects(new Transaction(), transactionPayloads);
         this.configureTransactions_(transactions);
-        this.clearAccountsCache();
+        this.clearCache();
         return transactions;
     }
 
@@ -557,7 +547,7 @@ class Book {
      * Gets all [[Accounts]] of this Book
      */
     public getAccounts(): Account[] {
-        this.checkAccountsLoaded_();
+        this.checkBookLoaded_();
         return this.accounts;
     }
 
@@ -577,7 +567,7 @@ class Book {
 
         idOrName = idOrName + '';
 
-        this.checkAccountsLoaded_();
+        this.checkBookLoaded_();
 
         var account = this.idAccountMap[idOrName];
         if (account == null) {
@@ -602,7 +592,7 @@ class Book {
         if (accountsPayloads.length > 0) {
             let createdAccountsPlain = AccountService_.createAccounts(this.getId(), accountsPayloads);
             let createdAccounts = Utils_.wrapObjects(new Account(), createdAccountsPlain);
-            this.clearAccountsCache();
+            this.clearCache();
             for (var i = 0; i < createdAccounts.length; i++) {
                 var account = createdAccounts[i];
                 account.book = this;
@@ -639,7 +629,7 @@ class Book {
      * Gets all [[Groups]] of this Book
      */
     public getGroups(): Group[] {
-        this.checkAccountsLoaded_();
+        this.checkBookLoaded_();
         return this.groups;
     }
 
@@ -652,7 +642,7 @@ class Book {
             let groupsPlain = GroupService_.createGroups(this.getId(), groupsSave);
             let createdGroups = Utils_.wrapObjects(new Group(), groupsPlain);
 
-            this.clearAccountsCache();
+            this.clearCache();
 
             for (var i = 0; i < createdGroups.length; i++) {
                 var group = createdGroups[i];
@@ -664,9 +654,28 @@ class Book {
         return [];
     }
 
-    clearAccountsCache() {
-        this.idAccountMap = null;
-        this.idGroupMap = null;
+    updateAccountsCache(accounts: bkper.Account[]) {
+        if (!accounts) {
+            return;
+        }
+        for (const accountJson of accounts) {
+            if (this.idAccountMap != null) {
+                let cachedAccount = this.idAccountMap[accountJson.id];
+                if (cachedAccount) {
+                    cachedAccount.wrapped = accountJson;
+                }
+            }
+            if (this.nameAccountMap != null) {
+                let cachedAccount = this.nameAccountMap[accountJson.normalizedName];
+                if (cachedAccount) {
+                    cachedAccount.wrapped = accountJson;
+                }
+            }
+        }
+    }
+
+    clearCache() {
+        this.wrapped = null;
     }
 
     /**
@@ -684,7 +693,7 @@ class Book {
 
         idOrName = idOrName + '';
 
-        this.checkAccountsLoaded_();
+        this.checkBookLoaded_();
 
         var group = this.idGroupMap[idOrName];
         if (group == null) {
@@ -902,7 +911,7 @@ class Book {
      */
     public createAccount(name: string, group?: string, description?: string): Account {
         var account = AccountService_.createAccountV2(this.getId(), name, group, description);
-        this.clearAccountsCache();
+        this.clearCache();
         return this.getAccount(name);
     }
 
@@ -940,7 +949,7 @@ class Book {
             timeZone = this.getTimeZone();
         }
         TransactionService_.record(this, transactions, timeZone);
-        this.clearAccountsCache();
+        this.clearCache();
     }
 
     /**
@@ -992,7 +1001,7 @@ class Book {
         if (accountsPayloads.length > 0) {
             let createdAccountsPlain = AccountService_.createAccounts(this.getId(), accountsPayloads);
             let createdAccounts = Utils_.wrapObjects(new Account(), createdAccountsPlain);
-            this.clearAccountsCache();
+            this.clearCache();
             for (var i = 0; i < createdAccounts.length; i++) {
                 var account = createdAccounts[i];
                 account.book = this;
@@ -1032,7 +1041,7 @@ class Book {
             let groupsPlain = GroupService_.createGroups(this.getId(), groupsSave);
             let createdGroups = Utils_.wrapObjects(new Group(), groupsPlain);
 
-            this.clearAccountsCache();
+            this.clearCache();
 
             for (var i = 0; i < createdGroups.length; i++) {
                 var group = createdGroups[i];

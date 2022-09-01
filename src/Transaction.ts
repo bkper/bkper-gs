@@ -622,7 +622,7 @@ class Transaction {
   public create(): Transaction {
     let operation = TransactionService_.createTransaction(this.book.getId(), this.wrapped);
     this.wrapped = operation.transaction;
-    this.book.clearAccountsCache();
+    this.book.updateAccountsCache(operation.accounts);
     return this;
   } 
 
@@ -632,7 +632,7 @@ class Transaction {
   public update(): Transaction {
     let operation = TransactionService_.updateTransaction(this.book.getId(), this.wrapped);
     this.wrapped = operation.transaction;
-    this.book.clearAccountsCache();
+    this.book.updateAccountsCache(operation.accounts);
     return this;
   }    
 
@@ -643,7 +643,7 @@ class Transaction {
   public check(): Transaction {
     let operation = TransactionService_.checkTransaction(this.book.getId(), this.wrapped);
     this.wrapped.checked = operation.transaction.checked;
-    this.book.clearAccountsCache();
+    this.book.updateAccountsCache(operation.accounts);
     return this;
   }
 
@@ -653,7 +653,7 @@ class Transaction {
   public uncheck(): Transaction {
     let operation = TransactionService_.uncheckTransaction(this.book.getId(), this.wrapped);
     this.wrapped.checked = operation.transaction.checked;
-    this.book.clearAccountsCache();
+    this.book.updateAccountsCache(operation.accounts);
     return this;
   }  
 
@@ -663,7 +663,7 @@ class Transaction {
   public post(): Transaction {
     let operation = TransactionService_.postTransaction(this.book.getId(), this.wrapped);
     this.wrapped = operation.transaction;
-    this.book.clearAccountsCache();
+    this.book.updateAccountsCache(operation.accounts);
     return this;
   }    
 
@@ -673,7 +673,7 @@ class Transaction {
   public trash(): Transaction {
     let operation = TransactionService_.trashTransaction(this.book.getId(), this.wrapped);
     this.wrapped.trashed = operation.transaction.trashed;
-    this.book.clearAccountsCache();
+    this.book.updateAccountsCache(operation.accounts);
     return this;
   }  
 
@@ -683,7 +683,7 @@ class Transaction {
   public untrash(): Transaction {
     let operation = TransactionService_.untrashTransaction(this.book.getId(), this.wrapped);
     this.wrapped.trashed = operation.transaction.trashed;
-    this.book.clearAccountsCache();
+    this.book.updateAccountsCache(operation.accounts);
     return this;
   }  
 
@@ -697,7 +697,7 @@ class Transaction {
     public remove(): Transaction {
         let operation = TransactionService_.trashTransaction(this.book.getId(), this.wrapped);
         this.wrapped.trashed = operation.transaction.trashed;
-        this.book.clearAccountsCache();
+        this.book.updateAccountsCache(operation.accounts);
         return this;
     }
 
@@ -708,7 +708,7 @@ class Transaction {
    public restore(): Transaction {
     let operation = TransactionService_.untrashTransaction(this.book.getId(), this.wrapped);
     this.wrapped.trashed = operation.transaction.trashed;
-    this.book.clearAccountsCache();
+    this.book.updateAccountsCache(operation.accounts);
     return this;
   }      
 

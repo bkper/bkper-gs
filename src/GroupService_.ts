@@ -37,18 +37,4 @@ namespace GroupService_ {
     return groupsPlain;
   }
 
-  export function listGroups(bookId: string): bkper.Group[] {
-
-    var responseJSON = new HttpBooksApiV5Request(`${bookId}/groups`).setMethod('get').fetch().getContentText();
-
-    if (responseJSON == null || responseJSON == "") {
-      return [];
-    }
-
-    var groupsPlain = JSON.parse(responseJSON).items;
-    if (groupsPlain == null) {
-      return [];
-    }
-    return groupsPlain;
-  }
 }

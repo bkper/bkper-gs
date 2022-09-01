@@ -350,7 +350,7 @@ class Account {
    */
   public create(): Account {
     this.wrapped = AccountService_.createAccount(this.book.getId(), this.wrapped);
-    this.book.clearAccountsCache();
+    this.book.clearCache();
     return this;
   }   
 
@@ -359,7 +359,7 @@ class Account {
    */
   public update(): Account {
     this.wrapped = AccountService_.updateAccount(this.book.getId(), this.wrapped);
-    this.book.clearAccountsCache();
+    this.book.clearCache();
     return this;
 
   }   
@@ -369,7 +369,7 @@ class Account {
    */
   public remove(): Account {
     this.wrapped = AccountService_.deleteAccount(this.book.getId(), this.wrapped);
-    this.book.clearAccountsCache();
+    this.book.clearCache();
     return this;
   }   
 

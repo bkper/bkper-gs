@@ -204,7 +204,7 @@ class Group {
      */
     public create(): Group {
         this.wrapped = GroupService_.createGroup(this.book.getId(), this.wrapped);
-        this.book.clearAccountsCache();
+        this.book.clearCache();
         return this;
     }
 
@@ -213,7 +213,7 @@ class Group {
      */
     public update(): Group {
         this.wrapped = GroupService_.updateGroup(this.book.getId(), this.wrapped);
-        this.book.clearAccountsCache();
+        this.book.clearCache();
         return this;
 
     }
@@ -223,7 +223,7 @@ class Group {
      */
     public remove(): Group {
         this.wrapped = GroupService_.deleteGroup(this.book.getId(), this.wrapped);
-        this.book.clearAccountsCache();
+        this.book.clearCache();
         return this;
     }
 

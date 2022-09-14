@@ -152,6 +152,11 @@ declare namespace Bkper {
         getProperty(...keys: string[]): string;
 
         /**
+         * Gets the custom properties keys stored in this Account.
+         */
+        getPropertyKeys(): string[];
+
+        /**
          * @returns The type for of this account.
          */
         getType(): AccountType;
@@ -275,7 +280,7 @@ declare namespace Bkper {
     }
 
     /**
-     * A AccountsDataTableBuilder is used to setup and build two-dimensional arrays containing transactions.
+     * A AccountsDataTableBuilder is used to setup and build two-dimensional arrays containing accounts.
      */
     export interface AccountsDataTableBuilder {
 
@@ -290,6 +295,20 @@ declare namespace Bkper {
          * @returns This builder, for chaining.
          */
         includeArchived(include: boolean): AccountsDataTableBuilder;
+
+        /**
+         * Defines whether include account groups.
+         *
+         * @returns This builder with respective include groups option, for chaining.
+         */
+        includeGroups(include: boolean): AccountsDataTableBuilder;
+
+        /**
+         * Defines whether include custom account properties.
+         *
+         * @returns This builder with respective include properties option, for chaining.
+         */
+        includeProperties(include: boolean): AccountsDataTableBuilder;
 
     }
 

@@ -9,11 +9,15 @@ class AccountsDataTableBuilder {
 
   private shouldIncludeArchived: boolean;
   private shouldAddGroups: boolean;
+  private shouldAddProperties: boolean;
+  
+  private propertyKeys: string[];
 
   constructor(accounts: Account[]) {
     this.accounts = accounts;
     this.shouldIncludeArchived = false;
     this.shouldAddGroups = false;
+    this.shouldAddProperties = false;
   }
 
   /**
@@ -34,6 +38,31 @@ class AccountsDataTableBuilder {
   public includeGroups(include: boolean): AccountsDataTableBuilder {
     this.shouldAddGroups = include;
     return this;
+  }
+
+  /**
+   * Defines whether include custom account properties.
+   * 
+   * @returns This builder with respective include properties option, for chaining.
+   */
+  public includeProperties(include: boolean): AccountsDataTableBuilder {
+    this.shouldAddProperties = include;
+    return this;
+  }
+
+  private getPropertyKeys(): string[] {
+    if (this.propertyKeys == null) {
+      this.propertyKeys = [];
+      for (const account of this.accounts) {
+        for (const key of account.getPropertyKeys()) {
+          if (this.propertyKeys.indexOf(key) <= -1) {
+            this.propertyKeys.push(key);
+          }
+        }
+      }
+      this.propertyKeys = this.propertyKeys.sort();
+    }
+    return this.propertyKeys;
   }
 
   private getTypeIndex(type: AccountType): number {
@@ -91,6 +120,11 @@ class AccountsDataTableBuilder {
       return ret;
     })
 
+    let propertyKeys: string[] = [];
+    if (this.shouldAddProperties) {
+      propertyKeys = this.getPropertyKeys();
+    }
+
     for (const account of accounts) {
 
       let line = new Array();
@@ -107,7 +141,30 @@ class AccountsDataTableBuilder {
         }
       }
 
+      if (this.shouldAddGroups && this.shouldAddProperties) {
+        const numOfBlankCells = headers.length - line.length;
+        for (let i = 0; i < numOfBlankCells; i++) {
+          line.push('');
+        }
+      }
+
+      if (this.shouldAddProperties) {
+        const properties = account.getProperties();
+        for (const key of propertyKeys) {
+          let propertyValue = properties[key];
+          if (propertyValue) {
+            line.push(propertyValue);
+            continue;
+          }
+          line.push('');
+        }
+      }
+
       table.push(line);
+    }
+
+    if (this.shouldAddProperties) {
+      headers = headers.concat(propertyKeys);
     }
 
     table.unshift(headers);

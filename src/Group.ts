@@ -15,10 +15,9 @@ class Group {
 
     parent: Group
 
-    children: Group[] = [];
+    private children: Group[];
     private accounts: Account[];
     private idAccountMap: { [key: string]: Account };
-
 
     depth: number;
 
@@ -262,7 +261,7 @@ class Group {
     }
 
     /**
-     * Tell if this group is a has any children
+     * Tell if this group has any children
      */
     public hasChildren(): boolean {
         return this.children && this.children.length > 0;
@@ -296,12 +295,17 @@ class Group {
     buildGroupTree_(idGroupMap: any) {
         this.parent = null;
         this.depth = null;
+        if (this.children == null) {
+            this.children = [];
+        }
         if (this.wrapped.parent != null) {
             let parentGroup: Group = idGroupMap[this.wrapped.parent.id];
             if (parentGroup != null) {
                 this.parent = parentGroup;
+                if (this.parent.children == null) {
+                    this.parent.children = [];
+                }
                 this.parent.children.push(this);
-                this.parent.buildGroupTree_(idGroupMap);
             }
         }
     }

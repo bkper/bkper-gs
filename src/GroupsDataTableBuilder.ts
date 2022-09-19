@@ -42,7 +42,7 @@ class GroupsDataTableBuilder {
     }
 
     /**
-     * @returns A two-dimensional array containing all [[Accounts]].
+     * @returns A two-dimensional array containing all [[Groups]].
      */
     public build(): any[][] {
 
@@ -64,9 +64,9 @@ class GroupsDataTableBuilder {
 
         for (const group of groups) {
 
-            // if (group.isHidden() || group.hasChildren()) {
-            //     continue;
-            // }
+            if (group.isHidden() || group.hasChildren()) {
+                continue;
+            }
 
             let line = new Array();
             line.push(group.getName());

@@ -127,6 +127,23 @@ class Group {
     }
 
     /**
+     * Gets the custom properties keys stored in this Group.
+     */
+    public getPropertyKeys(): string[] {
+        let properties = this.getProperties();
+        let propertyKeys: string[] = [];
+        if (properties) {
+            for (const key in properties) {
+                if (Object.prototype.hasOwnProperty.call(properties, key)) {
+                    propertyKeys.push(key);
+                }
+            }
+        }
+        propertyKeys = propertyKeys.sort();
+        return propertyKeys;
+    }
+
+    /**
      * Sets the custom properties of the Group
      * 
      * @param properties Object with key/value pair properties

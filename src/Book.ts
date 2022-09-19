@@ -791,6 +791,16 @@ class Book {
         return new AccountsDataTableBuilder(accounts);
     }
 
+    /**
+     * Create a [[GroupsDataTableBuilder]], to build two dimensional Array representations of [[Groups]] dataset.
+     * 
+     * @return Groups data table builder.
+     * 
+     */
+    public createGroupsDataTable(): GroupsDataTableBuilder {
+        let groups = this.getGroups();
+        return new GroupsDataTableBuilder(groups);
+    }
 
     /**
      * Create a [[TransactionsDataTableBuilder]] based on a query, to build two dimensional Array representations of [[Transactions]] dataset.

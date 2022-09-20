@@ -26,7 +26,7 @@ class GroupsDataTableBuilder {
         return this;
     }
 
-    private getPropertyKeys(): string[] {
+    private mapPropertyKeys(): void {
         if (this.propertyKeys == null) {
             this.propertyKeys = [];
             for (const group of this.groups) {
@@ -38,7 +38,6 @@ class GroupsDataTableBuilder {
             }
             this.propertyKeys = this.propertyKeys.sort();
         }
-        return this.propertyKeys;
     }
 
     /**
@@ -52,28 +51,34 @@ class GroupsDataTableBuilder {
 
         let headers = [];
         headers.push('Name');
+        headers.push('Parent');
+        headers.push('Children');
 
         groups.sort((g1: Group, g2: Group) => {
             return g1.getNormalizedName().localeCompare(g2.getNormalizedName());
         })
 
-        let propertyKeys: string[] = [];
         if (this.shouldAddProperties) {
-            propertyKeys = this.getPropertyKeys();
+            this.mapPropertyKeys();
         }
 
         for (const group of groups) {
 
-            if (group.isHidden() || group.hasChildren()) {
+            if (group.isHidden()) {
                 continue;
             }
 
             let line = new Array();
             line.push(group.getName());
 
+            let parentName = group.getParent() ? group.getParent().getName() : '';
+            line.push(parentName);
+
+            line.push(group.getChildren().length);
+
             if (this.shouldAddProperties) {
                 const properties = group.getProperties();
-                for (const key of propertyKeys) {
+                for (const key of this.propertyKeys) {
                     let propertyValue = properties[key];
                     if (propertyValue) {
                         line.push(propertyValue);
@@ -87,7 +92,7 @@ class GroupsDataTableBuilder {
         }
 
         if (this.shouldAddProperties) {
-            headers = headers.concat(propertyKeys);
+            headers = headers.concat(this.propertyKeys);
         }
 
         table.unshift(headers);

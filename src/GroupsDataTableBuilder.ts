@@ -86,6 +86,7 @@ class GroupsDataTableBuilder {
         headers.push('Type');
         headers.push('Parent');
         headers.push('Children');
+        headers.push('Accounts');
 
         if (this.shouldAddProperties) {
             this.mapPropertyKeys();
@@ -116,6 +117,7 @@ class GroupsDataTableBuilder {
         line.push(this.getStringType(group));
         line.push(parentName);
         line.push(group.getChildren().length);
+        line.push(group.getAccounts().length);
         if (this.shouldAddProperties) {
             const properties = group.getProperties();
             for (const key of this.propertyKeys) {

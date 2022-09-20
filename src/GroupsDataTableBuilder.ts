@@ -40,6 +40,37 @@ class GroupsDataTableBuilder {
         }
     }
 
+    private getStringType(group: Group): string {
+        let groupType = group.getType() ? group.getType() + '' : undefined;
+        if (!groupType) {
+            groupType = group.isPermanent() ? AccountType.ASSET + '_' + AccountType.LIABILITY : AccountType.INCOMING + '_' + AccountType.OUTGOING;
+        }
+        return groupType;
+    }
+
+    private getTypeIndex(type: string): number {
+        if (type == AccountType.ASSET + '_' + AccountType.LIABILITY) {
+            return 0;
+        }
+        if (type == AccountType.ASSET) {
+            return 1;
+        }
+        if (type == AccountType.LIABILITY) {
+            return 2;
+        }
+        if (type == AccountType.INCOMING + '_' + AccountType.OUTGOING) {
+            return 3;
+        }
+        if (type == AccountType.INCOMING) {
+            return 4;
+        }
+        return 5;
+    }
+
+    private getHasChildrenIndex(hasChildren: boolean): number {
+        return hasChildren ? 0 : 1;
+    }
+ 
     /**
      * @returns A two-dimensional array containing all [[Groups]].
      */
@@ -48,47 +79,24 @@ class GroupsDataTableBuilder {
         let table = new Array<Array<any>>();
 
         let groups = this.groups;
+        groups.sort(this.COMPARATOR);
 
         let headers = [];
         headers.push('Name');
+        headers.push('Type');
         headers.push('Parent');
         headers.push('Children');
-
-        groups.sort((g1: Group, g2: Group) => {
-            return g1.getNormalizedName().localeCompare(g2.getNormalizedName());
-        })
 
         if (this.shouldAddProperties) {
             this.mapPropertyKeys();
         }
 
         for (const group of groups) {
-
-            if (group.isHidden()) {
+            if (group.isHidden() || group.getParent()) {
                 continue;
             }
-
-            let line = new Array();
-            line.push(group.getName());
-
-            let parentName = group.getParent() ? group.getParent().getName() : '';
-            line.push(parentName);
-
-            line.push(group.getChildren().length);
-
-            if (this.shouldAddProperties) {
-                const properties = group.getProperties();
-                for (const key of this.propertyKeys) {
-                    let propertyValue = properties[key];
-                    if (propertyValue) {
-                        line.push(propertyValue);
-                        continue;
-                    }
-                    line.push('');
-                }
-            }
-
-            table.push(line);
+            table.push(this.buildGroupLine(group));
+            table = this.traverse(group, table);
         }
 
         if (this.shouldAddProperties) {
@@ -96,11 +104,53 @@ class GroupsDataTableBuilder {
         }
 
         table.unshift(headers);
-
         table = Utils_.convertInMatrix(table);
 
         return table;
+    }
 
+    private buildGroupLine(group: Group): string[] {
+        let line = new Array();
+        let parentName = group.getParent() ? group.getParent().getName() : '';
+        line.push(group.getName());
+        line.push(this.getStringType(group));
+        line.push(parentName);
+        line.push(group.getChildren().length);
+        if (this.shouldAddProperties) {
+            const properties = group.getProperties();
+            for (const key of this.propertyKeys) {
+                let propertyValue = properties[key];
+                if (propertyValue) {
+                    line.push(propertyValue);
+                    continue;
+                }
+                line.push('');
+            }
+        }
+        return line;
+    }
+
+    private traverse(group: Group, table: any[][]): any[][] {
+        const children = group.getChildren();
+        children.sort(this.COMPARATOR);
+        for (const child of children) {
+            table.push(this.buildGroupLine(child));
+            if (child.hasChildren()) {
+                this.traverse(child, table);
+            }
+        }
+        return table;
+    }
+
+    private readonly COMPARATOR = (g1: Group, g2: Group): number => {
+        let ret = this.getTypeIndex(this.getStringType(g1)) - this.getTypeIndex(this.getStringType(g2));
+        if (ret == 0) {
+            ret = this.getHasChildrenIndex(g1.hasChildren()) - this.getHasChildrenIndex(g2.hasChildren());
+        }
+        if (ret == 0) {
+            ret = g1.getNormalizedName().localeCompare(g2.getNormalizedName());
+        }
+        return ret;
     }
 
 }

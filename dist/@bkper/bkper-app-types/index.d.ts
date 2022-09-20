@@ -755,6 +755,14 @@ declare namespace Bkper {
         createGroups(groups: string[]): Group[];
 
         /**
+         * Create a [[GroupsDataTableBuilder]], to build two dimensional Array representations of [[Groups]] dataset.
+         *
+         * @returns Groups data table builder.
+         * 
+         */
+        createGroupsDataTable(): GroupsDataTableBuilder;
+
+        /**
          * Create a [[TransactionsDataTableBuilder]] based on a query, to build two dimensional Array representations of [[Transactions]] dataset.
          *
          * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
@@ -1313,6 +1321,11 @@ declare namespace Bkper {
         getProperty(...keys: string[]): string;
 
         /**
+         * Gets the custom properties keys stored in this Group.
+         */
+        getPropertyKeys(): string[];
+
+        /**
          * @returns The root Group
          */
         getRoot(): Group;
@@ -1328,7 +1341,7 @@ declare namespace Bkper {
         hasAccounts(): boolean;
 
         /**
-         * Tell if this group is a has any children
+         * Tell if this group has any children
          */
         hasChildren(): boolean;
 
@@ -1392,6 +1405,25 @@ declare namespace Bkper {
          * Perform update group, applying pending changes.
          */
         update(): Group;
+
+    }
+
+    /**
+     * A GroupsDataTableBuilder is used to setup and build two-dimensional arrays containing groups.
+     */
+    export interface GroupsDataTableBuilder {
+
+        /**
+         * @returns A two-dimensional array containing all [[Groups]].
+         */
+        build(): any[][];
+
+        /**
+         * Defines whether include custom group properties.
+         *
+         * @returns This builder with respective include properties option, for chaining.
+         */
+        includeProperties(include: boolean): GroupsDataTableBuilder;
 
     }
 

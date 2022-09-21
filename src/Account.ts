@@ -155,7 +155,7 @@ class Account {
 
   /**
    * Gets the balance based on credit nature of this Account.
-   *  
+   * @deprecated Use `Book.getBalancesReport` instead.
    * @returns The balance of this account.
    */
   public getBalance(): Amount {
@@ -168,7 +168,7 @@ class Account {
 
   /**
    * Gets the raw balance, no matter credit nature of this Account.
-   *  
+   * @deprecated Use `Book.getBalancesReport` instead.
    * @returns The balance of this account.
    */  
   public getBalanceRaw(): Amount {

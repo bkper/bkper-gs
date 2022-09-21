@@ -103,6 +103,8 @@ declare namespace Bkper {
          * Gets the balance based on credit nature of this Account.
          *
          * @returns The balance of this account.
+         *
+         * @deprecated Use `Book.getBalancesReport` instead.
          */
         getBalance(): Amount;
 
@@ -110,6 +112,8 @@ declare namespace Bkper {
          * Gets the raw balance, no matter credit nature of this Account.
          *
          * @returns The balance of this account.
+         *
+         * @deprecated Use `Book.getBalancesReport` instead.
          */
         getBalanceRaw(): Amount;
 

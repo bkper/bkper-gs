@@ -93,7 +93,7 @@ class TransactionsDataTableBuilder {
     return this.transactions;
   }
 
-  public getHeaderLine(): string[] {
+  private getHeaderLine(): string[] {
     var headerLine: string[] = [];
 
     if (this.getAccount() != null) {

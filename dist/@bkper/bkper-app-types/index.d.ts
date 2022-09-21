@@ -1870,8 +1870,6 @@ declare namespace Bkper {
          */
         getAccount(): Account;
 
-        getHeaderLine(): string[];
-
         /**
          * Defines whether include transaction ids.
          *

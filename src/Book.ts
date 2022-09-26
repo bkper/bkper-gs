@@ -748,10 +748,20 @@ class Book {
     }
 
     /**
-     * 
+     *
      * Create a [[BalancesReport]] based on query
      * 
      * @param query The balances report query
+     * 
+     * Example:
+     * 
+     * ```js
+     * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
+     * 
+     * var balancesReport = book.getBalancesReport("group:'Equity' after:7/2018 before:8/2018");
+     * 
+     * var accountBalance = balancesReport.getBalancesContainer("Bank Account").getCumulativeBalance();
+     * ```
      */
     public getBalancesReport(query: string): BalancesReport {
         var balances = BalancesService_.getBalances(this.getId(), query);
@@ -759,7 +769,7 @@ class Book {
     }
 
     /**
-     * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]], [[Group]] or #hashtag
+     * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]] or [[Group]]
      * 
      * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
      * 
@@ -770,9 +780,9 @@ class Book {
      * Example:
      * 
      * ```js
-     * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+     * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
      * 
-     * var balancesDataTable = book.createBalancesDataTable("#rental #energy after:8/2013 before:9/2013").build();
+     * var balancesDataTable = book.createBalancesDataTable("account:'Credit card' after:7/2018 before:8/2018").build();
      * ```
      */
     public createBalancesDataTable(query: string): BalancesDataTableBuilder {
@@ -785,6 +795,13 @@ class Book {
      * 
      * @return Accounts data table builder.
      * 
+     * Example:
+     * 
+     * ```js
+     * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
+     * 
+     * var accountsDataTable = book.createAccountsDataTable().build();
+     * ```
      */
     public createAccountsDataTable(): AccountsDataTableBuilder {
         let accounts = this.getAccounts();
@@ -796,6 +813,13 @@ class Book {
      * 
      * @return Groups data table builder.
      * 
+     * Example:
+     * 
+     * ```js
+     * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
+     * 
+     * var groupsDataTable = book.createGroupsDataTable().build();
+     * ```
      */
     public createGroupsDataTable(): GroupsDataTableBuilder {
         let groups = this.getGroups();
@@ -814,9 +838,9 @@ class Book {
      * Example: 
      * 
      * ```js
-     * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+     * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
      * 
-     * var transactionsDataTable = book.createTransactionsDataTable("account:'Bank' after:8/2013 before:9/2013").build();
+     * var transactionsDataTable = book.createTransactionsDataTable("account:'Bank Account' before:1/2019").build();
      * ```
      */
     public createTransactionsDataTable(query?: string): TransactionsDataTableBuilder {

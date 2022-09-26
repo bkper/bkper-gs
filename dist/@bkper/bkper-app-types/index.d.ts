@@ -100,20 +100,16 @@ declare namespace Bkper {
         deleteProperty(key: string): Account;
 
         /**
-         * Gets the balance based on credit nature of this Account.
+         * Gets the balance on the current month, based on the credit nature of this Account.
          *
          * @returns The balance of this account.
-         *
-         * @deprecated Use `Book.getBalancesReport` instead.
          */
         getBalance(): Amount;
 
         /**
-         * Gets the raw balance, no matter credit nature of this Account.
+         * Gets the raw balance on the current month, no matter the credit nature of this Account.
          *
          * @returns The balance of this account.
-         *
-         * @deprecated Use `Book.getBalancesReport` instead.
          */
         getBalanceRaw(): Amount;
 
@@ -409,7 +405,7 @@ declare namespace Bkper {
     }
 
     /**
-     * Class that represents an [[Account]], [[Group]] or #hashtag balance on a window of time (Day / Month / Year).
+     * Class that represents an [[Account]] or [[Group]] balance on a window of time (Day / Month / Year).
      */
     export interface Balance {
 
@@ -731,11 +727,18 @@ declare namespace Bkper {
          *
          * @returns Accounts data table builder.
          * 
+         * Example:
+         * 
+         * ```js
+         * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
+         * 
+         * var accountsDataTable = book.createAccountsDataTable().build();
+         * ```
          */
         createAccountsDataTable(): AccountsDataTableBuilder;
 
         /**
-         * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]], [[Group]] or #hashtag
+         * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]] or [[Group]]
          *
          * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
          *
@@ -744,9 +747,9 @@ declare namespace Bkper {
          * Example:
          * 
          * ```js
-         * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+         * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
          * 
-         * var balancesDataTable = book.createBalancesDataTable("#rental #energy after:8/2013 before:9/2013").build();
+         * var balancesDataTable = book.createBalancesDataTable("account:'Credit card' after:7/2018 before:8/2018").build();
          * ```
          */
         createBalancesDataTable(query: string): BalancesDataTableBuilder;
@@ -763,6 +766,13 @@ declare namespace Bkper {
          *
          * @returns Groups data table builder.
          * 
+         * Example:
+         * 
+         * ```js
+         * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
+         * 
+         * var groupsDataTable = book.createGroupsDataTable().build();
+         * ```
          */
         createGroupsDataTable(): GroupsDataTableBuilder;
 
@@ -776,9 +786,9 @@ declare namespace Bkper {
          * Example:
          * 
          * ```js
-         * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+         * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
          * 
-         * var transactionsDataTable = book.createTransactionsDataTable("account:'Bank' after:8/2013 before:9/2013").build();
+         * var transactionsDataTable = book.createTransactionsDataTable("account:'Bank Account' before:1/2019").build();
          * ```
          */
         createTransactionsDataTable(query?: string): TransactionsDataTableBuilder;

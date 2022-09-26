@@ -34,7 +34,7 @@ class Account {
    * Sets the name of the Account.
    * 
    * @returns This Account, for chainning.
-   */    
+   */
   public setName(name: string): Account {
     this.wrapped.name = name;
     return this;
@@ -64,7 +64,7 @@ class Account {
    * Sets the type of the Account.
    * 
    * @returns This Account, for chainning
-   */   
+   */
   public setType(type: AccountType): Account {
     this.wrapped.type = type;
     return this;
@@ -72,9 +72,9 @@ class Account {
 
   /**
    * Gets the custom properties stored in this Account.
-   */  
-  public getProperties(): {[key: string]: string} {
-    return this.wrapped.properties != null ?  {...this.wrapped.properties} : {};
+   */
+  public getProperties(): { [key: string]: string } {
+    return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
   }
 
   /**
@@ -84,8 +84,8 @@ class Account {
    * 
    * @returns This Account, for chainning. 
    */
-  public setProperties(properties: {[key: string]: string}): Account {
-    this.wrapped.properties = {...properties};
+  public setProperties(properties: { [key: string]: string }): Account {
+    this.wrapped.properties = { ...properties };
     return this;
   }
 
@@ -97,7 +97,7 @@ class Account {
   public getProperty(...keys: string[]): string {
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
-      let value = this.wrapped.properties != null ?  this.wrapped.properties[key] : null 
+      let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
       if (value != null && value.trim() != '') {
         return value;
       }
@@ -133,7 +133,7 @@ class Account {
   public setProperty(key: string, value: string): Account {
     if (key == null || key.trim() == '') {
       return this;
-    }    
+    }
     if (this.wrapped.properties == null) {
       this.wrapped.properties = {};
     }
@@ -154,34 +154,24 @@ class Account {
   }
 
   /**
-   * Gets the balance based on credit nature of this Account.
-   * @deprecated Use `Book.getBalancesReport` instead.
+   * Gets the balance on the current month, based on the credit nature of this Account.
    * @returns The balance of this account.
    */
   public getBalance(): Amount {
-    var balance = new Amount('0');
-    if (this.wrapped.balance != null) {
-      balance = new Amount(this.wrapped.balance);
-    }
-    return Utils_.getRepresentativeValue(balance, this.isCredit());
+    return this.book.getBalancesReport(`account:'${this.wrapped.name}' on:$m`).getBalancesContainer(this.wrapped.name).getCumulativeBalance();
   }
 
   /**
-   * Gets the raw balance, no matter credit nature of this Account.
-   * @deprecated Use `Book.getBalancesReport` instead.
+   * Gets the raw balance on the current month, no matter the credit nature of this Account.
    * @returns The balance of this account.
-   */  
+   */
   public getBalanceRaw(): Amount {
-    var balance = new Amount('0');
-    if (this.wrapped.balance != null) {
-      balance = new Amount(this.wrapped.balance);
-    }
-    return balance;
+    return this.book.getBalancesReport(`account:'${this.wrapped.name}' on:$m`).getBalancesContainer(this.wrapped.name).getCumulativeBalanceRaw();
   }
 
   /**
    * Tell if this account is archived.
-   */  
+   */
   public isArchived(): boolean {
     return this.wrapped.archived;
   }
@@ -204,7 +194,7 @@ class Account {
   public hasTransactionPosted(): boolean {
     return this.wrapped.hasTransactionPosted;
   }
-  
+
 
   /**
    * 
@@ -249,7 +239,7 @@ class Account {
 
   /**
    * Get the [[Groups]] of this account.
-   */  
+   */
   public getGroups(): Group[] {
     let groups = new Array<Group>();
     if (this.wrapped.groups != null) {
@@ -266,7 +256,7 @@ class Account {
    * Sets the groups of the Account.
    * 
    * @returns This Account, for chainning.
-   */  
+   */
   public setGroups(groups: string[] | Group[]): Account {
     this.wrapped.groups = null;
     if (groups != null) {
@@ -274,7 +264,7 @@ class Account {
     }
     return this;
   }
-  
+
   /**
    * Add a group to the Account.
    * 
@@ -368,7 +358,7 @@ class Account {
     this.wrapped = AccountService_.createAccount(this.book.getId(), this.wrapped);
     this.book.clearCache();
     return this;
-  }   
+  }
 
   /**
    * Perform update account, applying pending changes.
@@ -378,7 +368,7 @@ class Account {
     this.book.clearCache();
     return this;
 
-  }   
+  }
 
   /**
    * Perform delete account.
@@ -387,7 +377,7 @@ class Account {
     this.wrapped = AccountService_.deleteAccount(this.book.getId(), this.wrapped);
     this.book.clearCache();
     return this;
-  }   
+  }
 
 
   //DEPRECATED

@@ -1,5 +1,5 @@
 /**
- * Class that represents an [[Account]], [[Group]] or #hashtag balance on a window of time (Day / Month / Year). 
+ * Class that represents an [[Account]] or [[Group]] balance on a window of time (Day / Month / Year). 
  * 
  * @public
  */

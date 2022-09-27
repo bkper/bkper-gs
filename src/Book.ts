@@ -27,6 +27,8 @@ class Book {
 
     /**
      * Same as bookId param
+     * 
+     * @return The id of this Book
      */
     public getId(): string {
         return this.id;
@@ -286,7 +288,7 @@ class Book {
 
 
     /**
-     * Gets the custom properties stored in this Book
+     * @return The custom properties stored in this Book
      */
     public getProperties(): { [key: string]: string } {
         this.checkBookLoaded_();
@@ -294,9 +296,9 @@ class Book {
     }
 
     /**
-     * Gets the property value for given keys. First property found will be retrieved
-     * 
      * @param keys The property key
+     * 
+     * @return The property value for given keys. First property found will be retrieved
      */
     public getProperty(...keys: string[]): string {
         this.checkBookLoaded_();
@@ -376,6 +378,8 @@ class Book {
      * Parse a date string according to date pattern and timezone of the Book. 
      * 
      * Also parse ISO yyyy-mm-dd format.
+     * 
+     * @return The date parsed
      */
     public parseDate(date: string): Date {
         return Utils_.parseDate(date, this.getDatePattern(), this.getTimeZoneOffset());
@@ -395,6 +399,8 @@ class Book {
 
     /**
      * Parse an amount string according to [[DecimalSeparator]] and fraction digits of the Book.
+     * 
+     * @return The Amount parsed
      */
     public parseAmount(value: string): Amount {
         return Utils_.parseValue(value, this.getDecimalSeparator());
@@ -406,14 +412,16 @@ class Book {
      * 
      * @param amount The amount to be rounded
      * 
-     * @returns The amount rounded
+     * @returns The Amount rounded
      */
     public round(amount: Amount): Amount {
         return Utils_.round(amount, this.getFractionDigits());
     }
 
     /**
-     * Batch create [[Transactions]] on the Book. 
+     * Batch create [[Transactions]] on the Book.
+     * 
+     * @returns The Transactions created
      */
     public batchCreateTransactions(transactions: Transaction[]): Transaction[] {
         let transactionPayloads: bkper.Transaction[] = [];
@@ -492,6 +500,8 @@ class Book {
     /**
      * Instantiate a new [[Transaction]]
      * 
+     * @return The new Transaction, for chainning.
+     * 
      * Example:
      * 
      * ```js
@@ -517,6 +527,8 @@ class Book {
     /**
      * Instantiate a new [[Account]]
      * 
+     * @return The new Account, for chainning.
+     * 
      * Example:
      * ```js
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
@@ -539,6 +551,8 @@ class Book {
     /**
      * Instantiate a new [[Group]]
      * 
+     * @return The new Group, for chainning.
+     * 
      * Example:
      * ```js
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
@@ -556,7 +570,7 @@ class Book {
     }
 
     /**
-     * Gets all [[Accounts]] of this Book
+     * @return All [[Accounts]] of this Book
      */
     public getAccounts(): Account[] {
 
@@ -596,6 +610,8 @@ class Book {
 
     /**
      * Create [[Accounts]] on the Book, in batch.
+     * 
+     * @return The Accounts created
      */
     public batchCreateAccounts(accounts: Account[]): Account[] {
         let accountsPayloads: bkper.Account[] = []
@@ -639,7 +655,7 @@ class Book {
 
 
     /**
-     * Gets all [[Groups]] of this Book
+     * @return All [[Groups]] of this Book
      */
     public getGroups(): Group[] {
         this.checkAccountsLoaded_();
@@ -648,6 +664,8 @@ class Book {
 
     /**
      * Create [[Groups]] on the Book, in batch.
+     * 
+     * @return The Groups created
      */
     public batchCreateGroups(groups: Group[]): Group[] {
         if (groups.length > 0) {
@@ -738,7 +756,7 @@ class Book {
 
 
     /**
-     * Gets all saved queries from this book
+     * @return All saved queries from this book
      */
     public getSavedQueries(): { id?: string, query?: string, title?: string }[] {
         if (this.savedQueries == null) {
@@ -752,6 +770,8 @@ class Book {
      * Create a [[BalancesReport]] based on query
      * 
      * @param query The balances report query
+     * 
+     * @return The balances report
      * 
      * Example:
      * 
@@ -875,7 +895,9 @@ class Book {
     }
 
     /**
-     * Retrieve a transaction by id
+     * Retrieve a [[Transaction]] by id
+     * 
+     * @return The matching Transaction object
      */
     public getTransaction(id: string): Transaction {
         let wrapped = TransactionService_.getTransaction(this.getId(), id);
@@ -886,6 +908,8 @@ class Book {
 
     /**
      * Instantiate a new [[File]]
+     * 
+     * @return The new File, for chainning.
      * 
      * Example:
      * ```js
@@ -903,7 +927,9 @@ class Book {
     }
 
     /** 
-     * Retrieve a file by id
+     * Retrieve a [[File]] by id
+     * 
+     * @return The matching File object
      */
     public getFile(id: string): File {
         let wrapped = FileService_.getFile(this.getId(), id);
@@ -913,6 +939,8 @@ class Book {
 
     /**
      * Perform update Book, applying pending changes.
+     * 
+     * @returns This Book, for chainning.
      */
     public update(): Book {
         this.wrapped = BookService_.updateBook(this.getId(), this.wrapped);

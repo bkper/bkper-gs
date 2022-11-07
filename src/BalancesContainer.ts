@@ -32,12 +32,10 @@ interface BalancesContainer {
      */
     getAccount(): Account;
 
-
     /**
      * All [[Balances]] of the container
      */
     getBalances(): Balance[];
-
 
     /**
      * The parent BalanceContainer
@@ -123,7 +121,6 @@ interface BalancesContainer {
      */
     getCumulativeDebitText(): string;
 
-
     /**
      * The balance on the date period.
      */
@@ -164,13 +161,12 @@ interface BalancesContainer {
      */
     getPeriodDebitText(): string;
 
-
     /**
      * Gets all child [[BalancesContainers]].
      * 
      * **NOTE**: Only for Group balance containers. Accounts returns null.
      */
-    getBalancesContainers(): BalancesContainer[]
+    getBalancesContainers(): BalancesContainer[];
 
     /**
      * Gets a specific [[BalancesContainer]].
@@ -199,20 +195,22 @@ interface BalancesContainer {
      * @param keys The property key
      */
     getProperty(...keys: string[]): string;
+
 }
-//###################### ACCOUNT BALANCE CONTAINER ######################
+
+// ###################### ACCOUNT BALANCE CONTAINER ######################
 
 class AccountBalancesContainer implements BalancesContainer {
 
-    private wrapped: bkper.AccountBalances;
+    json: bkper.AccountBalances;
     private balancesReport: BalancesReport;
     private parent: BalancesContainer;
 
 
     constructor(parent: BalancesContainer, balancesReport: BalancesReport, balancePlain: bkper.AccountBalances) {
         this.parent = parent;
-        this.balancesReport = balancesReport
-        this.wrapped = balancePlain;
+        this.balancesReport = balancesReport;
+        this.json = balancePlain;
     }
 
     getParent(): BalancesContainer {
@@ -224,7 +222,7 @@ class AccountBalancesContainer implements BalancesContainer {
     }
 
     getAccount(): Account {
-        return this.balancesReport.getBook().getAccount(this.getNormalizedName())
+        return this.balancesReport.getBook().getAccount(this.getNormalizedName());
     }
 
     isFromAccount(): boolean {
@@ -244,35 +242,35 @@ class AccountBalancesContainer implements BalancesContainer {
     }
 
     public getName(): string {
-        return this.wrapped.name;
+        return this.json.name;
     }
 
     public getNormalizedName(): string {
-        return this.wrapped.normalizedName;
+        return this.json.normalizedName;
     }
 
     public isCredit() {
-        return this.wrapped.credit;
+        return this.json.credit;
     }
 
     public isPermanent() {
-        return this.wrapped.permanent;
+        return this.json.permanent;
     }
 
     public getCumulativeBalance(): Amount {
-        return Utils_.getRepresentativeValue(new Amount(this.wrapped.cumulativeBalance), this.isCredit());
+        return Utils_.getRepresentativeValue(new Amount(this.json.cumulativeBalance), this.isCredit());
     }
 
     public getCumulativeBalanceRaw(): Amount {
-        return new Amount(this.wrapped.cumulativeBalance);
+        return new Amount(this.json.cumulativeBalance);
     }
 
     public getCumulativeCredit(): Amount {
-        return new Amount(this.wrapped.cumulativeCredit);
+        return new Amount(this.json.cumulativeCredit);
     }
 
     public getCumulativeDebit(): Amount {
-        return new Amount(this.wrapped.cumulativeDebit);
+        return new Amount(this.json.cumulativeDebit);
     }
 
     public getCumulativeBalanceText(): string {
@@ -286,42 +284,48 @@ class AccountBalancesContainer implements BalancesContainer {
     public getCumulativeCreditText(): string {
         return this.balancesReport.getBook().formatValue(this.getCumulativeCredit());
     }
+
     public getCumulativeDebitText(): string {
         return this.balancesReport.getBook().formatValue(this.getCumulativeDebit());
     }
 
-
     public getPeriodBalance(): Amount {
-        return Utils_.getRepresentativeValue(new Amount(this.wrapped.periodBalance), this.isCredit());
+        return Utils_.getRepresentativeValue(new Amount(this.json.periodBalance), this.isCredit());
     }
+
     public getPeriodBalanceRaw(): Amount {
-        return new Amount(this.wrapped.periodBalance);
+        return new Amount(this.json.periodBalance);
     }
+
     public getPeriodCredit(): Amount {
-        return new Amount(this.wrapped.periodCredit);
+        return new Amount(this.json.periodCredit);
     }
+
     public getPeriodDebit(): Amount {
-        return new Amount(this.wrapped.periodDebit);
+        return new Amount(this.json.periodDebit);
     }
 
     public getPeriodBalanceText(): string {
         return this.balancesReport.getBook().formatValue(this.getPeriodBalance());
     }
+
     public getPeriodBalanceRawText(): string {
         return this.balancesReport.getBook().formatValue(this.getPeriodBalanceRaw());
     }
+
     public getPeriodCreditText(): string {
         return this.balancesReport.getBook().formatValue(this.getPeriodCredit());
     }
+
     public getPeriodDebitText(): string {
         return this.balancesReport.getBook().formatValue(this.getPeriodDebit());
     }
 
     public getBalances(): Balance[] {
-        if (!this.wrapped.balances) {
+        if (!this.json.balances) {
             return new Array<Balance>();
         }
-        return this.wrapped.balances.map(balancePlain => new Balance(this, balancePlain));
+        return this.json.balances.map(balancePlain => new Balance(this, balancePlain));
     }
 
     public createDataTable(): BalancesDataTableBuilder {
@@ -333,13 +337,13 @@ class AccountBalancesContainer implements BalancesContainer {
     }
 
     public getProperties(): { [key: string]: string } {
-        return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
+        return this.json.properties != null ? { ...this.json.properties } : {};
     }
 
     public getProperty(...keys: string[]): string {
         for (let index = 0; index < keys.length; index++) {
             const key = keys[index];
-            let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
+            let value = this.json.properties != null ? this.json.properties[key] : null;
             if (value != null && value.trim() != '') {
                 return value;
             }
@@ -361,12 +365,11 @@ class AccountBalancesContainer implements BalancesContainer {
 }
 
 
-
-//###################### GROUP BALANCE CONTAINER ######################
+// ###################### GROUP BALANCE CONTAINER ######################
 
 class GroupBalancesContainer implements BalancesContainer {
 
-    private wrapped: bkper.GroupBalances
+    json: bkper.GroupBalances;
     private parent: BalancesContainer;
     private accountBalances: AccountBalancesContainer[];
     private groupBalances: GroupBalancesContainer[];
@@ -376,7 +379,7 @@ class GroupBalancesContainer implements BalancesContainer {
     constructor(parent: BalancesContainer, balancesReport: BalancesReport, groupBalancesPlain: bkper.GroupBalances) {
         this.parent = parent;
         this.balancesReport = balancesReport;
-        this.wrapped = groupBalancesPlain;
+        this.json = groupBalancesPlain;
     }
 
     getParent(): BalancesContainer {
@@ -388,9 +391,8 @@ class GroupBalancesContainer implements BalancesContainer {
     }
 
     getAccount(): Account {
-        return null
+        return null;
     }
-
 
     isFromAccount(): boolean {
         return false;
@@ -409,82 +411,90 @@ class GroupBalancesContainer implements BalancesContainer {
     }
 
     public getName(): string {
-        return this.wrapped.name;
+        return this.json.name;
     }
 
     public getNormalizedName(): string {
-        return this.wrapped.normalizedName;
+        return this.json.normalizedName;
     }
 
     public isCredit(): boolean {
-        return this.wrapped.credit;
+        return this.json.credit;
     }
 
     public isPermanent() {
-        return this.wrapped.permanent;
+        return this.json.permanent;
     }
 
     public getCumulativeBalance(): Amount {
-        return Utils_.getRepresentativeValue(new Amount(this.wrapped.cumulativeBalance), this.isCredit());
+        return Utils_.getRepresentativeValue(new Amount(this.json.cumulativeBalance), this.isCredit());
     }
 
     public getCumulativeBalanceRaw(): Amount {
-        return new Amount(this.wrapped.cumulativeBalance);
+        return new Amount(this.json.cumulativeBalance);
     }
 
     public getCumulativeCredit(): Amount {
-        return new Amount(this.wrapped.cumulativeCredit);
+        return new Amount(this.json.cumulativeCredit);
     }
 
     public getCumulativeDebit(): Amount {
-        return new Amount(this.wrapped.cumulativeDebit);
+        return new Amount(this.json.cumulativeDebit);
     }
 
     public getCumulativeBalanceText(): string {
         return this.balancesReport.getBook().formatValue(this.getCumulativeBalance());
     }
+
     public getCumulativeBalanceRawText(): string {
         return this.balancesReport.getBook().formatValue(this.getCumulativeBalanceRaw());
     }
+
     public getCumulativeCreditText(): string {
         return this.balancesReport.getBook().formatValue(this.getCumulativeCredit());
     }
+
     public getCumulativeDebitText(): string {
         return this.balancesReport.getBook().formatValue(this.getCumulativeDebit());
     }
 
-
     public getPeriodBalance(): Amount {
-        return Utils_.getRepresentativeValue(new Amount(this.wrapped.periodBalance), this.isCredit());
+        return Utils_.getRepresentativeValue(new Amount(this.json.periodBalance), this.isCredit());
     }
+
     public getPeriodBalanceRaw(): Amount {
-        return new Amount(this.wrapped.periodBalance);
+        return new Amount(this.json.periodBalance);
     }
+
     public getPeriodCredit(): Amount {
-        return new Amount(this.wrapped.periodCredit);
+        return new Amount(this.json.periodCredit);
     }
+
     public getPeriodDebit(): Amount {
-        return new Amount(this.wrapped.periodDebit);
+        return new Amount(this.json.periodDebit);
     }
 
     public getPeriodBalanceText(): string {
         return this.balancesReport.getBook().formatValue(this.getPeriodBalance());
     }
+
     public getPeriodBalanceRawText(): string {
         return this.balancesReport.getBook().formatValue(this.getPeriodBalanceRaw());
     }
+
     public getPeriodCreditText(): string {
         return this.balancesReport.getBook().formatValue(this.getPeriodCredit());
     }
+
     public getPeriodDebitText(): string {
         return this.balancesReport.getBook().formatValue(this.getPeriodDebit());
     }
 
     public getBalances(): Balance[] {
-        if (!this.wrapped.balances) {
+        if (!this.json.balances) {
             return new Array<Balance>();
         }
-        return this.wrapped.balances.map(balancePlain => new Balance(this, balancePlain));
+        return this.json.balances.map(balancePlain => new Balance(this, balancePlain));
     }
 
     public createDataTable() {
@@ -505,7 +515,7 @@ class GroupBalancesContainer implements BalancesContainer {
     }
 
     private getAccountBalances(): AccountBalancesContainer[] {
-        var accountBalances = this.wrapped.accountBalances;
+        var accountBalances = this.json.accountBalances;
         if (this.accountBalances == null && accountBalances != null) {
             this.accountBalances = [];
             for (var i = 0; i < accountBalances.length; i++) {
@@ -517,7 +527,7 @@ class GroupBalancesContainer implements BalancesContainer {
     }
 
     private getGroupBalances(): GroupBalancesContainer[] {
-        var groupBalances = this.wrapped.groupBalances;
+        var groupBalances = this.json.groupBalances;
         if (this.groupBalances == null && groupBalances != null) {
             this.groupBalances = [];
             for (var i = 0; i < groupBalances.length; i++) {
@@ -529,13 +539,13 @@ class GroupBalancesContainer implements BalancesContainer {
     }
 
     public getProperties(): { [key: string]: string } {
-        return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
+        return this.json.properties != null ? { ...this.json.properties } : {};
     }
 
     public getProperty(...keys: string[]): string {
         for (let index = 0; index < keys.length; index++) {
             const key = keys[index];
-            let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
+            let value = this.json.properties != null ? this.json.properties[key] : null;
             if (value != null && value.trim() != '') {
                 return value;
             }
@@ -569,16 +579,14 @@ class GroupBalancesContainer implements BalancesContainer {
         return rootContainers;
     }
 
-
     private traverseContainers(container: BalancesContainer, containers: BalancesContainer[]): void {
         if (container.getBalancesContainers() != null && container.getBalancesContainers().length > 0) {
             for (const subContainer of container.getBalancesContainers()) {
                 this.traverseContainers(subContainer, containers);
             }
-        } else if (container.isFromAccount()){
+        } else if (container.isFromAccount()) {
             containers.push(container);
         }
     }
-
 
 }

@@ -589,4 +589,78 @@ class GroupBalancesContainer implements BalancesContainer {
         }
     }
 
+    public addBalancesContainer(balancesContainer: BalancesContainer): BalancesContainer {
+
+        if (this.isFromAccount() || balancesContainer.isFromGroup()) {
+            throw `Container must be from group and added container must be from account`;
+        }
+
+        if (this.getBalancesContainers().map(c => c.getName()).indexOf(balancesContainer.getName()) < 0) {
+
+            this.addAccountContainer(balancesContainer as AccountBalancesContainer);
+
+            let parent = this.parent as GroupBalancesContainer;
+            if (parent) {
+                parent.addBalancesContainer(balancesContainer);
+            }
+        }
+
+        return this;
+    }
+
+    private addAccountContainer(accountBalancesContainer: AccountBalancesContainer) {
+
+        // Adjust period & cumulative balances
+        this.json.cumulativeBalance = this.sum(this.json.cumulativeBalance, accountBalancesContainer.json.cumulativeBalance);
+        this.json.cumulativeCredit = this.sum(this.json.cumulativeCredit, accountBalancesContainer.json.cumulativeCredit);
+        this.json.cumulativeDebit = this.sum(this.json.cumulativeDebit, accountBalancesContainer.json.cumulativeDebit);
+        this.json.periodBalance = this.sum(this.json.periodBalance, accountBalancesContainer.json.periodBalance);
+        this.json.periodCredit = this.sum(this.json.periodCredit, accountBalancesContainer.json.periodCredit);
+        this.json.periodDebit = this.sum(this.json.periodDebit, accountBalancesContainer.json.periodDebit);
+
+        // Adjust balances
+        let accountBalancesMap: { [key: string]: bkper.Balance } = {};
+        let groupBalancesMap: { [key: string]: bkper.Balance } = {};
+
+        for (const accountBalance of accountBalancesContainer.getBalances()) {
+            accountBalancesMap[`${accountBalance.json.fuzzyDate}`] = accountBalance.json;
+        }
+
+        for (const groupBalance of this.getBalances()) {
+            groupBalancesMap[`${groupBalance.json.fuzzyDate}`] = groupBalance.json;
+        }
+
+        let balances: bkper.Balance[] = [];
+        for (const key in accountBalancesMap) {
+            if (groupBalancesMap[key]) {
+                groupBalancesMap[key] = this.sumBalances(groupBalancesMap[key], accountBalancesMap[key]);
+            } else {
+                groupBalancesMap[key] = accountBalancesMap[key];
+            }
+            balances.push(groupBalancesMap[key]);
+        }
+
+        this.json.balances = balances;
+
+        // Add to accountBalances
+        if (!this.json.accountBalances) {
+            this.json.accountBalances = [];
+        }
+        this.json.accountBalances.push(accountBalancesContainer.json);
+    }
+
+    private sum(firstValue: string, secondValue: string): string {
+        return (new Amount(firstValue)).plus(new Amount(secondValue)).toString();
+    }
+
+    private sumBalances(groupBalance: bkper.Balance, accountBalance: bkper.Balance): bkper.Balance {
+        groupBalance.cumulativeBalance = this.sum(groupBalance.cumulativeBalance, accountBalance.cumulativeBalance);
+        groupBalance.cumulativeCredit = this.sum(groupBalance.cumulativeCredit, accountBalance.cumulativeCredit);
+        groupBalance.cumulativeDebit = this.sum(groupBalance.cumulativeDebit, accountBalance.cumulativeDebit);
+        groupBalance.periodBalance = this.sum(groupBalance.periodBalance, accountBalance.periodBalance);
+        groupBalance.periodCredit = this.sum(groupBalance.periodCredit, accountBalance.periodCredit);
+        groupBalance.periodDebit = this.sum(groupBalance.periodDebit, accountBalance.periodDebit);
+        return groupBalance;
+    }
+
 }

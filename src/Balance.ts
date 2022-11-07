@@ -5,13 +5,12 @@
  */
 class Balance {
 
-  private wrapped: bkper.Balance;
-
+  json: bkper.Balance;
   private container: BalancesContainer;
 
   constructor(container: BalancesContainer, balancePlain: bkper.Balance) {
     this.container = container;
-    this.wrapped = balancePlain;
+    this.json = balancePlain;
   }
 
   /**
@@ -20,7 +19,7 @@ class Balance {
    * Day can be 0 (zero) in case of Monthly or Early [[Periodicity]] of the [[BalancesReport]]
    */
   public getDay(): number {
-    return this.wrapped.day
+    return this.json.day;
   }
 
   /**
@@ -29,14 +28,14 @@ class Balance {
    * Month can be 0 (zero) in case of Early [[Periodicity]] of the [[BalancesReport]]
    */
   public getMonth(): number {
-    return this.wrapped.month;
+    return this.json.month;
   }
 
   /**
    * The year of the balance
    */
   public getYear(): number {
-    return this.wrapped.year;
+    return this.json.year;
   }
 
   /**
@@ -75,37 +74,36 @@ class Balance {
    * **20180000** - 2018 - YEARLY Periodicity
    */
   public getFuzzyDate(): number {
-    return this.wrapped.fuzzyDate;
+    return this.json.fuzzyDate;
   }
-  
+
   /**
    * The cumulative balance to the date, based on the credit nature of the container
    */
   public getCumulativeBalance(): Amount {
-    return Utils_.getRepresentativeValue(this.getCumulativeBalanceRaw(), this.container.isCredit())
+    return Utils_.getRepresentativeValue(this.getCumulativeBalanceRaw(), this.container.isCredit());
   }
 
   /**
    * The raw cumulative balance to the date.
    */
   public getCumulativeBalanceRaw(): Amount {
-    return new Amount(this.wrapped.cumulativeBalance);
+    return new Amount(this.json.cumulativeBalance);
   }
-  
+
   /**
    * The cumulative credit to the date.
    */
   public getCumulativeCredit(): Amount {
-    return new Amount(this.wrapped.cumulativeCredit);
+    return new Amount(this.json.cumulativeCredit);
   }
 
   /**
    * The cumulative debit to the date.
    */
   public getCumulativeDebit(): Amount {
-    return new Amount(this.wrapped.cumulativeDebit);
+    return new Amount(this.json.cumulativeDebit);
   }
-
 
   /**
    * The balance on the date period, based on credit nature of the container.
@@ -118,23 +116,21 @@ class Balance {
    * The raw balance on the date period.
    */
   public getPeriodBalanceRaw(): Amount {
-    return new Amount(this.wrapped.periodBalance);
+    return new Amount(this.json.periodBalance);
   }
-
 
   /**
    * The credit on the date period.
    */
-   public getPeriodCredit(): Amount {
-    return new Amount(this.wrapped.periodCredit);
+  public getPeriodCredit(): Amount {
+    return new Amount(this.json.periodCredit);
   }
 
   /**
    * The debit on the date period.
    */
-   public getPeriodDebit(): Amount {
-    return new Amount(this.wrapped.periodDebit);
+  public getPeriodDebit(): Amount {
+    return new Amount(this.json.periodDebit);
   }
-
 
 }

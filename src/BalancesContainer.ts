@@ -690,32 +690,28 @@ class GroupBalancesContainer implements BalancesContainer {
         this.json.periodDebit = this.subtract(this.json.periodDebit, accountBalancesContainer.json.periodDebit);
 
         // Adjust balances
-        let accountBalancesMap: { [key: string]: bkper.Balance } = {};
         let groupBalancesMap: { [key: string]: bkper.Balance } = {};
-
-        for (const accountBalance of accountBalancesContainer.getBalances()) {
-            accountBalancesMap[`${accountBalance.json.fuzzyDate}`] = accountBalance.json;
-        }
-
         for (const groupBalance of this.getBalances()) {
             groupBalancesMap[`${groupBalance.json.fuzzyDate}`] = groupBalance.json;
         }
 
-        let balances = this.json.balances;
-        for (const key in accountBalancesMap) {
+        for (const accountBalance of accountBalancesContainer.getBalances()) {
+            const key = `${accountBalance.json.fuzzyDate}`;
             if (groupBalancesMap[key]) {
-                groupBalancesMap[key] = this.subtractBalances(groupBalancesMap[key], accountBalancesMap[key]);
-                const indexToRemove = balances.map(b => `${b.fuzzyDate}`).indexOf(key);
-                balances.splice(indexToRemove, 1);
+                groupBalancesMap[key] = this.subtractBalances(groupBalancesMap[key], accountBalance.json);
             }
         }
 
+        let balances: bkper.Balance[] = [];
+        for (const key of Object.keys(groupBalancesMap)) {
+            balances.push(groupBalancesMap[key]);
+        }
         this.json.balances = balances;
 
         // Remove from accountBalances
         for (const accountBalance of this.accountBalances) {
             const balanceName = accountBalance.getName();
-            if (balanceName == accountBalancesContainer.getName()) {
+            if (accountBalancesContainer.getName() == balanceName) {
                 const indexToRemove = this.accountBalances.map(b => b.getName()).indexOf(balanceName);
                 this.accountBalances.splice(indexToRemove, 1);
             }

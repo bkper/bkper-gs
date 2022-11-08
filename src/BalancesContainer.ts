@@ -640,10 +640,15 @@ class GroupBalancesContainer implements BalancesContainer {
         this.json.balances = balances;
 
         // Add to accountBalances
-        if (!this.accountBalances) {
-            this.accountBalances = [];
+        if (!this.hasGroupBalances()) {
+            // Adjust credit nature
+            accountBalancesContainer.json.credit = this.json.credit;
+            if (!this.accountBalances) {
+                this.accountBalances = [];
+            }
+            this.accountBalances.push(accountBalancesContainer);
         }
-        this.accountBalances.push(accountBalancesContainer);
+
     }
 
     private sum(firstValue: string, secondValue: string): string {
@@ -709,11 +714,13 @@ class GroupBalancesContainer implements BalancesContainer {
         this.json.balances = balances;
 
         // Remove from accountBalances
-        for (const accountBalance of this.accountBalances) {
-            const balanceName = accountBalance.getName();
-            if (accountBalancesContainer.getName() == balanceName) {
-                const indexToRemove = this.accountBalances.map(b => b.getName()).indexOf(balanceName);
-                this.accountBalances.splice(indexToRemove, 1);
+        if (!this.hasGroupBalances()) {
+            for (const accountBalance of this.accountBalances) {
+                const balanceName = accountBalance.getName();
+                if (accountBalancesContainer.getName() == balanceName) {
+                    const indexToRemove = this.accountBalances.map(b => b.getName()).indexOf(balanceName);
+                    this.accountBalances.splice(indexToRemove, 1);
+                }
             }
         }
     }

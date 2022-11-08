@@ -619,27 +619,24 @@ class GroupBalancesContainer implements BalancesContainer {
         this.json.periodDebit = this.sum(this.json.periodDebit, accountBalancesContainer.json.periodDebit);
 
         // Adjust balances
-        let accountBalancesMap: { [key: string]: bkper.Balance } = {};
         let groupBalancesMap: { [key: string]: bkper.Balance } = {};
-
-        for (const accountBalance of accountBalancesContainer.getBalances()) {
-            accountBalancesMap[`${accountBalance.json.fuzzyDate}`] = accountBalance.json;
-        }
-
         for (const groupBalance of this.getBalances()) {
             groupBalancesMap[`${groupBalance.json.fuzzyDate}`] = groupBalance.json;
         }
 
-        let balances: bkper.Balance[] = [];
-        for (const key in accountBalancesMap) {
+        for (const accountBalance of accountBalancesContainer.getBalances()) {
+            const key = `${accountBalance.json.fuzzyDate}`;
             if (groupBalancesMap[key]) {
-                groupBalancesMap[key] = this.sumBalances(groupBalancesMap[key], accountBalancesMap[key]);
+                groupBalancesMap[key] = this.sumBalances(groupBalancesMap[key], accountBalance.json);
             } else {
-                groupBalancesMap[key] = accountBalancesMap[key];
+                groupBalancesMap[key] = accountBalance.json;
             }
-            balances.push(groupBalancesMap[key]);
         }
 
+        let balances: bkper.Balance[] = [];
+        for (const key of Object.keys(groupBalancesMap)) {
+            balances.push(groupBalancesMap[key]);
+        }
         this.json.balances = balances;
 
         // Add to accountBalances

@@ -629,7 +629,7 @@ class GroupBalancesContainer implements BalancesContainer {
             if (groupBalancesMap[key]) {
                 groupBalancesMap[key] = this.sumBalances(groupBalancesMap[key], accountBalance.json);
             } else {
-                groupBalancesMap[key] = accountBalance.json;
+                groupBalancesMap[key] = { ...accountBalance.json };
             }
         }
 

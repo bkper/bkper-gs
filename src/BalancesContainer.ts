@@ -663,4 +663,80 @@ class GroupBalancesContainer implements BalancesContainer {
         return groupBalance;
     }
 
+    public removeBalancesContainer(balancesContainer: BalancesContainer): BalancesContainer {
+
+        if (this.isFromAccount() || balancesContainer.isFromGroup()) {
+            throw `Container must be from group and removed container must be from account`;
+        }
+
+        if (this.getBalancesContainers().map(c => c.getName()).indexOf(balancesContainer.getName()) >= 0) {
+
+            this.removeAccountContainer(balancesContainer as AccountBalancesContainer);
+
+            let parent = this.parent as GroupBalancesContainer;
+            if (parent) {
+                parent.removeBalancesContainer(balancesContainer);
+            }
+        }
+
+        return this;
+    }
+
+    private removeAccountContainer(accountBalancesContainer: AccountBalancesContainer) {
+
+        // Adjust period & cumulative balances
+        this.json.cumulativeBalance = this.subtract(this.json.cumulativeBalance, accountBalancesContainer.json.cumulativeBalance);
+        this.json.cumulativeCredit = this.subtract(this.json.cumulativeCredit, accountBalancesContainer.json.cumulativeCredit);
+        this.json.cumulativeDebit = this.subtract(this.json.cumulativeDebit, accountBalancesContainer.json.cumulativeDebit);
+        this.json.periodBalance = this.subtract(this.json.periodBalance, accountBalancesContainer.json.periodBalance);
+        this.json.periodCredit = this.subtract(this.json.periodCredit, accountBalancesContainer.json.periodCredit);
+        this.json.periodDebit = this.subtract(this.json.periodDebit, accountBalancesContainer.json.periodDebit);
+
+        // Adjust balances
+        let accountBalancesMap: { [key: string]: bkper.Balance } = {};
+        let groupBalancesMap: { [key: string]: bkper.Balance } = {};
+
+        for (const accountBalance of accountBalancesContainer.getBalances()) {
+            accountBalancesMap[`${accountBalance.json.fuzzyDate}`] = accountBalance.json;
+        }
+
+        for (const groupBalance of this.getBalances()) {
+            groupBalancesMap[`${groupBalance.json.fuzzyDate}`] = groupBalance.json;
+        }
+
+        let balances = this.json.balances;
+        for (const key in accountBalancesMap) {
+            if (groupBalancesMap[key]) {
+                groupBalancesMap[key] = this.subtractBalances(groupBalancesMap[key], accountBalancesMap[key]);
+                const indexToRemove = balances.map(b => `${b.fuzzyDate}`).indexOf(key);
+                balances.splice(indexToRemove, 1);
+            }
+        }
+
+        this.json.balances = balances;
+
+        // Remove from accountBalances
+        for (const accountBalance of this.accountBalances) {
+            const balanceName = accountBalance.getName();
+            if (balanceName == accountBalancesContainer.getName()) {
+                const indexToRemove = this.accountBalances.map(b => b.getName()).indexOf(balanceName);
+                this.accountBalances.splice(indexToRemove, 1);
+            }
+        }
+    }
+
+    private subtract(firstValue: string, secondValue: string): string {
+        return (new Amount(firstValue)).minus(new Amount(secondValue)).toString();
+    }
+
+    private subtractBalances(groupBalance: bkper.Balance, accountBalance: bkper.Balance): bkper.Balance {
+        groupBalance.cumulativeBalance = this.subtract(groupBalance.cumulativeBalance, accountBalance.cumulativeBalance);
+        groupBalance.cumulativeCredit = this.subtract(groupBalance.cumulativeCredit, accountBalance.cumulativeCredit);
+        groupBalance.cumulativeDebit = this.subtract(groupBalance.cumulativeDebit, accountBalance.cumulativeDebit);
+        groupBalance.periodBalance = this.subtract(groupBalance.periodBalance, accountBalance.periodBalance);
+        groupBalance.periodCredit = this.subtract(groupBalance.periodCredit, accountBalance.periodCredit);
+        groupBalance.periodDebit = this.subtract(groupBalance.periodDebit, accountBalance.periodDebit);
+        return groupBalance;
+    }
+
 }

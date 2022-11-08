@@ -640,10 +640,10 @@ class GroupBalancesContainer implements BalancesContainer {
         this.json.balances = balances;
 
         // Add to accountBalances
-        if (!this.json.accountBalances) {
-            this.json.accountBalances = [];
+        if (!this.accountBalances) {
+            this.accountBalances = [];
         }
-        this.json.accountBalances.push(accountBalancesContainer.json);
+        this.accountBalances.push(accountBalancesContainer);
     }
 
     private sum(firstValue: string, secondValue: string): string {

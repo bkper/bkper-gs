@@ -615,22 +615,29 @@ class GroupBalancesContainer implements BalancesContainer {
     }
 
     public addBalancesContainer(container: BalancesContainer): BalancesContainer {
-
         if (container.isFromGroup()) {
             throw `Added container must be from account`;
         }
-
-        if (this.getBalancesContainers().map(c => c.getName()).indexOf(container.getName()) < 0) {
-
+        if (this.canAddContainer(container)) {
+            // Perform add container
             this.addAccountContainer(container as AccountBalancesContainer);
-
+            // Repeat for parent
             let parent = this.parent as GroupBalancesContainer;
             if (parent) {
                 parent.addBalancesContainer(container);
             }
         }
-
         return this;
+    }
+
+    private canAddContainer(container: BalancesContainer): boolean {
+        if (this.hasGroupBalances()) {
+            return true;
+        }
+        if (!this.hasGroupBalances() && this.getBalancesContainers().map(c => c.getName()).indexOf(container.getName()) < 0) {
+            return true;
+        }
+        return false;
     }
 
     private addAccountContainer(accountContainer: AccountBalancesContainer) {
@@ -691,22 +698,29 @@ class GroupBalancesContainer implements BalancesContainer {
     }
 
     public removeBalancesContainer(container: BalancesContainer): BalancesContainer {
-
         if (container.isFromGroup()) {
             throw `Removed container must be from account`;
         }
-
-        if (this.getBalancesContainers().map(c => c.getName()).indexOf(container.getName()) >= 0) {
-
+        if (this.canRemoveContainer(container)) {
+            // Perform remove container
             this.removeAccountContainer(container as AccountBalancesContainer);
-
+            // Repeat for parent
             let parent = this.parent as GroupBalancesContainer;
             if (parent) {
                 parent.removeBalancesContainer(container);
             }
         }
-
         return this;
+    }
+
+    private canRemoveContainer(container: BalancesContainer): boolean {
+        if (this.hasGroupBalances()) {
+            return true;
+        }
+        if (!this.hasGroupBalances() && this.getBalancesContainers().map(c => c.getName()).indexOf(container.getName()) >= 0) {
+            return true;
+        }
+        return false;
     }
 
     private removeAccountContainer(accountContainer: AccountBalancesContainer) {

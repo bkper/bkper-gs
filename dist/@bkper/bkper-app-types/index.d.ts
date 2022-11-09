@@ -663,16 +663,22 @@ declare namespace Bkper {
 
         /**
          * Create [[Accounts]] on the Book, in batch.
+         *
+         * @returns The Accounts created
          */
         batchCreateAccounts(accounts: Account[]): Account[];
 
         /**
          * Create [[Groups]] on the Book, in batch.
+         *
+         * @returns The Groups created
          */
         batchCreateGroups(groups: Group[]): Group[];
 
         /**
          * Batch create [[Transactions]] on the Book.
+         *
+         * @returns The Transactions created
          */
         batchCreateTransactions(transactions: Transaction[]): Transaction[];
 
@@ -831,12 +837,24 @@ declare namespace Bkper {
         getAccount(idOrName: string): Account;
 
         /**
-         * Gets all [[Accounts]] of this Book
+         * @returns All [[Accounts]] of this Book
          */
         getAccounts(): Account[];
 
         /**
          * Create a [[BalancesReport]] based on query
+         *
+         * @returns The balances report
+         * 
+         * Example:
+         * 
+         * ```js
+         * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
+         * 
+         * var balancesReport = book.getBalancesReport("group:'Equity' after:7/2018 before:8/2018");
+         * 
+         * var accountBalance = balancesReport.getBalancesContainer("Bank Account").getCumulativeBalance();
+         * ```
          */
         getBalancesReport(query: string): BalancesReport;
 
@@ -861,7 +879,9 @@ declare namespace Bkper {
         getDecimalSeparator(): DecimalSeparator;
 
         /**
-         * Retrieve a file by id
+         * Retrieve a [[File]] by id
+         *
+         * @returns The matching File object
          */
         getFile(id: string): File;
 
@@ -878,12 +898,14 @@ declare namespace Bkper {
         getGroup(idOrName: string): Group;
 
         /**
-         * Gets all [[Groups]] of this Book
+         * @returns All [[Groups]] of this Book
          */
         getGroups(): Group[];
 
         /**
          * Same as bookId param
+         *
+         * @returns The id of this Book
          */
         getId(): string;
 
@@ -918,17 +940,17 @@ declare namespace Bkper {
         getPermission(): Permission;
 
         /**
-         * Gets the custom properties stored in this Book
+         * @returns The custom properties stored in this Book
          */
         getProperties(): {[key: string]: string};
 
         /**
-         * Gets the property value for given keys. First property found will be retrieved
+         * @returns The property value for given keys. First property found will be retrieved
          */
         getProperty(...keys: string[]): string;
 
         /**
-         * Gets all saved queries from this book
+         * @returns All saved queries from this book
          */
         getSavedQueries(): {id?: string, query?: string, title?: string}[];
 
@@ -958,7 +980,9 @@ declare namespace Bkper {
         getTotalTransactionsCurrentYear(): number;
 
         /**
-         * Retrieve a transaction by id
+         * Retrieve a [[Transaction]] by id
+         *
+         * @returns The matching Transaction object
          */
         getTransaction(id: string): Transaction;
 
@@ -987,6 +1011,8 @@ declare namespace Bkper {
         /**
          * Instantiate a new [[Account]]
          *
+         * @returns The new Account, for chainning.
+         * 
          * Example:
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
@@ -1004,6 +1030,8 @@ declare namespace Bkper {
         /**
          * Instantiate a new [[File]]
          *
+         * @returns The new File, for chainning.
+         * 
          * Example:
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
@@ -1018,6 +1046,8 @@ declare namespace Bkper {
         /**
          * Instantiate a new [[Group]]
          *
+         * @returns The new Group, for chainning.
+         * 
          * Example:
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
@@ -1033,6 +1063,8 @@ declare namespace Bkper {
         /**
          * Instantiate a new [[Transaction]]
          *
+         * @returns The new Transaction, for chainning.
+         * 
          * Example:
          * 
          * ```js
@@ -1053,6 +1085,8 @@ declare namespace Bkper {
 
         /**
          * Parse an amount string according to [[DecimalSeparator]] and fraction digits of the Book.
+         *
+         * @returns The Amount parsed
          */
         parseAmount(value: string): Amount;
 
@@ -1060,6 +1094,8 @@ declare namespace Bkper {
          * Parse a date string according to date pattern and timezone of the Book.
          *
          * Also parse ISO yyyy-mm-dd format.
+         *
+         * @returns The date parsed
          */
         parseDate(date: string): Date;
 
@@ -1088,7 +1124,7 @@ declare namespace Bkper {
         /**
          * Rounds an amount according to the number of fraction digits of the Book
          *
-         * @returns The amount rounded
+         * @returns The Amount rounded
          */
         round(amount: Amount): Amount;
 
@@ -1164,6 +1200,8 @@ declare namespace Bkper {
 
         /**
          * Perform update Book, applying pending changes.
+         *
+         * @returns This Book, for chainning.
          */
         update(): Book;
 
@@ -1915,6 +1953,13 @@ declare namespace Bkper {
     export interface BalancesContainer {
 
         /**
+         * Adds an [[Account]] container to a [[Group]] container.
+         *
+         * **NOTE**: Only for Group balance containers.
+         */
+        addBalancesContainer(container: BalancesContainer): BalancesContainer;
+
+        /**
          * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]]
          */
         createDataTable(): BalancesDataTableBuilder;
@@ -2098,6 +2143,13 @@ declare namespace Bkper {
          * @returns True if its a permanent Account
          */
         isPermanent(): boolean;
+
+        /**
+         * Removes an [[Account]] container from a [[Group]] container.
+         *
+         * **NOTE**: Only for Group balance containers.
+         */
+        removeBalancesContainer(container: BalancesContainer): BalancesContainer;
 
     }
 

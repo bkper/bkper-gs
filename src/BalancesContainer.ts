@@ -196,6 +196,24 @@ interface BalancesContainer {
      */
     getProperty(...keys: string[]): string;
 
+    /**
+     * Adds an [[Account]] container to a [[Group]] container.
+     * 
+     * **NOTE**: Only for Group balance containers.
+     * 
+     * @param container The account container to be added
+     */
+    addBalancesContainer(container: BalancesContainer): BalancesContainer;
+
+    /**
+     * Removes an [[Account]] container from a [[Group]] container.
+     * 
+     * **NOTE**: Only for Group balance containers.
+     * 
+     * @param container The account container to be removed
+     */
+    removeBalancesContainer(container: BalancesContainer): BalancesContainer;
+
 }
 
 // ###################### ACCOUNT BALANCE CONTAINER ######################
@@ -205,7 +223,6 @@ class AccountBalancesContainer implements BalancesContainer {
     json: bkper.AccountBalances;
     private balancesReport: BalancesReport;
     private parent: BalancesContainer;
-
 
     constructor(parent: BalancesContainer, balancesReport: BalancesReport, balancePlain: bkper.AccountBalances) {
         this.parent = parent;
@@ -360,6 +377,14 @@ class AccountBalancesContainer implements BalancesContainer {
 
     public getAccountBalancesContainers(): BalancesContainer[] {
         return [this];
+    }
+
+    public addBalancesContainer(container: BalancesContainer): BalancesContainer {
+        throw `Container must be from group`;
+    }
+
+    public removeBalancesContainer(container: BalancesContainer): BalancesContainer {
+        throw `Container must be from group`;
     }
 
 }
@@ -589,34 +614,34 @@ class GroupBalancesContainer implements BalancesContainer {
         }
     }
 
-    public addBalancesContainer(balancesContainer: BalancesContainer): BalancesContainer {
+    public addBalancesContainer(container: BalancesContainer): BalancesContainer {
 
-        if (this.isFromAccount() || balancesContainer.isFromGroup()) {
-            throw `Container must be from group and added container must be from account`;
+        if (container.isFromGroup()) {
+            throw `Added container must be from account`;
         }
 
-        if (this.getBalancesContainers().map(c => c.getName()).indexOf(balancesContainer.getName()) < 0) {
+        if (this.getBalancesContainers().map(c => c.getName()).indexOf(container.getName()) < 0) {
 
-            this.addAccountContainer(balancesContainer as AccountBalancesContainer);
+            this.addAccountContainer(container as AccountBalancesContainer);
 
             let parent = this.parent as GroupBalancesContainer;
             if (parent) {
-                parent.addBalancesContainer(balancesContainer);
+                parent.addBalancesContainer(container);
             }
         }
 
         return this;
     }
 
-    private addAccountContainer(accountBalancesContainer: AccountBalancesContainer) {
+    private addAccountContainer(accountContainer: AccountBalancesContainer) {
 
         // Adjust period & cumulative balances
-        this.json.cumulativeBalance = this.sum(this.json.cumulativeBalance, accountBalancesContainer.json.cumulativeBalance);
-        this.json.cumulativeCredit = this.sum(this.json.cumulativeCredit, accountBalancesContainer.json.cumulativeCredit);
-        this.json.cumulativeDebit = this.sum(this.json.cumulativeDebit, accountBalancesContainer.json.cumulativeDebit);
-        this.json.periodBalance = this.sum(this.json.periodBalance, accountBalancesContainer.json.periodBalance);
-        this.json.periodCredit = this.sum(this.json.periodCredit, accountBalancesContainer.json.periodCredit);
-        this.json.periodDebit = this.sum(this.json.periodDebit, accountBalancesContainer.json.periodDebit);
+        this.json.cumulativeBalance = this.sum(this.json.cumulativeBalance, accountContainer.json.cumulativeBalance);
+        this.json.cumulativeCredit = this.sum(this.json.cumulativeCredit, accountContainer.json.cumulativeCredit);
+        this.json.cumulativeDebit = this.sum(this.json.cumulativeDebit, accountContainer.json.cumulativeDebit);
+        this.json.periodBalance = this.sum(this.json.periodBalance, accountContainer.json.periodBalance);
+        this.json.periodCredit = this.sum(this.json.periodCredit, accountContainer.json.periodCredit);
+        this.json.periodDebit = this.sum(this.json.periodDebit, accountContainer.json.periodDebit);
 
         // Adjust balances
         let groupBalancesMap: { [key: string]: bkper.Balance } = {};
@@ -624,7 +649,7 @@ class GroupBalancesContainer implements BalancesContainer {
             groupBalancesMap[`${groupBalance.json.fuzzyDate}`] = groupBalance.json;
         }
 
-        for (const accountBalance of accountBalancesContainer.getBalances()) {
+        for (const accountBalance of accountContainer.getBalances()) {
             const key = `${accountBalance.json.fuzzyDate}`;
             if (groupBalancesMap[key]) {
                 groupBalancesMap[key] = this.sumBalances(groupBalancesMap[key], accountBalance.json);
@@ -642,11 +667,11 @@ class GroupBalancesContainer implements BalancesContainer {
         // Add to accountBalances
         if (!this.hasGroupBalances()) {
             // Adjust credit nature
-            accountBalancesContainer.json.credit = this.json.credit;
+            accountContainer.json.credit = this.json.credit;
             if (!this.accountBalances) {
                 this.accountBalances = [];
             }
-            this.accountBalances.push(accountBalancesContainer);
+            this.accountBalances.push(accountContainer);
         }
 
     }
@@ -655,44 +680,44 @@ class GroupBalancesContainer implements BalancesContainer {
         return (new Amount(firstValue)).plus(new Amount(secondValue)).toString();
     }
 
-    private sumBalances(groupBalance: bkper.Balance, accountBalance: bkper.Balance): bkper.Balance {
-        groupBalance.cumulativeBalance = this.sum(groupBalance.cumulativeBalance, accountBalance.cumulativeBalance);
-        groupBalance.cumulativeCredit = this.sum(groupBalance.cumulativeCredit, accountBalance.cumulativeCredit);
-        groupBalance.cumulativeDebit = this.sum(groupBalance.cumulativeDebit, accountBalance.cumulativeDebit);
-        groupBalance.periodBalance = this.sum(groupBalance.periodBalance, accountBalance.periodBalance);
-        groupBalance.periodCredit = this.sum(groupBalance.periodCredit, accountBalance.periodCredit);
-        groupBalance.periodDebit = this.sum(groupBalance.periodDebit, accountBalance.periodDebit);
-        return groupBalance;
+    private sumBalances(baseBalance: bkper.Balance, balanceToAdd: bkper.Balance): bkper.Balance {
+        baseBalance.cumulativeBalance = this.sum(baseBalance.cumulativeBalance, balanceToAdd.cumulativeBalance);
+        baseBalance.cumulativeCredit = this.sum(baseBalance.cumulativeCredit, balanceToAdd.cumulativeCredit);
+        baseBalance.cumulativeDebit = this.sum(baseBalance.cumulativeDebit, balanceToAdd.cumulativeDebit);
+        baseBalance.periodBalance = this.sum(baseBalance.periodBalance, balanceToAdd.periodBalance);
+        baseBalance.periodCredit = this.sum(baseBalance.periodCredit, balanceToAdd.periodCredit);
+        baseBalance.periodDebit = this.sum(baseBalance.periodDebit, balanceToAdd.periodDebit);
+        return baseBalance;
     }
 
-    public removeBalancesContainer(balancesContainer: BalancesContainer): BalancesContainer {
+    public removeBalancesContainer(container: BalancesContainer): BalancesContainer {
 
-        if (this.isFromAccount() || balancesContainer.isFromGroup()) {
-            throw `Container must be from group and removed container must be from account`;
+        if (container.isFromGroup()) {
+            throw `Removed container must be from account`;
         }
 
-        if (this.getBalancesContainers().map(c => c.getName()).indexOf(balancesContainer.getName()) >= 0) {
+        if (this.getBalancesContainers().map(c => c.getName()).indexOf(container.getName()) >= 0) {
 
-            this.removeAccountContainer(balancesContainer as AccountBalancesContainer);
+            this.removeAccountContainer(container as AccountBalancesContainer);
 
             let parent = this.parent as GroupBalancesContainer;
             if (parent) {
-                parent.removeBalancesContainer(balancesContainer);
+                parent.removeBalancesContainer(container);
             }
         }
 
         return this;
     }
 
-    private removeAccountContainer(accountBalancesContainer: AccountBalancesContainer) {
+    private removeAccountContainer(accountContainer: AccountBalancesContainer) {
 
         // Adjust period & cumulative balances
-        this.json.cumulativeBalance = this.subtract(this.json.cumulativeBalance, accountBalancesContainer.json.cumulativeBalance);
-        this.json.cumulativeCredit = this.subtract(this.json.cumulativeCredit, accountBalancesContainer.json.cumulativeCredit);
-        this.json.cumulativeDebit = this.subtract(this.json.cumulativeDebit, accountBalancesContainer.json.cumulativeDebit);
-        this.json.periodBalance = this.subtract(this.json.periodBalance, accountBalancesContainer.json.periodBalance);
-        this.json.periodCredit = this.subtract(this.json.periodCredit, accountBalancesContainer.json.periodCredit);
-        this.json.periodDebit = this.subtract(this.json.periodDebit, accountBalancesContainer.json.periodDebit);
+        this.json.cumulativeBalance = this.subtract(this.json.cumulativeBalance, accountContainer.json.cumulativeBalance);
+        this.json.cumulativeCredit = this.subtract(this.json.cumulativeCredit, accountContainer.json.cumulativeCredit);
+        this.json.cumulativeDebit = this.subtract(this.json.cumulativeDebit, accountContainer.json.cumulativeDebit);
+        this.json.periodBalance = this.subtract(this.json.periodBalance, accountContainer.json.periodBalance);
+        this.json.periodCredit = this.subtract(this.json.periodCredit, accountContainer.json.periodCredit);
+        this.json.periodDebit = this.subtract(this.json.periodDebit, accountContainer.json.periodDebit);
 
         // Adjust balances
         let groupBalancesMap: { [key: string]: bkper.Balance } = {};
@@ -700,7 +725,7 @@ class GroupBalancesContainer implements BalancesContainer {
             groupBalancesMap[`${groupBalance.json.fuzzyDate}`] = groupBalance.json;
         }
 
-        for (const accountBalance of accountBalancesContainer.getBalances()) {
+        for (const accountBalance of accountContainer.getBalances()) {
             const key = `${accountBalance.json.fuzzyDate}`;
             if (groupBalancesMap[key]) {
                 groupBalancesMap[key] = this.subtractBalances(groupBalancesMap[key], accountBalance.json);
@@ -717,7 +742,7 @@ class GroupBalancesContainer implements BalancesContainer {
         if (!this.hasGroupBalances()) {
             for (const accountBalance of this.accountBalances) {
                 const balanceName = accountBalance.getName();
-                if (accountBalancesContainer.getName() == balanceName) {
+                if (accountContainer.getName() == balanceName) {
                     const indexToRemove = this.accountBalances.map(b => b.getName()).indexOf(balanceName);
                     this.accountBalances.splice(indexToRemove, 1);
                 }
@@ -729,14 +754,14 @@ class GroupBalancesContainer implements BalancesContainer {
         return (new Amount(firstValue)).minus(new Amount(secondValue)).toString();
     }
 
-    private subtractBalances(groupBalance: bkper.Balance, accountBalance: bkper.Balance): bkper.Balance {
-        groupBalance.cumulativeBalance = this.subtract(groupBalance.cumulativeBalance, accountBalance.cumulativeBalance);
-        groupBalance.cumulativeCredit = this.subtract(groupBalance.cumulativeCredit, accountBalance.cumulativeCredit);
-        groupBalance.cumulativeDebit = this.subtract(groupBalance.cumulativeDebit, accountBalance.cumulativeDebit);
-        groupBalance.periodBalance = this.subtract(groupBalance.periodBalance, accountBalance.periodBalance);
-        groupBalance.periodCredit = this.subtract(groupBalance.periodCredit, accountBalance.periodCredit);
-        groupBalance.periodDebit = this.subtract(groupBalance.periodDebit, accountBalance.periodDebit);
-        return groupBalance;
+    private subtractBalances(baseBalance: bkper.Balance, balanceToSubtract: bkper.Balance): bkper.Balance {
+        baseBalance.cumulativeBalance = this.subtract(baseBalance.cumulativeBalance, balanceToSubtract.cumulativeBalance);
+        baseBalance.cumulativeCredit = this.subtract(baseBalance.cumulativeCredit, balanceToSubtract.cumulativeCredit);
+        baseBalance.cumulativeDebit = this.subtract(baseBalance.cumulativeDebit, balanceToSubtract.cumulativeDebit);
+        baseBalance.periodBalance = this.subtract(baseBalance.periodBalance, balanceToSubtract.periodBalance);
+        baseBalance.periodCredit = this.subtract(baseBalance.periodCredit, balanceToSubtract.periodCredit);
+        baseBalance.periodDebit = this.subtract(baseBalance.periodDebit, balanceToSubtract.periodDebit);
+        return baseBalance;
     }
 
 }

@@ -203,7 +203,7 @@ class Book {
      * 
      * @returns This Book, for chainning.
      */
-    public setLockDate(lockDate: string): Book {
+    public setLockDate(lockDate: string | null): Book {
         if (lockDate == null) {
             lockDate = "1900-00-00";
         }

@@ -225,7 +225,7 @@ class Book {
      * 
      * @returns This Book, for chainning.
      */
-    public setClosingDate(closingDate: string): Book {
+    public setClosingDate(closingDate: string | null): Book {
         if (closingDate == null) {
             closingDate = "1900-00-00";
         }

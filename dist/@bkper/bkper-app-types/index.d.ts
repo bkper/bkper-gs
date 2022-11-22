@@ -1161,7 +1161,7 @@ declare namespace Bkper {
          *
          * @returns This Book, for chainning.
          */
-        setLockDate(lockDate: string): Book;
+        setLockDate(lockDate: string | null): Book;
 
         /**
          * Sets the name of the Book.

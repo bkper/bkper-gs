@@ -1133,7 +1133,7 @@ declare namespace Bkper {
          *
          * @returns This Book, for chainning.
          */
-        setClosingDate(closingDate: string): Book;
+        setClosingDate(closingDate: string | null): Book;
 
         /**
          * Sets the date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd

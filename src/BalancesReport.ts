@@ -97,26 +97,22 @@ class BalancesReport {
      */
     public getBalancesContainer(name: string): BalancesContainer {
 
-        if (this.balancesContainersMap !== null) {
-            const balancesContainer = this.balancesContainersMap[name];
-            if (!balancesContainer) {
-                throw `${name} not found.`;
-            }
-            return balancesContainer;
-        }
-
         let rootContainers = this.getBalancesContainers();
         if (rootContainers == null || rootContainers.length == 0) {
             throw `${name} not found.`;
         }
-        let balancesContainersMap: { [name: string]: BalancesContainer } = {};
-        this.balancesContainersMap = this.fillBalancesContainersMap(balancesContainersMap, rootContainers);
+
+        if (this.balancesContainersMap == null) {
+            let balancesContainersMap: { [name: string]: BalancesContainer } = {};
+            this.balancesContainersMap = this.fillBalancesContainersMap(balancesContainersMap, rootContainers);
+        }
 
         const balancesContainer = this.balancesContainersMap[name];
+        
         if (!balancesContainer) {
             throw `${name} not found.`;
         }
-        
+
         return balancesContainer;
     }
 

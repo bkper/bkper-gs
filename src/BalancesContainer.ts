@@ -401,10 +401,13 @@ class GroupBalancesContainer implements BalancesContainer {
 
     private balancesReport: BalancesReport;
 
+    private balancesContainersMap: { [name: string]: BalancesContainer };
+
     constructor(parent: BalancesContainer, balancesReport: BalancesReport, groupBalancesPlain: bkper.GroupBalances) {
         this.parent = parent;
         this.balancesReport = balancesReport;
         this.json = groupBalancesPlain;
+        this.balancesContainersMap = null;
     }
 
     getParent(): BalancesContainer {
@@ -582,18 +585,39 @@ class GroupBalancesContainer implements BalancesContainer {
         if (name == null) {
             return null;
         }
-        if (this.getName() == name) {
-            return this;
-        } else if (this.getBalancesContainers() != null) {
-            for (const container of this.getBalancesContainers()) {
-                try {
-                    return container.getBalancesContainer(name);
-                } catch (err) {
-                    //Not found. Continue.
-                }
+
+        let rootContainers = this.getBalancesContainers();
+        if (rootContainers == null || rootContainers.length == 0) {
+            throw `${name} not found on group ${this.getName()}`;
+        }
+
+        if (this.balancesContainersMap == null) {
+            let balancesContainersMap: { [name: string]: BalancesContainer } = {};
+            this.balancesContainersMap = this.fillBalancesContainersMap(balancesContainersMap, rootContainers);
+        }
+
+        const balancesContainer = this.balancesContainersMap[name];
+
+        if (!balancesContainer) {
+            throw `${name} not found on group ${this.getName()}`;
+        }
+
+        return balancesContainer;
+
+    }
+
+    private fillBalancesContainersMap(map: { [name: string]: BalancesContainer }, containers: BalancesContainer[]): { [name: string]: BalancesContainer } {
+        for (let i = 0; i < containers.length; i++) {
+            const container = containers[i];
+            if (!map[container.getName()]) {
+                map[container.getName()] = container;
+            }
+            let nextContainers = container.getBalancesContainers();
+            if (nextContainers && nextContainers.length > 0) {
+                this.fillBalancesContainersMap(map, container.getBalancesContainers());
             }
         }
-        throw `${name} not found on group ${this.getName()}`;
+        return map;
     }
 
     public getAccountBalancesContainers(): BalancesContainer[] {

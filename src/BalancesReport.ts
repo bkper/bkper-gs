@@ -11,13 +11,14 @@ class BalancesReport {
     private book: Book;
     private groupBalancesContainers: GroupBalancesContainer[];
     private accountBalancesContainers: AccountBalancesContainer[];
-
+    balancesContainersMap: { [name: string]: BalancesContainer };
 
     constructor(book: Book, balancesReportPlain: bkper.Balances) {
         this.book = book;
         this.wrapped = balancesReportPlain;
         this.groupBalancesContainers = null;
         this.accountBalancesContainers = null;
+        this.balancesContainersMap = null;
     }
 
     /**
@@ -94,24 +95,37 @@ class BalancesReport {
      * @param name The [[Account]] name, [[Group]] name.
      */
     public getBalancesContainer(name: string): BalancesContainer {
-        var rootContainers = this.getBalancesContainers();
+
+        let rootContainers = this.getBalancesContainers();
         if (rootContainers == null || rootContainers.length == 0) {
-            throw `${name} not found.`;
+            throw `${name} not found`;
         }
 
-        for (var i = 0; i < rootContainers.length; i++) {
-            const rootContainer = rootContainers[i];
-            if (name == rootContainer.getName()) {
-                return rootContainers[i];
-            } else {
-                try {
-                    return rootContainer.getBalancesContainer(name);
-                } catch (err) {
-                    //Not found. Continue.
-                }
+        if (this.balancesContainersMap == null) {
+            let balancesContainersMap: { [name: string]: BalancesContainer } = {};
+            this.balancesContainersMap = this.fillBalancesContainersMap(balancesContainersMap, rootContainers);
+        }
+
+        const balancesContainer = this.balancesContainersMap[name];
+        if (!balancesContainer) {
+            throw `${name} not found`;
+        }
+
+        return balancesContainer;
+    }
+
+    private fillBalancesContainersMap(map: { [name: string]: BalancesContainer }, containers: BalancesContainer[]): { [name: string]: BalancesContainer } {
+        for (let i = 0; i < containers.length; i++) {
+            const container = containers[i];
+            if (!map[container.getName()]) {
+                map[container.getName()] = container;
+            }
+            let nextContainers = container.getBalancesContainers();
+            if (nextContainers && nextContainers.length > 0) {
+                this.fillBalancesContainersMap(map, container.getBalancesContainers());
             }
         }
-        throw `${name} not found.`;
+        return map;
     }
 
     /**

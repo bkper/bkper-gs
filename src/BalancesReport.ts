@@ -11,8 +11,7 @@ class BalancesReport {
     private book: Book;
     private groupBalancesContainers: GroupBalancesContainer[];
     private accountBalancesContainers: AccountBalancesContainer[];
-
-    private balancesContainersMap: { [name: string]: BalancesContainer };
+    balancesContainersMap: { [name: string]: BalancesContainer };
 
     constructor(book: Book, balancesReportPlain: bkper.Balances) {
         this.book = book;
@@ -99,7 +98,7 @@ class BalancesReport {
 
         let rootContainers = this.getBalancesContainers();
         if (rootContainers == null || rootContainers.length == 0) {
-            throw `${name} not found.`;
+            throw `${name} not found`;
         }
 
         if (this.balancesContainersMap == null) {
@@ -108,9 +107,8 @@ class BalancesReport {
         }
 
         const balancesContainer = this.balancesContainersMap[name];
-        
         if (!balancesContainer) {
-            throw `${name} not found.`;
+            throw `${name} not found`;
         }
 
         return balancesContainer;

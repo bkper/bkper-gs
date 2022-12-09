@@ -582,6 +582,7 @@ class GroupBalancesContainer implements BalancesContainer {
     }
 
     getBalancesContainer(name: string): BalancesContainer {
+
         if (name == null) {
             return null;
         }
@@ -597,13 +598,11 @@ class GroupBalancesContainer implements BalancesContainer {
         }
 
         const balancesContainer = this.balancesContainersMap[name];
-
         if (!balancesContainer) {
             throw `${name} not found on group ${this.getName()}`;
         }
 
         return balancesContainer;
-
     }
 
     private fillBalancesContainersMap(map: { [name: string]: BalancesContainer }, containers: BalancesContainer[]): { [name: string]: BalancesContainer } {
@@ -649,6 +648,9 @@ class GroupBalancesContainer implements BalancesContainer {
             let parent = this.parent as GroupBalancesContainer;
             if (parent) {
                 parent.addBalancesContainer(container);
+            } else {
+                // Reset report balancesContainerMap
+                this.balancesReport.balancesContainersMap = null;
             }
         }
         return this;
@@ -705,6 +707,8 @@ class GroupBalancesContainer implements BalancesContainer {
             this.accountBalances.push(accountContainer);
         }
 
+        // Reset balancesContainersMap
+        this.balancesContainersMap = null;
     }
 
     private sum(firstValue: string, secondValue: string): string {
@@ -732,6 +736,9 @@ class GroupBalancesContainer implements BalancesContainer {
             let parent = this.parent as GroupBalancesContainer;
             if (parent) {
                 parent.removeBalancesContainer(container);
+            } else {
+                // Reset report balancesContainersMap
+                this.balancesReport.balancesContainersMap = null;
             }
         }
         return this;
@@ -786,6 +793,9 @@ class GroupBalancesContainer implements BalancesContainer {
                 }
             }
         }
+
+        // Reset balancesContainersMap
+        this.balancesContainersMap = null;
     }
 
     private subtract(firstValue: string, secondValue: string): string {

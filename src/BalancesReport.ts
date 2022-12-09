@@ -97,6 +97,14 @@ class BalancesReport {
      */
     public getBalancesContainer(name: string): BalancesContainer {
 
+        if (this.balancesContainersMap !== null) {
+            const balancesContainer = this.balancesContainersMap[name];
+            if (!balancesContainer) {
+                throw `${name} not found.`;
+            }
+            return balancesContainer;
+        }
+
         let rootContainers = this.getBalancesContainers();
         if (rootContainers == null || rootContainers.length == 0) {
             throw `${name} not found.`;

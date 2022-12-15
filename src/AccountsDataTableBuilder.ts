@@ -25,27 +25,29 @@ class AccountsDataTableBuilder {
    *
    * @returns This builder, for chaining.
    */
-  public includeArchived(include: boolean): AccountsDataTableBuilder {
+  public archived(include: boolean): AccountsDataTableBuilder {
     this.shouldIncludeArchived = include;
     return this;
   }
+
 
   /**
    * Defines whether include account groups.
    * 
    * @returns This builder with respective include groups option, for chaining.
    */
-  public includeGroups(include: boolean): AccountsDataTableBuilder {
+  public groups(include: boolean): AccountsDataTableBuilder {
     this.shouldAddGroups = include;
     return this;
   }
+
 
   /**
    * Defines whether include custom account properties.
    * 
    * @returns This builder with respective include properties option, for chaining.
    */
-  public includeProperties(include: boolean): AccountsDataTableBuilder {
+  public properties(include: boolean): AccountsDataTableBuilder {
     this.shouldAddProperties = include;
     return this;
   }
@@ -174,5 +176,25 @@ class AccountsDataTableBuilder {
     return table;
 
   }
+
+/******************* DEPRECATED METHODS *******************/
+    /**
+     * @deprecated
+     */
+    includeGroups(include: boolean): AccountsDataTableBuilder {
+        return this.groups(include);
+    }
+    /**
+     * @deprecated
+     */
+    includeArchived(include: boolean): AccountsDataTableBuilder {
+        return this.archived(include);
+    }
+    /**
+     * @deprecated
+     */
+    includeProperties(include: boolean): AccountsDataTableBuilder {
+        return this.properties(include);
+    }
 
 }

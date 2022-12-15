@@ -285,30 +285,30 @@ declare namespace Bkper {
     export interface AccountsDataTableBuilder {
 
         /**
-         * @returns A two-dimensional array containing all [[Accounts]].
-         */
-        build(): any[][];
-
-        /**
          * Defines whether the archived accounts should included.
          *
          * @returns This builder, for chaining.
          */
-        includeArchived(include: boolean): AccountsDataTableBuilder;
+        archived(include: boolean): AccountsDataTableBuilder;
+
+        /**
+         * @returns A two-dimensional array containing all [[Accounts]].
+         */
+        build(): any[][];
 
         /**
          * Defines whether include account groups.
          *
          * @returns This builder with respective include groups option, for chaining.
          */
-        includeGroups(include: boolean): AccountsDataTableBuilder;
+        groups(include: boolean): AccountsDataTableBuilder;
 
         /**
          * Defines whether include custom account properties.
          *
          * @returns This builder with respective include properties option, for chaining.
          */
-        includeProperties(include: boolean): AccountsDataTableBuilder;
+        properties(include: boolean): AccountsDataTableBuilder;
 
     }
 
@@ -1482,7 +1482,7 @@ declare namespace Bkper {
          *
          * @returns This builder with respective include properties option, for chaining.
          */
-        includeProperties(include: boolean): GroupsDataTableBuilder;
+        properties(include: boolean): GroupsDataTableBuilder;
 
     }
 

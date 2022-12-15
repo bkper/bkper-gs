@@ -285,30 +285,30 @@ declare namespace Bkper {
     export interface AccountsDataTableBuilder {
 
         /**
-         * @returns A two-dimensional array containing all [[Accounts]].
-         */
-        build(): any[][];
-
-        /**
          * Defines whether the archived accounts should included.
          *
          * @returns This builder, for chaining.
          */
-        includeArchived(include: boolean): AccountsDataTableBuilder;
+        archived(include: boolean): AccountsDataTableBuilder;
+
+        /**
+         * @returns A two-dimensional array containing all [[Accounts]].
+         */
+        build(): any[][];
 
         /**
          * Defines whether include account groups.
          *
          * @returns This builder with respective include groups option, for chaining.
          */
-        includeGroups(include: boolean): AccountsDataTableBuilder;
+        groups(include: boolean): AccountsDataTableBuilder;
 
         /**
          * Defines whether include custom account properties.
          *
          * @returns This builder with respective include properties option, for chaining.
          */
-        includeProperties(include: boolean): AccountsDataTableBuilder;
+        properties(include: boolean): AccountsDataTableBuilder;
 
     }
 
@@ -545,6 +545,13 @@ declare namespace Bkper {
          * @returns This builder with respective trial option, for chaining.
          */
         period(period: boolean): BalancesDataTableBuilder;
+
+        /**
+         * Defines whether include custom [[Accounts]] and [[Groups]] properties.
+         *
+         * @returns This builder with respective include properties option, for chaining.
+         */
+        properties(include: boolean): BalancesDataTableBuilder;
 
         /**
          * Defines whether should show raw balances, no matter the credit nature of the Account or Group.
@@ -1475,7 +1482,7 @@ declare namespace Bkper {
          *
          * @returns This builder with respective include properties option, for chaining.
          */
-        includeProperties(include: boolean): GroupsDataTableBuilder;
+        properties(include: boolean): GroupsDataTableBuilder;
 
     }
 
@@ -2105,6 +2112,11 @@ declare namespace Bkper {
          * Gets the property value for given keys. First property found will be retrieved
          */
         getProperty(...keys: string[]): string;
+
+        /**
+         * Gets the custom properties keys stored in the associated [[Account]] or [[Group]].
+         */
+        getPropertyKeys(): string[];
 
         /**
          * Tell if the balance container is from a parent group

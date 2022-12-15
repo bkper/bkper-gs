@@ -21,7 +21,7 @@ class GroupsDataTableBuilder {
      * 
      * @returns This builder with respective include properties option, for chaining.
      */
-    public includeProperties(include: boolean): GroupsDataTableBuilder {
+    public properties(include: boolean): GroupsDataTableBuilder {
         this.shouldAddProperties = include;
         return this;
     }
@@ -154,5 +154,15 @@ class GroupsDataTableBuilder {
         }
         return ret;
     }
+
+
+/******************* DEPRECATED METHODS *******************/
+    /**
+     * @deprecated
+     */
+    includeProperties(include: boolean): GroupsDataTableBuilder {
+        return this.properties(include);
+    }
+
 
 }

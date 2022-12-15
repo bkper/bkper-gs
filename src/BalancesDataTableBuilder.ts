@@ -1,5 +1,9 @@
 
-
+type IndexEntry = {
+    date?: Date;
+    amount?:  Amount;
+    property?: string;
+}
 /**
  * A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
  * 
@@ -19,7 +23,8 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   private shouldTranspose: boolean;
   private shouldTrial: boolean;
   private shouldPeriod: boolean;
-  private shouldRaw = false;
+  private shouldRaw: boolean;
+  private shouldAddProperties: boolean;
 
   constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity) {
     this.book = book;
@@ -34,6 +39,8 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     this.shouldTranspose = false;
     this.shouldTrial = false;
     this.shouldPeriod = false;
+    this.shouldRaw = false;
+    this.shouldAddProperties = false;
   }
 
   private getBalance(balance: Amount, permanent: boolean): number {
@@ -182,6 +189,16 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     return this;
   }
 
+    /**
+     * Defines whether include custom [[Accounts]] and [[Groups]] properties.
+     * 
+     * @returns This builder with respective include properties option, for chaining.
+     */
+    public properties(include: boolean): BalancesDataTableBuilder {
+        this.shouldAddProperties = include;
+        return this;
+    }
+
   
   /**
    * Defines whether should split **TOTAL** [[BalanceType]] into debit and credit.
@@ -245,6 +262,8 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
       return -1;
     });
 
+    let propertyKeys: string[] = [];
+
     let containers = new Array<BalancesContainer>();
     this.balancesContainers.forEach(container => {
       if (this.shouldExpand && container instanceof GroupBalancesContainer) {
@@ -258,12 +277,35 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
           });
           subContainers.forEach(subContainer => {
             containers.push(subContainer);
+            if (this.shouldAddProperties) {
+                addPropertyKeys(subContainer)
+            }
           })
         }
       } else {
         containers.push(container);
+        if (this.shouldAddProperties) {
+            addPropertyKeys(container)
+        }
       }
     });
+
+    function addPropertyKeys(container: BalancesContainer) {
+        for (const key of container.getPropertyKeys()) {
+            if (propertyKeys.indexOf(key) <= -1) {
+                propertyKeys.push(key);
+            }
+        }
+    }
+
+    if (this.shouldAddProperties) {
+        propertyKeys.sort();
+        let header = [ 'name', 'balance'];
+        for (const key of propertyKeys) {
+            header.push(key);
+        }
+        table.push(header);
+    }
 
     for (var i = 0; i < containers.length; i++) {
       var balances = containers[i];
@@ -321,6 +363,19 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             }
           }
         }
+
+        if (this.shouldAddProperties) {
+            const properties = balances.getProperties();
+            for (const key of propertyKeys) {
+              let propertyValue = properties[key];
+              if (propertyValue) {
+                line.push(propertyValue);
+                continue;
+              }
+              line.push('');
+            }
+          }
+
         table.push(line);
       }
     }
@@ -347,7 +402,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     if (this.balancesContainers == null) {
       return table;
     }
-
+    let propertyKeys: string[] = [];
     let containers = new Array<BalancesContainer>();
     this.balancesContainers.forEach(container => {
       if (this.shouldExpand && container instanceof GroupBalancesContainer) {
@@ -355,29 +410,39 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         if (subContainers != null) {
           subContainers.forEach(subContainer => {
             containers.push(subContainer);
+            if (this.shouldAddProperties) {
+                addPropertyKeys(subContainer)
+            }
           })
         }
       } else {
         containers.push(container);
+        if (this.shouldAddProperties) {
+            addPropertyKeys(container)
+        }
       }
 
     });
 
+    function addPropertyKeys(container: BalancesContainer) {
+        for (const key of container.getPropertyKeys()) {
+            if (propertyKeys.indexOf(key) <= -1) {
+                propertyKeys.push(key);
+            }
+        }
+    }
 
-    for (var i = 0; i < containers.length; i++) {
-      var balancesContainer = containers[i];
-      header.push(balancesContainer.getName());
+    for (const container of containers) {
+      header.push(container.getName());
 
-      var balances = balancesContainer.getBalances();
+      var balances = container.getBalances();
 
       if (balances != null) {
-
-        for (var j = 0; j < balances.length; j++) {
-          var balance = balances[j];
+        for (const balance of balances) {
           var fuzzyDate = balance.getFuzzyDate();
           var indexEntry = dataIndexMap[fuzzyDate];
           if (indexEntry == null) {
-            indexEntry = new Object();
+            indexEntry = {};
             indexEntry.date = balance.getDate();
             dataIndexMap[fuzzyDate] = indexEntry;
           }
@@ -387,11 +452,11 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
           } else {
             amount = balance.getPeriodBalanceRaw();
           }
-          indexEntry[balancesContainer.getName()] = this.shouldRaw ? amount : this.getRepresentativeBalance(amount, balancesContainer.isPermanent());
+          indexEntry[container.getName()] = this.shouldRaw ? amount : this.getRepresentativeBalance(amount, container.isPermanent());
         }
-
       }
     }
+    
 
     table.push(header);
 
@@ -400,9 +465,8 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
       var rowObject = dataIndexMap[fuzzy];
       var row = new Array();
       row.push(rowObject.date);
-      for (var i = 0; i < containers.length; i++) {
-        var balancesContainer = containers[i];
-        var amount = rowObject[balancesContainer.getName()];
+      for (const container of containers) {
+        var amount = rowObject[container.getName()];
         if (amount == null) {
           amount = "null_amount";
         } else {
@@ -472,6 +536,18 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     }
 
+    if (this.shouldAddProperties) {
+        propertyKeys.sort();
+        for (const key of propertyKeys) {
+            var propertyRow: string[] = [key];
+            for (const container of containers) {
+                propertyRow.push(container.getProperty(key))
+            }
+            table.push(propertyRow);
+        }
+    }
+
+
     if (this.shouldHideNames) {
       table.shift();
     }
@@ -486,11 +562,6 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     return table;
   }
-
-
-
-
-
 
 /******************* DEPRECATED METHODS *******************/
 

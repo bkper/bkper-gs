@@ -19,12 +19,16 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   private shouldHideNames: boolean;
   private shouldFormatValue: boolean;
   private book: Book;
-  private shouldExpand: boolean;
   private shouldTranspose: boolean;
   private shouldTrial: boolean;
   private shouldPeriod: boolean;
   private shouldRaw: boolean;
   private shouldAddProperties: boolean;
+  private maxDepth = 0;
+  private expandAllAccounts = false;
+  private expandAllGroups = false;
+  private skipRoot = false;
+
 
   constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity) {
     this.book = book;
@@ -35,7 +39,6 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     this.shouldHideDates = false;
     this.shouldHideNames = false;
     this.shouldFormatValue = false;
-    this.shouldExpand = false;
     this.shouldTranspose = false;
     this.shouldTrial = false;
     this.shouldPeriod = false;
@@ -87,10 +90,22 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   /**
    * Defines whether Groups should expand its child accounts.
    * 
+   * @param expanded The depth in the groups tree to expand. -1 to expand all groups. -2 to expand all accounts.
+   * 
+   * 
    * @returns This builder with respective expanded option, for chaining.
    */
-  public expanded(expanded: boolean): BalancesDataTableBuilder {
-    this.shouldExpand = expanded;
+  public expanded(expanded: boolean|number): BalancesDataTableBuilder {
+    if (typeof expanded == "boolean" && expanded == true) {
+        this.maxDepth = 1;
+        this.skipRoot = true;
+    } else if (expanded == -1) {
+        this.expandAllGroups = true;
+    } else if (expanded == -2) {
+        this.expandAllAccounts = true;
+    } else if (typeof expanded == "number" && expanded > 0) {
+        this.maxDepth = expanded;
+    }
     return this;
   }
 
@@ -247,6 +262,91 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
   ////////////////////////
 
+    private addPropertyKeys(propertyKeys: string[], container: BalancesContainer) {
+        for (const key of container.getPropertyKeys()) {
+            if (propertyKeys.indexOf(key) <= -1) {
+                propertyKeys.push(key);
+            }
+        }
+    }
+
+    private flattenContainers(containersFlat: BalancesContainer[], propertyKeys: string[], sortFunction?: (a: BalancesContainer, b: BalancesContainer) => number): void {
+        for (const container of this.balancesContainers) {
+            if (this.expandAllAccounts) {
+                this.flattenAllAccounts(container, containersFlat, propertyKeys);
+                if (sortFunction) {
+                    containersFlat.sort(sortFunction);
+                }
+            } else if (this.expandAllGroups) {
+                this.flattenAllGroups(container, containersFlat, propertyKeys, sortFunction)
+            } else {
+                this.flattenMaxDepth(container, containersFlat, propertyKeys, sortFunction)
+            }
+        }
+    }
+
+    private flattenAllAccounts(container: BalancesContainer, containersFlat: BalancesContainer[], propertyKeys: string[]): void {
+        if (container.isFromGroup()) {
+            for (const child of container.getBalancesContainers()) {
+                this.flattenAllAccounts(child, containersFlat, propertyKeys)
+            }
+        } else {
+            containersFlat.push(container);
+            if (this.shouldAddProperties) {
+                this.addPropertyKeys(propertyKeys, container)
+            } 
+        }
+    }    
+
+    private flattenMaxDepth(container: BalancesContainer, containersFlat: BalancesContainer[], propertyKeys: string[], sortFunction?: (a: BalancesContainer, b: BalancesContainer) => number): void {
+        let depth = container.getDepth();
+
+        if (depth <= this.maxDepth) {
+            
+            if (!this.skipRoot) {
+                //@ts-ignore
+                container.json.name = Utils_.repeatString(" ", depth * 4) + container.json.name;
+            }
+            if (!this.skipRoot || depth != 0) {
+                containersFlat.push(container);
+                if (this.shouldAddProperties) {
+                    this.addPropertyKeys(propertyKeys, container)
+                } 
+            }
+            const children = container.getBalancesContainers();
+            if (children && children.length > 0) {
+                if (sortFunction) {
+                    children.sort(sortFunction);
+                }
+                for (const child of children) {
+                    this.flattenMaxDepth(child, containersFlat, propertyKeys, sortFunction)
+                }
+            }
+        }
+    }    
+
+    private flattenAllGroups(container: BalancesContainer, containersFlat: BalancesContainer[], propertyKeys: string[], sortFunction?: (a: BalancesContainer, b: BalancesContainer) => number): void {
+        if (container.isFromGroup()) {
+            let depth = container.getDepth();
+            //@ts-ignore
+            container.json.name = Utils_.repeatString(" ", depth * 4) + container.json.name;
+            containersFlat.push(container);
+            if (this.shouldAddProperties) {
+                this.addPropertyKeys(propertyKeys, container)
+            } 
+            if (container.hasGroupBalances()) {
+                const children = container.getBalancesContainers();
+                if (sortFunction) {
+                    children.sort(sortFunction);
+                }
+                for (const child of children) {
+                    this.flattenAllGroups(child, containersFlat, propertyKeys, sortFunction)
+                }
+            }
+        }
+    }    
+    
+
 
   private buildTotalDataTable_() {
     var table = new Array();
@@ -265,38 +365,12 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     let propertyKeys: string[] = [];
 
     let containers = new Array<BalancesContainer>();
-    this.balancesContainers.forEach(container => {
-      if (this.shouldExpand && container instanceof GroupBalancesContainer) {
-        let subContainers = container.getBalancesContainers();
-        if (subContainers != null) {
-          subContainers.sort((a, b) => {
-            if (a != null && b != null) {
-              return a.getName().toLowerCase().localeCompare(b.getName().toLowerCase());
-            }
-            return -1;
-          });
-          subContainers.forEach(subContainer => {
-            containers.push(subContainer);
-            if (this.shouldAddProperties) {
-                addPropertyKeys(subContainer)
-            }
-          })
+    this.flattenContainers(containers, propertyKeys, (a, b) => {
+        if (a != null && b != null) {
+          return a.getName().toLowerCase().localeCompare(b.getName().toLowerCase());
         }
-      } else {
-        containers.push(container);
-        if (this.shouldAddProperties) {
-            addPropertyKeys(container)
-        }
-      }
-    });
-
-    function addPropertyKeys(container: BalancesContainer) {
-        for (const key of container.getPropertyKeys()) {
-            if (propertyKeys.indexOf(key) <= -1) {
-                propertyKeys.push(key);
-            }
-        }
-    }
+        return -1;
+      })
 
     if (this.shouldAddProperties) {
         propertyKeys.sort();
@@ -390,6 +464,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     return table;
   }
+  
 
   private buildTimeDataTable_() {
     var table = new Array<Array<any>>();
@@ -404,33 +479,8 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     }
     let propertyKeys: string[] = [];
     let containers = new Array<BalancesContainer>();
-    this.balancesContainers.forEach(container => {
-      if (this.shouldExpand && container instanceof GroupBalancesContainer) {
-        let subContainers = container.getBalancesContainers();
-        if (subContainers != null) {
-          subContainers.forEach(subContainer => {
-            containers.push(subContainer);
-            if (this.shouldAddProperties) {
-                addPropertyKeys(subContainer)
-            }
-          })
-        }
-      } else {
-        containers.push(container);
-        if (this.shouldAddProperties) {
-            addPropertyKeys(container)
-        }
-      }
 
-    });
-
-    function addPropertyKeys(container: BalancesContainer) {
-        for (const key of container.getPropertyKeys()) {
-            if (propertyKeys.indexOf(key) <= -1) {
-                propertyKeys.push(key);
-            }
-        }
-    }
+    this.flattenContainers(containers, propertyKeys);
 
     for (const container of containers) {
       header.push(container.getName());

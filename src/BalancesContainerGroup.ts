@@ -9,6 +9,8 @@ class GroupBalancesContainer implements BalancesContainer {
     private balancesReport: BalancesReport;
 
     private balancesContainersMap: { [name: string]: BalancesContainer };
+    private depth: number;
+
     
     constructor(parent: BalancesContainer, balancesReport: BalancesReport, groupBalancesPlain: bkper.GroupBalances) {
         this.parent = parent;
@@ -19,6 +21,17 @@ class GroupBalancesContainer implements BalancesContainer {
 
     getParent(): BalancesContainer {
         return this.parent;
+    }
+
+    getDepth(): number {
+        if (this.depth == null) {
+            if (this.getParent() != null) {
+                this.depth = this.getParent().getDepth() + 1;
+            } else {
+                this.depth = 0;
+            }
+        }
+        return this.depth;
     }
 
     getGroup(): Group {

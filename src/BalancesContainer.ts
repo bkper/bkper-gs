@@ -32,6 +32,8 @@ interface BalancesContainer {
      */
     getAccount(): Account;
 
+    getDepth(): number;
+
     /**
      * All [[Balances]] of the container
      */

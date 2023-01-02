@@ -509,7 +509,7 @@ declare namespace Bkper {
          *
          * @returns This builder with respective expanded option, for chaining.
          */
-        expanded(expanded: boolean): BalancesDataTableBuilder;
+        expanded(expanded: boolean | number): BalancesDataTableBuilder;
 
         /**
          * Defines whether the dates should be formatted based on date pattern and periodicity of the [[Book]].
@@ -2042,6 +2042,8 @@ declare namespace Bkper {
          * The cumulative credit formatted according to [[Book]] decimal format and fraction digits.
          */
         getCumulativeDebitText(): string;
+
+        getDepth(): number;
 
         /**
          * The [[Group]] associated with this container

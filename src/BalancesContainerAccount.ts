@@ -4,6 +4,7 @@ class AccountBalancesContainer implements BalancesContainer {
     json: bkper.AccountBalances;
     private balancesReport: BalancesReport;
     private parent: BalancesContainer;
+    private depth: number;
 
     constructor(parent: BalancesContainer, balancesReport: BalancesReport, balancePlain: bkper.AccountBalances) {
         this.parent = parent;
@@ -14,6 +15,17 @@ class AccountBalancesContainer implements BalancesContainer {
     getParent(): BalancesContainer {
         return this.parent;
     }
+
+    getDepth(): number {
+        if (this.depth == null) {
+            if (this.getParent() != null) {
+                this.depth = this.getParent().getDepth() + 1;
+            } else {
+                this.depth = 0;
+            }
+        }
+        return this.depth;
+    }    
 
     getGroup(): Group {
         return null;

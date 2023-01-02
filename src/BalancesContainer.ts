@@ -32,6 +32,10 @@ interface BalancesContainer {
      */
     getAccount(): Account;
 
+
+    /**
+     * The depth in the parent chain up to the root.
+     */
     getDepth(): number;
 
     /**

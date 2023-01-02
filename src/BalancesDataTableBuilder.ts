@@ -88,9 +88,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
   }
   
   /**
-   * Defines whether Groups should expand its child accounts.
-   * 
-   * @param expanded The depth in the groups tree to expand. -1 to expand all groups. -2 to expand all accounts.
+   * Defines whether Groups should expand its child accounts. true to expand itself, -1 to expand all subgroups. -2 to expand all accounts.
    * 
    * 
    * @returns This builder with respective expanded option, for chaining.

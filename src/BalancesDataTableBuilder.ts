@@ -268,17 +268,15 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         }
     }
 
-    private flattenContainers(containersFlat: BalancesContainer[], propertyKeys: string[], sortFunction?: (a: BalancesContainer, b: BalancesContainer) => number): void {
+    private flattenContainers(containersFlat: BalancesContainer[], propertyKeys: string[]): void {
         for (const container of this.balancesContainers) {
             if (this.expandAllAccounts) {
                 this.flattenAllAccounts(container, containersFlat, propertyKeys);
-                if (sortFunction) {
-                    containersFlat.sort(sortFunction);
-                }
+                containersFlat.sort(this.sortContainersFunction);
             } else if (this.expandAllGroups) {
-                this.flattenAllGroups(container, containersFlat, propertyKeys, sortFunction)
+                this.flattenAllGroups(container, containersFlat, propertyKeys)
             } else {
-                this.flattenMaxDepth(container, containersFlat, propertyKeys, sortFunction)
+                this.flattenMaxDepth(container, containersFlat, propertyKeys)
             }
         }
     }
@@ -294,9 +292,54 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
                 this.addPropertyKeys(propertyKeys, container)
             } 
         }
-    }    
+    }
+    
+    private sortContainersFunction(a: BalancesContainer, b: BalancesContainer) {
+        let ret = 0;
+        if (a.isPermanent() && !b.isPermanent()) {
+            ret = -1
+        } else if (!a.isPermanent() && b.isPermanent()) {
+            ret = 1
+        }
+        if (ret == 0) {
+            if (a.getParent() && !b.getParent()) {
+                ret = -1
+            } else if (!a.getParent() && b.getParent()) {
+                ret = 1
+            }
+        }
+        if (ret == 0) {
+            ret = getBalanceTypeOrdinal(a) - getBalanceTypeOrdinal(b);
+        }
+        if (ret == 0) {
+            ret = a.getName().toLowerCase().localeCompare(b.getName().toLowerCase());
+        }
 
-    private flattenMaxDepth(container: BalancesContainer, containersFlat: BalancesContainer[], propertyKeys: string[], sortFunction?: (a: BalancesContainer, b: BalancesContainer) => number): void {
+        function getBalanceTypeOrdinal(bc: BalancesContainer): number {
+            // ASSET(true, false, "asset"),
+            if (bc.isPermanent() && !bc.isCredit()) {
+                return 0;
+            }
+            // LIABILITY(true, true, "liability"),
+            if (bc.isPermanent() && bc.isCredit()) {
+                return 1;
+            }
+    
+            // INCOMING(false, true, "incoming"),
+            if (!bc.isPermanent() && bc.isCredit()) {
+                return 2;
+            }
+            if (!bc.isPermanent() && !bc.isCredit()) {
+                return 3;
+            }
+            return 4;
+        }
+
+        return ret;
+    }
+
+
+    private flattenMaxDepth(container: BalancesContainer, containersFlat: BalancesContainer[], propertyKeys: string[]): void {
         let depth = container.getDepth();
 
         if (depth <= this.maxDepth) {
@@ -313,17 +356,15 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             }
             const children = container.getBalancesContainers();
             if (children && children.length > 0) {
-                if (sortFunction) {
-                    children.sort(sortFunction);
-                }
+                children.sort(this.sortContainersFunction);
                 for (const child of children) {
-                    this.flattenMaxDepth(child, containersFlat, propertyKeys, sortFunction)
+                    this.flattenMaxDepth(child, containersFlat, propertyKeys)
                 }
             }
         }
     }    
 
-    private flattenAllGroups(container: BalancesContainer, containersFlat: BalancesContainer[], propertyKeys: string[], sortFunction?: (a: BalancesContainer, b: BalancesContainer) => number): void {
+    private flattenAllGroups(container: BalancesContainer, containersFlat: BalancesContainer[], propertyKeys: string[]): void {
         if (container.isFromGroup()) {
             let depth = container.getDepth();
             //@ts-ignore
@@ -334,11 +375,9 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             } 
             if (container.hasGroupBalances()) {
                 const children = container.getBalancesContainers();
-                if (sortFunction) {
-                    children.sort(sortFunction);
-                }
+                children.sort(this.sortContainersFunction);
                 for (const child of children) {
-                    this.flattenAllGroups(child, containersFlat, propertyKeys, sortFunction)
+                    this.flattenAllGroups(child, containersFlat, propertyKeys)
                 }
             }
         }
@@ -363,12 +402,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
     let propertyKeys: string[] = [];
 
     let containers = new Array<BalancesContainer>();
-    this.flattenContainers(containers, propertyKeys, (a, b) => {
-        if (a != null && b != null) {
-          return a.getName().toLowerCase().localeCompare(b.getName().toLowerCase());
-        }
-        return -1;
-      })
+    this.flattenContainers(containers, propertyKeys)
 
     if (this.shouldAddProperties) {
         propertyKeys.sort();

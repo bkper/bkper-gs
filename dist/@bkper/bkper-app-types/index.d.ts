@@ -505,7 +505,7 @@ declare namespace Bkper {
         build(): any[][];
 
         /**
-         * Defines whether Groups should expand its child accounts.
+         * Defines whether Groups should expand its child accounts. true to expand itself, -1 to expand all subgroups. -2 to expand all accounts.
          *
          * @returns This builder with respective expanded option, for chaining.
          */
@@ -2043,6 +2043,9 @@ declare namespace Bkper {
          */
         getCumulativeDebitText(): string;
 
+        /**
+         * The depth in the parent chain up to the root.
+         */
         getDepth(): number;
 
         /**

@@ -659,6 +659,11 @@ declare namespace Bkper {
     export interface Book {
 
         /**
+         * Adds a collaborator to the Book.
+         */
+        addCollaborator(email: string, permission: Permission): void;
+
+        /**
          * Trigger [Balances Audit](https://help.bkper.com/en/articles/4412038-balances-audit) async process.
          */
         audit(): void;
@@ -1127,6 +1132,11 @@ declare namespace Bkper {
          * @deprecated 
          */
         record(transactions: string | any[] | any[][], timeZone?: string): void;
+
+        /**
+         * Removes a collaborator from the Book.
+         */
+        removeCollaborator(email: string): void;
 
         /**
          * Rounds an amount according to the number of fraction digits of the Book

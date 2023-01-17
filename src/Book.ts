@@ -18,7 +18,7 @@ class Book {
     private idGroupMap: { [key: string]: Group };
     private nameGroupMap: { [key: string]: Group };
     private savedQueries: bkper.Query[];
-
+    private apps: App[];
 
     constructor(id: string, wrapped?: bkper.Book) {
         this.id = id;
@@ -945,6 +945,22 @@ class Book {
         let file = Utils_.wrapObject(new File(), {});
         file.book = this;
         return file;
+    }
+
+    /**
+     * @return All [[Apps]] installed in this Book
+     */
+    public getApps(): App[] {
+        if (this.apps !== undefined) {
+            return this.apps;
+        }
+        let appList = AppService_.getApps(this.getId());
+        let apps: App[] = [];
+        for (const app of appList.items) {
+            apps.push(new App(app));
+        }
+        this.apps = apps;
+        return this.apps;
     }
 
     /** 

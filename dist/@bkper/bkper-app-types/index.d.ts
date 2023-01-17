@@ -405,6 +405,28 @@ declare namespace Bkper {
     }
 
     /**
+     * This class defines an App installed in a [[Book]].
+     */
+    export interface App {
+
+        /**
+         * @returns The description of this App
+         */
+        getDescription(): string;
+
+        /**
+         * @returns The id of this App
+         */
+        getId(): string;
+
+        /**
+         * @returns The name of this App
+         */
+        getName(): string;
+
+    }
+
+    /**
      * Class that represents an [[Account]] or [[Group]] balance on a window of time (Day / Month / Year).
      */
     export interface Balance {
@@ -852,6 +874,11 @@ declare namespace Bkper {
          * @returns All [[Accounts]] of this Book
          */
         getAccounts(): Account[];
+
+        /**
+         * @returns All [[Apps]] installed in this Book
+         */
+        getApps(): App[];
 
         /**
          * Create a [[BalancesReport]] based on query

@@ -948,7 +948,9 @@ class Book {
     }
 
     /**
-     * @return All [[Apps]] installed in this Book
+     * Retrieve installed [[Apps]] for this Book
+     * 
+     * @returns The Apps objects
      */
     public getApps(): App[] {
         if (this.apps !== undefined) {

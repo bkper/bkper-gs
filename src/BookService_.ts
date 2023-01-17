@@ -43,6 +43,15 @@ namespace BookService_ {
     return bookPlain;
   }
 
+  export function addCollaborator(book: Book, collaborator: bkper.Collaborator): void {
+    let payload = JSON.stringify(collaborator);
+    new HttpBooksApiV5Request(`${book.getId()}/collaborators`).setMethod('post').setPayload(payload).fetch();
+  }
+
+  export function removeCollaborator(book: Book, email: string): void {
+    new HttpBooksApiV5Request(`${book.getId()}/collaborators/${email}`).setMethod('delete').fetch();
+  }
+
   export function updateBook(bookId: string, book: bkper.Book): bkper.Book {
     var payload = JSON.stringify(book);
     var responseJSON = new HttpBooksApiV5Request(`${bookId}`).setMethod('put').setPayload(payload).fetch().getContentText();

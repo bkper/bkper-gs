@@ -139,8 +139,29 @@ class Book {
         return this;
     }
 
+    /**
+     * 
+     * Adds a collaborator to the Book.
+     * 
+     * @param email The collaborator email
+     * @param permission The collaborator [[Permission]]
+     * 
+     */
+    public addCollaborator(email: string, permission: Permission): void {
+        let collaborator: bkper.Collaborator = { email: email, permission: permission };
+        return BookService_.addCollaborator(this, collaborator);
+    }
 
-
+    /**
+     * 
+     * Removes a collaborator from the Book.
+     * 
+     * @param email The collaborator email
+     * 
+     */
+    public removeCollaborator(email: string): void {
+        return BookService_.removeCollaborator(this, email);
+    }
 
     /**
      * @return The decimal separator of the Book

@@ -876,7 +876,9 @@ declare namespace Bkper {
         getAccounts(): Account[];
 
         /**
-         * @returns All [[Apps]] installed in this Book
+         * Retrieve installed [[Apps]] for this Book
+         *
+         * @returns The Apps objects
          */
         getApps(): App[];
 

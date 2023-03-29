@@ -89,7 +89,7 @@ class Transaction {
   }
 
   /**
-   * Sets the Transaction urls. Url starts with https://
+   * Set the Transaction urls. Url starts with https://
    * 
    * @param urls The urls array.
    * 
@@ -212,7 +212,7 @@ class Transaction {
   }
 
   /**
-   * Sets the custom properties of the Transaction
+   * Set the custom properties of the Transaction
    * 
    * @param properties Object with key/value pair properties
    * 
@@ -240,7 +240,7 @@ class Transaction {
   }
 
   /**
-   * Sets a custom property in the Transaction.
+   * Set a custom property in the Transaction.
    * 
    * @param key The property key
    * @param value The property value
@@ -292,7 +292,7 @@ class Transaction {
 
   /**
    * 
-   * Sets the credit/origin Account of the Transaction. Same as from().
+   * Set the credit/origin Account of the Transaction. Same as from().
    * 
    * @param account Account id, name or object.
    * 
@@ -310,7 +310,7 @@ class Transaction {
 
   /**
    * 
-   * Sets the credit/origin Account of the Transaction. Same as setCreditAccount().
+   * Set the credit/origin Account of the Transaction. Same as setCreditAccount().
    * 
    * @param account Account id, name or object.
    * 
@@ -343,7 +343,7 @@ class Transaction {
 
   /**
    * 
-   * Sets the debit/origin Account of the Transaction. Same as to().
+   * Set the debit/destination Account of the Transaction. Same as to().
    * 
    * @param account Account id, name or object.
    * 
@@ -361,7 +361,7 @@ class Transaction {
 
   /**
    * 
-   * Sets the debit/origin Account of the Transaction. Same as setDebitAccount().
+   * Set the debit/destination Account of the Transaction. Same as setDebitAccount().
    * 
    * @param account Account id, name or object.
    * 
@@ -382,7 +382,7 @@ class Transaction {
 
   /**
    * 
-   * Sets the amount of the Transaction.
+   * Set the amount of the Transaction.
    * 
    * @returns This Transaction, for chainning.
    */
@@ -505,7 +505,7 @@ class Transaction {
 
   /**
    * 
-   * Sets the description of the Transaction.
+   * Set the description of the Transaction.
    * 
    * @returns This Transaction, for chainning.
    */
@@ -526,7 +526,7 @@ class Transaction {
 
   /**
    * 
-   * Sets the date of the Transaction.
+   * Set the date of the Transaction.
    * 
    * @returns This Transaction, for chainning
    */  

@@ -177,9 +177,13 @@ class AccountBalancesContainer implements BalancesContainer {
     
 
     getBalancesContainer(name: string): BalancesContainer {
-        if (this.getName() == name) {
+
+        const normalizedName = normalizeName(name);
+
+        if (this.getNormalizedName() == normalizedName) {
             return this;
         }
+
         throw `${name} does not match ${this.getName()}`;
     }
 

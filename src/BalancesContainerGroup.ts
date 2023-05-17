@@ -217,7 +217,9 @@ class GroupBalancesContainer implements BalancesContainer {
 
     getBalancesContainer(name: string): BalancesContainer {
 
-        if (name == null) {
+        const normalizedName = normalizeName(name);
+
+        if (normalizedName == null) {
             return null;
         }
 
@@ -231,7 +233,7 @@ class GroupBalancesContainer implements BalancesContainer {
             this.balancesContainersMap = this.fillBalancesContainersMap(balancesContainersMap, rootContainers);
         }
 
-        const balancesContainer = this.balancesContainersMap[name];
+        const balancesContainer = this.balancesContainersMap[normalizedName];
         if (!balancesContainer) {
             throw `${name} not found on group ${this.getName()}`;
         }
@@ -242,8 +244,8 @@ class GroupBalancesContainer implements BalancesContainer {
     private fillBalancesContainersMap(map: { [name: string]: BalancesContainer }, containers: BalancesContainer[]): { [name: string]: BalancesContainer } {
         for (let i = 0; i < containers.length; i++) {
             const container = containers[i];
-            if (!map[container.getName()]) {
-                map[container.getName()] = container;
+            if (!map[container.getNormalizedName()]) {
+                map[container.getNormalizedName()] = container;
             }
             let nextContainers = container.getBalancesContainers();
             if (nextContainers && nextContainers.length > 0) {

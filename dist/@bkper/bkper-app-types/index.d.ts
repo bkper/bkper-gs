@@ -1573,7 +1573,7 @@ declare namespace Bkper {
         deleteProperty(key: string): Transaction;
 
         /**
-         * Sets the credit/origin Account of the Transaction. Same as setCreditAccount().
+         * Set the credit/origin Account of the Transaction. Same as setCreditAccount().
          *
          * @returns This Transaction, for chainning.
          */
@@ -1801,63 +1801,63 @@ declare namespace Bkper {
         restore(): Transaction;
 
         /**
-         * Sets the amount of the Transaction.
+         * Set the amount of the Transaction.
          *
          * @returns This Transaction, for chainning.
          */
         setAmount(amount: Amount | number | string): Transaction;
 
         /**
-         * Sets the credit/origin Account of the Transaction. Same as from().
+         * Set the credit/origin Account of the Transaction. Same as from().
          *
          * @returns This Transaction, for chainning.
          */
         setCreditAccount(account: string | Account): Transaction;
 
         /**
-         * Sets the date of the Transaction.
+         * Set the date of the Transaction.
          *
          * @returns This Transaction, for chainning
          */
         setDate(date: string | Date): Transaction;
 
         /**
-         * Sets the debit/origin Account of the Transaction. Same as to().
+         * Set the debit/destination Account of the Transaction. Same as to().
          *
          * @returns This Transaction, for chainning.
          */
         setDebitAccount(account: string | Account): Transaction;
 
         /**
-         * Sets the description of the Transaction.
+         * Set the description of the Transaction.
          *
          * @returns This Transaction, for chainning.
          */
         setDescription(description: string): Transaction;
 
         /**
-         * Sets the custom properties of the Transaction
+         * Set the custom properties of the Transaction
          *
          * @returns This Transaction, for chainning.
          */
         setProperties(properties: {[key: string]: string}): Transaction;
 
         /**
-         * Sets a custom property in the Transaction.
+         * Set a custom property in the Transaction.
          *
          * @returns This Transaction, for chainning.
          */
         setProperty(key: string, value: string): Transaction;
 
         /**
-         * Sets the Transaction urls. Url starts with https://
+         * Set the Transaction urls. Url starts with https://
          *
          * @returns This Transaction, for chainning.
          */
         setUrls(urls: string[]): Transaction;
 
         /**
-         * Sets the debit/origin Account of the Transaction. Same as setDebitAccount().
+         * Set the debit/destination Account of the Transaction. Same as setDebitAccount().
          *
          * @returns This Transaction, for chainning.
          */

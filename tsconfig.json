@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "module": "none",
-    "noImplicitUseStrict": true,
     "experimentalDecorators": true,
     "lib": [ "esnext" ],
     "target": "ES3",

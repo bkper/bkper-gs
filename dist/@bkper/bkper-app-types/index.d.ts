@@ -427,6 +427,20 @@ declare namespace Bkper {
     }
 
     /**
+     * This class defines the Backlog of a [[Book]].
+     *
+     * A Backlog is a list of pending bot tasks in a Book
+     */
+    export interface Backlog {
+
+        /**
+         * @returns The count of this Backlog
+         */
+        getCount(): number;
+
+    }
+
+    /**
      * Class that represents an [[Account]] or [[Group]] balance on a window of time (Day / Month / Year).
      */
     export interface Balance {
@@ -881,6 +895,13 @@ declare namespace Bkper {
          * @returns The Apps objects
          */
         getApps(): App[];
+
+        /**
+         * Retrieve the events [[Backlog]] for this Book
+         *
+         * @returns The Backlog object
+         */
+        getBacklog(): Backlog;
 
         /**
          * Create a [[BalancesReport]] based on query

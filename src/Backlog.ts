@@ -1,6 +1,8 @@
 /**
  * 
- * This class defines the events Backlog from a [[Book]].
+ * This class defines the Backlog of a [[Book]].
+ * 
+ * A Backlog is a list of pending bot tasks in a Book
  * 
  * @public
  */

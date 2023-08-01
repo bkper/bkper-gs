@@ -965,6 +965,16 @@ class Book {
         return this.apps;
     }
 
+    /**
+     * Retrieve the events [[Backlog]] for this Book
+     * 
+     * @returns The Backlog object
+     */
+    public getBacklog(): Backlog {
+        let backlog = BacklogService_.getBacklog(this.getId());
+        return new Backlog(backlog);
+    }
+
     /** 
      * Retrieve a [[File]] by id
      * 

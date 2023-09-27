@@ -79,9 +79,12 @@ class Group {
     }
 
     /**
-     * The type of the group based on its accounts
+     * @returns The type of the group based on its accounts. Undefined if the group has accounts of different types
      */
-    public getType(): AccountType {
+    public getType(): AccountType | undefined {
+        if (!this.wrapped.type) {
+            return undefined;
+        }
         return this.wrapped.type as AccountType;
     }
 

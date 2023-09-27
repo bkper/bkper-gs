@@ -1450,7 +1450,7 @@ declare namespace Bkper {
         getRoot(): Group;
 
         /**
-         * The type of the group based on its accounts
+         * @returns The type of the group based on its accounts. Undefined if the group has accounts of different types
          */
         getType(): AccountType;
 

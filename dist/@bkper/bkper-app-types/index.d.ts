@@ -748,6 +748,13 @@ declare namespace Bkper {
         continueTransactionIterator(query: string, continuationToken: string): TransactionIterator;
 
         /**
+         * Retrieve the number of transactions based on a query.
+         *
+         * @returns The number of matching Transactions
+         */
+        countTransactions(query?: string): number;
+
+        /**
          * Create an [[Account]] in this book.
          *
          * The type of account will be determined by the type of others Accounts in same group.

@@ -916,6 +916,17 @@ class Book {
     }
 
     /**
+    * Retrieve the number of transactions based on a query.
+    * 
+    * @param query The query string.
+    * 
+    * @return The number of matching Transactions
+    */
+    public countTransactions(query?: string): number {
+        return TransactionService_.countTransactions(this.getId(), query).total;
+    }
+
+    /**
      * Retrieve a [[Transaction]] by id
      * 
      * @return The matching Transaction object

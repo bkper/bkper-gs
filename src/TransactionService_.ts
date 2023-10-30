@@ -103,7 +103,12 @@ namespace TransactionService_ {
   export function getTransaction(bookId: string, id: string): bkper.Transaction {
     var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/${id}`).setMethod('get').fetch().getContentText();
     return JSON.parse(responseJSON) as bkper.Transaction;
-  }  
+  }
+
+  export function countTransactions(bookId: string, query: string): bkper.Count {
+    let responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/count`).setMethod('get').addParam('query', query).fetch().getContentText();
+    return JSON.parse(responseJSON);
+  }
 
   export function searchTransactions(book: Book, query: string, limit: number, cursor?: string): bkper.TransactionList {
     if (query == null) {

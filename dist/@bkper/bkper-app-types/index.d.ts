@@ -904,7 +904,7 @@ declare namespace Bkper {
         getApps(): App[];
 
         /**
-         * Retrieve the events [[Backlog]] for this Book
+         * Retrieve the pending events [[Backlog]] for this Book
          *
          * @returns The Backlog object
          */
@@ -946,6 +946,13 @@ declare namespace Bkper {
          * @returns The decimal separator of the Book
          */
         getDecimalSeparator(): DecimalSeparator;
+
+        /**
+         * Get Book events based on search parameters.
+         *
+         * @returns The Events result as an iterator.
+         */
+        getEvents(afterDate?: string, beforeDate?: string, onError?: boolean, resource?: Transaction | Account | Group): EventIterator;
 
         /**
          * Retrieve a [[File]] by id
@@ -1300,6 +1307,75 @@ declare namespace Bkper {
          * @returns The name of this Collection
          */
         getName(): string;
+
+    }
+
+    /**
+     * This class defines an Event from a [[Book]].
+     *
+     * An event is an object that represents an action (such as posting or deleting a [[Transaction]]) made by an actor (such as a user or a [Bot](https://bkper.com/apps) acting on behalf of a user).
+     */
+    export interface Event {
+
+        /**
+         * @returns The id of the Event.
+         */
+        getId(): string;
+
+    }
+
+    /**
+     * An iterator that allows scripts to iterate over a potentially large collection of Events.
+     *
+     * Example:
+     * 
+     * ```js
+     * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+     * 
+     * var eventIterator = book.getEvents('2023-10-01', '2023-11-01', true);
+     * 
+     * while (eventIterator.hasNext()) {
+     *  var event = eventIterator.next();
+     *  Logger.log(event);
+     * }
+     * ```
+     */
+    export interface EventIterator {
+
+        /**
+         * Gets the Book that originated the iterator
+         *
+         * @returns The Book object
+         */
+        getBook(): Book;
+
+        /**
+         * Gets a token that can be used to resume this iteration at a later time.
+         *
+         * This method is useful if processing an iterator in one execution would exceed the maximum execution time.
+         * 
+         * Continuation tokens are generally valid short period of time.
+         *
+         * @returns The continuation token
+         */
+        getContinuationToken(): string;
+
+        /**
+         * Determines whether calling next() will return a transaction.
+         */
+        hasNext(): boolean;
+
+        /**
+         * Gets the next event in the collection of events.
+         *
+         * @returns The next Event object
+         */
+        next(): Event;
+
+        /**
+         * Sets a continuation token from a previous paused iteration.
+         */
+        setContinuationToken(continuationToken: string): void;
 
     }
 

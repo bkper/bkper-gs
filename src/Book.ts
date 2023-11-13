@@ -503,7 +503,6 @@ class Book {
         return transactionIterator;
     }
 
-
     configureTransactions_(transactions: Transaction[]) {
         for (var i = 0; i < transactions.length; i++) {
             this.configureTransaction_(transactions[i]);
@@ -511,12 +510,22 @@ class Book {
         return transactions;
     }
 
-
     private configureTransaction_(transaction: Transaction) {
         transaction.book = this;
         return transaction;
     }
 
+    configureEvents_(events: Event[]) {
+        for (var i = 0; i < events.length; i++) {
+            this.configureEvent_(events[i]);
+        }
+        return events;
+    }
+
+    private configureEvent_(event: Event) {
+        event.book = this;
+        return event;
+    }
 
     /**
      * Instantiate a new [[Transaction]]
@@ -977,7 +986,7 @@ class Book {
     }
 
     /**
-     * Retrieve the events [[Backlog]] for this Book
+     * Retrieve the pending events [[Backlog]] for this Book
      * 
      * @returns The Backlog object
      */
@@ -985,6 +994,8 @@ class Book {
         let backlog = BacklogService_.getBacklog(this.getId());
         return new Backlog(backlog);
     }
+
+
 
     /** 
      * Retrieve a [[File]] by id

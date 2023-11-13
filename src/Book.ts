@@ -995,7 +995,28 @@ class Book {
         return new Backlog(backlog);
     }
 
-
+    /**
+     * Get Book events based on search parameters.
+     * 
+     * @param afterDate The start date (inclusive) for the events search range
+     * @param beforeDate The end date (exclusive) for the events search range
+     * @param onError True to search only for events on error
+     * @param resource The event's resource ([[Transaction]], [[Account]] or [[Group]])
+     * 
+     * @return The Events result as an iterator.
+     */
+    public getEvents(afterDate?: string, beforeDate?: string, onError?: boolean, resource?: Transaction | Account | Group): EventIterator {
+        let formattedAfterDate = '';
+        if (afterDate) {
+            formattedAfterDate = Utils_.toRFC3339Date(afterDate);
+        }
+        let formattedBeforeDate = '';
+        if (beforeDate) {
+            formattedBeforeDate = Utils_.toRFC3339Date(beforeDate);
+        }
+        const resourceId = resource !== undefined ? resource.getId() : null;
+        return new EventIterator(this, formattedAfterDate, formattedBeforeDate, onError, resourceId);
+    }
 
     /** 
      * Retrieve a [[File]] by id

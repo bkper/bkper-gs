@@ -87,6 +87,9 @@ namespace Utils_ {
     return date;
   }
 
+  export function toRFC3339Date(dateString: string): string {
+    return new Date(dateString).toISOString();
+  }
 
   export function formatDate(date: Date, pattern: string, timeZone: string): string {
     if (date == null || !(Object.prototype.toString.call(date) === '[object Date]')) {

@@ -1009,6 +1009,11 @@ class Book {
         let formattedAfterDate = '';
         if (afterDate) {
             formattedAfterDate = Utils_.toRFC3339Date(afterDate);
+        } else if (onError) {
+            const mostRecentLockDate = this.getMostRecentLockDate();
+            if (mostRecentLockDate) {
+                formattedAfterDate = Utils_.toRFC3339Date(mostRecentLockDate);
+            }
         }
         let formattedBeforeDate = '';
         if (beforeDate) {
@@ -1016,6 +1021,25 @@ class Book {
         }
         const resourceId = resource !== undefined ? resource.getId() : null;
         return new EventIterator(this, formattedAfterDate, formattedBeforeDate, onError, resourceId);
+    }
+
+    private getMostRecentLockDate(): string | null {
+        const closingDate = this.getClosingDate();
+        const lockDate = this.getLockDate();
+        if (closingDate === null && lockDate === null) {
+            return null;
+        }
+        if (closingDate === null && lockDate !== null) {
+            return lockDate;
+        }
+        if (closingDate !== null && lockDate === null) {
+            return closingDate;
+        }
+        if (Utils_.getIsoDateValue(closingDate) > Utils_.getIsoDateValue(lockDate)) {
+            return closingDate;
+        } else {
+            return lockDate;
+        }
     }
 
     /** 

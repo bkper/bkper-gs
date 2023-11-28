@@ -91,6 +91,10 @@ namespace Utils_ {
     return new Date(dateString).toISOString();
   }
 
+  export function getIsoDateValue(date: string): number {
+    return +(date.replaceAll('-', ''));
+  }
+
   export function formatDate(date: Date, pattern: string, timeZone: string): string {
     if (date == null || !(Object.prototype.toString.call(date) === '[object Date]')) {
       return '';

@@ -1026,13 +1026,13 @@ class Book {
     private getMostRecentLockDate(): string | null {
         const closingDate = this.getClosingDate();
         const lockDate = this.getLockDate();
-        if (closingDate === null && lockDate === null) {
+        if (!closingDate && !lockDate) {
             return null;
         }
-        if (closingDate === null && lockDate !== null) {
+        if (!closingDate && lockDate) {
             return lockDate;
         }
-        if (closingDate !== null && lockDate === null) {
+        if (closingDate && !lockDate) {
             return closingDate;
         }
         if (Utils_.getIsoDateValue(closingDate) > Utils_.getIsoDateValue(lockDate)) {

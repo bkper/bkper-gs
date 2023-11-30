@@ -1008,16 +1008,16 @@ class Book {
     public getEvents(afterDate?: string, beforeDate?: string, onError?: boolean, resource?: Transaction | Account | Group): EventIterator {
         let formattedAfterDate = '';
         if (afterDate) {
-            formattedAfterDate = Utils_.toRFC3339Date(afterDate);
+            formattedAfterDate = Utils_.toRFC3339Date(this.parseDate(afterDate));
         } else if (onError) {
             const mostRecentLockDate = this.getMostRecentLockDate();
             if (mostRecentLockDate) {
-                formattedAfterDate = Utils_.toRFC3339Date(mostRecentLockDate);
+                formattedAfterDate = Utils_.toRFC3339Date(this.parseDate(mostRecentLockDate));
             }
         }
         let formattedBeforeDate = '';
         if (beforeDate) {
-            formattedBeforeDate = Utils_.toRFC3339Date(beforeDate);
+            formattedBeforeDate = Utils_.toRFC3339Date(this.parseDate(beforeDate));
         }
         const resourceId = resource !== undefined ? resource.getId() : null;
         return new EventIterator(this, formattedAfterDate, formattedBeforeDate, onError, resourceId);

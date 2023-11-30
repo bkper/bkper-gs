@@ -87,8 +87,8 @@ namespace Utils_ {
     return date;
   }
 
-  export function toRFC3339Date(dateString: string): string {
-    return new Date(dateString).toISOString();
+  export function toRFC3339Date(date: Date): string {
+    return date.toISOString();
   }
 
   export function getIsoDateValue(date: string): number {

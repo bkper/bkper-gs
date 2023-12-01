@@ -1289,6 +1289,28 @@ declare namespace Bkper {
     }
 
     /**
+     * This class defines a Bot Response associated to an [[Event]].
+     */
+    export interface BotResponse {
+
+        /**
+         * @returns The agent id of this Bot Response
+         */
+        getAgentId(): string;
+
+        /**
+         * @returns The message of this Bot Response
+         */
+        getMessage(): string;
+
+        /**
+         * @returns The type of this Bot Response
+         */
+        getType(): "INFO" | "WARNING" | "ERROR";
+
+    }
+
+    /**
      * This class defines a Collection of [[Books]].
      */
     export interface Collection {
@@ -1316,6 +1338,11 @@ declare namespace Bkper {
      * An event is an object that represents an action (such as posting or deleting a [[Transaction]]) made by an actor (such as a user or a [Bot](https://bkper.com/apps) acting on behalf of a user).
      */
     export interface Event {
+
+        /**
+         * @returns The bot responses associated to this Event.
+         */
+        getBotResponses(): BotResponse[];
 
         /**
          * @returns The id of the Event.

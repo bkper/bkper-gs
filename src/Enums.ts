@@ -153,3 +153,26 @@ enum BalanceType {
   DECEMBER = "DECEMBER"
 }
 
+/**
+ * Enum that represents a Bot Response type
+ * 
+ * @public
+ */
+
+enum BotResponseType {
+
+  /**
+   * Info bot response
+   */
+  INFO = "INFO",
+
+  /**
+   * Warning bot response
+   */
+  WARNING = "WARNING",
+
+  /**
+   * Error bot response
+   */
+  ERROR = "ERROR",
+}

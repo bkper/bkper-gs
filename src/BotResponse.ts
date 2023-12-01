@@ -15,8 +15,8 @@ class BotResponse {
     /**
      * @return The type of this Bot Response
      */
-    public getType(): "INFO" | "WARNING" | "ERROR" {
-        return this.wrapped.type;
+    public getType(): BotResponseType {
+        return this.wrapped.type as BotResponseType;
     }
 
     /**

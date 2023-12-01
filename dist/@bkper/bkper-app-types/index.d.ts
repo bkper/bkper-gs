@@ -20,6 +20,8 @@ declare namespace Bkper {
 
         DecimalSeparator: typeof DecimalSeparator;
 
+        BotResponseType: typeof BotResponseType;
+
         BalanceType: typeof BalanceType;
 
         AccountType: typeof AccountType;
@@ -1306,7 +1308,7 @@ declare namespace Bkper {
         /**
          * @returns The type of this Bot Response
          */
-        getType(): "INFO" | "WARNING" | "ERROR";
+        getType(): BotResponseType;
 
     }
 
@@ -2404,6 +2406,28 @@ declare namespace Bkper {
          * Total balance
          */
         TOTAL = "TOTAL",
+
+    }
+
+    /**
+     * Enum that represents a Bot Response type
+     */
+    export enum BotResponseType {
+
+        /**
+         * Error bot response
+         */
+        ERROR = "ERROR",
+
+        /**
+         * Info bot response
+         */
+        INFO = "INFO",
+
+        /**
+         * Warning bot response
+         */
+        WARNING = "WARNING",
 
     }
 

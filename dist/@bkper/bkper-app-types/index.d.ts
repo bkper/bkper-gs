@@ -743,6 +743,11 @@ declare namespace Bkper {
         batchUncheckTransactions(transactions: Transaction[]): void;
 
         /**
+         * Batch update [[Transactions]] on the Book.
+         */
+        batchUpdateTransactions(transactions: Transaction[]): void;
+
+        /**
          * Resumes a transaction iteration using a continuation token from a previous iterator.
          *
          * @returns a collection of transactions that remained in a previous iterator when the continuation token was generated
@@ -1939,6 +1944,13 @@ declare namespace Bkper {
          * @returns This Transaction, for chainning.
          */
         setAmount(amount: Amount | number | string): Transaction;
+
+        /**
+         * Set the check state of the Transaction.
+         *
+         * @returns This Transaction, for chainning.
+         */
+        setChecked(checked: boolean): Transaction;
 
         /**
          * Set the credit/origin Account of the Transaction. Same as from().

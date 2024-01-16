@@ -98,7 +98,18 @@ namespace TransactionService_ {
           .fetch()
   }    
 
+  export function updateTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): void {
 
+    let transactionList: bkper.TransactionList = { items: transactions };
+    let payload = JSON.stringify(transactionList);
+
+    new HttpBooksApiV5Request(`${bookId}/transactions/batch`)
+      .setMethod('put')
+      .setPayload(payload)
+      .fetch()
+    ;
+
+  }
 
   export function getTransaction(bookId: string, id: string): bkper.Transaction {
     var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/${id}`).setMethod('get').fetch().getContentText();

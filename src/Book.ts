@@ -442,11 +442,13 @@ class Book {
     /**
      * Batch create [[Transactions]] on the Book.
      * 
+     * @param transactions The transactions to be created
+     * 
      * @returns The Transactions created
      */
     public batchCreateTransactions(transactions: Transaction[]): Transaction[] {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach(tx => transactionPayloads.push(tx.wrapped))
+        transactions.forEach(tx => transactionPayloads.push(tx.wrapped));
         transactionPayloads = TransactionService_.createTransactionsBatch(this.getId(), transactionPayloads);
         transactions = Utils_.wrapObjects(new Transaction(), transactionPayloads);
         this.configureTransactions_(transactions);
@@ -455,7 +457,23 @@ class Book {
     }
 
     /**
-     * Batch check [[Transactions]] on the Book. 
+     * Batch update [[Transactions]] on the Book.
+     * 
+     * @param transactions The transactions to be updated
+     * 
+     */
+    public batchUpdateTransactions(transactions: Transaction[]): void {
+        let transactionsPayload: bkper.Transaction[] = [];
+        transactions.forEach(tx => transactionsPayload.push(tx.wrapped));
+        TransactionService_.updateTransactionsBatch(this.getId(), transactionsPayload);
+        this.clearCache();
+    }
+
+    /**
+     * Batch check [[Transactions]] on the Book.
+     * 
+     * @param transactions The transactions to be checked
+     * 
      */
     public batchCheckTransactions(transactions: Transaction[]): void {
         let transactionPayloads: bkper.Transaction[] = [];
@@ -464,7 +482,10 @@ class Book {
     }
 
     /**
-     * Batch uncheck [[Transactions]] on the Book. 
+     * Batch uncheck [[Transactions]] on the Book.
+     * 
+     * @param transactions The transactions to be unchecked
+     * 
      */
     public batchUncheckTransactions(transactions: Transaction[]): void {
         let transactionPayloads: bkper.Transaction[] = [];
@@ -474,6 +495,9 @@ class Book {
 
     /**
      * Batch trash [[Transactions]] on the Book. 
+     * 
+     * @param transactions The transactions to be trashed
+     * 
      */
     public batchTrashTransactions(transactions: Transaction[]): void {
         let transactionPayloads: bkper.Transaction[] = [];

@@ -67,6 +67,18 @@ class Transaction {
   }
 
   /**
+    * Set the check state of the Transaction.
+    * 
+    * @param checked - The check state.
+    * 
+    * @returns This Transaction, for chainning.
+  */
+  public setChecked(checked: boolean): Transaction {
+    this.wrapped.checked = checked;
+    return this;
+  }
+
+  /**
    * @returns True if transaction is in trash.
    */  
   public isTrashed(): boolean {

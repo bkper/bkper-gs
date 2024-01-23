@@ -735,7 +735,7 @@ declare namespace Bkper {
         /**
          * Batch trash [[Transactions]] on the Book.
          */
-        batchTrashTransactions(transactions: Transaction[]): void;
+        batchTrashTransactions(transactions: Transaction[], trashChecked?: boolean): void;
 
         /**
          * Batch uncheck [[Transactions]] on the Book.
@@ -745,7 +745,7 @@ declare namespace Bkper {
         /**
          * Batch update [[Transactions]] on the Book.
          */
-        batchUpdateTransactions(transactions: Transaction[]): void;
+        batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): void;
 
         /**
          * Resumes a transaction iteration using a continuation token from a previous iterator.

@@ -461,11 +461,13 @@ class Book {
      * 
      * @param transactions The transactions to be updated
      * 
+     * @param updateChecked True to also update checked transactions
+     * 
      */
-    public batchUpdateTransactions(transactions: Transaction[]): void {
+    public batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): void {
         let transactionsPayload: bkper.Transaction[] = [];
         transactions.forEach(tx => transactionsPayload.push(tx.wrapped));
-        TransactionService_.updateTransactionsBatch(this.getId(), transactionsPayload);
+        TransactionService_.updateTransactionsBatch(this.getId(), transactionsPayload, updateChecked);
         this.clearCache();
     }
 
@@ -498,11 +500,13 @@ class Book {
      * 
      * @param transactions The transactions to be trashed
      * 
+     * @param trashChecked True to also trash checked transactions
+     * 
      */
-    public batchTrashTransactions(transactions: Transaction[]): void {
+    public batchTrashTransactions(transactions: Transaction[], trashChecked?: boolean): void {
         let transactionPayloads: bkper.Transaction[] = [];
         transactions.forEach(tx => transactionPayloads.push(tx.wrapped))
-        TransactionService_.trashTransactionsBatch(this.getId(), transactionPayloads);
+        TransactionService_.trashTransactionsBatch(this.getId(), transactionPayloads, trashChecked);
     }
 
 

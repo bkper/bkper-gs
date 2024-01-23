@@ -85,20 +85,21 @@ namespace TransactionService_ {
           .fetch()
   }    
 
-  export function trashTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): void {
+  export function trashTransactionsBatch(bookId: string, transactions: bkper.Transaction[], trashChecked?: boolean): void {
 
-    let transactionList: bkper.TransactionList = {
-      items: transactions
-    }
-    var payload = JSON.stringify(transactionList);
+    let transactionList: bkper.TransactionList = { items: transactions };
+    let payload = JSON.stringify(transactionList);
 
     new HttpBooksApiV5Request(`${bookId}/transactions/trash/batch`)
-          .setMethod('patch')
-          .setPayload(payload)
-          .fetch()
-  }    
+      .setMethod('patch')
+      .setPayload(payload)
+      .addParam('trashChecked', trashChecked)
+      .fetch()
+    ;
 
-  export function updateTransactionsBatch(bookId: string, transactions: bkper.Transaction[]): void {
+  }
+
+  export function updateTransactionsBatch(bookId: string, transactions: bkper.Transaction[], updateChecked?: boolean): void {
 
     let transactionList: bkper.TransactionList = { items: transactions };
     let payload = JSON.stringify(transactionList);
@@ -106,6 +107,7 @@ namespace TransactionService_ {
     new HttpBooksApiV5Request(`${bookId}/transactions/batch`)
       .setMethod('put')
       .setPayload(payload)
+      .addParam('updateChecked', updateChecked)
       .fetch()
     ;
 

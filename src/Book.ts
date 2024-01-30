@@ -1038,7 +1038,7 @@ class Book {
         if (afterDate) {
             formattedAfterDate = Utils_.toRFC3339Date(this.parseDate(afterDate));
         } else if (onError) {
-            const mostRecentLockDate = this.getMostRecentLockDate();
+            const mostRecentLockDate = this.getMostRecentLockDate_();
             if (mostRecentLockDate) {
                 formattedAfterDate = Utils_.toRFC3339Date(this.parseDate(mostRecentLockDate));
             }
@@ -1051,7 +1051,7 @@ class Book {
         return new EventIterator(this, formattedAfterDate, formattedBeforeDate, onError, resourceId);
     }
 
-    private getMostRecentLockDate(): string | null {
+    getMostRecentLockDate_(): string | null {
         const closingDate = this.getClosingDate();
         const lockDate = this.getLockDate();
         if (!closingDate && !lockDate) {

@@ -86,6 +86,15 @@ class Transaction {
   }
 
   /**
+   * @returns True if a transaction is locked by the book lock/closing date
+   */
+  public isLocked(): boolean {
+    const date = this.getDate() || Utils_.formatDateISO(new Date(), this.book.getTimeZone());
+    const lockOrClosingDate = this.book.getMostRecentLockDate_();
+    return lockOrClosingDate != null && (Utils_.getIsoDateValue(lockOrClosingDate) >= Utils_.getIsoDateValue(date));
+  }
+
+  /**
    * @returns All #hashtags used on the transaction.
    */
   public getTags(): string[] {

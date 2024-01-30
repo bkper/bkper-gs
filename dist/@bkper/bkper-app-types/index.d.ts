@@ -1910,6 +1910,11 @@ declare namespace Bkper {
         isDebit(account: Account): boolean;
 
         /**
+         * @returns True if a transaction is locked by the book lock/closing date
+         */
+        isLocked(): boolean;
+
+        /**
          * @returns True if transaction was already posted to the accounts. False if is still a Draft.
          */
         isPosted(): boolean;

@@ -134,7 +134,7 @@ class TransactionsDataTableBuilder {
     } else {
 
       if (this.shouldAddIds) {
-        headerLine.push("Id");
+        headerLine.push("Transaction Id");
       }
 
       headerLine.push("Date");

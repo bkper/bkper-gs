@@ -353,11 +353,24 @@ class Account {
 
   /**
    * Perform create new account.
+   * 
+   * @returns The created Account, for chainning.
    */
   public create(): Account {
-    this.wrapped = AccountService_.createAccount(this.book.getId(), this.wrapped);
-    this.book.clearCache();
-    return this;
+    try {
+      this.wrapped = AccountService_.createAccount(this.book.getId(), this.wrapped);
+      this.book.clearCache();
+      return this;
+    } catch (err) {
+      this.book.clearCache();
+      const account = this.book.getAccount(this.wrapped.name);
+      if (account) {
+        this.wrapped = account.wrapped;
+        return this;
+      } else {
+        throw err;
+      }
+    }
   }
 
   /**

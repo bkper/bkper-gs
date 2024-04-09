@@ -91,6 +91,8 @@ declare namespace Bkper {
 
         /**
          * Perform create new account.
+         *
+         * @returns The created Account, for chainning.
          */
         create(): Account;
 
@@ -1501,6 +1503,8 @@ declare namespace Bkper {
 
         /**
          * Perform create new group.
+         *
+         * @returns The created Group, for chainning.
          */
         create(): Group;
 

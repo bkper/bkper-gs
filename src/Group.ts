@@ -220,11 +220,24 @@ class Group {
 
     /**
      * Perform create new group.
+     * 
+     * @returns The created Group, for chainning.
      */
     public create(): Group {
-        this.wrapped = GroupService_.createGroup(this.book.getId(), this.wrapped);
-        this.book.clearCache();
-        return this;
+        try {
+            this.wrapped = GroupService_.createGroup(this.book.getId(), this.wrapped);
+            this.book.clearCache();
+            return this;
+        } catch (err) {
+            this.book.clearCache();
+            const group = this.book.getGroup(this.wrapped.name);
+            if (group) {
+                this.wrapped = group.wrapped;
+                return this;
+            } else {
+                throw err;
+            }
+        }
     }
 
     /**

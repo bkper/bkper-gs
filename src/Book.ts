@@ -1006,8 +1006,10 @@ class Book {
         }
         let appList = AppService_.getApps(this.getId());
         let apps: App[] = [];
-        for (const app of appList.items) {
-            apps.push(new App(app));
+        if (appList.items) {
+            for (const app of appList.items) {
+                apps.push(new App(app));
+            }
         }
         this.apps = apps;
         return this.apps;

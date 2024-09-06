@@ -1,14 +1,14 @@
 {
-  "name": "@bkper/bkper-app-types",
-  "version": "3.34.2",
-  "description": "Typescript definitions for BkperApp",
-  "homepage": "https://bkper.com/docs/#bkperapp",
+  "name": "@bkper/bkper-gs-types",
+  "version": "3.34.3",
+  "description": "Typescript definitions for bkper-gs library",
+  "homepage": "https://bkper.com/docs/bkper-gs/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bkper/bkper-app.git"
+    "url": "https://github.com/bkper/bkper-gs.git"
   },
   "bugs": {
-    "url": "https://github.com/bkper/bkper-app/issues",
+    "url": "https://github.com/bkper/bkper-gs/issues",
     "email": "support@bkper.com"
   },
   "author": {

@@ -1,17 +1,17 @@
 # Summary
 
-This package contains Typescript definitions for [BkperApp](https://bkper.com/docs/#bkperapp)
+This package contains Typescript definitions for [BkperApp](https://bkper.com/docs/bkper-gs/)
 
 # Instalation
 
 ### 1) Add the package:
 
 ```
-npm i -S @bkper/bkper-app-types
+npm i -S @bkper/bkper-gs-types
 ```
 or
 ```
-yarn add --dev @bkper/bkper-app-types
+yarn add --dev @bkper/bkper-gs-types
 ```
 
 ### 2) Configure tsconfig.json:

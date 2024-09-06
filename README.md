@@ -1,15 +1,15 @@
-## BkperApp
+## bkper-gs
 
-BkperApp provides a simple and secure way to access the [Bkper REST API][Bkper REST API] through [Google Apps Script][Google Apps Script] infrastructure.
+```bkper-gs``` library provides a simple and secure way to access the [Bkper REST API][Bkper REST API] through [Google Apps Script][Google Apps Script] infrastructure.
 
 [![clasp](https://img.shields.io/badge/built%20with-clasp-4285f4.svg)](https://github.com/google/clasp)
-[![npm (scoped)](https://img.shields.io/npm/v/@bkper/bkper-app-types?color=%235889e4&label=types)](https://www.npmjs.com/package/@bkper/bkper-app-types)
+[![npm (scoped)](https://img.shields.io/npm/v/@bkper/bkper-gs-types?color=%235889e4&label=types)](https://www.npmjs.com/package/@bkper/bkper-gs-types)
 
-With BkperApp you can build [Apps and Bots][Apps and Bots] to your Books to create bookkeeping and accounting solutions on Google Workspace, such as the Bkper [Add-on for Google Sheets][Add-on for Google Sheets], simple automations or advanced solutions, and you can manage your scripts in the [Dashboard][Dashboard].
+With ```bkper-gs``` you can build [Apps and Bots][Apps and Bots] to your Books to create bookkeeping and accounting solutions on Google Workspace, such as the Bkper [Add-on for Google Sheets][Add-on for Google Sheets], simple automations or advanced solutions, and you can manage your scripts in the [Dashboard][Dashboard].
 
-It works the same way your favorite Google Apps Script library works, like [CalendarApp][CalendarApp], [DocumentApp][DocumentApp], [SpreadsheetApp][SpreadsheetApp] and the like.
+It works the same way your favorite Google Apps Script library works, providing a **BkperApp** entry point, like [CalendarApp][CalendarApp], [DocumentApp][DocumentApp], [SpreadsheetApp][SpreadsheetApp] and the like.
 
-See the [complete reference](https://bkper.com/docs/bkper-app/)
+See the [complete reference](https://bkper.com/docs/bkper-gs/)
 
 ### Setup
 
@@ -27,13 +27,13 @@ To use TypeScript in the development of an Apps Script project, see the [Develop
 ##### 1) Add the package:
 
 ```
-npm i -S @bkper/bkper-app-types
+npm i -S @bkper/bkper-gs-types
 ```
 
 or
 
 ```
-yarn add --dev @bkper/bkper-app-types
+yarn add --dev @bkper/bkper-gs-types
 ```
 
 ##### 2) Configure tsconfig.json:
@@ -139,7 +139,7 @@ function listAccounts() {
 }
 ```
 
-### See the [complete reference](https://bkper.com/docs/bkper-app/)
+### See the [complete reference](https://bkper.com/docs/bkper-gs/)
 
 
 [Bkper]: https://bkper.com/
@@ -148,13 +148,13 @@ function listAccounts() {
 [Bkper REST API]: http://bkper.com/docs/#rest-api
 [Google Apps Script]: https://developers.google.com/apps-script/reference/
 [Dashboard]: https://script.google.com/home
-[Book]: https://bkper.com/docs/bkper-app/#book
-[Account]: https://bkper.com/docs/bkper-app/#account
-[Transaction]: https://bkper.com/docs/bkper-app/#transaction
-[TransactionIterator]: https://bkper.com/docs/bkper-app/#transactioniterator
-[record]: https://bkper.com/docs/bkper-app/#book_record
-[getTransactions]: https://bkper.com/docs/bkper-app/#book_gettransactions
-[getBook]: https://bkper.com/docs/bkper-app/#bkperapp_getbook
+[Book]: https://bkper.com/docs/bkper-gs/#book
+[Account]: https://bkper.com/docs/bkper-gs/#account
+[Transaction]: https://bkper.com/docs/bkper-gs/#transaction
+[TransactionIterator]: https://bkper.com/docs/bkper-gs/#transactioniterator
+[record]: https://bkper.com/docs/bkper-gs/#book_record
+[getTransactions]: https://bkper.com/docs/bkper-gs/#book_gettransactions
+[getBook]: https://bkper.com/docs/bkper-gs/#bkperapp_getbook
 [CalendarApp]: https://developers.google.com/apps-script/reference/calendar/calendar-app
 [DocumentApp]: https://developers.google.com/apps-script/reference/document/document-app
 [SpreadsheetApp]: https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app

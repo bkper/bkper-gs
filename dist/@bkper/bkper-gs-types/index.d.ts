@@ -29,7 +29,7 @@ declare namespace Bkper {
         /**
          * Gets the [[Book]] with the specified bookId from url param.
          *
-         * This is the main Entry Point to start interacting with BkperApp
+         * This is the main Entry Point to start interacting with the [bkper-gs](https://github.com/bkper/bkper-gs) library.
          * 
          * Example:
          * 

@@ -246,7 +246,9 @@ class Account {
       for (var i = 0; i < this.wrapped.groups.length; i++) {
         let groupId = this.wrapped.groups[i];
         let group = this.book.getGroup(groupId.id);
-        groups.push(group);
+        if (group) {
+          groups.push(group);
+        }
       }
     }
     return groups;

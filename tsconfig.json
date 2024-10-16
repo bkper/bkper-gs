@@ -3,7 +3,7 @@
     "module": "none",
     "experimentalDecorators": true,
     "lib": [ "esnext" ],
-    "target": "ES3",
+    "target": "ES2019", // Using V8 engine
     "noImplicitAny": true,
     "skipLibCheck": true,
     "typeRoots" : ["node_modules/@bkper", "node_modules/@types" ]

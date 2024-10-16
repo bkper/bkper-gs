@@ -5,6 +5,7 @@
     "lib": [ "esnext" ],
     "target": "ES2019", // Using V8 engine
     "noImplicitAny": true,
+    "noImplicitReturns": true,
     "skipLibCheck": true,
     "typeRoots" : ["node_modules/@bkper", "node_modules/@types" ]
   },

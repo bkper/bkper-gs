@@ -243,7 +243,7 @@ namespace Utils_ {
 
   export function normalizeText(text: string, spaceReplacement?: string): string {
     if (text == null || typeof text != 'string') {
-      return;
+      return text;
     }
     
     if (spaceReplacement) {

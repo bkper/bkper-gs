@@ -27,12 +27,12 @@ class Amount {
         this.wrapped = new Big(+n);
       }
     } catch (err) {
-      this.throwInvalidAmount(n)
+      throw this.invalidAmountError(n);
     }
   }
 
-  private throwInvalidAmount(n: any) {
-    throw new Error(`Invalid amount: ${n}`);
+  private invalidAmountError(n: any): Error {
+    return new Error(`Invalid amount: ${n}`);
   }
 
   /** 
@@ -60,7 +60,7 @@ class Amount {
         return this.wrapped.cmp(+n);
       }
     } catch (err) {
-      this.throwInvalidAmount(n)
+      throw this.invalidAmountError(n);
     }
   }
 
@@ -83,7 +83,7 @@ class Amount {
       }
       return this.wrap(big);
     } catch (err) {
-      this.throwInvalidAmount(n)
+      throw this.invalidAmountError(n);
     }
   }
 
@@ -104,7 +104,7 @@ class Amount {
         return this.wrapped.eq(+n);
       }
     } catch (err) {
-      this.throwInvalidAmount(n)
+      throw this.invalidAmountError(n);
     }
   }
 
@@ -125,7 +125,7 @@ class Amount {
         return this.wrapped.gt(+n);
       }
     } catch (err) {
-      this.throwInvalidAmount(n)
+      throw this.invalidAmountError(n);
     }
   }
 
@@ -146,7 +146,7 @@ class Amount {
         return this.wrapped.gte(+n);
       }
     } catch (err) {
-      this.throwInvalidAmount(n)
+      throw this.invalidAmountError(n);
     }
   }
 
@@ -169,7 +169,7 @@ class Amount {
         return this.wrapped.lt(+n);
       }
     } catch (err) {
-      this.throwInvalidAmount(n)
+      throw this.invalidAmountError(n);
     }
   }
 
@@ -192,7 +192,7 @@ class Amount {
         return this.wrapped.lte(+n);
       }
     } catch (err) {
-      this.throwInvalidAmount(n)
+      throw this.invalidAmountError(n);
     }
   }
 
@@ -215,7 +215,7 @@ class Amount {
       }
       return this.wrap(big);
     } catch (err) {
-      this.throwInvalidAmount(n)
+      throw this.invalidAmountError(n);
     }
   }
 
@@ -238,7 +238,7 @@ class Amount {
       }
       return this.wrap(big);
     } catch (err) {
-      this.throwInvalidAmount(n)
+      throw this.invalidAmountError(n);
     }
   }
 
@@ -264,7 +264,7 @@ class Amount {
       }
       return this.wrap(big);
     } catch (err) {
-      this.throwInvalidAmount(n)
+      throw this.invalidAmountError(n);
     }
   }
 
@@ -299,7 +299,7 @@ class Amount {
       }
       return this.wrap(big);
     } catch (err) {
-      this.throwInvalidAmount(n)
+      throw this.invalidAmountError(n);
     }
   }
 

@@ -120,8 +120,6 @@ class Group {
         }
     }
 
-
-
     /**
      * Gets the custom properties stored in this Group
      */
@@ -265,6 +263,20 @@ class Group {
      */
     public getParent(): Group {
         return this.parent;
+    }
+
+    /**
+     * 
+     * @returns The parent Groups chain up to the root Group
+     */
+    public getParentGroupsChain(): Group[] {
+        const parentChain: Group[] = [];
+        let parent = this.getParent();
+        while (parent) {
+            parentChain.push(parent);
+            parent = parent.getParent();
+        }
+        return parentChain;
     }
 
     /**

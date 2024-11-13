@@ -1551,6 +1551,11 @@ declare namespace Bkper {
         getParent(): Group;
 
         /**
+         * @returns The parent Groups chain up to the root Group
+         */
+        getParentGroupsChain(): Group[];
+
+        /**
          * Gets the custom properties stored in this Group
          */
         getProperties(): {[key: string]: string};

@@ -26,6 +26,16 @@ class Collection {
   }
 
   /**
+   * Sets the name of the Collection.
+   * 
+   * @returns This Collection, for chainning.
+   */
+  public setName(name: string): this {
+    this.wrapped.name = name;
+    return this;
+  }
+
+  /**
    * @returns All Books of this collection.
    */
   public getBooks(): Book[] {
@@ -38,6 +48,16 @@ class Collection {
       books.push(book);
     }
     return books;
+  }
+
+  /**
+   * Performs update Collection, applying pending changes.
+   * 
+   * @returns The updated Collection object
+   */
+  public update(): Collection {
+    this.wrapped = CollectionService_.updateCollection(this.wrapped);
+    return this;
   }
 
 }

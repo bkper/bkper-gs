@@ -169,3 +169,9 @@ class HttpBooksApiV5Request extends HttpApiRequest {
     super(`v5/books/${service}`)
   }
 }
+
+class HttpApiV5Request extends HttpApiRequest {
+  constructor(service: string) {
+    super(`v5/${service}`)
+  }
+}

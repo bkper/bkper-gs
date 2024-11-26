@@ -1344,7 +1344,7 @@ declare namespace Bkper {
          *
          * @returns This Collection, for chainning.
          */
-        setName(name: string): this;
+        setName(name: string): Collection;
 
         /**
          * Performs update Collection, applying pending changes.

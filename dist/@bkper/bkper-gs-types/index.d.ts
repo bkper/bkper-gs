@@ -1339,6 +1339,20 @@ declare namespace Bkper {
          */
         getName(): string;
 
+        /**
+         * Sets the name of the Collection.
+         *
+         * @returns This Collection, for chainning.
+         */
+        setName(name: string): this;
+
+        /**
+         * Performs update Collection, applying pending changes.
+         *
+         * @returns The updated Collection object
+         */
+        update(): Collection;
+
     }
 
     /**

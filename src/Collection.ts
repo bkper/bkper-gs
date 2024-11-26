@@ -30,7 +30,7 @@ class Collection {
    * 
    * @returns This Collection, for chainning.
    */
-  public setName(name: string): this {
+  public setName(name: string): Collection {
     this.wrapped.name = name;
     return this;
   }

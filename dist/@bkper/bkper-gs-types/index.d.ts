@@ -1615,6 +1615,11 @@ declare namespace Bkper {
         isHidden(): boolean;
 
         /**
+         * @returns True if the Group is locked by the Book owner.
+         */
+        isLocked(): boolean;
+
+        /**
          * Tell if this is a mixed (Assets/Liabilities or Incoming/Outgoing) group
          */
         isMixed(): boolean;
@@ -1633,6 +1638,13 @@ declare namespace Bkper {
          *  Hide/Show group on main menu.
          */
         setHidden(hidden: boolean): Group;
+
+        /**
+         * Sets the locked state of the Group.
+         *
+         * @returns This Group, for chainning.
+         */
+        setLocked(locked: boolean): Group;
 
         /**
          * Sets the name of the Group.

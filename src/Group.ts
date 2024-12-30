@@ -47,6 +47,27 @@ class Group {
     }
 
     /**
+     * @returns True if the Group is locked by the Book owner.
+     */
+    public isLocked(): boolean {
+        if (this.wrapped.locked == null) {
+            return false;
+        }
+        return this.wrapped.locked;
+    }
+
+    /**
+     * 
+     * Sets the locked state of the Group.
+     * 
+     * @returns This Group, for chainning.
+     */
+    public setLocked(locked: boolean): Group {
+        this.wrapped.locked = locked;
+        return this;
+    }
+
+    /**
      * @returns The name of this group without spaces and special characters
      */
     public getNormalizedName(): string {

@@ -344,7 +344,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
         if (depth <= this.maxDepth) {
             
-            if (!this.skipRoot) {
+            if (!this.skipRoot && !this.shouldTranspose) {
                 //@ts-ignore
                 container.json.name = Utils_.repeatString(" ", depth * 4) + container.json.name;
             }
@@ -366,9 +366,11 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
     private flattenAllGroups(container: BalancesContainer, containersFlat: BalancesContainer[], propertyKeys: string[]): void {
         if (container.isFromGroup()) {
-            let depth = container.getDepth();
-            //@ts-ignore
-            container.json.name = Utils_.repeatString(" ", depth * 4) + container.json.name;
+            if (!this.shouldTranspose) {
+              let depth = container.getDepth();
+              //@ts-ignore
+              container.json.name = Utils_.repeatString(" ", depth * 4) + container.json.name;
+            }
             containersFlat.push(container);
             if (this.shouldAddProperties) {
                 this.addPropertyKeys(propertyKeys, container)

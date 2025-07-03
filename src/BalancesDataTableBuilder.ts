@@ -273,7 +273,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             if (this.expandAllAccounts) {
                 this.flattenAllAccounts(container, containersFlat, propertyKeys);
                 containersFlat.sort(this.sortContainersFunction);
-            } else if (this.expandAllGroups) {
+            } else if (container.isFromGroup() && this.expandAllGroups) {
                 this.flattenAllGroups(container, containersFlat, propertyKeys)
             } else {
                 this.flattenMaxDepth(container, containersFlat, propertyKeys)

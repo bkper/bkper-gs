@@ -2,6 +2,10 @@
 ----
 
 **July 2025**
+* Released version 3.37.0
+* Fixed `BalancesDataTableBuilder` to only expand all groups when filtering by group
+* Updated `BalancesDataTableBuilder.formatDate()` to use ISO YYYY-MM-DD format
+* Reverted time table transpose behavior in `BalancesDataTableBuilder.transpose()`
 * Added Claude configuration for improved development workflow
 * Updated license
 

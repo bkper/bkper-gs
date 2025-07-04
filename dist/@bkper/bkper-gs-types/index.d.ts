@@ -552,7 +552,7 @@ declare namespace Bkper {
         expanded(expanded: boolean | number): BalancesDataTableBuilder;
 
         /**
-         * Defines whether the dates should be formatted based on date pattern and periodicity of the [[Book]].
+         * Defines whether the dates should be ISO YYYY-MM-DD formatted.
          *
          * @returns This builder with respective formatting option, for chaining.
          */
@@ -619,9 +619,10 @@ declare namespace Bkper {
          * 
          * ```
          *   _______________________________________________________________
-         *  |            | 15/01/2014 | 15/02/2014 | 15/03/2014 |    ...    |
-         *  |  Expenses  | -2345.23   | -2345.93   | -2456.45   |    ...    |
-         *  |  Income    |  3452.93   |  3456.46   |  3567.87   |    ...    |
+         *  |            | Expenses   | Income     |     ...    |    ...    |
+         *  | 15/01/2014 | -2345.23   |  3452.93   |     ...    |    ...    |
+         *  | 15/02/2014 | -2345.93   |  3456.46   |     ...    |    ...    |
+         *  | 15/03/2014 | -2456.45   |  3567.87   |     ...    |    ...    |
          *  |     ...    |     ...    |     ...    |     ...    |    ...    |
          *  |____________|____________|____________|____________|___________|
          * 

@@ -6,8 +6,7 @@
 * Fixed `BalancesDataTableBuilder` to only expand all groups when filtering by group
 * Updated `BalancesDataTableBuilder.formatDate()` to use ISO YYYY-MM-DD format
 * Reverted time table transpose behavior in `BalancesDataTableBuilder.transpose()`
-* Added Claude configuration for improved development workflow
-* Updated license
+
 
 **June 2025**
 * Added `Group.isLocked()` and `Group.setLocked()` for group access control

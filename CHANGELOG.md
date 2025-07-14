@@ -8,12 +8,6 @@
 * Reverted time table transpose behavior in `BalancesDataTableBuilder.transpose()`
 
 
-**June 2025**
-* Added `Group.isLocked()` and `Group.setLocked()` for group access control
-* Added `Collection.setName()` and `Collection.update()` methods
-* Added `Group.getParentGroupsChain()` for navigating parent Groups hierarchy
-* Fixed group validation in `Account.getGroups()` method
-
 2024
 ----
 

@@ -545,7 +545,15 @@ declare namespace Bkper {
         build(): any[][];
 
         /**
-         * Defines whether Groups should expand its child accounts. true to expand itself, -1 to expand all subgroups. -2 to expand all accounts.
+         * Defines whether Groups should expand its child accounts.
+         *
+         * true to expand itself
+         * -1 to expand all subgroups
+         * -2 to expand all accounts
+         * 0 to expand nothing
+         * 1 to expand itself and its first level of children
+         * 2 to expand itself and its first two levels of children
+         * etc.
          *
          * @returns This builder with respective expanded option, for chaining.
          */
@@ -1433,14 +1441,22 @@ declare namespace Bkper {
     /**
      * This class defines a File uploaded to a [[Book]].
      *
-     * A File can be attached to a [[Transaction]] or used to import data.
+     * A File can be attached to a [[File]] or used to import data.
      */
     export interface File {
 
         /**
+         * /**
          * Perform create new File.
          */
         create(): File;
+
+        /**
+         * Delete a custom property
+         *
+         * @returns This File, for chainning.
+         */
+        deleteProperty(key: string): File;
 
         /**
          * Gets the Blob from this file
@@ -1466,6 +1482,21 @@ declare namespace Bkper {
          * Gets the File name
          */
         getName(): string;
+
+        /**
+         * Gets the custom properties stored in this File.
+         */
+        getProperties(): {[key: string]: string};
+
+        /**
+         * Gets the property value for given keys. First property found will be retrieved
+         */
+        getProperty(...keys: string[]): string;
+
+        /**
+         * Gets the custom properties keys stored in this File.
+         */
+        getPropertyKeys(): string[];
 
         /**
          * Gets the file size in bytes
@@ -1504,6 +1535,20 @@ declare namespace Bkper {
          * @returns This File, for chainning.
          */
         setName(name: string): File;
+
+        /**
+         * Set the custom properties of the File
+         *
+         * @returns This File, for chainning.
+         */
+        setProperties(properties: {[key: string]: string}): File;
+
+        /**
+         * Set a custom property in the File.
+         *
+         * @returns This File, for chainning.
+         */
+        setProperty(key: string, value: string): File;
 
     }
 

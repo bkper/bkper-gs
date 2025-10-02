@@ -2,7 +2,7 @@
  * 
  * This class defines a File uploaded to a [[Book]].
  * 
- * A File can be attached to a [[Transaction]] or used to import data.
+ * A File can be attached to a [[File]] or used to import data.
  * 
  * @public
  */
@@ -119,6 +119,92 @@ class File {
   }
 
 
+  /**
+   * Gets the custom properties stored in this File.
+   */  
+  public getProperties(): {[key: string]: string} {
+    return this.wrapped.properties != null ?  {...this.wrapped.properties} : {};
+  }
+
+  /**
+   * Gets the custom properties keys stored in this File.
+   */  
+  public getPropertyKeys(): string[] {
+    let properties = this.getProperties();
+    let propertyKeys:string[] = []
+    if (properties) {
+      for (var key in properties) {
+        if (Object.prototype.hasOwnProperty.call(properties, key)) {
+            propertyKeys.push(key)
+        }
+      }
+    }
+    propertyKeys = propertyKeys.sort();
+    return propertyKeys;
+  }
+
+  /**
+   * Set the custom properties of the File
+   * 
+   * @param properties Object with key/value pair properties
+   * 
+   * @returns This File, for chainning. 
+   */
+  public setProperties(properties: {[key: string]: string}): File {
+    this.wrapped.properties = {...properties};
+    return this;
+  }
+
+  /**
+   * Gets the property value for given keys. First property found will be retrieved
+   * 
+   * @param keys The property key
+   */
+  public getProperty(...keys: string[]): string {
+    for (let index = 0; index < keys.length; index++) {
+      const key = keys[index];
+      let value = this.wrapped.properties != null ?  this.wrapped.properties[key] : null 
+      if (value != null && value.trim() != '') {
+        return value;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Set a custom property in the File.
+   * 
+   * @param key The property key
+   * @param value The property value
+   * 
+   * @returns This File, for chainning. 
+   */
+  public setProperty(key: string, value: string): File {
+    if (key == null || key.trim() == '') {
+      return this;
+    }    
+    if (this.wrapped.properties == null) {
+      this.wrapped.properties = {};
+    }
+    this.wrapped.properties[key] = value;
+    return this;
+  }
+
+  /**
+   * Delete a custom property
+   * 
+   * @param key The property key
+   * 
+   * @returns This File, for chainning. 
+   */
+  public deleteProperty(key: string): File {
+    this.setProperty(key, null);
+    return this;
+  }  
+
+
+  //ORIGIN ACCOUNT
+  /**
   /**
    * Perform create new File.
    */

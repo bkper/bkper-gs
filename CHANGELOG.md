@@ -1,11 +1,18 @@
 2025
 ----
 
+**October 2025**
+* Added custom properties support to [File](https://bkper.com/docs/bkper-gs/classes/Bkper.File.html) - store and retrieve metadata on uploaded files
+* Files attached to transactions are now automatically tagged with upload method for better tracking
+
+**August 2025**
+* Added [BalancesReport.getBalancesUrl()](https://bkper.com/docs/bkper-gs/classes/Bkper.BalancesReport.html#getBalancesUrl) to fetch balances directly from Cloud Storage for improved performance
+
 **July 2025**
 * Released version 3.37.0
-* Fixed `BalancesDataTableBuilder` to only expand all groups when filtering by group
-* Updated `BalancesDataTableBuilder.formatDate()` to use ISO YYYY-MM-DD format
-* Reverted time table transpose behavior in `BalancesDataTableBuilder.transpose()`
+* Fixed [BalancesDataTableBuilder](https://bkper.com/docs/bkper-gs/classes/Bkper.BalancesDataTableBuilder.html) to only expand all groups when filtering by group
+* Updated [BalancesDataTableBuilder.formatDate()](https://bkper.com/docs/bkper-gs/classes/Bkper.BalancesDataTableBuilder.html#formatDate) to use ISO YYYY-MM-DD format
+* Reverted time table transpose behavior in [BalancesDataTableBuilder.transpose()](https://bkper.com/docs/bkper-gs/classes/Bkper.BalancesDataTableBuilder.html#transpose)
 
 
 2024

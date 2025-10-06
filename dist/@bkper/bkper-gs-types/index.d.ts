@@ -1754,7 +1754,7 @@ declare namespace Bkper {
         /**
          * Adds a file attachment to the Transaction.
          *
-         * Files not previously created in the Book will be automatically created.
+         * Files not previously created in the Book will be automatically created when the transaction is persisted.
          *
          * @returns This Transaction, for chainning.
          */

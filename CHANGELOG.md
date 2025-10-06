@@ -3,6 +3,7 @@
 
 **October 2025**
 * Added custom properties support to [File](https://bkper.com/docs/bkper-gs/classes/Bkper.File.html) - store and retrieve metadata on uploaded files
+* Files attached to transactions are now created internally when transaction is persisted
 
 **August 2025**
 * Added [BalancesReport.getBalancesUrl()](https://bkper.com/docs/bkper-gs/classes/Bkper.BalancesReport.html#getBalancesUrl) to fetch balances directly from Cloud Storage for improved performance

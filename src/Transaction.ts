@@ -12,6 +12,9 @@ class Transaction {
 
   book: Book;
 
+  /** @internal */
+  private pendingFiles: Map<string, File> = new Map();
+
   /**
    * @returns The id of the Transaction.
    */
@@ -161,13 +164,12 @@ class Transaction {
   }
 
   /**
-   * 
-   * Adds a file attachment to the Transaction.
-   * 
-   * Files not previously created in the Book will be automatically created. 
-   * 
-   * @param file The file to add
-   * 
+   * Add a File attachment to the Transaction.
+   *
+   * Files not previously created in the Book will be automatically created when the Transaction is persisted.
+   *
+   * @param file The File to add to this Transaction
+   *
    * @returns This Transaction, for chainning.
    */
   public addFile(file: File|GoogleAppsScript.Base.Blob): Transaction {
@@ -182,14 +184,48 @@ class Transaction {
       this.wrapped.files = [];
     }
 
-    //Make sure file is already created
-    if (file.getId() == null || file.book.getId() != this.book.getId()) {
+    // Store file reference for later creation if needed
+    const fileId = file.getId();
+    const fileBookId = file.book?.getId();
+    if (fileId == null || fileBookId != this.book.getId()) {
+      // Generate temporary ID if file doesn't have one
+      if (fileId == null) {
+        file.wrapped.id = `temporary_${Utilities.getUuid()}`;
+      }
+      this.pendingFiles.set(file.getId(), file);
+    }
+
+    this.wrapped.files.push(file.wrapped);
+    return this;
+  }
+
+  /** @internal */
+  private createPendingFiles_(): void {
+
+    if (this.pendingFiles.size === 0) {
+      return;
+    }
+
+    if (this.wrapped.files == null) {
+      this.wrapped.files = [];
+    }
+
+    // Create all pending files
+    for (const [fileId, file] of this.pendingFiles.entries()) {
       file.book = this.book;
       file.setProperty('upload_method_', 'attachment');
-      file = file.create();
+      const createdFile = file.create();
+      // Update payload with the created file
+      const fileIndex = this.wrapped.files.findIndex(f => f.id === fileId);
+      if (fileIndex >= 0) {
+        this.wrapped.files[fileIndex] = createdFile.wrapped;
+      } else {
+        this.wrapped.files.push(createdFile.wrapped);
+      }
     }
-    this.wrapped.files.push(file.wrapped)
-    return this;
+
+    // Clear pending files after creation
+    this.pendingFiles.clear();
   }
 
   /**
@@ -642,6 +678,7 @@ class Transaction {
    * Perform create new draft transaction.
    */
   public create(): Transaction {
+    this.createPendingFiles_();
     let operation = TransactionService_.createTransaction(this.book.getId(), this.wrapped);
     this.wrapped = operation.transaction;
     this.book.updateAccountsCache(operation.accounts);
@@ -650,8 +687,9 @@ class Transaction {
 
   /**
    * Upddate transaction, applying pending changes.
-   */  
+   */
   public update(): Transaction {
+    this.createPendingFiles_();
     let operation = TransactionService_.updateTransaction(this.book.getId(), this.wrapped);
     this.wrapped = operation.transaction;
     this.book.updateAccountsCache(operation.accounts);
@@ -683,6 +721,7 @@ class Transaction {
    * Perform post transaction, changing credit and debit [[Account]] balances.
    */
   public post(): Transaction {
+    this.createPendingFiles_();
     let operation = TransactionService_.postTransaction(this.book.getId(), this.wrapped);
     this.wrapped = operation.transaction;
     this.book.updateAccountsCache(operation.accounts);

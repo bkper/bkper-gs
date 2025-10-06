@@ -185,7 +185,7 @@ class Transaction {
     //Make sure file is already created
     if (file.getId() == null || file.book.getId() != this.book.getId()) {
       file.book = this.book;
-      file.setProperty('upload_method', 'attachment');
+      file.setProperty('upload_method_', 'attachment');
       file = file.create();
     }
     this.wrapped.files.push(file.wrapped)

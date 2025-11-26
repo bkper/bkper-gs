@@ -200,11 +200,77 @@ class File {
   public deleteProperty(key: string): File {
     this.setProperty(key, null);
     return this;
-  }  
+  }
 
-
-  //ORIGIN ACCOUNT
   /**
+   * Checks if a property key represents a hidden property.
+   * Hidden properties are those whose keys end with an underscore "_".
+   *
+   * @param key - The property key to check
+   * @returns True if the property is hidden, false otherwise
+   */
+  private isHiddenProperty(key: string): boolean {
+    return key.endsWith('_');
+  }
+
+  /**
+   * Sets a custom property in this File, filtering out hidden properties.
+   * Hidden properties are those whose keys end with an underscore "_".
+   *
+   * @param key - The property key
+   * @param value - The property value, or null/undefined to clean it
+   *
+   * @returns This File, for chaining
+   */
+  public setVisibleProperty(key: string, value: string | null | undefined): File {
+    if (this.isHiddenProperty(key)) {
+      return this;
+    }
+    return this.setProperty(key, value);
+  }
+
+  /**
+   * Sets the custom properties of this File, filtering out hidden properties.
+   * Hidden properties are those whose keys end with an underscore "_".
+   *
+   * @param properties - Object with key/value pair properties
+   *
+   * @returns This File, for chaining
+   */
+  public setVisibleProperties(properties: { [key: string]: string }): File {
+    if (properties == null) {
+      return this;
+    }
+    const filteredProperties: { [key: string]: string } = {};
+    for (const key in properties) {
+      if (Object.prototype.hasOwnProperty.call(properties, key)) {
+        if (!this.isHiddenProperty(key)) {
+          filteredProperties[key] = properties[key];
+        }
+      }
+    }
+    return this.setProperties(filteredProperties);
+  }
+
+  /**
+   * Gets the visible custom properties stored in this File.
+   * Hidden properties (those ending with "_") are excluded from the result.
+   *
+   * @returns Object with key/value pair properties, excluding hidden properties
+   */
+  public getVisibleProperties(): { [key: string]: string } {
+    const allProperties = this.getProperties();
+    const visibleProperties: { [key: string]: string } = {};
+    for (const key in allProperties) {
+      if (Object.prototype.hasOwnProperty.call(allProperties, key)) {
+        if (!this.isHiddenProperty(key)) {
+          visibleProperties[key] = allProperties[key];
+        }
+      }
+    }
+    return visibleProperties;
+  }
+
   /**
    * Perform create new File.
    */

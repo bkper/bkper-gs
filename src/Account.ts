@@ -82,7 +82,7 @@ class Account {
   }
 
   /**
-   * Sets a custom property in this resource, filtering out hidden properties.
+   * Sets a custom property in this Account, filtering out hidden properties.
    * Hidden properties are those whose keys end with an underscore "_".
    *
    * @param key - The property key
@@ -99,7 +99,7 @@ class Account {
 
 
   /**
-   * Sets the custom properties of this resource, filtering out hidden properties.
+   * Sets the custom properties of this Account, filtering out hidden properties.
    * Hidden properties are those whose keys end with an underscore "_".
    *
    * @param properties - Object with key/value pair properties

@@ -88,13 +88,37 @@ class Account {
    * @param key - The property key
    * @param value - The property value, or null/undefined to clean it
    *
-   * @returns This resource, for chaining
+   * @returns This Account, for chaining
    */
   public setVisibleProperty(key: string, value: string | null | undefined): Account {
     if (this.isHiddenProperty(key)) {
       return this;
     }
     return this.setProperty(key, value);
+  }
+
+
+  /**
+   * Sets the custom properties of this resource, filtering out hidden properties.
+   * Hidden properties are those whose keys end with an underscore "_".
+   *
+   * @param properties - Object with key/value pair properties
+   *
+   * @returns This Account, for chaining
+   */
+  public setVisibleProperties(properties: { [key: string]: string }): Account {
+    if (properties == null) {
+        return this;
+    }
+    const filteredProperties: { [key: string]: string } = {};
+    for (const key in properties) {
+        if (Object.prototype.hasOwnProperty.call(properties, key)) {
+            if (!this.isHiddenProperty(key)) {
+                filteredProperties[key] = properties[key];
+            }
+        }
+    }
+    return this.setProperties(filteredProperties);
   }
 
   /**

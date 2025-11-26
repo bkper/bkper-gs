@@ -71,6 +71,17 @@ class Account {
   }
 
   /**
+   * Checks if a property key represents a hidden property.
+   * Hidden properties are those whose keys end with an underscore "_".
+   *
+   * @param key - The property key to check
+   * @returns True if the property is hidden, false otherwise
+   */
+  private isHiddenProperty(key: string): boolean {
+    return key.endsWith('_');
+  }
+
+  /**
    * Gets the custom properties stored in this Account.
    */
   public getProperties(): { [key: string]: string } {

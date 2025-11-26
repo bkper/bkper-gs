@@ -82,6 +82,22 @@ class Account {
   }
 
   /**
+   * Sets a custom property in this resource, filtering out hidden properties.
+   * Hidden properties are those whose keys end with an underscore "_".
+   *
+   * @param key - The property key
+   * @param value - The property value, or null/undefined to clean it
+   *
+   * @returns This resource, for chaining
+   */
+  public setVisibleProperty(key: string, value: string | null | undefined): Account {
+    if (this.isHiddenProperty(key)) {
+      return this;
+    }
+    return this.setProperty(key, value);
+  }
+
+  /**
    * Gets the custom properties stored in this Account.
    */
   public getProperties(): { [key: string]: string } {

@@ -166,6 +166,14 @@ declare namespace Bkper {
         getType(): AccountType;
 
         /**
+         * Gets the visible custom properties stored in this Account.
+         * Hidden properties (those ending with "_") are excluded from the result.
+         *
+         * @returns Object with key/value pair properties, excluding hidden properties
+         */
+        getVisibleProperties(): {[key: string]: string};
+
+        /**
          * Tell if the Account has any transaction already posted.
          *
          * Accounts with transaction posted, even with zero balance, can only be archived.
@@ -275,6 +283,22 @@ declare namespace Bkper {
          * @returns This Account, for chainning
          */
         setType(type: AccountType): Account;
+
+        /**
+         * Sets the custom properties of this Account, filtering out hidden properties.
+         * Hidden properties are those whose keys end with an underscore "_".
+         *
+         * @returns This Account, for chaining
+         */
+        setVisibleProperties(properties: {[key: string]: string}): Account;
+
+        /**
+         * Sets a custom property in this Account, filtering out hidden properties.
+         * Hidden properties are those whose keys end with an underscore "_".
+         *
+         * @returns This Account, for chaining
+         */
+        setVisibleProperty(key: string, value: string | null): Account;
 
         /**
          * Perform update account, applying pending changes.
@@ -1103,6 +1127,14 @@ declare namespace Bkper {
         getTransactions(query?: string): TransactionIterator;
 
         /**
+         * Gets the visible custom properties stored in this Book.
+         * Hidden properties (those ending with "_") are excluded from the result.
+         *
+         * @returns Object with key/value pair properties, excluding hidden properties
+         */
+        getVisibleProperties(): {[key: string]: string};
+
+        /**
          * Instantiate a new [[Account]]
          *
          * @returns The new Account, for chainning.
@@ -1298,6 +1330,22 @@ declare namespace Bkper {
         setTimeZone(timeZone: string): Book;
 
         /**
+         * Sets the custom properties of this Book, filtering out hidden properties.
+         * Hidden properties are those whose keys end with an underscore "_".
+         *
+         * @returns This Book, for chaining
+         */
+        setVisibleProperties(properties: {[key: string]: string}): Book;
+
+        /**
+         * Sets a custom property in this Book, filtering out hidden properties.
+         * Hidden properties are those whose keys end with an underscore "_".
+         *
+         * @returns This Book, for chaining
+         */
+        setVisibleProperty(key: string, value: string | null): Book;
+
+        /**
          * Perform update Book, applying pending changes.
          *
          * @returns This Book, for chainning.
@@ -1446,7 +1494,6 @@ declare namespace Bkper {
     export interface File {
 
         /**
-         * /**
          * Perform create new File.
          */
         create(): File;
@@ -1509,6 +1556,14 @@ declare namespace Bkper {
         getUrl(): string;
 
         /**
+         * Gets the visible custom properties stored in this File.
+         * Hidden properties (those ending with "_") are excluded from the result.
+         *
+         * @returns Object with key/value pair properties, excluding hidden properties
+         */
+        getVisibleProperties(): {[key: string]: string};
+
+        /**
          * Sets the File properties from a Blob
          *
          * @returns This File, for chainning.
@@ -1549,6 +1604,22 @@ declare namespace Bkper {
          * @returns This File, for chainning.
          */
         setProperty(key: string, value: string): File;
+
+        /**
+         * Sets the custom properties of this File, filtering out hidden properties.
+         * Hidden properties are those whose keys end with an underscore "_".
+         *
+         * @returns This File, for chaining
+         */
+        setVisibleProperties(properties: {[key: string]: string}): File;
+
+        /**
+         * Sets a custom property in this File, filtering out hidden properties.
+         * Hidden properties are those whose keys end with an underscore "_".
+         *
+         * @returns This File, for chaining
+         */
+        setVisibleProperty(key: string, value: string | null): File;
 
     }
 
@@ -1641,6 +1712,14 @@ declare namespace Bkper {
         getType(): AccountType;
 
         /**
+         * Gets the visible custom properties stored in this Group.
+         * Hidden properties (those ending with "_") are excluded from the result.
+         *
+         * @returns Object with key/value pair properties, excluding hidden properties
+         */
+        getVisibleProperties(): {[key: string]: string};
+
+        /**
          * @returns True if this group has any account in it
          */
         hasAccounts(): boolean;
@@ -1719,6 +1798,22 @@ declare namespace Bkper {
         setProperty(key: string, value: string): Group;
 
         /**
+         * Sets the custom properties of this Group, filtering out hidden properties.
+         * Hidden properties are those whose keys end with an underscore "_".
+         *
+         * @returns This Group, for chaining
+         */
+        setVisibleProperties(properties: {[key: string]: string}): Group;
+
+        /**
+         * Sets a custom property in this Group, filtering out hidden properties.
+         * Hidden properties are those whose keys end with an underscore "_".
+         *
+         * @returns This Group, for chaining
+         */
+        setVisibleProperty(key: string, value: string | null): Group;
+
+        /**
          * Perform update group, applying pending changes.
          */
         update(): Group;
@@ -1752,9 +1847,9 @@ declare namespace Bkper {
     export interface Transaction {
 
         /**
-         * Adds a file attachment to the Transaction.
+         * Add a File attachment to the Transaction.
          *
-         * Files not previously created in the Book will be automatically created when the transaction is persisted.
+         * Files not previously created in the Book will be automatically created when the Transaction is persisted.
          *
          * @returns This Transaction, for chainning.
          */
@@ -1971,6 +2066,14 @@ declare namespace Bkper {
         getUrls(): string[];
 
         /**
+         * Gets the visible custom properties stored in this Transaction.
+         * Hidden properties (those ending with "_") are excluded from the result.
+         *
+         * @returns Object with key/value pair properties, excluding hidden properties
+         */
+        getVisibleProperties(): {[key: string]: string};
+
+        /**
          * Check if the transaction has the specified tag.
          */
         hasTag(tag: string): boolean;
@@ -2086,6 +2189,22 @@ declare namespace Bkper {
          * @returns This Transaction, for chainning.
          */
         setUrls(urls: string[]): Transaction;
+
+        /**
+         * Sets the custom properties of this Transaction, filtering out hidden properties.
+         * Hidden properties are those whose keys end with an underscore "_".
+         *
+         * @returns This Transaction, for chaining
+         */
+        setVisibleProperties(properties: {[key: string]: string}): Transaction;
+
+        /**
+         * Sets a custom property in this Transaction, filtering out hidden properties.
+         * Hidden properties are those whose keys end with an underscore "_".
+         *
+         * @returns This Transaction, for chaining
+         */
+        setVisibleProperty(key: string, value: string | null): Transaction;
 
         /**
          * Set the debit/destination Account of the Transaction. Same as setDebitAccount().

@@ -122,6 +122,25 @@ class Account {
   }
 
   /**
+   * Gets the visible custom properties stored in this Account.
+   * Hidden properties (those ending with "_") are excluded from the result.
+   *
+   * @returns Object with key/value pair properties, excluding hidden properties
+   */
+  public getVisibleProperties(): { [key: string]: string } {
+    const allProperties = this.getProperties();
+    const visibleProperties: { [key: string]: string } = {};
+    for (const key in allProperties) {
+        if (Object.prototype.hasOwnProperty.call(allProperties, key)) {
+            if (!this.isHiddenProperty(key)) {
+                visibleProperties[key] = allProperties[key];
+            }
+        }
+    }
+    return visibleProperties;
+  }
+
+  /**
    * Gets the custom properties stored in this Account.
    */
   public getProperties(): { [key: string]: string } {

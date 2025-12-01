@@ -1,10 +1,10 @@
 /**
- * The container of balances of an [[Account]] or [[Group]]
- * 
- * The container is composed of a list of [[Balances]] for a window of time, as well as its period and cumulative totals.
- * 
- * @public
- */
+* The container of balances of an [[Account]] or [[Group]]
+* 
+* The container is composed of a list of [[Balances]] for a window of time, as well as its period and cumulative totals.
+* 
+* @public
+*/
 interface BalancesContainer {
 
     /**

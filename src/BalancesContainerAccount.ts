@@ -25,7 +25,7 @@ class AccountBalancesContainer implements BalancesContainer {
             }
         }
         return this.depth;
-    }    
+    }
 
     getGroup(): Group {
         return null;
@@ -174,7 +174,7 @@ class AccountBalancesContainer implements BalancesContainer {
         propertyKeys = propertyKeys.sort();
         return propertyKeys;
     }
-    
+
 
     getBalancesContainer(name: string): BalancesContainer {
 

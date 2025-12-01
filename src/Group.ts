@@ -1,12 +1,12 @@
 /**
- * This class defines a Group of [[Accounts]].
- * 
- * Accounts can be grouped by different meaning, like Expenses, Revenue, Assets, Liabilities and so on
- * 
- * Its useful to keep organized and for high level analysis.
- * 
- * @public
- */
+* This class defines a Group of [[Accounts]].
+* 
+* Accounts can be grouped by different meaning, like Expenses, Revenue, Assets, Liabilities and so on
+* 
+* Its useful to keep organized and for high level analysis.
+* 
+* @public
+*/
 class Group {
 
     wrapped: bkper.Group

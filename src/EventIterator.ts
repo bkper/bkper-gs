@@ -1,22 +1,22 @@
 /**
- *
- * An iterator that allows scripts to iterate over a potentially large collection of Events.
- * 
- * Example:
- *
- * ```js
- * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
- *
- * var eventIterator = book.getEvents('2023-10-01', '2023-11-01', true);
- *
- * while (eventIterator.hasNext()) {
- *  var event = eventIterator.next();
- *  Logger.log(event);
- * }
- * ```
- *
- * @public
- */
+*
+* An iterator that allows scripts to iterate over a potentially large collection of Events.
+* 
+* Example:
+*
+* ```js
+* var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
+*
+* var eventIterator = book.getEvents('2023-10-01', '2023-11-01', true);
+*
+* while (eventIterator.hasNext()) {
+*  var event = eventIterator.next();
+*  Logger.log(event);
+* }
+* ```
+*
+* @public
+*/
 class EventIterator {
 
     private book: Book;

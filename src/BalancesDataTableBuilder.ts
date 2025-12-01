@@ -1,7 +1,7 @@
 
 type IndexEntry = {
     date?: Date;
-    amount?:  Amount;
+    amount?: Amount;
     property?: string;
 }
 /**
@@ -11,203 +11,203 @@ type IndexEntry = {
  */
 class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
-  private balanceType: BalanceType;
-  private balancesContainers: BalancesContainer[];
-  private periodicity: Periodicity;
-  private shouldFormatDate: boolean;
-  private shouldHideDates: boolean;
-  private shouldHideNames: boolean;
-  private shouldFormatValue: boolean;
-  private book: Book;
-  private shouldTranspose: boolean;
-  private shouldTrial: boolean;
-  private shouldPeriod: boolean;
-  private shouldRaw: boolean;
-  private shouldAddProperties: boolean;
-  private maxDepth = 0;
-  private expandAllAccounts = false;
-  private expandAllGroups = false;
-  private skipRoot = false;
+    private balanceType: BalanceType;
+    private balancesContainers: BalancesContainer[];
+    private periodicity: Periodicity;
+    private shouldFormatDate: boolean;
+    private shouldHideDates: boolean;
+    private shouldHideNames: boolean;
+    private shouldFormatValue: boolean;
+    private book: Book;
+    private shouldTranspose: boolean;
+    private shouldTrial: boolean;
+    private shouldPeriod: boolean;
+    private shouldRaw: boolean;
+    private shouldAddProperties: boolean;
+    private maxDepth = 0;
+    private expandAllAccounts = false;
+    private expandAllGroups = false;
+    private skipRoot = false;
 
 
-  constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity) {
-    this.book = book;
-    this.balancesContainers = balancesContainers;
-    this.periodicity = periodicity;
-    this.balanceType = BalanceType.TOTAL;
-    this.shouldFormatDate = false;
-    this.shouldHideDates = false;
-    this.shouldHideNames = false;
-    this.shouldFormatValue = false;
-    this.shouldTranspose = false;
-    this.shouldTrial = false;
-    this.shouldPeriod = false;
-    this.shouldRaw = false;
-    this.shouldAddProperties = false;
-  }
-
-  private getBalance(balance: Amount, permanent: boolean): number {
-    return this.getRepresentativeBalance(balance, permanent).toNumber();
-  }
-  private getRepresentativeBalance(balance: Amount, permanent: boolean): Amount {
-
-    if (balance == null) {
-      return new Amount(0);
-    }
-  
-    if (permanent) {
-      return balance.times(-1);
+    constructor(book: Book, balancesContainers: BalancesContainer[], periodicity: Periodicity) {
+        this.book = book;
+        this.balancesContainers = balancesContainers;
+        this.periodicity = periodicity;
+        this.balanceType = BalanceType.TOTAL;
+        this.shouldFormatDate = false;
+        this.shouldHideDates = false;
+        this.shouldHideNames = false;
+        this.shouldFormatValue = false;
+        this.shouldTranspose = false;
+        this.shouldTrial = false;
+        this.shouldPeriod = false;
+        this.shouldRaw = false;
+        this.shouldAddProperties = false;
     }
 
-    return balance;
-  }
-
-  private getBalanceText(balance: Amount, permanent: boolean): string {
-    return this.book.formatAmount(this.getRepresentativeBalance(balance, permanent));
-  }
-
-  /**
-   * Defines whether the dates should be ISO YYYY-MM-DD formatted.
-   *
-   * @returns This builder with respective formatting option, for chaining.
-   */
-  public formatDates(format: boolean): BalancesDataTableBuilder {
-    this.shouldFormatDate = format;
-    return this;
-  }
-
-    
-  /**
-   * Defines whether the value should be formatted based on decimal separator of the [[Book]].
-   * 
-   * @returns This builder with respective formatting option, for chaining.
-   */
-  public formatValues(format: boolean): BalancesDataTableBuilder {
-    this.shouldFormatValue = format;
-    return this;
-  }
-  
-  /**
-   * Defines whether Groups should expand its child accounts. 
-   * 
-   * true to expand itself
-   * -1 to expand all subgroups
-   * -2 to expand all accounts
-   * 0 to expand nothing
-   * 1 to expand itself and its first level of children
-   * 2 to expand itself and its first two levels of children
-   * etc.
-   * 
-   * @returns This builder with respective expanded option, for chaining.
-   */
-  public expanded(expanded: boolean|number): BalancesDataTableBuilder {
-    if (typeof expanded == "boolean" && expanded == true) {
-        this.maxDepth = 1;
-        this.skipRoot = true;
-    } else if (expanded == -1) {
-        this.expandAllGroups = true;
-    } else if (expanded == -2) {
-        this.expandAllAccounts = true;
-    } else if (typeof expanded == "number" && expanded > 0) {
-        this.maxDepth = expanded;
+    private getBalance(balance: Amount, permanent: boolean): number {
+        return this.getRepresentativeBalance(balance, permanent).toNumber();
     }
-    return this;
-  }
+    private getRepresentativeBalance(balance: Amount, permanent: boolean): Amount {
 
-  /**
-   * Fluent method to set the [[BalanceType]] for the builder.
-   * 
-   * @param type The type of balance for this data table
-   * 
-   * For **TOTAL** [[BalanceType]], the table format looks like:
-   * 
-   * ```
-   *   _____________________
-   *  | Expenses  | -4568.23 |
-   *  | Income    |  5678.93 |
-   *  |    ...    |    ...   |
-   *  |___________|__________|
-   * 
-   * ```
-   * Two columns, and each [[Account]] or [[Group]] per line.
-   * 
-   * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the table will be a time table, and the format looks like:
-   * 
-   * ```
-   *  _______________________________________________________________
-   *  |            | 15/01/2014 | 15/02/2014 | 15/03/2014 |    ...    |
-   *  |  Expenses  | -2345.23   | -2345.93   | -2456.45   |    ...    |
-   *  |  Income    |  3452.93   |  3456.46   |  3567.87   |    ...    |
-   *  |     ...    |     ...    |     ...    |     ...    |    ...    |
-   *  |____________|____________|____________|____________|___________|
-   * 
-   * ```
-   * 
-   * First column will be the Date column, and one column for each [[Account]] or [[Group]].
-   * 
-   * @returns This builder with respective balance type, for chaining.
-   */
-  public type(type: BalanceType): BalancesDataTableBuilder {
-    this.balanceType = type;
-    return this;
-  }
+        if (balance == null) {
+            return new Amount(0);
+        }
 
-  /**
-   * Defines whether should rows and columns should be transposed.
-   * 
-   * For **TOTAL** [[BalanceType]], the **transposed** table looks like:
-   * 
-   * ```
-   *   _____________________________
-   *  |  Expenses | Income  |  ...  | 
-   *  | -4568.23  | 5678.93 |  ...  |
-   *  |___________|_________|_______| 
-   * 
-   * ```
-   * Two rows, and each [[Account]] or [[Group]] per column.
-   * 
-   * 
-   * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the **transposed** table will be a time table, and the format looks like:
-   * 
-   * ```
-   *   _______________________________________________________________
-   *  |            | Expenses   | Income     |     ...    |    ...    |
-   *  | 15/01/2014 | -2345.23   |  3452.93   |     ...    |    ...    |
-   *  | 15/02/2014 | -2345.93   |  3456.46   |     ...    |    ...    |
-   *  | 15/03/2014 | -2456.45   |  3567.87   |     ...    |    ...    |
-   *  |     ...    |     ...    |     ...    |     ...    |    ...    |
-   *  |____________|____________|____________|____________|___________|
-   * 
-   * ```
-   * 
-   * First column will be each [[Account]] or [[Group]], and one column for each Date.
-   * 
-   * @returns This builder with respective transposed option, for chaining.
-   */
-  public transposed(transposed: boolean): BalancesDataTableBuilder {
-    this.shouldTranspose = transposed;
-    return this;
-  }
+        if (permanent) {
+            return balance.times(-1);
+        }
 
-  /**
-   * Defines whether the dates should be hidden for **PERIOD** or **CUMULATIVE** [[BalanceType]].
-   *
-   * @returns This builder with respective hide dates option, for chaining.
-   */  
-  public hideDates(hide: boolean): BalancesDataTableBuilder {
-    this.shouldHideDates = hide;
-    return this;
-  }
+        return balance;
+    }
 
-  /**
-   * Defines whether the [[Accounts]] and [[Groups]] names should be hidden.
-   *
-   * @returns This builder with respective hide names option, for chaining.
-   */    
-  public hideNames(hide: boolean): BalancesDataTableBuilder {
-    this.shouldHideNames = hide;
-    return this;
-  }
+    private getBalanceText(balance: Amount, permanent: boolean): string {
+        return this.book.formatAmount(this.getRepresentativeBalance(balance, permanent));
+    }
+
+    /**
+     * Defines whether the dates should be ISO YYYY-MM-DD formatted.
+     *
+     * @returns This builder with respective formatting option, for chaining.
+     */
+    public formatDates(format: boolean): BalancesDataTableBuilder {
+        this.shouldFormatDate = format;
+        return this;
+    }
+
+
+    /**
+     * Defines whether the value should be formatted based on decimal separator of the [[Book]].
+     * 
+     * @returns This builder with respective formatting option, for chaining.
+     */
+    public formatValues(format: boolean): BalancesDataTableBuilder {
+        this.shouldFormatValue = format;
+        return this;
+    }
+
+    /**
+     * Defines whether Groups should expand its child accounts. 
+     * 
+     * true to expand itself
+     * -1 to expand all subgroups
+     * -2 to expand all accounts
+     * 0 to expand nothing
+     * 1 to expand itself and its first level of children
+     * 2 to expand itself and its first two levels of children
+     * etc.
+     * 
+     * @returns This builder with respective expanded option, for chaining.
+     */
+    public expanded(expanded: boolean | number): BalancesDataTableBuilder {
+        if (typeof expanded == "boolean" && expanded == true) {
+            this.maxDepth = 1;
+            this.skipRoot = true;
+        } else if (expanded == -1) {
+            this.expandAllGroups = true;
+        } else if (expanded == -2) {
+            this.expandAllAccounts = true;
+        } else if (typeof expanded == "number" && expanded > 0) {
+            this.maxDepth = expanded;
+        }
+        return this;
+    }
+
+    /**
+     * Fluent method to set the [[BalanceType]] for the builder.
+     * 
+     * @param type The type of balance for this data table
+     * 
+     * For **TOTAL** [[BalanceType]], the table format looks like:
+     * 
+     * ```
+     *   _____________________
+     *  | Expenses  | -4568.23 |
+     *  | Income    |  5678.93 |
+     *  |    ...    |    ...   |
+     *  |___________|__________|
+     * 
+     * ```
+     * Two columns, and each [[Account]] or [[Group]] per line.
+     * 
+     * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the table will be a time table, and the format looks like:
+     * 
+     * ```
+     *  _______________________________________________________________
+     *  |            | 15/01/2014 | 15/02/2014 | 15/03/2014 |    ...    |
+     *  |  Expenses  | -2345.23   | -2345.93   | -2456.45   |    ...    |
+     *  |  Income    |  3452.93   |  3456.46   |  3567.87   |    ...    |
+     *  |     ...    |     ...    |     ...    |     ...    |    ...    |
+     *  |____________|____________|____________|____________|___________|
+     * 
+     * ```
+     * 
+     * First column will be the Date column, and one column for each [[Account]] or [[Group]].
+     * 
+     * @returns This builder with respective balance type, for chaining.
+     */
+    public type(type: BalanceType): BalancesDataTableBuilder {
+        this.balanceType = type;
+        return this;
+    }
+
+    /**
+     * Defines whether should rows and columns should be transposed.
+     * 
+     * For **TOTAL** [[BalanceType]], the **transposed** table looks like:
+     * 
+     * ```
+     *   _____________________________
+     *  |  Expenses | Income  |  ...  | 
+     *  | -4568.23  | 5678.93 |  ...  |
+     *  |___________|_________|_______| 
+     * 
+     * ```
+     * Two rows, and each [[Account]] or [[Group]] per column.
+     * 
+     * 
+     * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the **transposed** table will be a time table, and the format looks like:
+     * 
+     * ```
+     *   _______________________________________________________________
+     *  |            | Expenses   | Income     |     ...    |    ...    |
+     *  | 15/01/2014 | -2345.23   |  3452.93   |     ...    |    ...    |
+     *  | 15/02/2014 | -2345.93   |  3456.46   |     ...    |    ...    |
+     *  | 15/03/2014 | -2456.45   |  3567.87   |     ...    |    ...    |
+     *  |     ...    |     ...    |     ...    |     ...    |    ...    |
+     *  |____________|____________|____________|____________|___________|
+     * 
+     * ```
+     * 
+     * First column will be each [[Account]] or [[Group]], and one column for each Date.
+     * 
+     * @returns This builder with respective transposed option, for chaining.
+     */
+    public transposed(transposed: boolean): BalancesDataTableBuilder {
+        this.shouldTranspose = transposed;
+        return this;
+    }
+
+    /**
+     * Defines whether the dates should be hidden for **PERIOD** or **CUMULATIVE** [[BalanceType]].
+     *
+     * @returns This builder with respective hide dates option, for chaining.
+     */
+    public hideDates(hide: boolean): BalancesDataTableBuilder {
+        this.shouldHideDates = hide;
+        return this;
+    }
+
+    /**
+     * Defines whether the [[Accounts]] and [[Groups]] names should be hidden.
+     *
+     * @returns This builder with respective hide names option, for chaining.
+     */
+    public hideNames(hide: boolean): BalancesDataTableBuilder {
+        this.shouldHideNames = hide;
+        return this;
+    }
 
     /**
      * Defines whether include custom [[Accounts]] and [[Groups]] properties.
@@ -219,53 +219,53 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         return this;
     }
 
-  
-  /**
-   * Defines whether should split **TOTAL** [[BalanceType]] into debit and credit.
-   * 
-   * @returns This builder with respective trial option, for chaining.
-   */
-   public trial(trial: boolean): BalancesDataTableBuilder {
-    this.shouldTrial = trial;
-    return this;
-  }  
-  
-  /**
-   * Defines whether should force use of period balances for **TOTAL** [[BalanceType]].
-   * 
-   * @returns This builder with respective trial option, for chaining.
-   */
-   public period(period: boolean): BalancesDataTableBuilder {
-    this.shouldPeriod = period;
-    return this;
-  }  
 
-  /**
-   * Defines whether should show raw balances, no matter the credit nature of the Account or Group.
-   * 
-   * @returns This builder with respective trial option, for chaining.
-   */
-   public raw(raw: boolean): BalancesDataTableBuilder {
-    this.shouldRaw = raw;
-    return this;
-  }  
-
-
-  /**
-   * 
-   * Builds an two-dimensional array with the balances.
-   * 
-   */
-  public build(): any[][] {
-    if (this.balanceType == BalanceType.TOTAL) {
-      return this.buildTotalDataTable_();
-    } else {
-      return this.buildTimeDataTable_();
+    /**
+     * Defines whether should split **TOTAL** [[BalanceType]] into debit and credit.
+     * 
+     * @returns This builder with respective trial option, for chaining.
+     */
+    public trial(trial: boolean): BalancesDataTableBuilder {
+        this.shouldTrial = trial;
+        return this;
     }
-  }
+
+    /**
+     * Defines whether should force use of period balances for **TOTAL** [[BalanceType]].
+     * 
+     * @returns This builder with respective trial option, for chaining.
+     */
+    public period(period: boolean): BalancesDataTableBuilder {
+        this.shouldPeriod = period;
+        return this;
+    }
+
+    /**
+     * Defines whether should show raw balances, no matter the credit nature of the Account or Group.
+     * 
+     * @returns This builder with respective trial option, for chaining.
+     */
+    public raw(raw: boolean): BalancesDataTableBuilder {
+        this.shouldRaw = raw;
+        return this;
+    }
 
 
-  ////////////////////////
+    /**
+     * 
+     * Builds an two-dimensional array with the balances.
+     * 
+     */
+    public build(): any[][] {
+        if (this.balanceType == BalanceType.TOTAL) {
+            return this.buildTotalDataTable_();
+        } else {
+            return this.buildTimeDataTable_();
+        }
+    }
+
+
+    ////////////////////////
 
     private addPropertyKeys(propertyKeys: string[], container: BalancesContainer) {
         for (const key of container.getPropertyKeys()) {
@@ -297,10 +297,10 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             containersFlat.push(container);
             if (this.shouldAddProperties) {
                 this.addPropertyKeys(propertyKeys, container)
-            } 
+            }
         }
     }
-    
+
     private sortContainersFunction(a: BalancesContainer, b: BalancesContainer) {
         let ret = 0;
         if (a.isPermanent() && !b.isPermanent()) {
@@ -331,7 +331,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             if (bc.isPermanent() && bc.isCredit()) {
                 return 1;
             }
-    
+
             // INCOMING(false, true, "incoming"),
             if (!bc.isPermanent() && bc.isCredit()) {
                 return 2;
@@ -350,7 +350,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
         let depth = container.getDepth();
 
         if (depth <= this.maxDepth) {
-            
+
             if (!this.skipRoot && !this.shouldTranspose) {
                 //@ts-ignore
                 container.json.name = Utils_.repeatString(" ", depth * 4) + container.json.name;
@@ -359,7 +359,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
                 containersFlat.push(container);
                 if (this.shouldAddProperties) {
                     this.addPropertyKeys(propertyKeys, container)
-                } 
+                }
             }
             const children = container.getBalancesContainers();
             if (children && children.length > 0) {
@@ -369,19 +369,19 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
                 }
             }
         }
-    }    
+    }
 
     private flattenAllGroups(container: BalancesContainer, containersFlat: BalancesContainer[], propertyKeys: string[]): void {
         if (container.isFromGroup()) {
             if (!this.shouldTranspose) {
-              let depth = container.getDepth();
-              //@ts-ignore
-              container.json.name = Utils_.repeatString(" ", depth * 4) + container.json.name;
+                let depth = container.getDepth();
+                //@ts-ignore
+                container.json.name = Utils_.repeatString(" ", depth * 4) + container.json.name;
             }
             containersFlat.push(container);
             if (this.shouldAddProperties) {
                 this.addPropertyKeys(propertyKeys, container)
-            } 
+            }
             if (container.hasGroupBalances()) {
                 const children = container.getBalancesContainers();
                 children.sort(this.sortContainersFunction);
@@ -390,304 +390,304 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
                 }
             }
         }
-    }    
-    
-
-
-  private buildTotalDataTable_() {
-    var table = new Array();
-
-    if (this.balancesContainers == null) {
-      return table;
     }
 
-    this.balancesContainers.sort((a, b) => {
-      if (a != null && b != null) {
-        return a.getName().toLowerCase().localeCompare(b.getName().toLowerCase());
-      }
-      return -1;
-    });
 
-    let propertyKeys: string[] = [];
 
-    let containers = new Array<BalancesContainer>();
-    this.flattenContainers(containers, propertyKeys)
+    private buildTotalDataTable_() {
+        var table = new Array();
 
-    if (this.shouldAddProperties) {
-        propertyKeys.sort();
-        let header = [ 'name', 'balance'];
-        for (const key of propertyKeys) {
-            header.push(key);
+        if (this.balancesContainers == null) {
+            return table;
         }
-        table.push(header);
+
+        this.balancesContainers.sort((a, b) => {
+            if (a != null && b != null) {
+                return a.getName().toLowerCase().localeCompare(b.getName().toLowerCase());
+            }
+            return -1;
+        });
+
+        let propertyKeys: string[] = [];
+
+        let containers = new Array<BalancesContainer>();
+        this.flattenContainers(containers, propertyKeys)
+
+        if (this.shouldAddProperties) {
+            propertyKeys.sort();
+            let header = ['name', 'balance'];
+            for (const key of propertyKeys) {
+                header.push(key);
+            }
+            table.push(header);
+        }
+
+        for (var i = 0; i < containers.length; i++) {
+            var balances = containers[i];
+            if (balances != null) {
+                var line = new Array();
+                var name = balances.getName();
+                line.push(name);
+                if (this.shouldTrial) {
+                    if (this.shouldFormatValue) {
+                        if (this.shouldPeriod) {
+                            line.push(balances.getPeriodDebitText());
+                            line.push(balances.getPeriodCreditText());
+                        } else {
+                            line.push(balances.getCumulativeDebitText());
+                            line.push(balances.getCumulativeCreditText());
+                        }
+                    } else {
+                        if (this.shouldPeriod) {
+                            line.push(balances.getPeriodDebit().toNumber());
+                            line.push(balances.getPeriodCredit().toNumber());
+                        } else {
+                            line.push(balances.getCumulativeDebit().toNumber());
+                            line.push(balances.getCumulativeCredit().toNumber());
+                        }
+                    }
+                } else {
+                    if (this.shouldFormatValue) {
+                        if (this.shouldPeriod) {
+                            if (this.shouldRaw) {
+                                line.push(balances.getPeriodBalanceRawText());
+                            } else {
+                                line.push(this.getBalanceText(balances.getPeriodBalanceRaw(), balances.isPermanent()));
+                            }
+                        } else {
+                            if (this.shouldRaw) {
+                                line.push(balances.getCumulativeBalanceRawText());
+                            } else {
+                                line.push(this.getBalanceText(balances.getCumulativeBalanceRaw(), balances.isPermanent()));
+                            }
+                        }
+                    } else {
+                        if (this.shouldPeriod) {
+                            if (this.shouldRaw) {
+                                line.push(balances.getPeriodBalanceRaw().toNumber());
+                            } else {
+                                line.push(this.getBalance(balances.getPeriodBalanceRaw(), balances.isPermanent()));
+                            }
+                        } else {
+                            if (this.shouldRaw) {
+                                line.push(balances.getCumulativeBalanceRaw().toNumber());
+                            } else {
+                                line.push(this.getBalance(balances.getCumulativeBalanceRaw(), balances.isPermanent()));
+                            }
+
+                        }
+                    }
+                }
+
+                if (this.shouldAddProperties) {
+                    const properties = balances.getProperties();
+                    for (const key of propertyKeys) {
+                        let propertyValue = properties[key];
+                        if (propertyValue) {
+                            line.push(propertyValue);
+                            continue;
+                        }
+                        line.push('');
+                    }
+                }
+
+                table.push(line);
+            }
+        }
+
+        if (this.shouldHideNames) {
+            table = table.map(row => row.slice(1));
+        }
+
+        if (this.shouldTranspose && table.length > 0) {
+            table = table[0].map((col: any, i: number) => table.map(row => row[i]));
+        }
+
+        return table;
     }
 
-    for (var i = 0; i < containers.length; i++) {
-      var balances = containers[i];
-      if (balances != null) {
-        var line = new Array();
-        var name = balances.getName();
-        line.push(name);
-        if (this.shouldTrial) {
-          if (this.shouldFormatValue) {
-            if (this.shouldPeriod) {
-              line.push(balances.getPeriodDebitText());
-              line.push(balances.getPeriodCreditText());
-            } else {
-              line.push(balances.getCumulativeDebitText());
-              line.push(balances.getCumulativeCreditText());
+
+    private buildTimeDataTable_() {
+        var table = new Array<Array<any>>();
+        var dataIndexMap: any = new Object();
+        var cumulativeBalance = this.balanceType == BalanceType.CUMULATIVE;
+
+        var header = new Array();
+        header.push("");
+
+        if (this.balancesContainers == null) {
+            return table;
+        }
+        let propertyKeys: string[] = [];
+        let containers = new Array<BalancesContainer>();
+
+        this.flattenContainers(containers, propertyKeys);
+
+        for (const container of containers) {
+            header.push(container.getName());
+
+            var balances = container.getBalances();
+
+            if (balances != null) {
+                for (const balance of balances) {
+                    var fuzzyDate = balance.getFuzzyDate();
+                    var indexEntry = dataIndexMap[fuzzyDate];
+                    if (indexEntry == null) {
+                        indexEntry = {};
+                        indexEntry.date = balance.getDate();
+                        dataIndexMap[fuzzyDate] = indexEntry;
+                    }
+                    var amount;
+                    if (cumulativeBalance) {
+                        amount = balance.getCumulativeBalanceRaw();
+                    } else {
+                        amount = balance.getPeriodBalanceRaw();
+                    }
+                    indexEntry[container.getName()] = this.shouldRaw ? amount : this.getRepresentativeBalance(amount, container.isPermanent());
+                }
             }
-          } else {
-            if (this.shouldPeriod) {
-              line.push(balances.getPeriodDebit().toNumber());
-              line.push(balances.getPeriodCredit().toNumber());
-            } else {
-              line.push(balances.getCumulativeDebit().toNumber());
-              line.push(balances.getCumulativeCredit().toNumber());
+        }
+
+
+        table.push(header);
+
+        var rows = new Array<Array<any>>();
+        for (var fuzzy in dataIndexMap) {
+            var rowObject = dataIndexMap[fuzzy];
+            var row = new Array();
+            row.push(rowObject.date);
+            for (const container of containers) {
+                var amount = rowObject[container.getName()];
+                if (amount == null) {
+                    amount = "null_amount";
+                } else {
+                    amount = new Amount(amount);
+                    if (this.shouldFormatValue) {
+                        amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
+                    } else {
+                        amount = amount.toNumber();
+                    }
+                }
+                row.push(amount);
             }
-          }
-        } else {
-          if (this.shouldFormatValue) {
-            if (this.shouldPeriod) {
-              if (this.shouldRaw) {
-                line.push(balances.getPeriodBalanceRawText());
-              } else {
-                line.push(this.getBalanceText(balances.getPeriodBalanceRaw(), balances.isPermanent()));
-              }
+
+            rows.push(row);
+        }
+
+        rows.sort(function (a, b) { return a[0].getTime() - b[0].getTime() });
+
+
+        var lastRow: any[] = null;
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            if (i == 0) {
+                //first row, all null values will be 0
+                for (var j = 1; j < row.length; j++) {
+                    var cell = row[j];
+                    if (cell == "null_amount") {
+                        var amount: any = new Amount(0);
+                        if (this.shouldFormatValue) {
+                            amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
+                        } else {
+                            amount = amount.toNumber();
+                        }
+                        row[j] = amount;
+                    }
+                }
             } else {
-              if (this.shouldRaw) {
-                line.push(balances.getCumulativeBalanceRawText());
-              } else {
-                line.push(this.getBalanceText(balances.getCumulativeBalanceRaw(), balances.isPermanent()));
-              }
-            }
-          } else {
-            if (this.shouldPeriod) {
-              if (this.shouldRaw) {
-                line.push(balances.getPeriodBalanceRaw().toNumber());
-              } else {
-                line.push(this.getBalance(balances.getPeriodBalanceRaw(), balances.isPermanent()));
-              }
-            } else {
-              if (this.shouldRaw) {
-                line.push(balances.getCumulativeBalanceRaw().toNumber());
-              } else {
-                line.push(this.getBalance(balances.getCumulativeBalanceRaw(), balances.isPermanent()));
-              }
+                for (var j = 1; j < row.length; j++) {
+                    var cell = row[j];
+                    if (cell == "null_amount" && cumulativeBalance) {
+                        row[j] = lastRow[j];
+                    } else if (cell == "null_amount") {
+                        var amount: any = new Amount(0);
+                        if (this.shouldFormatValue) {
+                            amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
+                        } else {
+                            amount = amount.toNumber();
+                        }
+                        row[j] = amount;
+                    }
+                }
 
             }
-          }
+            lastRow = row;
+            table.push(row);
+        }
+
+        if (this.shouldFormatDate && table.length > 0) {
+            for (var j = 1; j < table.length; j++) {
+                var row = table[j];
+                if (row.length > 0) {
+                    //first column
+                    row[0] = Utils_.formatDateISO(row[0], this.book.getTimeZone());
+                }
+            }
+
         }
 
         if (this.shouldAddProperties) {
-            const properties = balances.getProperties();
+            propertyKeys.sort();
             for (const key of propertyKeys) {
-              let propertyValue = properties[key];
-              if (propertyValue) {
-                line.push(propertyValue);
-                continue;
-              }
-              line.push('');
+                var propertyRow: string[] = [key];
+                for (const container of containers) {
+                    propertyRow.push(container.getProperty(key))
+                }
+                table.push(propertyRow);
             }
-          }
-
-        table.push(line);
-      }
-    }
-
-    if (this.shouldHideNames) {
-      table = table.map(row => row.slice(1));
-    }
-
-    if (this.shouldTranspose && table.length > 0) {
-      table = table[0].map((col: any, i: number) => table.map(row => row[i]));
-    }
-
-    return table;
-  }
-  
-
-  private buildTimeDataTable_() {
-    var table = new Array<Array<any>>();
-    var dataIndexMap: any = new Object();
-    var cumulativeBalance = this.balanceType == BalanceType.CUMULATIVE;
-
-    var header = new Array();
-    header.push("");
-
-    if (this.balancesContainers == null) {
-      return table;
-    }
-    let propertyKeys: string[] = [];
-    let containers = new Array<BalancesContainer>();
-
-    this.flattenContainers(containers, propertyKeys);
-
-    for (const container of containers) {
-      header.push(container.getName());
-
-      var balances = container.getBalances();
-
-      if (balances != null) {
-        for (const balance of balances) {
-          var fuzzyDate = balance.getFuzzyDate();
-          var indexEntry = dataIndexMap[fuzzyDate];
-          if (indexEntry == null) {
-            indexEntry = {};
-            indexEntry.date = balance.getDate();
-            dataIndexMap[fuzzyDate] = indexEntry;
-          }
-          var amount;
-          if (cumulativeBalance) {
-            amount = balance.getCumulativeBalanceRaw();
-          } else {
-            amount = balance.getPeriodBalanceRaw();
-          }
-          indexEntry[container.getName()] = this.shouldRaw ? amount : this.getRepresentativeBalance(amount, container.isPermanent());
-        }
-      }
-    }
-    
-
-    table.push(header);
-
-    var rows = new Array<Array<any>>();
-    for (var fuzzy in dataIndexMap) {
-      var rowObject = dataIndexMap[fuzzy];
-      var row = new Array();
-      row.push(rowObject.date);
-      for (const container of containers) {
-        var amount = rowObject[container.getName()];
-        if (amount == null) {
-          amount = "null_amount";
-        } else {
-          amount = new Amount(amount);
-          if (this.shouldFormatValue) {
-            amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
-          } else {
-            amount = amount.toNumber();
-          }
-        }
-        row.push(amount);
-      }
-
-      rows.push(row);
-    }
-
-    rows.sort(function (a, b) { return a[0].getTime() - b[0].getTime() });
-
-
-    var lastRow: any[] = null;
-    for (var i = 0; i < rows.length; i++) {
-      var row = rows[i];
-      if (i == 0) {
-        //first row, all null values will be 0
-        for (var j = 1; j < row.length; j++) {
-          var cell = row[j];
-          if (cell == "null_amount") {
-            var amount: any = new Amount(0);
-            if (this.shouldFormatValue) {
-              amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
-            } else {
-              amount = amount.toNumber();
-            }
-            row[j] = amount;
-          }
-        }
-      } else {
-        for (var j = 1; j < row.length; j++) {
-          var cell = row[j];
-          if (cell == "null_amount" && cumulativeBalance) {
-            row[j] = lastRow[j];
-          } else if (cell == "null_amount") {
-            var amount: any = new Amount(0);
-            if (this.shouldFormatValue) {
-              amount = Utils_.formatValue_(amount, this.book.getDecimalSeparator(), this.book.getFractionDigits());
-            } else {
-              amount = amount.toNumber();
-            }
-            row[j] = amount;
-          }
         }
 
-      }
-      lastRow = row;
-      table.push(row);
-    }
 
-    if (this.shouldFormatDate && table.length > 0) {
-      for (var j = 1; j < table.length; j++) {
-        var row = table[j];
-        if (row.length > 0) {
-          //first column
-          row[0] = Utils_.formatDateISO(row[0], this.book.getTimeZone());
+        if (this.shouldHideNames) {
+            table.shift();
         }
-      }
 
-    }
-
-    if (this.shouldAddProperties) {
-        propertyKeys.sort();
-        for (const key of propertyKeys) {
-            var propertyRow: string[] = [key];
-            for (const container of containers) {
-                propertyRow.push(container.getProperty(key))
-            }
-            table.push(propertyRow);
+        if (this.shouldHideDates) {
+            table = table.map(row => row.slice(1));
         }
+
+        if (!this.shouldTranspose && table.length > 0) {
+            table = table[0].map((col: any, i: number) => table.map(row => row[i]));
+        }
+
+        return table;
     }
 
+    /******************* DEPRECATED METHODS *******************/
 
-    if (this.shouldHideNames) {
-      table.shift();
+    /**
+     * @deprecated
+     */
+    formatDate(): BalancesDataTableBuilder {
+        return this.formatDates(true);
     }
 
-    if (this.shouldHideDates) {
-      table = table.map(row => row.slice(1));
+    /**
+     * @deprecated
+     */
+    formatValue(): BalancesDataTableBuilder {
+        return this.formatValues(true);
     }
 
-    if (!this.shouldTranspose && table.length > 0) {
-      table = table[0].map((col: any, i: number) => table.map(row => row[i]));
+    /**
+     * @deprecated
+     */
+    expandGroups(): BalancesDataTableBuilder {
+        return this.expanded(true);
     }
 
-    return table;
-  }
+    /**
+     * @deprecated
+     */
+    setBalanceType(balanceType: BalanceType): BalancesDataTableBuilder {
+        return this.type(balanceType);
+    }
 
-/******************* DEPRECATED METHODS *******************/
-
-  /**
-   * @deprecated
-   */
-  formatDate(): BalancesDataTableBuilder {
-    return this.formatDates(true);
-  }  
-
-  /**
-   * @deprecated
-   */
-  formatValue(): BalancesDataTableBuilder {
-    return this.formatValues(true);
-  }  
-
-  /**
-   * @deprecated
-   */
-  expandGroups(): BalancesDataTableBuilder {
-    return this.expanded(true);
-  }  
-
-  /**
-   * @deprecated
-   */
-  setBalanceType(balanceType: BalanceType): BalancesDataTableBuilder {
-    return this.type(balanceType);
-  }
-
-  /**
-   * @deprecated
-   */
-  transpose(): BalancesDataTableBuilder {
-    return this.transposed(true);
-  }  
+    /**
+     * @deprecated
+     */
+    transpose(): BalancesDataTableBuilder {
+        return this.transposed(true);
+    }
 
 }

@@ -1,9 +1,9 @@
 /**
- * 
- * This class defines a Bot Response associated to an [[Event]].
- * 
- * @public
- */
+* 
+* This class defines a Bot Response associated to an [[Event]].
+* 
+* @public
+*/
 class BotResponse {
 
     private wrapped: bkper.BotResponse;

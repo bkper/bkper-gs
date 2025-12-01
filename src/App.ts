@@ -1,9 +1,9 @@
 /**
- * 
- * This class defines an App installed in a [[Book]].
- * 
- * @public
- */
+* 
+* This class defines an App installed in a [[Book]].
+* 
+* @public
+*/
 class App {
 
     private wrapped: bkper.App;

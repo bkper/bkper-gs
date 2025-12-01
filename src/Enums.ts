@@ -1,24 +1,24 @@
 /**
- * The Periodicity of the query. It may depend on the level of granularity you write the range params.
- * 
- * @public
- */
+* The Periodicity of the query. It may depend on the level of granularity you write the range params.
+* 
+* @public
+*/
 enum Periodicity {
 
-  /**
-   * Example: after:25/01/1983, before:04/03/2013, after:$d-30, before:$d, after:$d-15/$m 
-   */
-  DAILY = "DAILY",
+    /**
+     * Example: after:25/01/1983, before:04/03/2013, after:$d-30, before:$d, after:$d-15/$m 
+     */
+    DAILY = "DAILY",
 
-  /**
-   * Example: after:jan/2013, before:mar/2013, after:$m-1, before:$m
-   */
-  MONTHLY = "MONTHLY",
+    /**
+     * Example: after:jan/2013, before:mar/2013, after:$m-1, before:$m
+     */
+    MONTHLY = "MONTHLY",
 
-  /**
-   * Example: on:2013, after:2013, $y
-   */
-  YEARLY = "YEARLY"
+    /**
+     * Example: on:2013, after:2013, $y
+     */
+    YEARLY = "YEARLY"
 }
 
 /**
@@ -28,15 +28,15 @@ enum Periodicity {
  */
 enum DecimalSeparator {
 
-  /**
-   * ,
-   */
-  COMMA = "COMMA",
+    /**
+     * ,
+     */
+    COMMA = "COMMA",
 
-  /**
-   * .
-   */
-  DOT = "DOT"
+    /**
+     * .
+     */
+    DOT = "DOT"
 }
 
 
@@ -50,35 +50,35 @@ enum DecimalSeparator {
 
 enum Permission {
 
-  /**
-   * No permission
-   */
-  NONE = "NONE",
+    /**
+     * No permission
+     */
+    NONE = "NONE",
 
-  /**
-   * View transactions, accounts and balances.
-   */
-  VIEWER = "VIEWER",
+    /**
+     * View transactions, accounts and balances.
+     */
+    VIEWER = "VIEWER",
 
-  /**
-   * Record and delete drafts only. Useful to collect data only
-   */
-  RECORDER = "RECORDER",
+    /**
+     * Record and delete drafts only. Useful to collect data only
+     */
+    RECORDER = "RECORDER",
 
-  /**
-   * View transactions, accounts, record and delete drafts
-   */
-  POSTER = "POSTER",
+    /**
+     * View transactions, accounts, record and delete drafts
+     */
+    POSTER = "POSTER",
 
-  /**
-   * Manage accounts, transactions, book configuration and sharing
-   */
-  EDITOR = "EDITOR",
+    /**
+     * Manage accounts, transactions, book configuration and sharing
+     */
+    EDITOR = "EDITOR",
 
-  /**
-   * Manage everything, including book visibility and deletion. Only one owner per book.
-   */
-  OWNER = "OWNER"
+    /**
+     * Manage everything, including book visibility and deletion. Only one owner per book.
+     */
+    OWNER = "OWNER"
 }
 
 /**
@@ -88,25 +88,25 @@ enum Permission {
  */
 enum AccountType {
 
-  /**
-   * Asset account type
-   */
-  ASSET = "ASSET",
+    /**
+     * Asset account type
+     */
+    ASSET = "ASSET",
 
-  /**
-   * Liability account type
-   */
-  LIABILITY = "LIABILITY",
+    /**
+     * Liability account type
+     */
+    LIABILITY = "LIABILITY",
 
-  /**
-   * Incoming account type
-   */
-  INCOMING = "INCOMING",  
+    /**
+     * Incoming account type
+     */
+    INCOMING = "INCOMING",
 
-  /**
-   * Outgoing account type
-   */
-  OUTGOING = "OUTGOING"
+    /**
+     * Outgoing account type
+     */
+    OUTGOING = "OUTGOING"
 }
 
 /**
@@ -116,20 +116,20 @@ enum AccountType {
  */
 enum BalanceType {
 
-  /**
-   * Total balance
-   */
-  TOTAL = "TOTAL",
+    /**
+     * Total balance
+     */
+    TOTAL = "TOTAL",
 
-  /**
-   * Period balance
-   */
-  PERIOD = "PERIOD",
+    /**
+     * Period balance
+     */
+    PERIOD = "PERIOD",
 
-  /**
-   * Cumulative balance
-   */
-  CUMULATIVE = "CUMULATIVE"
+    /**
+     * Cumulative balance
+     */
+    CUMULATIVE = "CUMULATIVE"
 }
 
 /**
@@ -137,20 +137,20 @@ enum BalanceType {
  * 
  * @public
  */
- enum Month {
+enum Month {
 
-  JANUARY = "JANUARY",
-  FEBRUARY = "FEBRUARY",
-  MARCH = "MARCH",
-  APRIL = "APRIL",
-  MAY = "MAY",
-  JUNE = "JUNE",
-  JULY = "JULY",
-  AUGUST = "AUGUST",
-  SEPTEMBER = "SEPTEMBER",
-  OCTOBER = "OCTOBER",
-  NOVEMBER = "NOVEMBER",
-  DECEMBER = "DECEMBER"
+    JANUARY = "JANUARY",
+    FEBRUARY = "FEBRUARY",
+    MARCH = "MARCH",
+    APRIL = "APRIL",
+    MAY = "MAY",
+    JUNE = "JUNE",
+    JULY = "JULY",
+    AUGUST = "AUGUST",
+    SEPTEMBER = "SEPTEMBER",
+    OCTOBER = "OCTOBER",
+    NOVEMBER = "NOVEMBER",
+    DECEMBER = "DECEMBER"
 }
 
 /**
@@ -161,18 +161,18 @@ enum BalanceType {
 
 enum BotResponseType {
 
-  /**
-   * Info bot response
-   */
-  INFO = "INFO",
+    /**
+     * Info bot response
+     */
+    INFO = "INFO",
 
-  /**
-   * Warning bot response
-   */
-  WARNING = "WARNING",
+    /**
+     * Warning bot response
+     */
+    WARNING = "WARNING",
 
-  /**
-   * Error bot response
-   */
-  ERROR = "ERROR",
+    /**
+     * Error bot response
+     */
+    ERROR = "ERROR",
 }

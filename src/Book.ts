@@ -1,11 +1,11 @@
 /**
- *
- * A Book represents [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
- *
- * It contains all [[Accounts]] where [[Transactions]] are recorded/posted;
- * 
- * @public
- */
+*
+* A Book represents [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
+*
+* It contains all [[Accounts]] where [[Transactions]] are recorded/posted;
+* 
+* @public
+*/
 class Book {
 
     private id: string

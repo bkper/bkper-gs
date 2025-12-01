@@ -1,8 +1,8 @@
 /**
- * A GroupsDataTableBuilder is used to setup and build two-dimensional arrays containing groups.
- * 
- * @public
- */
+* A GroupsDataTableBuilder is used to setup and build two-dimensional arrays containing groups.
+* 
+* @public
+*/
 class GroupsDataTableBuilder {
 
     private groups: Group[];
@@ -70,7 +70,7 @@ class GroupsDataTableBuilder {
     private getHasChildrenIndex(hasChildren: boolean): number {
         return hasChildren ? 0 : 1;
     }
- 
+
     /**
      * @returns A two-dimensional array containing all [[Groups]].
      */
@@ -156,7 +156,7 @@ class GroupsDataTableBuilder {
     }
 
 
-/******************* DEPRECATED METHODS *******************/
+    /******************* DEPRECATED METHODS *******************/
     /**
      * @deprecated
      */

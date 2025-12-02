@@ -99,7 +99,7 @@ class TransactionsDataTableBuilder {
         if (this.getAccount() != null) {
 
             if (this.shouldAddIds) {
-                headerLine.push("Id");
+                headerLine.push("Transaction Id");
             }
 
             headerLine.push("Date");

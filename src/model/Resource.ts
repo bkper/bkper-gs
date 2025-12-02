@@ -3,7 +3,6 @@
  * Abstract base class for all Bkper resources.
  * Provides common functionality for payload management and JSON serialization.
  *
- * @public
  */
 abstract class Resource<T = any> {
     /**

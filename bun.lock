@@ -15,7 +15,7 @@
         "@types/mocha": "^5.2.7",
         "@types/node": "^12.7.5",
         "chai": "^4.2.0",
-        "clasp-types": "^1.4.0",
+        "clasp-types": "^1.4.2",
         "copyfiles": "^2.1.1",
         "dtsgenerator": "^3.2.0",
         "mocha": "^6.2.0",
@@ -154,7 +154,7 @@
 
     "chokidar": ["chokidar@3.6.0", "", { "dependencies": { "anymatch": "~3.1.2", "braces": "~3.0.2", "glob-parent": "~5.1.2", "is-binary-path": "~2.1.0", "is-glob": "~4.0.1", "normalize-path": "~3.0.0", "readdirp": "~3.6.0" }, "optionalDependencies": { "fsevents": "~2.3.2" } }, "sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw=="],
 
-    "clasp-types": ["clasp-types@1.4.0", "", { "dependencies": { "commander": "^5.1.0", "fs-extra": "^9.0.0", "typedoc": "^0.17.6" }, "bin": { "clasp-types": "dist/index.js" } }, "sha512-fc0eQ4BHLyAll4HFEk7odCg8FAI2awJsTvqTO3ATUQ9S51cATo2icM3xlKn1462F5x9GF2DiIXutN270J1s/kA=="],
+    "clasp-types": ["clasp-types@1.4.2", "", { "dependencies": { "commander": "^5.1.0", "fs-extra": "^9.0.0", "typedoc": "^0.17.6" }, "bin": { "clasp-types": "dist/index.js" } }, "sha512-9gvkiA83gArIKkUk3l6PP6q44JUV6peGgYXqNtkXRuodPqaIwkvZ80It1cQkvgtLXJ+0PbfJptIpoopjFHSuFw=="],
 
     "clean-stack": ["clean-stack@4.2.0", "", { "dependencies": { "escape-string-regexp": "5.0.0" } }, "sha512-LYv6XPxoyODi36Dp976riBtSY27VmFo+MKqEU9QCCWyTrdEPDog+RWA7xQWHi6Vbp61j5c4cdzzX1NidnwtUWg=="],
 

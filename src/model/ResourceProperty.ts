@@ -6,7 +6,6 @@
  * Extends Resource<T> and adds property management methods for entities
  * that have a properties field in their payload.
  *
- * @public
  */
 abstract class ResourceProperty<T extends { properties?: { [key: string]: string } }> extends Resource<T> {
 

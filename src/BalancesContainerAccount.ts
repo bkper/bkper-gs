@@ -1,15 +1,15 @@
 
 class AccountBalancesContainer implements BalancesContainer {
 
-    json: bkper.AccountBalances;
+    payload: bkper.AccountBalances;
     private balancesReport: BalancesReport;
     private parent: BalancesContainer;
     private depth: number;
 
-    constructor(parent: BalancesContainer, balancesReport: BalancesReport, balancePlain: bkper.AccountBalances) {
+    constructor(parent: BalancesContainer, balancesReport: BalancesReport, payload: bkper.AccountBalances) {
         this.parent = parent;
         this.balancesReport = balancesReport;
-        this.json = balancePlain;
+        this.payload = payload;
     }
 
     getParent(): BalancesContainer {
@@ -52,35 +52,35 @@ class AccountBalancesContainer implements BalancesContainer {
     }
 
     public getName(): string {
-        return this.json.name;
+        return this.payload.name;
     }
 
     public getNormalizedName(): string {
-        return this.json.normalizedName;
+        return this.payload.normalizedName;
     }
 
     public isCredit() {
-        return this.json.credit;
+        return this.payload.credit;
     }
 
     public isPermanent() {
-        return this.json.permanent;
+        return this.payload.permanent;
     }
 
     public getCumulativeBalance(): Amount {
-        return Utils_.getRepresentativeValue(new Amount(this.json.cumulativeBalance), this.isCredit());
+        return Utils_.getRepresentativeValue(new Amount(this.payload.cumulativeBalance), this.isCredit());
     }
 
     public getCumulativeBalanceRaw(): Amount {
-        return new Amount(this.json.cumulativeBalance);
+        return new Amount(this.payload.cumulativeBalance);
     }
 
     public getCumulativeCredit(): Amount {
-        return new Amount(this.json.cumulativeCredit);
+        return new Amount(this.payload.cumulativeCredit);
     }
 
     public getCumulativeDebit(): Amount {
-        return new Amount(this.json.cumulativeDebit);
+        return new Amount(this.payload.cumulativeDebit);
     }
 
     public getCumulativeBalanceText(): string {
@@ -100,19 +100,19 @@ class AccountBalancesContainer implements BalancesContainer {
     }
 
     public getPeriodBalance(): Amount {
-        return Utils_.getRepresentativeValue(new Amount(this.json.periodBalance), this.isCredit());
+        return Utils_.getRepresentativeValue(new Amount(this.payload.periodBalance), this.isCredit());
     }
 
     public getPeriodBalanceRaw(): Amount {
-        return new Amount(this.json.periodBalance);
+        return new Amount(this.payload.periodBalance);
     }
 
     public getPeriodCredit(): Amount {
-        return new Amount(this.json.periodCredit);
+        return new Amount(this.payload.periodCredit);
     }
 
     public getPeriodDebit(): Amount {
-        return new Amount(this.json.periodDebit);
+        return new Amount(this.payload.periodDebit);
     }
 
     public getPeriodBalanceText(): string {
@@ -132,10 +132,10 @@ class AccountBalancesContainer implements BalancesContainer {
     }
 
     public getBalances(): Balance[] {
-        if (!this.json.balances) {
+        if (!this.payload.balances) {
             return new Array<Balance>();
         }
-        return this.json.balances.map(balancePlain => new Balance(this, balancePlain));
+        return this.payload.balances.map(balancePlain => new Balance(this, balancePlain));
     }
 
     public createDataTable(): BalancesDataTableBuilder {
@@ -147,13 +147,13 @@ class AccountBalancesContainer implements BalancesContainer {
     }
 
     public getProperties(): { [key: string]: string } {
-        return this.json.properties != null ? { ...this.json.properties } : {};
+        return this.payload.properties != null ? { ...this.payload.properties } : {};
     }
 
     public getProperty(...keys: string[]): string {
         for (let index = 0; index < keys.length; index++) {
             const key = keys[index];
-            let value = this.json.properties != null ? this.json.properties[key] : null;
+            let value = this.payload.properties != null ? this.payload.properties[key] : null;
             if (value != null && value.trim() != '') {
                 return value;
             }

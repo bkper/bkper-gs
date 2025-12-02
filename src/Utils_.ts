@@ -198,12 +198,12 @@ namespace Utils_ {
         return newObjects;
     }
 
-    export function wrapObject<E extends Object>(wrapper: E, wrapped: Object): E {
-        if (wrapped == null) {
-            wrapped = new Object();
+    export function wrapObject<E extends Object>(wrapper: E, payload: Object): E {
+        if (payload == null) {
+            payload = new Object();
         }
         var w = Object.create(wrapper);
-        w.wrapped = wrapped;
+        w.payload = payload;
         return w;
     }
 

@@ -1,3 +1,5 @@
+/// <reference path="Resource.ts" />
+
 /**
 * 
 * This class defines an Event from a [[Book]].
@@ -6,9 +8,8 @@
 * 
 * @public
 */
-class Event {
+class Event extends Resource<bkper.Event> {
 
-    wrapped: bkper.Event;
     book: Book;
 
     private botResponses: BotResponse[];
@@ -17,7 +18,7 @@ class Event {
      * @returns The id of the Event.
      */
     public getId(): string {
-        return this.wrapped.id;
+        return this.payload.id;
     }
 
     /**
@@ -28,8 +29,8 @@ class Event {
             return this.botResponses;
         }
         let botResponses: BotResponse[] = [];
-        if (this.wrapped.botResponses) {
-            for (const botResponse of this.wrapped.botResponses) {
+        if (this.payload.botResponses) {
+            for (const botResponse of this.payload.botResponses) {
                 botResponses.push(new BotResponse(botResponse));
             }
         }

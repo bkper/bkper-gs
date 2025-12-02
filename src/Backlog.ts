@@ -1,3 +1,5 @@
+/// <reference path="Resource.ts" />
+
 /**
  * 
  * This class defines the Backlog of a [[Book]].
@@ -6,19 +8,18 @@
  * 
  * @public
  */
-class Backlog {
+class Backlog extends Resource<bkper.Backlog> {
 
-    private json: bkper.Backlog;
-
-    constructor(backlogPlain: bkper.Backlog) {
-        this.json = backlogPlain;
+    constructor(payload: bkper.Backlog) {
+        super();
+        this.payload = payload;
     }
 
     /**
      * @return The count of this Backlog
      */
     public getCount(): number {
-        return this.json.count;
+        return this.payload.count;
     }
 
 }

@@ -83,6 +83,11 @@ declare namespace Bkper {
     export interface Account {
 
         /**
+         * The underlying payload data for this resource
+         */
+        payload: bkper.Account;
+
+        /**
          * Add a group to the Account.
          *
          * @returns This Account, for chainning.
@@ -97,11 +102,11 @@ declare namespace Bkper {
         create(): Account;
 
         /**
-         * Delete a custom property
+         * Deletes a custom property.
          *
-         * @returns This Account, for chainning.
+         * @returns This resource, for chaining
          */
-        deleteProperty(key: string): Account;
+        deleteProperty(key: string): this;
 
         /**
          * Gets the balance on the current month, based on the credit nature of this Account.
@@ -146,17 +151,23 @@ declare namespace Bkper {
         getNormalizedName(): string;
 
         /**
-         * Gets the custom properties stored in this Account.
+         * Gets the custom properties stored in this resource.
+         *
+         * @returns Object with key/value pair properties
          */
         getProperties(): {[key: string]: string};
 
         /**
-         * Gets the property value for given keys. First property found will be retrieved
+         * Gets the property value for given keys. First property found will be retrieved.
+         *
+         * @returns The property value or null if not found
          */
         getProperty(...keys: string[]): string;
 
         /**
-         * Gets the custom properties keys stored in this Account.
+         * Gets the custom properties keys stored in this resource.
+         *
+         * @returns Array of property keys sorted alphabetically
          */
         getPropertyKeys(): string[];
 
@@ -166,7 +177,7 @@ declare namespace Bkper {
         getType(): AccountType;
 
         /**
-         * Gets the visible custom properties stored in this Account.
+         * Gets the visible custom properties stored in this resource.
          * Hidden properties (those ending with "_") are excluded from the result.
          *
          * @returns Object with key/value pair properties, excluding hidden properties
@@ -233,6 +244,13 @@ declare namespace Bkper {
         isPermanent(): boolean;
 
         /**
+         * Gets an immutable copy of the JSON payload for this resource.
+         *
+         * @returns An immutable copy of the json payload
+         */
+        json(): bkper.Account;
+
+        /**
          * Perform delete account.
          */
         remove(): Account;
@@ -264,18 +282,18 @@ declare namespace Bkper {
         setName(name: string): Account;
 
         /**
-         * Sets the custom properties of the Account
+         * Sets the custom properties of this resource.
          *
-         * @returns This Account, for chainning.
+         * @returns This resource, for chaining
          */
-        setProperties(properties: {[key: string]: string}): Account;
+        setProperties(properties: {[key: string]: string}): this;
 
         /**
-         * Sets a custom property in the Account.
+         * Sets a custom property in this resource.
          *
-         * @returns This Account, for chainning.
+         * @returns This resource, for chaining
          */
-        setProperty(key: string, value: string): Account;
+        setProperty(key: string, value: string): this;
 
         /**
          * Sets the type of the Account.
@@ -285,20 +303,20 @@ declare namespace Bkper {
         setType(type: AccountType): Account;
 
         /**
-         * Sets the custom properties of this Account, filtering out hidden properties.
+         * Sets the custom properties of this resource, filtering out hidden properties.
          * Hidden properties are those whose keys end with an underscore "_".
          *
-         * @returns This Account, for chaining
+         * @returns This resource, for chaining
          */
-        setVisibleProperties(properties: {[key: string]: string}): Account;
+        setVisibleProperties(properties: {[key: string]: string}): this;
 
         /**
-         * Sets a custom property in this Account, filtering out hidden properties.
+         * Sets a custom property in this resource, filtering out hidden properties.
          * Hidden properties are those whose keys end with an underscore "_".
          *
-         * @returns This Account, for chaining
+         * @returns This resource, for chaining
          */
-        setVisibleProperty(key: string, value: string | null): Account;
+        setVisibleProperty(key: string, value: string | null): this;
 
         /**
          * Perform update account, applying pending changes.
@@ -438,6 +456,11 @@ declare namespace Bkper {
     export interface App {
 
         /**
+         * The underlying payload data for this resource
+         */
+        payload: bkper.App;
+
+        /**
          * @returns The description of this App
          */
         getDescription(): string;
@@ -452,6 +475,13 @@ declare namespace Bkper {
          */
         getName(): string;
 
+        /**
+         * Gets an immutable copy of the JSON payload for this resource.
+         *
+         * @returns An immutable copy of the json payload
+         */
+        json(): bkper.App;
+
     }
 
     /**
@@ -462,9 +492,21 @@ declare namespace Bkper {
     export interface Backlog {
 
         /**
+         * The underlying payload data for this resource
+         */
+        payload: bkper.Backlog;
+
+        /**
          * @returns The count of this Backlog
          */
         getCount(): number;
+
+        /**
+         * Gets an immutable copy of the JSON payload for this resource.
+         *
+         * @returns An immutable copy of the json payload
+         */
+        json(): bkper.Backlog;
 
     }
 
@@ -472,6 +514,11 @@ declare namespace Bkper {
      * Class that represents an [[Account]] or [[Group]] balance on a window of time (Day / Month / Year).
      */
     export interface Balance {
+
+        /**
+         * The underlying payload data for this resource
+         */
+        payload: bkper.Balance;
 
         /**
          * The cumulative balance to the date, based on the credit nature of the container
@@ -555,6 +602,13 @@ declare namespace Bkper {
          * The year of the balance
          */
         getYear(): number;
+
+        /**
+         * Gets an immutable copy of the JSON payload for this resource.
+         *
+         * @returns An immutable copy of the json payload
+         */
+        json(): bkper.Balance;
 
     }
 
@@ -688,6 +742,11 @@ declare namespace Bkper {
     export interface BalancesReport {
 
         /**
+         * The underlying payload data for this resource
+         */
+        payload: bkper.Balances;
+
+        /**
          * Creates a BalancesDataTableBuilder to generate a two-dimensional array with all [[BalancesContainers]].
          */
         createDataTable(): BalancesDataTableBuilder;
@@ -722,6 +781,13 @@ declare namespace Bkper {
          */
         hasOnlyOneGroup(): boolean;
 
+        /**
+         * Gets an immutable copy of the JSON payload for this resource.
+         *
+         * @returns An immutable copy of the json payload
+         */
+        json(): bkper.Balances;
+
     }
 
     /**
@@ -730,6 +796,11 @@ declare namespace Bkper {
      * It contains all [[Accounts]] where [[Transactions]] are recorded/posted;
      */
     export interface Book {
+
+        /**
+         * The underlying payload data for this resource
+         */
+        payload: bkper.Book;
 
         /**
          * Adds a collaborator to the Book.
@@ -897,11 +968,11 @@ declare namespace Bkper {
         createTransactionsDataTable(query?: string): TransactionsDataTableBuilder;
 
         /**
-         * Delete a custom property
+         * Deletes a custom property.
          *
-         * @returns This Book, for chainning.
+         * @returns This resource, for chaining
          */
-        deleteProperty(key: string): Book;
+        deleteProperty(key: string): this;
 
         /**
          * Formats an amount according to [[DecimalSeparator]] and fraction digits of the Book.
@@ -1058,14 +1129,25 @@ declare namespace Bkper {
         getPermission(): Permission;
 
         /**
-         * @returns The custom properties stored in this Book
+         * Gets the custom properties stored in this resource.
+         *
+         * @returns Object with key/value pair properties
          */
         getProperties(): {[key: string]: string};
 
         /**
-         * @returns The property value for given keys. First property found will be retrieved
+         * Gets the property value for given keys. First property found will be retrieved.
+         *
+         * @returns The property value or null if not found
          */
         getProperty(...keys: string[]): string;
+
+        /**
+         * Gets the custom properties keys stored in this resource.
+         *
+         * @returns Array of property keys sorted alphabetically
+         */
+        getPropertyKeys(): string[];
 
         /**
          * @returns All saved queries from this book
@@ -1127,12 +1209,19 @@ declare namespace Bkper {
         getTransactions(query?: string): TransactionIterator;
 
         /**
-         * Gets the visible custom properties stored in this Book.
+         * Gets the visible custom properties stored in this resource.
          * Hidden properties (those ending with "_") are excluded from the result.
          *
          * @returns Object with key/value pair properties, excluding hidden properties
          */
         getVisibleProperties(): {[key: string]: string};
+
+        /**
+         * Gets an immutable copy of the JSON payload for this resource.
+         *
+         * @returns An immutable copy of the json payload
+         */
+        json(): bkper.Book;
 
         /**
          * Instantiate a new [[Account]]
@@ -1309,18 +1398,18 @@ declare namespace Bkper {
         setPeriodStartMonth(month: Month): Book;
 
         /**
-         * Sets the custom properties of the Book
+         * Sets the custom properties of this resource.
          *
-         * @returns This Book, for chainning.
+         * @returns This resource, for chaining
          */
-        setProperties(properties: {[key: string]: string}): Book;
+        setProperties(properties: {[key: string]: string}): this;
 
         /**
-         * Sets a custom property in the Book.
+         * Sets a custom property in this resource.
          *
-         * @returns This Book, for chainning.
+         * @returns This resource, for chaining
          */
-        setProperty(key: string, value: string): Book;
+        setProperty(key: string, value: string): this;
 
         /**
          * Sets the time zone of the Book
@@ -1330,20 +1419,20 @@ declare namespace Bkper {
         setTimeZone(timeZone: string): Book;
 
         /**
-         * Sets the custom properties of this Book, filtering out hidden properties.
+         * Sets the custom properties of this resource, filtering out hidden properties.
          * Hidden properties are those whose keys end with an underscore "_".
          *
-         * @returns This Book, for chaining
+         * @returns This resource, for chaining
          */
-        setVisibleProperties(properties: {[key: string]: string}): Book;
+        setVisibleProperties(properties: {[key: string]: string}): this;
 
         /**
-         * Sets a custom property in this Book, filtering out hidden properties.
+         * Sets a custom property in this resource, filtering out hidden properties.
          * Hidden properties are those whose keys end with an underscore "_".
          *
-         * @returns This Book, for chaining
+         * @returns This resource, for chaining
          */
-        setVisibleProperty(key: string, value: string | null): Book;
+        setVisibleProperty(key: string, value: string | null): this;
 
         /**
          * Perform update Book, applying pending changes.
@@ -1360,6 +1449,11 @@ declare namespace Bkper {
     export interface BotResponse {
 
         /**
+         * The underlying payload data for this resource
+         */
+        payload: bkper.BotResponse;
+
+        /**
          * @returns The agent id of this Bot Response
          */
         getAgentId(): string;
@@ -1374,12 +1468,24 @@ declare namespace Bkper {
          */
         getType(): BotResponseType;
 
+        /**
+         * Gets an immutable copy of the JSON payload for this resource.
+         *
+         * @returns An immutable copy of the json payload
+         */
+        json(): bkper.BotResponse;
+
     }
 
     /**
      * This class defines a Collection of [[Books]].
      */
     export interface Collection {
+
+        /**
+         * The underlying payload data for this resource
+         */
+        payload: bkper.Collection;
 
         /**
          * @returns All Books of this collection.
@@ -1395,6 +1501,13 @@ declare namespace Bkper {
          * @returns The name of this Collection
          */
         getName(): string;
+
+        /**
+         * Gets an immutable copy of the JSON payload for this resource.
+         *
+         * @returns An immutable copy of the json payload
+         */
+        json(): bkper.Collection;
 
         /**
          * Sets the name of the Collection.
@@ -1420,6 +1533,11 @@ declare namespace Bkper {
     export interface Event {
 
         /**
+         * The underlying payload data for this resource
+         */
+        payload: bkper.Event;
+
+        /**
          * @returns The bot responses associated to this Event.
          */
         getBotResponses(): BotResponse[];
@@ -1428,6 +1546,13 @@ declare namespace Bkper {
          * @returns The id of the Event.
          */
         getId(): string;
+
+        /**
+         * Gets an immutable copy of the JSON payload for this resource.
+         *
+         * @returns An immutable copy of the json payload
+         */
+        json(): bkper.Event;
 
     }
 
@@ -1494,16 +1619,21 @@ declare namespace Bkper {
     export interface File {
 
         /**
+         * The underlying payload data for this resource
+         */
+        payload: bkper.File;
+
+        /**
          * Perform create new File.
          */
         create(): File;
 
         /**
-         * Delete a custom property
+         * Deletes a custom property.
          *
-         * @returns This File, for chainning.
+         * @returns This resource, for chaining
          */
-        deleteProperty(key: string): File;
+        deleteProperty(key: string): this;
 
         /**
          * Gets the Blob from this file
@@ -1531,17 +1661,23 @@ declare namespace Bkper {
         getName(): string;
 
         /**
-         * Gets the custom properties stored in this File.
+         * Gets the custom properties stored in this resource.
+         *
+         * @returns Object with key/value pair properties
          */
         getProperties(): {[key: string]: string};
 
         /**
-         * Gets the property value for given keys. First property found will be retrieved
+         * Gets the property value for given keys. First property found will be retrieved.
+         *
+         * @returns The property value or null if not found
          */
         getProperty(...keys: string[]): string;
 
         /**
-         * Gets the custom properties keys stored in this File.
+         * Gets the custom properties keys stored in this resource.
+         *
+         * @returns Array of property keys sorted alphabetically
          */
         getPropertyKeys(): string[];
 
@@ -1556,12 +1692,19 @@ declare namespace Bkper {
         getUrl(): string;
 
         /**
-         * Gets the visible custom properties stored in this File.
+         * Gets the visible custom properties stored in this resource.
          * Hidden properties (those ending with "_") are excluded from the result.
          *
          * @returns Object with key/value pair properties, excluding hidden properties
          */
         getVisibleProperties(): {[key: string]: string};
+
+        /**
+         * Gets an immutable copy of the JSON payload for this resource.
+         *
+         * @returns An immutable copy of the json payload
+         */
+        json(): bkper.File;
 
         /**
          * Sets the File properties from a Blob
@@ -1592,34 +1735,34 @@ declare namespace Bkper {
         setName(name: string): File;
 
         /**
-         * Set the custom properties of the File
+         * Sets the custom properties of this resource.
          *
-         * @returns This File, for chainning.
+         * @returns This resource, for chaining
          */
-        setProperties(properties: {[key: string]: string}): File;
+        setProperties(properties: {[key: string]: string}): this;
 
         /**
-         * Set a custom property in the File.
+         * Sets a custom property in this resource.
          *
-         * @returns This File, for chainning.
+         * @returns This resource, for chaining
          */
-        setProperty(key: string, value: string): File;
+        setProperty(key: string, value: string): this;
 
         /**
-         * Sets the custom properties of this File, filtering out hidden properties.
+         * Sets the custom properties of this resource, filtering out hidden properties.
          * Hidden properties are those whose keys end with an underscore "_".
          *
-         * @returns This File, for chaining
+         * @returns This resource, for chaining
          */
-        setVisibleProperties(properties: {[key: string]: string}): File;
+        setVisibleProperties(properties: {[key: string]: string}): this;
 
         /**
-         * Sets a custom property in this File, filtering out hidden properties.
+         * Sets a custom property in this resource, filtering out hidden properties.
          * Hidden properties are those whose keys end with an underscore "_".
          *
-         * @returns This File, for chaining
+         * @returns This resource, for chaining
          */
-        setVisibleProperty(key: string, value: string | null): File;
+        setVisibleProperty(key: string, value: string | null): this;
 
     }
 
@@ -1633,6 +1776,11 @@ declare namespace Bkper {
     export interface Group {
 
         /**
+         * The underlying payload data for this resource
+         */
+        payload: bkper.Group;
+
+        /**
          * Perform create new group.
          *
          * @returns The created Group, for chainning.
@@ -1640,11 +1788,11 @@ declare namespace Bkper {
         create(): Group;
 
         /**
-         * Delete a custom property
+         * Deletes a custom property.
          *
-         * @returns This Group, for chainning.
+         * @returns This resource, for chaining
          */
-        deleteProperty(key: string): Group;
+        deleteProperty(key: string): this;
 
         /**
          * @returns All Accounts of this group.
@@ -1687,17 +1835,23 @@ declare namespace Bkper {
         getParentGroupsChain(): Group[];
 
         /**
-         * Gets the custom properties stored in this Group
+         * Gets the custom properties stored in this resource.
+         *
+         * @returns Object with key/value pair properties
          */
         getProperties(): {[key: string]: string};
 
         /**
-         * Gets the property value for given keys. First property found will be retrieved
+         * Gets the property value for given keys. First property found will be retrieved.
+         *
+         * @returns The property value or null if not found
          */
         getProperty(...keys: string[]): string;
 
         /**
-         * Gets the custom properties keys stored in this Group.
+         * Gets the custom properties keys stored in this resource.
+         *
+         * @returns Array of property keys sorted alphabetically
          */
         getPropertyKeys(): string[];
 
@@ -1712,7 +1866,7 @@ declare namespace Bkper {
         getType(): AccountType;
 
         /**
-         * Gets the visible custom properties stored in this Group.
+         * Gets the visible custom properties stored in this resource.
          * Hidden properties (those ending with "_") are excluded from the result.
          *
          * @returns Object with key/value pair properties, excluding hidden properties
@@ -1755,6 +1909,13 @@ declare namespace Bkper {
         isPermanent(): boolean;
 
         /**
+         * Gets an immutable copy of the JSON payload for this resource.
+         *
+         * @returns An immutable copy of the json payload
+         */
+        json(): bkper.Group;
+
+        /**
          * Perform delete group.
          */
         remove(): Group;
@@ -1786,32 +1947,34 @@ declare namespace Bkper {
         setParent(group: Group | null): Group;
 
         /**
-         * Sets the custom properties of the Group
+         * Sets the custom properties of this resource.
          *
-         * @returns This Group, for chainning.
+         * @returns This resource, for chaining
          */
-        setProperties(properties: {[key: string]: string}): Group;
+        setProperties(properties: {[key: string]: string}): this;
 
         /**
-         * Sets a custom property in the Group.
+         * Sets a custom property in this resource.
+         *
+         * @returns This resource, for chaining
          */
-        setProperty(key: string, value: string): Group;
+        setProperty(key: string, value: string): this;
 
         /**
-         * Sets the custom properties of this Group, filtering out hidden properties.
+         * Sets the custom properties of this resource, filtering out hidden properties.
          * Hidden properties are those whose keys end with an underscore "_".
          *
-         * @returns This Group, for chaining
+         * @returns This resource, for chaining
          */
-        setVisibleProperties(properties: {[key: string]: string}): Group;
+        setVisibleProperties(properties: {[key: string]: string}): this;
 
         /**
-         * Sets a custom property in this Group, filtering out hidden properties.
+         * Sets a custom property in this resource, filtering out hidden properties.
          * Hidden properties are those whose keys end with an underscore "_".
          *
-         * @returns This Group, for chaining
+         * @returns This resource, for chaining
          */
-        setVisibleProperty(key: string, value: string | null): Group;
+        setVisibleProperty(key: string, value: string | null): this;
 
         /**
          * Perform update group, applying pending changes.
@@ -1840,11 +2003,124 @@ declare namespace Bkper {
     }
 
     /**
+     * Abstract base class for all Bkper resources.
+     * Provides common functionality for payload management and JSON serialization.
+     */
+    export interface Resource {
+
+        /**
+         * The underlying payload data for this resource
+         */
+        payload: T;
+
+        /**
+         * Gets an immutable copy of the JSON payload for this resource.
+         *
+         * @returns An immutable copy of the json payload
+         */
+        json(): T;
+
+    }
+
+    /**
+     * Abstract base class for Bkper resources that support custom properties.
+     *
+     * Extends Resource<T> and adds property management methods for entities
+     * that have a properties field in their payload.
+     */
+    export interface ResourceProperty {
+
+        /**
+         * The underlying payload data for this resource
+         */
+        payload: T;
+
+        /**
+         * Deletes a custom property.
+         *
+         * @returns This resource, for chaining
+         */
+        deleteProperty(key: string): this;
+
+        /**
+         * Gets the custom properties stored in this resource.
+         *
+         * @returns Object with key/value pair properties
+         */
+        getProperties(): {[key: string]: string};
+
+        /**
+         * Gets the property value for given keys. First property found will be retrieved.
+         *
+         * @returns The property value or null if not found
+         */
+        getProperty(...keys: string[]): string;
+
+        /**
+         * Gets the custom properties keys stored in this resource.
+         *
+         * @returns Array of property keys sorted alphabetically
+         */
+        getPropertyKeys(): string[];
+
+        /**
+         * Gets the visible custom properties stored in this resource.
+         * Hidden properties (those ending with "_") are excluded from the result.
+         *
+         * @returns Object with key/value pair properties, excluding hidden properties
+         */
+        getVisibleProperties(): {[key: string]: string};
+
+        /**
+         * Gets an immutable copy of the JSON payload for this resource.
+         *
+         * @returns An immutable copy of the json payload
+         */
+        json(): T;
+
+        /**
+         * Sets the custom properties of this resource.
+         *
+         * @returns This resource, for chaining
+         */
+        setProperties(properties: {[key: string]: string}): this;
+
+        /**
+         * Sets a custom property in this resource.
+         *
+         * @returns This resource, for chaining
+         */
+        setProperty(key: string, value: string): this;
+
+        /**
+         * Sets the custom properties of this resource, filtering out hidden properties.
+         * Hidden properties are those whose keys end with an underscore "_".
+         *
+         * @returns This resource, for chaining
+         */
+        setVisibleProperties(properties: {[key: string]: string}): this;
+
+        /**
+         * Sets a custom property in this resource, filtering out hidden properties.
+         * Hidden properties are those whose keys end with an underscore "_".
+         *
+         * @returns This resource, for chaining
+         */
+        setVisibleProperty(key: string, value: string | null): this;
+
+    }
+
+    /**
      * This class defines a Transaction between [credit and debit](http://en.wikipedia.org/wiki/Debits_and_credits) [[Accounts]].
      *
      * A Transaction is the main entity on the [Double Entry](http://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) [Bookkeeping](http://en.wikipedia.org/wiki/Bookkeeping) system.
      */
     export interface Transaction {
+
+        /**
+         * The underlying payload data for this resource
+         */
+        payload: bkper.Transaction;
 
         /**
          * Add a File attachment to the Transaction.
@@ -1880,11 +2156,11 @@ declare namespace Bkper {
         create(): Transaction;
 
         /**
-         * Delete a custom property
+         * Deletes a custom property.
          *
-         * @returns This Transaction, for chainning.
+         * @returns This resource, for chaining
          */
-        deleteProperty(key: string): Transaction;
+        deleteProperty(key: string): this;
 
         /**
          * Set the credit/origin Account of the Transaction. Same as setCreditAccount().
@@ -2034,17 +2310,23 @@ declare namespace Bkper {
         getPostDateText(): string;
 
         /**
-         * Gets the custom properties stored in this Transaction.
+         * Gets the custom properties stored in this resource.
+         *
+         * @returns Object with key/value pair properties
          */
         getProperties(): {[key: string]: string};
 
         /**
-         * Gets the property value for given keys. First property found will be retrieved
+         * Gets the property value for given keys. First property found will be retrieved.
+         *
+         * @returns The property value or null if not found
          */
         getProperty(...keys: string[]): string;
 
         /**
-         * Gets the custom properties keys stored in this Transaction.
+         * Gets the custom properties keys stored in this resource.
+         *
+         * @returns Array of property keys sorted alphabetically
          */
         getPropertyKeys(): string[];
 
@@ -2066,7 +2348,7 @@ declare namespace Bkper {
         getUrls(): string[];
 
         /**
-         * Gets the visible custom properties stored in this Transaction.
+         * Gets the visible custom properties stored in this resource.
          * Hidden properties (those ending with "_") are excluded from the result.
          *
          * @returns Object with key/value pair properties, excluding hidden properties
@@ -2107,6 +2389,13 @@ declare namespace Bkper {
          * @returns True if transaction is in trash.
          */
         isTrashed(): boolean;
+
+        /**
+         * Gets an immutable copy of the JSON payload for this resource.
+         *
+         * @returns An immutable copy of the json payload
+         */
+        json(): bkper.Transaction;
 
         /**
          * Perform post transaction, changing credit and debit [[Account]] balances.
@@ -2170,18 +2459,18 @@ declare namespace Bkper {
         setDescription(description: string): Transaction;
 
         /**
-         * Set the custom properties of the Transaction
+         * Sets the custom properties of this resource.
          *
-         * @returns This Transaction, for chainning.
+         * @returns This resource, for chaining
          */
-        setProperties(properties: {[key: string]: string}): Transaction;
+        setProperties(properties: {[key: string]: string}): this;
 
         /**
-         * Set a custom property in the Transaction.
+         * Sets a custom property in this resource.
          *
-         * @returns This Transaction, for chainning.
+         * @returns This resource, for chaining
          */
-        setProperty(key: string, value: string): Transaction;
+        setProperty(key: string, value: string): this;
 
         /**
          * Set the Transaction urls. Url starts with https://
@@ -2191,20 +2480,20 @@ declare namespace Bkper {
         setUrls(urls: string[]): Transaction;
 
         /**
-         * Sets the custom properties of this Transaction, filtering out hidden properties.
+         * Sets the custom properties of this resource, filtering out hidden properties.
          * Hidden properties are those whose keys end with an underscore "_".
          *
-         * @returns This Transaction, for chaining
+         * @returns This resource, for chaining
          */
-        setVisibleProperties(properties: {[key: string]: string}): Transaction;
+        setVisibleProperties(properties: {[key: string]: string}): this;
 
         /**
-         * Sets a custom property in this Transaction, filtering out hidden properties.
+         * Sets a custom property in this resource, filtering out hidden properties.
          * Hidden properties are those whose keys end with an underscore "_".
          *
-         * @returns This Transaction, for chaining
+         * @returns This resource, for chaining
          */
-        setVisibleProperty(key: string, value: string | null): Transaction;
+        setVisibleProperty(key: string, value: string | null): this;
 
         /**
          * Set the debit/destination Account of the Transaction. Same as setDebitAccount().

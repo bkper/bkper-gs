@@ -1,7 +1,7 @@
 
 class GroupBalancesContainer implements BalancesContainer {
 
-    json: bkper.GroupBalances;
+    payload: bkper.GroupBalances;
     private parent: BalancesContainer;
     private accountBalances: AccountBalancesContainer[];
     private groupBalances: GroupBalancesContainer[];
@@ -12,10 +12,10 @@ class GroupBalancesContainer implements BalancesContainer {
     private depth: number;
 
 
-    constructor(parent: BalancesContainer, balancesReport: BalancesReport, groupBalancesPlain: bkper.GroupBalances) {
+    constructor(parent: BalancesContainer, balancesReport: BalancesReport, payload: bkper.GroupBalances) {
         this.parent = parent;
         this.balancesReport = balancesReport;
-        this.json = groupBalancesPlain;
+        this.payload = payload;
         this.balancesContainersMap = null;
     }
 
@@ -59,35 +59,35 @@ class GroupBalancesContainer implements BalancesContainer {
     }
 
     public getName(): string {
-        return this.json.name;
+        return this.payload.name;
     }
 
     public getNormalizedName(): string {
-        return this.json.normalizedName;
+        return this.payload.normalizedName;
     }
 
     public isCredit(): boolean {
-        return this.json.credit;
+        return this.payload.credit;
     }
 
     public isPermanent() {
-        return this.json.permanent;
+        return this.payload.permanent;
     }
 
     public getCumulativeBalance(): Amount {
-        return Utils_.getRepresentativeValue(new Amount(this.json.cumulativeBalance), this.isCredit());
+        return Utils_.getRepresentativeValue(new Amount(this.payload.cumulativeBalance), this.isCredit());
     }
 
     public getCumulativeBalanceRaw(): Amount {
-        return new Amount(this.json.cumulativeBalance);
+        return new Amount(this.payload.cumulativeBalance);
     }
 
     public getCumulativeCredit(): Amount {
-        return new Amount(this.json.cumulativeCredit);
+        return new Amount(this.payload.cumulativeCredit);
     }
 
     public getCumulativeDebit(): Amount {
-        return new Amount(this.json.cumulativeDebit);
+        return new Amount(this.payload.cumulativeDebit);
     }
 
     public getCumulativeBalanceText(): string {
@@ -107,19 +107,19 @@ class GroupBalancesContainer implements BalancesContainer {
     }
 
     public getPeriodBalance(): Amount {
-        return Utils_.getRepresentativeValue(new Amount(this.json.periodBalance), this.isCredit());
+        return Utils_.getRepresentativeValue(new Amount(this.payload.periodBalance), this.isCredit());
     }
 
     public getPeriodBalanceRaw(): Amount {
-        return new Amount(this.json.periodBalance);
+        return new Amount(this.payload.periodBalance);
     }
 
     public getPeriodCredit(): Amount {
-        return new Amount(this.json.periodCredit);
+        return new Amount(this.payload.periodCredit);
     }
 
     public getPeriodDebit(): Amount {
-        return new Amount(this.json.periodDebit);
+        return new Amount(this.payload.periodDebit);
     }
 
     public getPeriodBalanceText(): string {
@@ -139,10 +139,10 @@ class GroupBalancesContainer implements BalancesContainer {
     }
 
     public getBalances(): Balance[] {
-        if (!this.json.balances) {
+        if (!this.payload.balances) {
             return new Array<Balance>();
         }
-        return this.json.balances.map(balancePlain => new Balance(this, balancePlain));
+        return this.payload.balances.map(balancePlain => new Balance(this, balancePlain));
     }
 
     public createDataTable() {
@@ -163,7 +163,7 @@ class GroupBalancesContainer implements BalancesContainer {
     }
 
     private getAccountBalances(): AccountBalancesContainer[] {
-        var accountBalances = this.json.accountBalances;
+        var accountBalances = this.payload.accountBalances;
         if (this.accountBalances == null && accountBalances != null) {
             this.accountBalances = [];
             for (var i = 0; i < accountBalances.length; i++) {
@@ -175,7 +175,7 @@ class GroupBalancesContainer implements BalancesContainer {
     }
 
     private getGroupBalances(): GroupBalancesContainer[] {
-        var groupBalances = this.json.groupBalances;
+        var groupBalances = this.payload.groupBalances;
         if (this.groupBalances == null && groupBalances != null) {
             this.groupBalances = [];
             for (var i = 0; i < groupBalances.length; i++) {
@@ -187,13 +187,13 @@ class GroupBalancesContainer implements BalancesContainer {
     }
 
     public getProperties(): { [key: string]: string } {
-        return this.json.properties != null ? { ...this.json.properties } : {};
+        return this.payload.properties != null ? { ...this.payload.properties } : {};
     }
 
     public getProperty(...keys: string[]): string {
         for (let index = 0; index < keys.length; index++) {
             const key = keys[index];
-            let value = this.json.properties != null ? this.json.properties[key] : null;
+            let value = this.payload.properties != null ? this.payload.properties[key] : null;
             if (value != null && value.trim() != '') {
                 return value;
             }
@@ -305,25 +305,25 @@ class GroupBalancesContainer implements BalancesContainer {
     private addAccountContainer(accountContainer: AccountBalancesContainer) {
 
         // Adjust period & cumulative balances
-        this.json.cumulativeBalance = this.sum(this.json.cumulativeBalance, accountContainer.json.cumulativeBalance);
-        this.json.cumulativeCredit = this.sum(this.json.cumulativeCredit, accountContainer.json.cumulativeCredit);
-        this.json.cumulativeDebit = this.sum(this.json.cumulativeDebit, accountContainer.json.cumulativeDebit);
-        this.json.periodBalance = this.sum(this.json.periodBalance, accountContainer.json.periodBalance);
-        this.json.periodCredit = this.sum(this.json.periodCredit, accountContainer.json.periodCredit);
-        this.json.periodDebit = this.sum(this.json.periodDebit, accountContainer.json.periodDebit);
+        this.payload.cumulativeBalance = this.sum(this.payload.cumulativeBalance, accountContainer.payload.cumulativeBalance);
+        this.payload.cumulativeCredit = this.sum(this.payload.cumulativeCredit, accountContainer.payload.cumulativeCredit);
+        this.payload.cumulativeDebit = this.sum(this.payload.cumulativeDebit, accountContainer.payload.cumulativeDebit);
+        this.payload.periodBalance = this.sum(this.payload.periodBalance, accountContainer.payload.periodBalance);
+        this.payload.periodCredit = this.sum(this.payload.periodCredit, accountContainer.payload.periodCredit);
+        this.payload.periodDebit = this.sum(this.payload.periodDebit, accountContainer.payload.periodDebit);
 
         // Adjust balances
         let groupBalancesMap: { [key: string]: bkper.Balance } = {};
         for (const groupBalance of this.getBalances()) {
-            groupBalancesMap[`${groupBalance.json.fuzzyDate}`] = groupBalance.json;
+            groupBalancesMap[`${groupBalance.payload.fuzzyDate}`] = groupBalance.payload;
         }
 
         for (const accountBalance of accountContainer.getBalances()) {
-            const key = `${accountBalance.json.fuzzyDate}`;
+            const key = `${accountBalance.payload.fuzzyDate}`;
             if (groupBalancesMap[key]) {
-                groupBalancesMap[key] = this.sumBalances(groupBalancesMap[key], accountBalance.json);
+                groupBalancesMap[key] = this.sumBalances(groupBalancesMap[key], accountBalance.payload);
             } else {
-                groupBalancesMap[key] = { ...accountBalance.json };
+                groupBalancesMap[key] = { ...accountBalance.payload };
             }
         }
 
@@ -331,12 +331,12 @@ class GroupBalancesContainer implements BalancesContainer {
         for (const key of Object.keys(groupBalancesMap)) {
             balances.push(groupBalancesMap[key]);
         }
-        this.json.balances = balances;
+        this.payload.balances = balances;
 
         // Add to accountBalances
         if (!this.hasGroupBalances()) {
             // Adjust credit nature
-            accountContainer.json.credit = this.json.credit;
+            accountContainer.payload.credit = this.payload.credit;
             if (!this.accountBalances) {
                 this.accountBalances = [];
             }
@@ -393,23 +393,23 @@ class GroupBalancesContainer implements BalancesContainer {
     private removeAccountContainer(accountContainer: AccountBalancesContainer) {
 
         // Adjust period & cumulative balances
-        this.json.cumulativeBalance = this.subtract(this.json.cumulativeBalance, accountContainer.json.cumulativeBalance);
-        this.json.cumulativeCredit = this.subtract(this.json.cumulativeCredit, accountContainer.json.cumulativeCredit);
-        this.json.cumulativeDebit = this.subtract(this.json.cumulativeDebit, accountContainer.json.cumulativeDebit);
-        this.json.periodBalance = this.subtract(this.json.periodBalance, accountContainer.json.periodBalance);
-        this.json.periodCredit = this.subtract(this.json.periodCredit, accountContainer.json.periodCredit);
-        this.json.periodDebit = this.subtract(this.json.periodDebit, accountContainer.json.periodDebit);
+        this.payload.cumulativeBalance = this.subtract(this.payload.cumulativeBalance, accountContainer.payload.cumulativeBalance);
+        this.payload.cumulativeCredit = this.subtract(this.payload.cumulativeCredit, accountContainer.payload.cumulativeCredit);
+        this.payload.cumulativeDebit = this.subtract(this.payload.cumulativeDebit, accountContainer.payload.cumulativeDebit);
+        this.payload.periodBalance = this.subtract(this.payload.periodBalance, accountContainer.payload.periodBalance);
+        this.payload.periodCredit = this.subtract(this.payload.periodCredit, accountContainer.payload.periodCredit);
+        this.payload.periodDebit = this.subtract(this.payload.periodDebit, accountContainer.payload.periodDebit);
 
         // Adjust balances
         let groupBalancesMap: { [key: string]: bkper.Balance } = {};
         for (const groupBalance of this.getBalances()) {
-            groupBalancesMap[`${groupBalance.json.fuzzyDate}`] = groupBalance.json;
+            groupBalancesMap[`${groupBalance.payload.fuzzyDate}`] = groupBalance.payload;
         }
 
         for (const accountBalance of accountContainer.getBalances()) {
-            const key = `${accountBalance.json.fuzzyDate}`;
+            const key = `${accountBalance.payload.fuzzyDate}`;
             if (groupBalancesMap[key]) {
-                groupBalancesMap[key] = this.subtractBalances(groupBalancesMap[key], accountBalance.json);
+                groupBalancesMap[key] = this.subtractBalances(groupBalancesMap[key], accountBalance.payload);
             }
         }
 
@@ -417,7 +417,7 @@ class GroupBalancesContainer implements BalancesContainer {
         for (const key of Object.keys(groupBalancesMap)) {
             balances.push(groupBalancesMap[key]);
         }
-        this.json.balances = balances;
+        this.payload.balances = balances;
 
         // Remove from accountBalances
         if (!this.hasGroupBalances()) {

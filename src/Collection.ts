@@ -1,28 +1,29 @@
+/// <reference path="Resource.ts" />
+
 /**
 * This class defines a Collection of [[Books]].
 * 
 * @public
 */
-class Collection {
+class Collection extends Resource<bkper.Collection> {
 
-    wrapped: bkper.Collection
-
-    constructor(wrapped: bkper.Collection) {
-        this.wrapped = wrapped;
+    constructor(payload: bkper.Collection) {
+        super();
+        this.payload = payload;
     }
 
     /**
      * @returns The id of this Collection
      */
     public getId(): string {
-        return this.wrapped.id;
+        return this.payload.id;
     }
 
     /**
      * @returns The name of this Collection
      */
     public getName(): string {
-        return this.wrapped.name;
+        return this.payload.name;
     }
 
     /**
@@ -31,7 +32,7 @@ class Collection {
      * @returns This Collection, for chainning.
      */
     public setName(name: string): Collection {
-        this.wrapped.name = name;
+        this.payload.name = name;
         return this;
     }
 
@@ -40,10 +41,10 @@ class Collection {
      */
     public getBooks(): Book[] {
         let books: Book[] = [];
-        if (this.wrapped.books == null) {
+        if (this.payload.books == null) {
             return books;
         }
-        for (const bookPayload of this.wrapped.books) {
+        for (const bookPayload of this.payload.books) {
             let book = new Book(bookPayload.id, bookPayload);
             books.push(book);
         }
@@ -56,7 +57,7 @@ class Collection {
      * @returns The updated Collection object
      */
     public update(): Collection {
-        this.wrapped = CollectionService_.updateCollection(this.wrapped);
+        this.payload = CollectionService_.updateCollection(this.payload);
         return this;
     }
 

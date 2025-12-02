@@ -1,36 +1,37 @@
+/// <reference path="Resource.ts" />
+
 /**
 * 
 * This class defines an App installed in a [[Book]].
 * 
 * @public
 */
-class App {
+class App extends Resource<bkper.App> {
 
-    private wrapped: bkper.App;
-
-    constructor(appPlain: bkper.App) {
-        this.wrapped = appPlain;
+    constructor(payload: bkper.App) {
+        super();
+        this.payload = payload;
     }
 
     /**
      * @return The name of this App
      */
     public getName(): string {
-        return this.wrapped.name;
+        return this.payload.name;
     }
 
     /**
      * @return The id of this App
      */
     public getId(): string {
-        return this.wrapped.id;
+        return this.payload.id;
     }
 
     /**
      * @return The description of this App
      */
     public getDescription(): string {
-        return this.wrapped.description;
+        return this.payload.description;
     }
 
 }

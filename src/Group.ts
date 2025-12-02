@@ -1,3 +1,5 @@
+/// <reference path="ResourceProperty.ts" />
+
 /**
 * This class defines a Group of [[Accounts]].
 * 
@@ -7,9 +9,7 @@
 * 
 * @public
 */
-class Group {
-
-    wrapped: bkper.Group
+class Group extends ResourceProperty<bkper.Group> {
 
     book: Book
 
@@ -25,14 +25,14 @@ class Group {
      * @returns The id of this Group
      */
     public getId(): string {
-        return this.wrapped.id;
+        return this.payload.id;
     }
 
     /**
      * @returns The name of this Group
      */
     public getName(): string {
-        return this.wrapped.name;
+        return this.payload.name;
     }
 
     /**
@@ -42,7 +42,7 @@ class Group {
      * @returns This Group, for chainning.
      */
     public setName(name: string): Group {
-        this.wrapped.name = name;
+        this.payload.name = name;
         return this;
     }
 
@@ -50,10 +50,10 @@ class Group {
      * @returns True if the Group is locked by the Book owner.
      */
     public isLocked(): boolean {
-        if (this.wrapped.locked == null) {
+        if (this.payload.locked == null) {
             return false;
         }
-        return this.wrapped.locked;
+        return this.payload.locked;
     }
 
     /**
@@ -63,7 +63,7 @@ class Group {
      * @returns This Group, for chainning.
      */
     public setLocked(locked: boolean): Group {
-        this.wrapped.locked = locked;
+        this.payload.locked = locked;
         return this;
     }
 
@@ -71,8 +71,8 @@ class Group {
      * @returns The name of this group without spaces and special characters
      */
     public getNormalizedName(): string {
-        if (this.wrapped.normalizedName) {
-            return this.wrapped.normalizedName;
+        if (this.payload.normalizedName) {
+            return this.payload.normalizedName;
         } else {
             return Utils_.normalizeText(this.getName())
         }
@@ -82,31 +82,31 @@ class Group {
      * Tell if this is a credit (Incoming and Liabities) group
      */
     public isCredit(): boolean {
-        return this.wrapped.credit;
+        return this.payload.credit;
     }
 
     /**
      * Tell if this is a permanent (Assets and Liabilities) group
      */
     public isPermanent(): boolean {
-        return this.wrapped.permanent;
+        return this.payload.permanent;
     }
 
     /**
      * Tell if this is a mixed (Assets/Liabilities or Incoming/Outgoing) group
      */
     public isMixed(): boolean {
-        return this.wrapped.mixed;
+        return this.payload.mixed;
     }
 
     /**
      * @returns The type of the group based on its accounts. Undefined if the group has accounts of different types
      */
     public getType(): AccountType | undefined {
-        if (!this.wrapped.type) {
+        if (!this.payload.type) {
             return undefined;
         }
-        return this.wrapped.type as AccountType;
+        return this.payload.type as AccountType;
     }
 
     /**
@@ -142,167 +142,17 @@ class Group {
     }
 
     /**
-     * Gets the custom properties stored in this Group
-     */
-    public getProperties(): { [key: string]: string } {
-        return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
-    }
-
-    /**
-     * Gets the custom properties keys stored in this Group.
-     */
-    public getPropertyKeys(): string[] {
-        let properties = this.getProperties();
-        let propertyKeys: string[] = [];
-        if (properties) {
-            for (const key in properties) {
-                if (Object.prototype.hasOwnProperty.call(properties, key)) {
-                    propertyKeys.push(key);
-                }
-            }
-        }
-        propertyKeys = propertyKeys.sort();
-        return propertyKeys;
-    }
-
-    /**
-     * Sets the custom properties of the Group
-     * 
-     * @param properties Object with key/value pair properties
-     * 
-     * @returns This Group, for chainning. 
-     */
-    public setProperties(properties: { [key: string]: string }): Group {
-        this.wrapped.properties = { ...properties };
-        return this;
-    }
-
-    /**
-     * Gets the property value for given keys. First property found will be retrieved
-     * 
-     * @param keys The property key
-     */
-    public getProperty(...keys: string[]): string {
-        for (let index = 0; index < keys.length; index++) {
-            const key = keys[index];
-            let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
-            if (value != null && value.trim() != '') {
-                return value;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Sets a custom property in the Group.
-     * 
-     * @param key The property key
-     * @param value The property value
-     */
-    public setProperty(key: string, value: string): Group {
-        if (key == null || key.trim() == '') {
-            return this;
-        }
-        if (this.wrapped.properties == null) {
-            this.wrapped.properties = {};
-        }
-        this.wrapped.properties[key] = value;
-        return this;
-    }
-
-    /**
-     * Delete a custom property
-     * 
-     * @param key The property key
-     * 
-     * @returns This Group, for chainning. 
-     */
-    public deleteProperty(key: string): Group {
-        this.setProperty(key, null);
-        return this;
-    }
-
-    /**
-     * Checks if a property key represents a hidden property.
-     * Hidden properties are those whose keys end with an underscore "_".
-     *
-     * @param key - The property key to check
-     * @returns True if the property is hidden, false otherwise
-     */
-    private isHiddenProperty(key: string): boolean {
-        return key.endsWith('_');
-    }
-
-    /**
-     * Sets a custom property in this Group, filtering out hidden properties.
-     * Hidden properties are those whose keys end with an underscore "_".
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns This Group, for chaining
-     */
-    public setVisibleProperty(key: string, value: string | null | undefined): Group {
-        if (this.isHiddenProperty(key)) {
-            return this;
-        }
-        return this.setProperty(key, value);
-    }
-
-    /**
-     * Sets the custom properties of this Group, filtering out hidden properties.
-     * Hidden properties are those whose keys end with an underscore "_".
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns This Group, for chaining
-     */
-    public setVisibleProperties(properties: { [key: string]: string }): Group {
-        if (properties == null) {
-            return this;
-        }
-        const filteredProperties: { [key: string]: string } = {};
-        for (const key in properties) {
-            if (Object.prototype.hasOwnProperty.call(properties, key)) {
-                if (!this.isHiddenProperty(key)) {
-                    filteredProperties[key] = properties[key];
-                }
-            }
-        }
-        return this.setProperties(filteredProperties);
-    }
-
-    /**
-     * Gets the visible custom properties stored in this Group.
-     * Hidden properties (those ending with "_") are excluded from the result.
-     *
-     * @returns Object with key/value pair properties, excluding hidden properties
-     */
-    public getVisibleProperties(): { [key: string]: string } {
-        const allProperties = this.getProperties();
-        const visibleProperties: { [key: string]: string } = {};
-        for (const key in allProperties) {
-            if (Object.prototype.hasOwnProperty.call(allProperties, key)) {
-                if (!this.isHiddenProperty(key)) {
-                    visibleProperties[key] = allProperties[key];
-                }
-            }
-        }
-        return visibleProperties;
-    }
-
-    /**
      * Tell if the Group is hidden on main transactions menu
      */
     public isHidden(): boolean {
-        return this.wrapped.hidden;
+        return this.payload.hidden;
     }
 
     /**
      *  Hide/Show group on main menu.
      */
     public setHidden(hidden: boolean): Group {
-        this.wrapped.hidden = hidden;
+        this.payload.hidden = hidden;
         return this;
     }
 
@@ -313,14 +163,14 @@ class Group {
      */
     public create(): Group {
         try {
-            this.wrapped = GroupService_.createGroup(this.book.getId(), this.wrapped);
+            this.payload = GroupService_.createGroup(this.book.getId(), this.payload);
             this.book.clearCache();
             return this;
         } catch (err) {
             this.book.clearCache();
-            const group = this.book.getGroup(this.wrapped.name);
+            const group = this.book.getGroup(this.payload.name);
             if (group) {
-                this.wrapped = group.wrapped;
+                this.payload = group.payload;
                 return this;
             } else {
                 throw err;
@@ -332,7 +182,7 @@ class Group {
      * Perform update group, applying pending changes.
      */
     public update(): Group {
-        this.wrapped = GroupService_.updateGroup(this.book.getId(), this.wrapped);
+        this.payload = GroupService_.updateGroup(this.book.getId(), this.payload);
         this.book.clearCache();
         return this;
 
@@ -342,7 +192,7 @@ class Group {
      * Perform delete group.
      */
     public remove(): Group {
-        this.wrapped = GroupService_.deleteGroup(this.book.getId(), this.wrapped);
+        this.payload = GroupService_.deleteGroup(this.book.getId(), this.payload);
         this.book.clearCache();
         return this;
     }
@@ -388,9 +238,9 @@ class Group {
      */
     public setParent(group: Group | null): Group {
         if (group) {
-            this.wrapped.parent = { id: group.getId(), name: group.getName(), normalizedName: group.getNormalizedName() };
+            this.payload.parent = { id: group.getId(), name: group.getName(), normalizedName: group.getNormalizedName() };
         } else {
-            this.wrapped.parent = null;
+            this.payload.parent = null;
         }
         return this;
     }
@@ -433,8 +283,8 @@ class Group {
         if (this.children == null) {
             this.children = [];
         }
-        if (this.wrapped.parent != null) {
-            let parentGroup: Group = idGroupMap[this.wrapped.parent.id];
+        if (this.payload.parent != null) {
+            let parentGroup: Group = idGroupMap[this.payload.parent.id];
             if (parentGroup != null) {
                 this.parent = parentGroup;
                 if (this.parent.children == null) {

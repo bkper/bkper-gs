@@ -1,3 +1,5 @@
+/// <reference path="ResourceProperty.ts" />
+
 /**
 * 
 * This class defines a Transaction between [credit and debit](http://en.wikipedia.org/wiki/Debits_and_credits) [[Accounts]].
@@ -6,9 +8,7 @@
 * 
 * @public
 */
-class Transaction {
-
-    wrapped: bkper.Transaction
+class Transaction extends ResourceProperty<bkper.Transaction> {
 
     book: Book;
 
@@ -19,14 +19,14 @@ class Transaction {
      * @returns The id of the Transaction.
      */
     public getId(): string {
-        return this.wrapped.id;
+        return this.payload.id;
     }
 
     /**
      * @returns The id of the agent that created this transaction
      */
     public getAgentId(): string {
-        return this.wrapped.agentId;
+        return this.payload.agentId;
     }
 
     /**
@@ -35,7 +35,7 @@ class Transaction {
      * @returns The remote ids of the Transaction.
      */
     public getRemoteIds(): string[] {
-        return this.wrapped.remoteIds;
+        return this.payload.remoteIds;
     }
 
     /**
@@ -46,11 +46,11 @@ class Transaction {
      * @returns This Transaction, for chainning.
      */
     public addRemoteId(remoteId: string): Transaction {
-        if (this.wrapped.remoteIds == null) {
-            this.wrapped.remoteIds = [];
+        if (this.payload.remoteIds == null) {
+            this.payload.remoteIds = [];
         }
         if (remoteId) {
-            this.wrapped.remoteIds.push(remoteId);
+            this.payload.remoteIds.push(remoteId);
         }
         return this;
     }
@@ -59,14 +59,14 @@ class Transaction {
      * @returns True if transaction was already posted to the accounts. False if is still a Draft.
      */
     public isPosted(): boolean {
-        return this.wrapped.posted;
+        return this.payload.posted;
     }
 
     /**
      * @returns True if transaction is checked.
      */
     public isChecked(): boolean {
-        return this.wrapped.checked;
+        return this.payload.checked;
     }
 
     /**
@@ -77,7 +77,7 @@ class Transaction {
       * @returns This Transaction, for chainning.
     */
     public setChecked(checked: boolean): Transaction {
-        this.wrapped.checked = checked;
+        this.payload.checked = checked;
         return this;
     }
 
@@ -85,7 +85,7 @@ class Transaction {
      * @returns True if transaction is in trash.
      */
     public isTrashed(): boolean {
-        return this.wrapped.trashed;
+        return this.payload.trashed;
     }
 
     /**
@@ -101,7 +101,7 @@ class Transaction {
      * @returns All #hashtags used on the transaction.
      */
     public getTags(): string[] {
-        return this.wrapped.tags;
+        return this.payload.tags;
     }
 
 
@@ -109,7 +109,7 @@ class Transaction {
      * @returns All urls of the transaction.
      */
     public getUrls(): string[] {
-        return this.wrapped.urls;
+        return this.payload.urls;
     }
 
     /**
@@ -120,7 +120,7 @@ class Transaction {
      * @returns This Transaction, for chainning.
      */
     public setUrls(urls: string[]): Transaction {
-        this.wrapped.urls = null;
+        this.payload.urls = null;
         if (urls) {
             urls.forEach(url => {
                 this.addUrl(url);
@@ -137,11 +137,11 @@ class Transaction {
      * @returns This Transaction, for chainning.
      */
     public addUrl(url: string): Transaction {
-        if (this.wrapped.urls == null) {
-            this.wrapped.urls = [];
+        if (this.payload.urls == null) {
+            this.payload.urls = [];
         }
         if (url) {
-            this.wrapped.urls.push(url);
+            this.payload.urls.push(url);
         }
         return this;
     }
@@ -150,8 +150,8 @@ class Transaction {
      * @returns The files attached to the transaction.
      */
     public getFiles(): File[] {
-        if (this.wrapped.files && this.wrapped.files.length > 0) {
-            const files = Utils_.wrapObjects(new File(), this.wrapped.files);
+        if (this.payload.files && this.payload.files.length > 0) {
+            const files = Utils_.wrapObjects(new File(), this.payload.files);
             if (files != null) {
                 for (const file of files) {
                     file.book = this.book;
@@ -180,8 +180,8 @@ class Transaction {
         }
         file = file as File;
 
-        if (this.wrapped.files == null) {
-            this.wrapped.files = [];
+        if (this.payload.files == null) {
+            this.payload.files = [];
         }
 
         // Store file reference for later creation if needed
@@ -190,12 +190,12 @@ class Transaction {
         if (fileId == null || fileBookId != this.book.getId()) {
             // Generate temporary ID if file doesn't have one
             if (fileId == null) {
-                file.wrapped.id = `temporary_${Utilities.getUuid()}`;
+                file.payload.id = `temporary_${Utilities.getUuid()}`;
             }
             this.pendingFiles.set(file.getId(), file);
         }
 
-        this.wrapped.files.push(file.wrapped);
+        this.payload.files.push(file.payload);
         return this;
     }
 
@@ -206,8 +206,8 @@ class Transaction {
             return;
         }
 
-        if (this.wrapped.files == null) {
-            this.wrapped.files = [];
+        if (this.payload.files == null) {
+            this.payload.files = [];
         }
 
         // Create all pending files
@@ -216,11 +216,11 @@ class Transaction {
             file.setProperty('upload_method', 'attachment');
             const createdFile = file.create();
             // Update payload with the created file
-            const fileIndex = this.wrapped.files.findIndex(f => f.id === fileId);
+            const fileIndex = this.payload.files.findIndex(f => f.id === fileId);
             if (fileIndex >= 0) {
-                this.wrapped.files[fileIndex] = createdFile.wrapped;
+                this.payload.files[fileIndex] = createdFile.payload;
             } else {
-                this.wrapped.files.push(createdFile.wrapped);
+                this.payload.files.push(createdFile.payload);
             }
         }
 
@@ -245,165 +245,12 @@ class Transaction {
     }
 
 
-    /**
-     * Gets the custom properties stored in this Transaction.
-     */
-    public getProperties(): { [key: string]: string } {
-        return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
-    }
-
-    /**
-     * Gets the custom properties keys stored in this Transaction.
-     */
-    public getPropertyKeys(): string[] {
-        let properties = this.getProperties();
-        let propertyKeys: string[] = []
-        if (properties) {
-            for (var key in properties) {
-                if (Object.prototype.hasOwnProperty.call(properties, key)) {
-                    propertyKeys.push(key)
-                }
-            }
-        }
-        propertyKeys = propertyKeys.sort();
-        return propertyKeys;
-    }
-
-    /**
-     * Set the custom properties of the Transaction
-     * 
-     * @param properties Object with key/value pair properties
-     * 
-     * @returns This Transaction, for chainning. 
-     */
-    public setProperties(properties: { [key: string]: string }): Transaction {
-        this.wrapped.properties = { ...properties };
-        return this;
-    }
-
-    /**
-     * Gets the property value for given keys. First property found will be retrieved
-     * 
-     * @param keys The property key
-     */
-    public getProperty(...keys: string[]): string {
-        for (let index = 0; index < keys.length; index++) {
-            const key = keys[index];
-            let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
-            if (value != null && value.trim() != '') {
-                return value;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Set a custom property in the Transaction.
-     * 
-     * @param key The property key
-     * @param value The property value
-     * 
-     * @returns This Transaction, for chainning. 
-     */
-    public setProperty(key: string, value: string): Transaction {
-        if (key == null || key.trim() == '') {
-            return this;
-        }
-        if (this.wrapped.properties == null) {
-            this.wrapped.properties = {};
-        }
-        this.wrapped.properties[key] = value;
-        return this;
-    }
-
-    /**
-     * Delete a custom property
-     * 
-     * @param key The property key
-     * 
-     * @returns This Transaction, for chainning. 
-     */
-    public deleteProperty(key: string): Transaction {
-        this.setProperty(key, null);
-        return this;
-    }
-
-    /**
-     * Checks if a property key represents a hidden property.
-     * Hidden properties are those whose keys end with an underscore "_".
-     *
-     * @param key - The property key to check
-     * @returns True if the property is hidden, false otherwise
-     */
-    private isHiddenProperty(key: string): boolean {
-        return key.endsWith('_');
-    }
-
-    /**
-     * Sets a custom property in this Transaction, filtering out hidden properties.
-     * Hidden properties are those whose keys end with an underscore "_".
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns This Transaction, for chaining
-     */
-    public setVisibleProperty(key: string, value: string | null | undefined): Transaction {
-        if (this.isHiddenProperty(key)) {
-            return this;
-        }
-        return this.setProperty(key, value);
-    }
-
-    /**
-     * Sets the custom properties of this Transaction, filtering out hidden properties.
-     * Hidden properties are those whose keys end with an underscore "_".
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns This Transaction, for chaining
-     */
-    public setVisibleProperties(properties: { [key: string]: string }): Transaction {
-        if (properties == null) {
-            return this;
-        }
-        const filteredProperties: { [key: string]: string } = {};
-        for (const key in properties) {
-            if (Object.prototype.hasOwnProperty.call(properties, key)) {
-                if (!this.isHiddenProperty(key)) {
-                    filteredProperties[key] = properties[key];
-                }
-            }
-        }
-        return this.setProperties(filteredProperties);
-    }
-
-    /**
-     * Gets the visible custom properties stored in this Transaction.
-     * Hidden properties (those ending with "_") are excluded from the result.
-     *
-     * @returns Object with key/value pair properties, excluding hidden properties
-     */
-    public getVisibleProperties(): { [key: string]: string } {
-        const allProperties = this.getProperties();
-        const visibleProperties: { [key: string]: string } = {};
-        for (const key in allProperties) {
-            if (Object.prototype.hasOwnProperty.call(allProperties, key)) {
-                if (!this.isHiddenProperty(key)) {
-                    visibleProperties[key] = allProperties[key];
-                }
-            }
-        }
-        return visibleProperties;
-    }
-
-
     //ORIGIN ACCOUNT
     /**
      * @returns The credit account. The same as origin account.
      */
     public getCreditAccount(): Account {
-        return this.wrapped.creditAccount != null ? this.book.getAccount(this.wrapped.creditAccount.id) : null;;
+        return this.payload.creditAccount != null ? this.book.getAccount(this.payload.creditAccount.id) : null;;
     }
 
     /**
@@ -430,7 +277,7 @@ class Transaction {
             account = this.book.getAccount(account)
         }
         if (account != null && account.getId() != null) {
-            this.wrapped.creditAccount = account.wrapped
+            this.payload.creditAccount = account.payload
         }
         return this;
     }
@@ -454,7 +301,7 @@ class Transaction {
      * 
      */
     public getDebitAccount(): Account {
-        return this.wrapped.debitAccount != null ? this.book.getAccount(this.wrapped.debitAccount.id) : null;
+        return this.payload.debitAccount != null ? this.book.getAccount(this.payload.debitAccount.id) : null;
     }
 
     /**
@@ -481,7 +328,7 @@ class Transaction {
             account = this.book.getAccount(account)
         }
         if (account != null && account.getId() != null) {
-            this.wrapped.debitAccount = account.wrapped
+            this.payload.debitAccount = account.payload
         }
         return this;
     }
@@ -504,7 +351,7 @@ class Transaction {
      * @returns The amount of the transaction.
      */
     public getAmount(): Amount {
-        return this.wrapped.amount != null && this.wrapped.amount.trim() != '' ? new Amount(this.wrapped.amount) : null;
+        return this.payload.amount != null && this.payload.amount.trim() != '' ? new Amount(this.payload.amount) : null;
     }
 
     /**
@@ -517,18 +364,18 @@ class Transaction {
 
         if (typeof amount == "string") {
             amount = Utils_.parseValue(amount, this.book.getDecimalSeparator()) + '';
-            this.wrapped.amount = amount.toString();
+            this.payload.amount = amount.toString();
             return this;
         }
 
         amount = new Amount(amount);
 
         if (amount.eq(0)) {
-            this.wrapped.amount = null;
+            this.payload.amount = null;
             return this;
         }
 
-        this.wrapped.amount = amount.abs().toString();
+        this.payload.amount = amount.abs().toString();
 
         return this;
     }
@@ -624,10 +471,10 @@ class Transaction {
      * @returns The description of this transaction.
      */
     public getDescription(): string {
-        if (this.wrapped.description == null) {
+        if (this.payload.description == null) {
             return "";
         }
-        return this.wrapped.description;
+        return this.payload.description;
     }
 
     /**
@@ -637,7 +484,7 @@ class Transaction {
      * @returns This Transaction, for chainning.
      */
     public setDescription(description: string): Transaction {
-        this.wrapped.description = description;
+        this.payload.description = description;
         return this;
     }
 
@@ -648,7 +495,7 @@ class Transaction {
      * @returns The Transaction date, in ISO format yyyy-MM-dd.
      */
     public getDate(): string {
-        return this.wrapped.date;
+        return this.payload.date;
     }
 
     /**
@@ -661,12 +508,12 @@ class Transaction {
         if (typeof date == "string") {
             if (date.indexOf('/') > 0) {
                 let dateObject = Utils_.parseDate(date, this.book.getDatePattern(), this.book.getTimeZoneOffset())
-                this.wrapped.date = Utils_.formatDateISO(dateObject, this.book.getTimeZone())
+                this.payload.date = Utils_.formatDateISO(dateObject, this.book.getTimeZone())
             } else if (date.indexOf('-')) {
-                this.wrapped.date = date;
+                this.payload.date = date;
             }
         } else if (Object.prototype.toString.call(date) === '[object Date]') {
-            this.wrapped.date = Utils_.formatDateISO(date, this.book.getTimeZone())
+            this.payload.date = Utils_.formatDateISO(date, this.book.getTimeZone())
         }
         return this;
     }
@@ -682,21 +529,21 @@ class Transaction {
      * @returns The Transaction date number, in format YYYYMMDD.
      */
     public getDateValue(): number {
-        return this.wrapped.dateValue;
+        return this.payload.dateValue;
     }
 
     /**
      * @returns The Transaction date, formatted on the date pattern of the [[Book]].
      */
     public getDateFormatted(): string {
-        return this.wrapped.dateFormatted;
+        return this.payload.dateFormatted;
     }
 
     /**
      * @returns The date the transaction was created.
      */
     public getCreatedAt(): Date {
-        return new Date(new Number(this.wrapped.createdAt).valueOf());
+        return new Date(new Number(this.payload.createdAt).valueOf());
     }
 
     /**
@@ -709,11 +556,11 @@ class Transaction {
 
     //EVOLVED BALANCES
     private getCaEvolvedBalance_(): Amount {
-        return this.wrapped.creditAccount != null && this.wrapped.creditAccount.balance != null ? new Amount(this.wrapped.creditAccount.balance) : null;
+        return this.payload.creditAccount != null && this.payload.creditAccount.balance != null ? new Amount(this.payload.creditAccount.balance) : null;
     }
 
     private getDaEvolvedBalance_(): Amount {
-        return this.wrapped.debitAccount != null && this.wrapped.debitAccount.balance != null ? new Amount(this.wrapped.debitAccount.balance) : null;
+        return this.payload.debitAccount != null && this.payload.debitAccount.balance != null ? new Amount(this.payload.debitAccount.balance) : null;
     }
 
     /**
@@ -748,8 +595,8 @@ class Transaction {
      */
     public create(): Transaction {
         this.createPendingFiles_();
-        let operation = TransactionService_.createTransaction(this.book.getId(), this.wrapped);
-        this.wrapped = operation.transaction;
+        let operation = TransactionService_.createTransaction(this.book.getId(), this.payload);
+        this.payload = operation.transaction;
         this.book.updateAccountsCache(operation.accounts);
         return this;
     }
@@ -759,8 +606,8 @@ class Transaction {
      */
     public update(): Transaction {
         this.createPendingFiles_();
-        let operation = TransactionService_.updateTransaction(this.book.getId(), this.wrapped);
-        this.wrapped = operation.transaction;
+        let operation = TransactionService_.updateTransaction(this.book.getId(), this.payload);
+        this.payload = operation.transaction;
         this.book.updateAccountsCache(operation.accounts);
         return this;
     }
@@ -770,8 +617,8 @@ class Transaction {
      * Perform check transaction.
      */
     public check(): Transaction {
-        let operation = TransactionService_.checkTransaction(this.book.getId(), this.wrapped);
-        this.wrapped.checked = operation.transaction.checked;
+        let operation = TransactionService_.checkTransaction(this.book.getId(), this.payload);
+        this.payload.checked = operation.transaction.checked;
         this.book.updateAccountsCache(operation.accounts);
         return this;
     }
@@ -780,8 +627,8 @@ class Transaction {
      * Perform uncheck transaction.
      */
     public uncheck(): Transaction {
-        let operation = TransactionService_.uncheckTransaction(this.book.getId(), this.wrapped);
-        this.wrapped.checked = operation.transaction.checked;
+        let operation = TransactionService_.uncheckTransaction(this.book.getId(), this.payload);
+        this.payload.checked = operation.transaction.checked;
         this.book.updateAccountsCache(operation.accounts);
         return this;
     }
@@ -791,8 +638,8 @@ class Transaction {
      */
     public post(): Transaction {
         this.createPendingFiles_();
-        let operation = TransactionService_.postTransaction(this.book.getId(), this.wrapped);
-        this.wrapped = operation.transaction;
+        let operation = TransactionService_.postTransaction(this.book.getId(), this.payload);
+        this.payload = operation.transaction;
         this.book.updateAccountsCache(operation.accounts);
         return this;
     }
@@ -801,8 +648,8 @@ class Transaction {
      * Perform trash transaction.
      */
     public trash(): Transaction {
-        let operation = TransactionService_.trashTransaction(this.book.getId(), this.wrapped);
-        this.wrapped.trashed = operation.transaction.trashed;
+        let operation = TransactionService_.trashTransaction(this.book.getId(), this.payload);
+        this.payload.trashed = operation.transaction.trashed;
         this.book.updateAccountsCache(operation.accounts);
         return this;
     }
@@ -811,8 +658,8 @@ class Transaction {
      * Perform untrash transaction.
      */
     public untrash(): Transaction {
-        let operation = TransactionService_.untrashTransaction(this.book.getId(), this.wrapped);
-        this.wrapped.trashed = operation.transaction.trashed;
+        let operation = TransactionService_.untrashTransaction(this.book.getId(), this.payload);
+        this.payload.trashed = operation.transaction.trashed;
         this.book.updateAccountsCache(operation.accounts);
         return this;
     }
@@ -825,8 +672,8 @@ class Transaction {
      * @deprecated
      */
     public remove(): Transaction {
-        let operation = TransactionService_.trashTransaction(this.book.getId(), this.wrapped);
-        this.wrapped.trashed = operation.transaction.trashed;
+        let operation = TransactionService_.trashTransaction(this.book.getId(), this.payload);
+        this.payload.trashed = operation.transaction.trashed;
         this.book.updateAccountsCache(operation.accounts);
         return this;
     }
@@ -836,8 +683,8 @@ class Transaction {
      * @deprecated
      */
     public restore(): Transaction {
-        let operation = TransactionService_.untrashTransaction(this.book.getId(), this.wrapped);
-        this.wrapped.trashed = operation.transaction.trashed;
+        let operation = TransactionService_.untrashTransaction(this.book.getId(), this.payload);
+        this.payload.trashed = operation.transaction.trashed;
         this.book.updateAccountsCache(operation.accounts);
         return this;
     }

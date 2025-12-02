@@ -1,3 +1,5 @@
+/// <reference path="ResourceProperty.ts" />
+
 /**
  * 
  * This class defines an [Account](https://en.wikipedia.org/wiki/Account_(bookkeeping)) of a [[Book]].
@@ -8,9 +10,7 @@
  * 
  * @public
  */
-class Account {
-
-    wrapped: bkper.Account;
+class Account extends ResourceProperty<bkper.Account> {
 
     book: Book;
 
@@ -18,14 +18,14 @@ class Account {
      * Gets the account internal id.
      */
     public getId(): string {
-        return this.wrapped.id;
+        return this.payload.id;
     }
 
     /**
      * Gets the account name.
      */
     public getName(): string {
-        return this.wrapped.name;
+        return this.payload.name;
     }
 
     /**
@@ -35,7 +35,7 @@ class Account {
      * @returns This Account, for chainning.
      */
     public setName(name: string): Account {
-        this.wrapped.name = name;
+        this.payload.name = name;
         return this;
     }
 
@@ -44,8 +44,8 @@ class Account {
      * @returns The name of this account without spaces or special characters.
      */
     public getNormalizedName(): string {
-        if (this.wrapped.normalizedName) {
-            return this.wrapped.normalizedName;
+        if (this.payload.normalizedName) {
+            return this.payload.normalizedName;
         } else {
             return Utils_.normalizeText(this.getName())
         }
@@ -55,7 +55,7 @@ class Account {
      * @return The type for of this account.
      */
     public getType(): AccountType {
-        return this.wrapped.type as AccountType;
+        return this.payload.type as AccountType;
     }
 
     /**
@@ -65,160 +65,7 @@ class Account {
      * @returns This Account, for chainning
      */
     public setType(type: AccountType): Account {
-        this.wrapped.type = type;
-        return this;
-    }
-
-    /**
-     * Checks if a property key represents a hidden property.
-     * Hidden properties are those whose keys end with an underscore "_".
-     *
-     * @param key - The property key to check
-     * @returns True if the property is hidden, false otherwise
-     */
-    private isHiddenProperty(key: string): boolean {
-        return key.endsWith('_');
-    }
-
-    /**
-     * Sets a custom property in this Account, filtering out hidden properties.
-     * Hidden properties are those whose keys end with an underscore "_".
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns This Account, for chaining
-     */
-    public setVisibleProperty(key: string, value: string | null | undefined): Account {
-        if (this.isHiddenProperty(key)) {
-            return this;
-        }
-        return this.setProperty(key, value);
-    }
-
-
-    /**
-     * Sets the custom properties of this Account, filtering out hidden properties.
-     * Hidden properties are those whose keys end with an underscore "_".
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns This Account, for chaining
-     */
-    public setVisibleProperties(properties: { [key: string]: string }): Account {
-        if (properties == null) {
-            return this;
-        }
-        const filteredProperties: { [key: string]: string } = {};
-        for (const key in properties) {
-            if (Object.prototype.hasOwnProperty.call(properties, key)) {
-                if (!this.isHiddenProperty(key)) {
-                    filteredProperties[key] = properties[key];
-                }
-            }
-        }
-        return this.setProperties(filteredProperties);
-    }
-
-    /**
-     * Gets the visible custom properties stored in this Account.
-     * Hidden properties (those ending with "_") are excluded from the result.
-     *
-     * @returns Object with key/value pair properties, excluding hidden properties
-     */
-    public getVisibleProperties(): { [key: string]: string } {
-        const allProperties = this.getProperties();
-        const visibleProperties: { [key: string]: string } = {};
-        for (const key in allProperties) {
-            if (Object.prototype.hasOwnProperty.call(allProperties, key)) {
-                if (!this.isHiddenProperty(key)) {
-                    visibleProperties[key] = allProperties[key];
-                }
-            }
-        }
-        return visibleProperties;
-    }
-
-    /**
-     * Gets the custom properties stored in this Account.
-     */
-    public getProperties(): { [key: string]: string } {
-        return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
-    }
-
-    /**
-     * Sets the custom properties of the Account
-     * 
-     * @param properties Object with key/value pair properties
-     * 
-     * @returns This Account, for chainning. 
-     */
-    public setProperties(properties: { [key: string]: string }): Account {
-        this.wrapped.properties = { ...properties };
-        return this;
-    }
-
-    /**
-     * Gets the property value for given keys. First property found will be retrieved
-     * 
-     * @param keys The property key
-     */
-    public getProperty(...keys: string[]): string {
-        for (let index = 0; index < keys.length; index++) {
-            const key = keys[index];
-            let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
-            if (value != null && value.trim() != '') {
-                return value;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Gets the custom properties keys stored in this Account.
-     */
-    public getPropertyKeys(): string[] {
-        let properties = this.getProperties();
-        let propertyKeys: string[] = [];
-        if (properties) {
-            for (const key in properties) {
-                if (Object.prototype.hasOwnProperty.call(properties, key)) {
-                    propertyKeys.push(key);
-                }
-            }
-        }
-        propertyKeys = propertyKeys.sort();
-        return propertyKeys;
-    }
-
-    /**
-     * Sets a custom property in the Account.
-     * 
-     * @param key The property key
-     * @param value The property value
-     * 
-     * @returns This Account, for chainning. 
-     */
-    public setProperty(key: string, value: string): Account {
-        if (key == null || key.trim() == '') {
-            return this;
-        }
-        if (this.wrapped.properties == null) {
-            this.wrapped.properties = {};
-        }
-        this.wrapped.properties[key] = value;
-        return this;
-    }
-
-    /**
-     * Delete a custom property
-     * 
-     * @param key The property key
-     * 
-     * @returns This Account, for chainning. 
-     */
-    public deleteProperty(key: string): Account {
-        this.setProperty(key, null);
+        this.payload.type = type;
         return this;
     }
 
@@ -227,7 +74,7 @@ class Account {
      * @returns The balance of this account.
      */
     public getBalance(): Amount {
-        return this.book.getBalancesReport(`account:'${this.wrapped.name}' on:$m`).getBalancesContainer(this.wrapped.name).getCumulativeBalance();
+        return this.book.getBalancesReport(`account:'${this.payload.name}' on:$m`).getBalancesContainer(this.payload.name).getCumulativeBalance();
     }
 
     /**
@@ -235,14 +82,14 @@ class Account {
      * @returns The balance of this account.
      */
     public getBalanceRaw(): Amount {
-        return this.book.getBalancesReport(`account:'${this.wrapped.name}' on:$m`).getBalancesContainer(this.wrapped.name).getCumulativeBalanceRaw();
+        return this.book.getBalancesReport(`account:'${this.payload.name}' on:$m`).getBalancesContainer(this.payload.name).getCumulativeBalanceRaw();
     }
 
     /**
      * Tell if this account is archived.
      */
     public isArchived(): boolean {
-        return this.wrapped.archived;
+        return this.payload.archived;
     }
 
     /**
@@ -251,7 +98,7 @@ class Account {
      * @returns This Account, for chainning.
      */
     public setArchived(archived: boolean): Account {
-        this.wrapped.archived = archived;
+        this.payload.archived = archived;
         return this;
     }
 
@@ -261,7 +108,7 @@ class Account {
      * Accounts with transaction posted, even with zero balance, can only be archived.
      */
     public hasTransactionPosted(): boolean {
-        return this.wrapped.hasTransactionPosted;
+        return this.payload.hasTransactionPosted;
     }
 
 
@@ -278,7 +125,7 @@ class Account {
      * @returns True if its a permanent Account
      */
     public isPermanent(): boolean {
-        return this.wrapped.permanent;
+        return this.payload.permanent;
     }
 
     /**
@@ -302,7 +149,7 @@ class Account {
      * As a rule of thumb, and for simple understanding, almost all accounts are Debit nature (NOT credit), except the ones that "offers" amount for the books, like revenue accounts.
      */
     public isCredit(): boolean {
-        return this.wrapped.credit;
+        return this.payload.credit;
     }
 
 
@@ -311,9 +158,9 @@ class Account {
      */
     public getGroups(): Group[] {
         let groups = new Array<Group>();
-        if (this.wrapped.groups != null) {
-            for (var i = 0; i < this.wrapped.groups.length; i++) {
-                let groupId = this.wrapped.groups[i];
+        if (this.payload.groups != null) {
+            for (var i = 0; i < this.payload.groups.length; i++) {
+                let groupId = this.payload.groups[i];
                 let group = this.book.getGroup(groupId.id);
                 if (group) {
                     groups.push(group);
@@ -329,7 +176,7 @@ class Account {
      * @returns This Account, for chainning.
      */
     public setGroups(groups: string[] | Group[]): Account {
-        this.wrapped.groups = null;
+        this.payload.groups = null;
         if (groups != null) {
             groups.forEach((group: string | Group) => this.addGroup(group))
         }
@@ -342,8 +189,8 @@ class Account {
      * @returns This Account, for chainning.
      */
     public addGroup(group: string | Group): Account {
-        if (this.wrapped.groups == null) {
-            this.wrapped.groups = [];
+        if (this.payload.groups == null) {
+            this.payload.groups = [];
         }
 
         let groupObject: Group = null;
@@ -354,7 +201,7 @@ class Account {
         }
 
         if (groupObject) {
-            this.wrapped.groups.push(groupObject.wrapped)
+            this.payload.groups.push(groupObject.payload)
         }
 
         return this;
@@ -365,7 +212,7 @@ class Account {
      */
     public removeGroup(group: string | Group): Account {
 
-        if (this.wrapped.groups != null) {
+        if (this.payload.groups != null) {
             let groupObject: Group = null;
             if (group instanceof Group) {
                 groupObject = group;
@@ -373,10 +220,10 @@ class Account {
                 groupObject = this.book.getGroup(group);
             }
             if (groupObject) {
-                for (let i = 0; i < this.wrapped.groups.length; i++) {
-                    const group = this.wrapped.groups[i];
+                for (let i = 0; i < this.payload.groups.length; i++) {
+                    const group = this.payload.groups[i];
                     if (group.id == groupObject.getId()) {
-                        this.wrapped.groups.splice(i, 1);
+                        this.payload.groups.splice(i, 1);
                     }
                 }
             }
@@ -410,12 +257,12 @@ class Account {
     }
 
     private isInGroupObject_(group: Group): boolean {
-        if (this.wrapped.groups == null) {
+        if (this.payload.groups == null) {
             return false;
         }
 
-        for (var i = 0; i < this.wrapped.groups.length; i++) {
-            if (this.wrapped.groups[i].id == group.getId()) {
+        for (var i = 0; i < this.payload.groups.length; i++) {
+            if (this.payload.groups[i].id == group.getId()) {
                 return true;
             }
         }
@@ -429,14 +276,14 @@ class Account {
      */
     public create(): Account {
         try {
-            this.wrapped = AccountService_.createAccount(this.book.getId(), this.wrapped);
+            this.payload = AccountService_.createAccount(this.book.getId(), this.payload);
             this.book.clearCache();
             return this;
         } catch (err) {
             this.book.clearCache();
-            const account = this.book.getAccount(this.wrapped.name);
+            const account = this.book.getAccount(this.payload.name);
             if (account) {
-                this.wrapped = account.wrapped;
+                this.payload = account.payload;
                 return this;
             } else {
                 throw err;
@@ -448,7 +295,7 @@ class Account {
      * Perform update account, applying pending changes.
      */
     public update(): Account {
-        this.wrapped = AccountService_.updateAccount(this.book.getId(), this.wrapped);
+        this.payload = AccountService_.updateAccount(this.book.getId(), this.payload);
         this.book.clearCache();
         return this;
 
@@ -458,7 +305,7 @@ class Account {
      * Perform delete account.
      */
     public remove(): Account {
-        this.wrapped = AccountService_.deleteAccount(this.book.getId(), this.wrapped);
+        this.payload = AccountService_.deleteAccount(this.book.getId(), this.payload);
         this.book.clearCache();
         return this;
     }
@@ -482,7 +329,7 @@ class Account {
      *  @deprecated Use isArchived instead
      */
     public isActive(): boolean {
-        return !this.wrapped.archived;
+        return !this.payload.archived;
     };
 
 }

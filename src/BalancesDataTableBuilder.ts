@@ -353,7 +353,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
 
             if (!this.skipRoot && !this.shouldTranspose) {
                 //@ts-ignore
-                container.json.name = Utils_.repeatString(" ", depth * 4) + container.json.name;
+                container.payload.name = Utils_.repeatString(" ", depth * 4) + container.payload.name;
             }
             if (!this.skipRoot || depth != 0) {
                 containersFlat.push(container);
@@ -376,7 +376,7 @@ class BalancesDataTableBuilder implements BalancesDataTableBuilder {
             if (!this.shouldTranspose) {
                 let depth = container.getDepth();
                 //@ts-ignore
-                container.json.name = Utils_.repeatString(" ", depth * 4) + container.json.name;
+                container.payload.name = Utils_.repeatString(" ", depth * 4) + container.payload.name;
             }
             containersFlat.push(container);
             if (this.shouldAddProperties) {

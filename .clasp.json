@@ -1,8 +1,13 @@
 {
-  "scriptId": "1hMJszJGSUVZDB3vmsWrUZfRhY1UWbhS0SQ6Lzl06gm1zhBF3ioTM7mpJ",
-  "rootDir": "./src",
-  "library": {
-    "namespace": "Bkper",
-    "name": "BkperApp"
-  }
+    "scriptId": "1hMJszJGSUVZDB3vmsWrUZfRhY1UWbhS0SQ6Lzl06gm1zhBF3ioTM7mpJ",
+    "rootDir": "./src",
+    "fileExtension": ".ts, .js",
+    "filePushOrder": [
+        "src/Resource.ts",
+        "src/ResourceProperty.ts"
+    ],
+    "library": {
+        "namespace": "Bkper",
+        "name": "BkperApp"
+    }
 }

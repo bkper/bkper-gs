@@ -1,3 +1,5 @@
+/// <reference path="ResourceProperty.ts" />
+
 /**
 *
 * A Book represents [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
@@ -6,10 +8,9 @@
 * 
 * @public
 */
-class Book {
+class Book extends ResourceProperty<bkper.Book> {
 
     private id: string
-    private wrapped: bkper.Book;
     private accounts: Account[];
     private groups: Group[];
     private collection: Collection;
@@ -20,9 +21,56 @@ class Book {
     private savedQueries: bkper.Query[];
     private apps: App[];
 
-    constructor(id: string, wrapped?: bkper.Book) {
+    constructor(id: string, payload?: bkper.Book) {
+        super();
         this.id = id;
-        this.wrapped = wrapped;
+        this.payload = payload;
+    }
+
+    // Property method overrides to ensure payload is loaded before accessing properties
+    public getProperties(): { [key: string]: string } {
+        this.checkBookLoaded_();
+        return super.getProperties();
+    }
+
+    public setProperties(properties: { [key: string]: string }): this {
+        this.checkBookLoaded_();
+        return super.setProperties(properties);
+    }
+
+    public getProperty(...keys: string[]): string {
+        this.checkBookLoaded_();
+        return super.getProperty(...keys);
+    }
+
+    public setProperty(key: string, value: string): this {
+        this.checkBookLoaded_();
+        return super.setProperty(key, value);
+    }
+
+    public deleteProperty(key: string): this {
+        this.checkBookLoaded_();
+        return super.deleteProperty(key);
+    }
+
+    public getPropertyKeys(): string[] {
+        this.checkBookLoaded_();
+        return super.getPropertyKeys();
+    }
+
+    public getVisibleProperties(): { [key: string]: string } {
+        this.checkBookLoaded_();
+        return super.getVisibleProperties();
+    }
+
+    public setVisibleProperty(key: string, value: string | null | undefined): this {
+        this.checkBookLoaded_();
+        return super.setVisibleProperty(key, value);
+    }
+
+    public setVisibleProperties(properties: { [key: string]: string }): this {
+        this.checkBookLoaded_();
+        return super.setVisibleProperties(properties);
     }
 
     /**
@@ -39,7 +87,7 @@ class Book {
      */
     public getName(): string {
         this.checkBookLoaded_();
-        return this.wrapped.name;
+        return this.payload.name;
     }
 
     /**
@@ -49,7 +97,7 @@ class Book {
      * @returns This Book, for chainning.
      */
     public setName(name: string): Book {
-        this.wrapped.name = name;
+        this.payload.name = name;
         return this;
     }
 
@@ -58,7 +106,7 @@ class Book {
      */
     public getFractionDigits(): number {
         this.checkBookLoaded_();
-        return this.wrapped.fractionDigits;
+        return this.payload.fractionDigits;
     }
 
     /**
@@ -68,7 +116,7 @@ class Book {
      * @returns This Book, for chainning.
      */
     public setFractionDigits(fractionDigits: number): Book {
-        this.wrapped.fractionDigits = fractionDigits;
+        this.payload.fractionDigits = fractionDigits;
         return this;
     }
 
@@ -77,14 +125,14 @@ class Book {
      */
     public getOwnerName(): string {
         this.checkBookLoaded_();
-        return this.wrapped.ownerName;
+        return this.payload.ownerName;
     }
 
     private checkBookLoaded_(): void {
-        if (this.wrapped == null) {
-            this.wrapped = BookService_.loadBookWrapped(this.getId());
-            this.configureGroups_(this.wrapped.groups);
-            this.configureAccounts_(this.wrapped.accounts);
+        if (this.payload == null) {
+            this.payload = BookService_.loadBookWrapped(this.getId());
+            this.configureGroups_(this.payload.groups);
+            this.configureAccounts_(this.payload.accounts);
         }
     }
 
@@ -105,7 +153,7 @@ class Book {
      */
     public getPermission(): Permission {
         this.checkBookLoaded_();
-        return this.wrapped.permission as Permission;
+        return this.payload.permission as Permission;
     }
 
     /** 
@@ -113,8 +161,8 @@ class Book {
      */
     public getCollection(): Collection {
         this.checkBookLoaded_();
-        if (this.wrapped.collection != null && this.collection == null) {
-            this.collection = new Collection(this.wrapped.collection);
+        if (this.payload.collection != null && this.collection == null) {
+            this.collection = new Collection(this.payload.collection);
         }
         return this.collection;
     }
@@ -125,7 +173,7 @@ class Book {
      */
     public getDatePattern(): string {
         this.checkBookLoaded_();
-        return this.wrapped.datePattern;
+        return this.payload.datePattern;
     }
 
     /**
@@ -135,7 +183,7 @@ class Book {
      * @returns This Book, for chainning.
      */
     public setDatePattern(datePattern: string): Book {
-        this.wrapped.datePattern = datePattern;
+        this.payload.datePattern = datePattern;
         return this;
     }
 
@@ -168,7 +216,7 @@ class Book {
      */
     public getDecimalSeparator(): DecimalSeparator {
         this.checkBookLoaded_();
-        return this.wrapped.decimalSeparator as DecimalSeparator;
+        return this.payload.decimalSeparator as DecimalSeparator;
     }
 
     /**
@@ -178,7 +226,7 @@ class Book {
      * @returns This Book, for chainning.
      */
     public setDecimalSeparator(decimalSeparator: DecimalSeparator): Book {
-        this.wrapped.decimalSeparator = decimalSeparator;
+        this.payload.decimalSeparator = decimalSeparator;
         return this;
     }
 
@@ -188,7 +236,7 @@ class Book {
      */
     public getTimeZone(): string {
         this.checkBookLoaded_();
-        return this.wrapped.timeZone;
+        return this.payload.timeZone;
     }
 
     /**
@@ -198,7 +246,7 @@ class Book {
      * @returns This Book, for chainning.
      */
     public setTimeZone(timeZone: string): Book {
-        this.wrapped.timeZone = timeZone;
+        this.payload.timeZone = timeZone;
         return this;
     }
 
@@ -207,7 +255,7 @@ class Book {
      */
     public getTimeZoneOffset(): number {
         this.checkBookLoaded_();
-        return this.wrapped.timeZoneOffset;
+        return this.payload.timeZoneOffset;
     }
 
     /**
@@ -215,7 +263,7 @@ class Book {
      */
     public getLockDate(): string {
         this.checkBookLoaded_();
-        return this.wrapped.lockDate;
+        return this.payload.lockDate;
     }
 
     /**
@@ -228,7 +276,7 @@ class Book {
         if (lockDate == null) {
             lockDate = "1900-00-00";
         }
-        this.wrapped.lockDate = lockDate;
+        this.payload.lockDate = lockDate;
         return this;
     }
 
@@ -237,7 +285,7 @@ class Book {
      */
     public getClosingDate(): string {
         this.checkBookLoaded_();
-        return this.wrapped.closingDate;
+        return this.payload.closingDate;
     }
 
     /**
@@ -250,7 +298,7 @@ class Book {
         if (closingDate == null) {
             closingDate = "1900-00-00";
         }
-        this.wrapped.closingDate = closingDate;
+        this.payload.closingDate = closingDate;
         return this;
     }
 
@@ -261,7 +309,7 @@ class Book {
      */
     public getPeriodStartMonth(): Month {
         this.checkBookLoaded_();
-        return this.wrapped.periodStartMonth as Month;
+        return this.payload.periodStartMonth as Month;
     }
 
     /**
@@ -270,7 +318,7 @@ class Book {
      * @returns This Book, for chainning.
      */
     public setPeriodStartMonth(month: Month): Book {
-        this.wrapped.periodStartMonth = month;
+        this.payload.periodStartMonth = month;
         return this;
     }
 
@@ -280,7 +328,7 @@ class Book {
      */
     public getTotalTransactions(): number {
         this.checkBookLoaded_();
-        return +this.wrapped.totalTransactions;
+        return +this.payload.totalTransactions;
     }
 
     /**
@@ -288,7 +336,7 @@ class Book {
      */
     public getTotalTransactionsCurrentMonth(): number {
         this.checkBookLoaded_();
-        return +this.wrapped.totalTransactionsCurrentMonth;
+        return +this.payload.totalTransactionsCurrentMonth;
     }
 
     /**
@@ -296,7 +344,7 @@ class Book {
      */
     public getTotalTransactionsCurrentYear(): number {
         this.checkBookLoaded_();
-        return +this.wrapped.totalTransactionsCurrentYear;
+        return +this.payload.totalTransactionsCurrentYear;
     }
 
     /**
@@ -304,148 +352,7 @@ class Book {
      */
     public getLastUpdateMs(): number {
         this.checkBookLoaded_();
-        return +this.wrapped.lastUpdateMs;
-    }
-
-
-    /**
-     * @return The custom properties stored in this Book
-     */
-    public getProperties(): { [key: string]: string } {
-        this.checkBookLoaded_();
-        return this.wrapped.properties != null ? { ...this.wrapped.properties } : {};
-    }
-
-    /**
-     * @param keys The property key
-     * 
-     * @return The property value for given keys. First property found will be retrieved
-     */
-    public getProperty(...keys: string[]): string {
-        this.checkBookLoaded_();
-
-        for (let index = 0; index < keys.length; index++) {
-            const key = keys[index];
-            let value = this.wrapped.properties != null ? this.wrapped.properties[key] : null
-            if (value != null && value.trim() != '') {
-                return value;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Sets the custom properties of the Book
-     * 
-     * @param properties Object with key/value pair properties
-     * 
-     * @returns This Book, for chainning. 
-     */
-    public setProperties(properties: { [key: string]: string }): Book {
-        this.wrapped.properties = { ...properties };
-        return this;
-    }
-
-    /**
-     * Sets a custom property in the Book.
-     * 
-     * @param key The property key
-     * @param value The property value
-     * 
-     * @returns This Book, for chainning. 
-     */
-    public setProperty(key: string, value: string): Book {
-        if (key == null || key.trim() == '') {
-            return this;
-        }
-        this.checkBookLoaded_();
-        if (this.wrapped.properties == null) {
-            this.wrapped.properties = {};
-        }
-        this.wrapped.properties[key] = value;
-        return this;
-    }
-
-    /**
-     * Delete a custom property
-     * 
-     * @param key The property key
-     * 
-     * @returns This Book, for chainning. 
-     */
-    public deleteProperty(key: string): Book {
-        this.setProperty(key, null);
-        return this;
-    }
-
-    /**
-     * Checks if a property key represents a hidden property.
-     * Hidden properties are those whose keys end with an underscore "_".
-     *
-     * @param key - The property key to check
-     * @returns True if the property is hidden, false otherwise
-     */
-    private isHiddenProperty(key: string): boolean {
-        return key.endsWith('_');
-    }
-
-    /**
-     * Sets a custom property in this Book, filtering out hidden properties.
-     * Hidden properties are those whose keys end with an underscore "_".
-     *
-     * @param key - The property key
-     * @param value - The property value, or null/undefined to clean it
-     *
-     * @returns This Book, for chaining
-     */
-    public setVisibleProperty(key: string, value: string | null | undefined): Book {
-        if (this.isHiddenProperty(key)) {
-            return this;
-        }
-        return this.setProperty(key, value);
-    }
-
-    /**
-     * Sets the custom properties of this Book, filtering out hidden properties.
-     * Hidden properties are those whose keys end with an underscore "_".
-     *
-     * @param properties - Object with key/value pair properties
-     *
-     * @returns This Book, for chaining
-     */
-    public setVisibleProperties(properties: { [key: string]: string }): Book {
-        if (properties == null) {
-            return this;
-        }
-        const filteredProperties: { [key: string]: string } = {};
-        for (const key in properties) {
-            if (Object.prototype.hasOwnProperty.call(properties, key)) {
-                if (!this.isHiddenProperty(key)) {
-                    filteredProperties[key] = properties[key];
-                }
-            }
-        }
-        return this.setProperties(filteredProperties);
-    }
-
-    /**
-     * Gets the visible custom properties stored in this Book.
-     * Hidden properties (those ending with "_") are excluded from the result.
-     *
-     * @returns Object with key/value pair properties, excluding hidden properties
-     */
-    public getVisibleProperties(): { [key: string]: string } {
-        const allProperties = this.getProperties();
-        const visibleProperties: { [key: string]: string } = {};
-        for (const key in allProperties) {
-            if (Object.prototype.hasOwnProperty.call(allProperties, key)) {
-                if (!this.isHiddenProperty(key)) {
-                    visibleProperties[key] = allProperties[key];
-                }
-            }
-        }
-        return visibleProperties;
+        return +this.payload.lastUpdateMs;
     }
 
 
@@ -517,7 +424,7 @@ class Book {
      */
     public batchCreateTransactions(transactions: Transaction[]): Transaction[] {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach(tx => transactionPayloads.push(tx.wrapped));
+        transactions.forEach(tx => transactionPayloads.push(tx.payload));
         transactionPayloads = TransactionService_.createTransactionsBatch(this.getId(), transactionPayloads);
         transactions = Utils_.wrapObjects(new Transaction(), transactionPayloads);
         this.configureTransactions_(transactions);
@@ -535,7 +442,7 @@ class Book {
      */
     public batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): void {
         let transactionsPayload: bkper.Transaction[] = [];
-        transactions.forEach(tx => transactionsPayload.push(tx.wrapped));
+        transactions.forEach(tx => transactionsPayload.push(tx.payload));
         TransactionService_.updateTransactionsBatch(this.getId(), transactionsPayload, updateChecked);
         this.clearCache();
     }
@@ -548,7 +455,7 @@ class Book {
      */
     public batchCheckTransactions(transactions: Transaction[]): void {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach(tx => transactionPayloads.push(tx.wrapped))
+        transactions.forEach(tx => transactionPayloads.push(tx.payload))
         TransactionService_.checkTransactionsBatch(this.getId(), transactionPayloads);
     }
 
@@ -560,7 +467,7 @@ class Book {
      */
     public batchUncheckTransactions(transactions: Transaction[]): void {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach(tx => transactionPayloads.push(tx.wrapped))
+        transactions.forEach(tx => transactionPayloads.push(tx.payload))
         TransactionService_.uncheckTransactionsBatch(this.getId(), transactionPayloads);
     }
 
@@ -574,7 +481,7 @@ class Book {
      */
     public batchTrashTransactions(transactions: Transaction[], trashChecked?: boolean): void {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach(tx => transactionPayloads.push(tx.wrapped))
+        transactions.forEach(tx => transactionPayloads.push(tx.payload))
         TransactionService_.trashTransactionsBatch(this.getId(), transactionPayloads, trashChecked);
     }
 
@@ -743,7 +650,7 @@ class Book {
     public batchCreateAccounts(accounts: Account[]): Account[] {
         let accountsPayloads: bkper.Account[] = []
         for (const account of accounts) {
-            accountsPayloads.push(account.wrapped);
+            accountsPayloads.push(account.payload);
         }
         if (accountsPayloads.length > 0) {
             let createdAccountsPlain = AccountService_.createAccounts(this.getId(), accountsPayloads);
@@ -769,8 +676,8 @@ class Book {
             account.book = this;
             this.idAccountMap[account.getId()] = account;
             this.nameAccountMap[account.getNormalizedName()] = account;
-            if (account.wrapped.groups) {
-                for (const accountGroup of account.wrapped.groups) {
+            if (account.payload.groups) {
+                for (const accountGroup of account.payload.groups) {
                     let group: Group = this.idGroupMap[accountGroup.id];
                     if (group) {
                         group.addAccount(account)
@@ -796,7 +703,7 @@ class Book {
      */
     public batchCreateGroups(groups: Group[]): Group[] {
         if (groups.length > 0) {
-            let groupsSave: bkper.Group[] = groups.map(g => { return g.wrapped });
+            let groupsSave: bkper.Group[] = groups.map(g => { return g.payload });
             let groupsPlain = GroupService_.createGroups(this.getId(), groupsSave);
             let createdGroups = Utils_.wrapObjects(new Group(), groupsPlain);
 
@@ -820,20 +727,20 @@ class Book {
             if (this.idAccountMap != null) {
                 let cachedAccount = this.idAccountMap[accountJson.id];
                 if (cachedAccount) {
-                    cachedAccount.wrapped = accountJson;
+                    cachedAccount.payload = accountJson;
                 }
             }
             if (this.nameAccountMap != null) {
                 let cachedAccount = this.nameAccountMap[accountJson.normalizedName];
                 if (cachedAccount) {
-                    cachedAccount.wrapped = accountJson;
+                    cachedAccount.payload = accountJson;
                 }
             }
         }
     }
 
     clearCache() {
-        this.wrapped = null;
+        this.payload = null;
     }
 
     /**
@@ -1038,8 +945,8 @@ class Book {
      * @return The matching Transaction object
      */
     public getTransaction(id: string): Transaction {
-        let wrapped = TransactionService_.getTransaction(this.getId(), id);
-        let transaction = Utils_.wrapObject(new Transaction(), wrapped);
+        let payload = TransactionService_.getTransaction(this.getId(), id);
+        let transaction = Utils_.wrapObject(new Transaction(), payload);
         this.configureTransaction_(transaction);
         return transaction;
     }
@@ -1147,8 +1054,8 @@ class Book {
      * @return The matching File object
      */
     public getFile(id: string): File {
-        let wrapped = FileService_.getFile(this.getId(), id);
-        let file = Utils_.wrapObject(new File(), wrapped);
+        let payload = FileService_.getFile(this.getId(), id);
+        let file = Utils_.wrapObject(new File(), payload);
         return file;
     }
 
@@ -1158,7 +1065,7 @@ class Book {
      * @returns This Book, for chainning.
      */
     public update(): Book {
-        this.wrapped = BookService_.updateBook(this.getId(), this.wrapped);
+        this.payload = BookService_.updateBook(this.getId(), this.payload);
         return this;
     }
 
@@ -1279,7 +1186,7 @@ class Book {
                     } else {
                         let group = this.getGroup(cell);
                         if (group != null) {
-                            account.groups.push(group.wrapped);
+                            account.groups.push(group.payload);
                         }
                     }
                 }

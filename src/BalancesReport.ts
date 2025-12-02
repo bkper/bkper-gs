@@ -1,21 +1,21 @@
+/// <reference path="Resource.ts" />
 
 /**
  * Class representing a Balance Report, generated when calling [Book.getBalanceReport](#book_getbalancesreport)
  * 
  * @public
  */
-class BalancesReport {
-
-    private wrapped: bkper.Balances;
+class BalancesReport extends Resource<bkper.Balances> {
 
     private book: Book;
     private groupBalancesContainers: GroupBalancesContainer[];
     private accountBalancesContainers: AccountBalancesContainer[];
     balancesContainersMap: { [name: string]: BalancesContainer };
 
-    constructor(book: Book, balancesReportPlain: bkper.Balances) {
+    constructor(book: Book, payload: bkper.Balances) {
+        super();
         this.book = book;
-        this.wrapped = balancesReportPlain;
+        this.payload = payload;
         this.groupBalancesContainers = null;
         this.accountBalancesContainers = null;
         this.balancesContainersMap = null;
@@ -54,7 +54,7 @@ class BalancesReport {
      * The [[Periodicity]] of the query used to generate the report.
      */
     public getPeriodicity(): Periodicity {
-        return this.wrapped.periodicity as Periodicity;
+        return this.payload.periodicity as Periodicity;
     }
 
     /**
@@ -65,10 +65,10 @@ class BalancesReport {
     }
 
     private getRootAccountBalancesContainers(): AccountBalancesContainer[] {
-        if (this.accountBalancesContainers == null && this.wrapped.accountBalances != null) {
+        if (this.accountBalancesContainers == null && this.payload.accountBalances != null) {
             this.accountBalancesContainers = [];
-            for (var i = 0; i < this.wrapped.accountBalances.length; i++) {
-                var accountBalance = this.wrapped.accountBalances[i];
+            for (var i = 0; i < this.payload.accountBalances.length; i++) {
+                var accountBalance = this.payload.accountBalances[i];
                 var accountBalancesReport = new AccountBalancesContainer(null, this, accountBalance);
                 this.accountBalancesContainers.push(accountBalancesReport);
             }
@@ -78,10 +78,10 @@ class BalancesReport {
 
 
     private getGroupBalancesContainers(): GroupBalancesContainer[] {
-        if (this.groupBalancesContainers == null && this.wrapped.groupBalances != null) {
+        if (this.groupBalancesContainers == null && this.payload.groupBalances != null) {
             this.groupBalancesContainers = [];
-            for (var i = 0; i < this.wrapped.groupBalances.length; i++) {
-                var grouBalances = this.wrapped.groupBalances[i];
+            for (var i = 0; i < this.payload.groupBalances.length; i++) {
+                var grouBalances = this.payload.groupBalances[i];
                 var accGroupBalances = new GroupBalancesContainer(null, this, grouBalances);
                 this.groupBalancesContainers.push(accGroupBalances);
             }

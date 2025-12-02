@@ -3,8 +3,8 @@
     "rootDir": "./src",
     "fileExtension": ".ts, .js",
     "filePushOrder": [
-        "src/Resource.ts",
-        "src/ResourceProperty.ts"
+        "src/model/Resource.ts",
+        "src/model/ResourceProperty.ts"
     ],
     "library": {
         "namespace": "Bkper",

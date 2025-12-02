@@ -967,11 +967,6 @@ declare namespace Bkper {
          */
         createTransactionsDataTable(query?: string): TransactionsDataTableBuilder;
 
-        /**
-         * Deletes a custom property.
-         *
-         * @returns This resource, for chaining
-         */
         deleteProperty(key: string): this;
 
         /**
@@ -1128,25 +1123,10 @@ declare namespace Bkper {
          */
         getPermission(): Permission;
 
-        /**
-         * Gets the custom properties stored in this resource.
-         *
-         * @returns Object with key/value pair properties
-         */
         getProperties(): {[key: string]: string};
 
-        /**
-         * Gets the property value for given keys. First property found will be retrieved.
-         *
-         * @returns The property value or null if not found
-         */
         getProperty(...keys: string[]): string;
 
-        /**
-         * Gets the custom properties keys stored in this resource.
-         *
-         * @returns Array of property keys sorted alphabetically
-         */
         getPropertyKeys(): string[];
 
         /**
@@ -1208,12 +1188,6 @@ declare namespace Bkper {
          */
         getTransactions(query?: string): TransactionIterator;
 
-        /**
-         * Gets the visible custom properties stored in this resource.
-         * Hidden properties (those ending with "_") are excluded from the result.
-         *
-         * @returns Object with key/value pair properties, excluding hidden properties
-         */
         getVisibleProperties(): {[key: string]: string};
 
         /**
@@ -1397,18 +1371,8 @@ declare namespace Bkper {
          */
         setPeriodStartMonth(month: Month): Book;
 
-        /**
-         * Sets the custom properties of this resource.
-         *
-         * @returns This resource, for chaining
-         */
         setProperties(properties: {[key: string]: string}): this;
 
-        /**
-         * Sets a custom property in this resource.
-         *
-         * @returns This resource, for chaining
-         */
         setProperty(key: string, value: string): this;
 
         /**
@@ -1418,20 +1382,8 @@ declare namespace Bkper {
          */
         setTimeZone(timeZone: string): Book;
 
-        /**
-         * Sets the custom properties of this resource, filtering out hidden properties.
-         * Hidden properties are those whose keys end with an underscore "_".
-         *
-         * @returns This resource, for chaining
-         */
         setVisibleProperties(properties: {[key: string]: string}): this;
 
-        /**
-         * Sets a custom property in this resource, filtering out hidden properties.
-         * Hidden properties are those whose keys end with an underscore "_".
-         *
-         * @returns This resource, for chaining
-         */
         setVisibleProperty(key: string, value: string | null): this;
 
         /**

@@ -96,70 +96,36 @@ class TransactionsDataTableBuilder {
     private getHeaderLine(): string[] {
         var headerLine: string[] = [];
 
-        if (this.getAccount() != null) {
 
-            if (this.shouldAddIds) {
-                headerLine.push("Transaction Id");
+        if (this.shouldAddIds) {
+            headerLine.push("Transaction Id");
+        }
+
+        headerLine.push("Date");
+        headerLine.push("Origin");
+        headerLine.push("Destination");
+        headerLine.push("Description");
+        headerLine.push("Amount");
+        if (this.shouldShowBalances()) {
+            headerLine.push("Balance");
+        }
+        headerLine.push("Recorded at");
+
+        if (this.shouldAddProperties) {
+            for (const key of this.getPropertyKeys()) {
+                headerLine.push(key)
             }
+        }
 
-            headerLine.push("Date");
-            headerLine.push("Account");
-            headerLine.push("Description");
-            headerLine.push("Debit");
-            headerLine.push("Credit");
-
-            if (this.getAccount().isPermanent()) {
-                headerLine.push("Balance");
+        if (this.shouldAddIds) {
+            for (const remoteIdHeader of this.getRemoteIdHeaders()) {
+                headerLine.push(remoteIdHeader)
             }
+        }
 
-            headerLine.push("Recorded at");
-
-            if (this.shouldAddProperties) {
-                for (const key of this.getPropertyKeys()) {
-                    headerLine.push(key)
-                }
-            }
-
-            if (this.shouldAddIds) {
-                for (const remoteIdHeader of this.getRemoteIdHeaders()) {
-                    headerLine.push(remoteIdHeader)
-                }
-            }
-
-            if (this.shouldAddUrls) {
-                for (const attachmentHeader of this.getAttachmentHeaders()) {
-                    headerLine.push(attachmentHeader)
-                }
-            }
-        } else {
-
-            if (this.shouldAddIds) {
-                headerLine.push("Transaction Id");
-            }
-
-            headerLine.push("Date");
-            headerLine.push("Origin");
-            headerLine.push("Destination");
-            headerLine.push("Description");
-            headerLine.push("Amount");
-            headerLine.push("Recorded at");
-
-            if (this.shouldAddProperties) {
-                for (const key of this.getPropertyKeys()) {
-                    headerLine.push(key)
-                }
-            }
-
-            if (this.shouldAddIds) {
-                for (const remoteIdHeader of this.getRemoteIdHeaders()) {
-                    headerLine.push(remoteIdHeader)
-                }
-            }
-
-            if (this.shouldAddUrls) {
-                for (const attachmentHeader of this.getAttachmentHeaders()) {
-                    headerLine.push(attachmentHeader)
-                }
+        if (this.shouldAddUrls) {
+            for (const attachmentHeader of this.getAttachmentHeaders()) {
+                headerLine.push(attachmentHeader)
             }
         }
         return headerLine;
@@ -174,11 +140,7 @@ class TransactionsDataTableBuilder {
         var dataTable = new Array();
         let headerLine = this.getHeaderLine();
 
-        if (this.getAccount() != null) {
-            dataTable = this.getExtract2DArray_(this.getAccount());
-        } else {
-            dataTable = this.get2DArray_();
-        }
+        dataTable = this.get2DArray_();
 
         header.push(headerLine);
 
@@ -238,6 +200,7 @@ class TransactionsDataTableBuilder {
 
         var dataTable = new Array();
 
+
         for (const transaction of this.getTransactions()) {
 
             var line = new Array();
@@ -260,16 +223,36 @@ class TransactionsDataTableBuilder {
             } else {
                 line.push("");
             }
-            if (transaction.getAmount() != null) {
+
+            let amount = transaction.getAmount();
+            if (amount != null) {
+                if (this.shouldShowBalances()) {
+                    amount = Utils_.getRepresentativeValue(amount, !this.isCreditOnTransaction_(transaction, this.getAccount()));
+                }
+
                 if (this.shouldFormatValues) {
                     var decimalSeparator = this.book.getDecimalSeparator();
                     var fractionDigits = this.book.getFractionDigits();
-                    line.push(Utils_.formatValue_(transaction.getAmount(), decimalSeparator, fractionDigits));
+                    line.push(Utils_.formatValue_(amount, decimalSeparator, fractionDigits));
                 } else {
-                    line.push(transaction.getAmount().toNumber());
+                    line.push(amount.toNumber());
                 }
             } else {
                 line.push("");
+            }
+
+            if (this.shouldShowBalances()) {
+                if (transaction.getAccountBalance() != null) {
+                    var balance: string | number | Amount = transaction.getAccountBalance();
+                    if (this.shouldFormatValues) {
+                        balance = Utils_.formatValue_(balance, this.book.getDecimalSeparator(), this.book.getFractionDigits());
+                    } else {
+                        balance = balance.toNumber()
+                    }
+                    line.push(balance);
+                } else {
+                    line.push("");
+                }
             }
 
             if (this.shouldFormatDates) {
@@ -297,99 +280,11 @@ class TransactionsDataTableBuilder {
         return dataTable;
     }
 
-    private getExtract2DArray_(account: Account): any[][] {
-
-        var dataTable = new Array<Array<any>>();
-
-        for (const transaction of this.getTransactions()) {
-
-            var line = new Array();
-
-            if (this.shouldAddIds) {
-                line.push(transaction.getId());
-            }
-
-            if (this.shouldFormatDates) {
-                line.push(transaction.getDateFormatted());
-            } else {
-                line.push(transaction.getDateObject());
-            }
-
-            if (transaction.getCreditAccount() != null && transaction.getDebitAccount() != null) {
-
-                if (this.isCreditOnTransaction_(transaction, account)) {
-                    line.push(transaction.getDebitAccount().getName());
-                } else {
-                    line.push(transaction.getCreditAccount().getName());
-                }
-
-            } else {
-                line.push("");
-            }
-            if (transaction.getDescription() != null) {
-                line.push(transaction.getDescription());
-            } else {
-                line.push("");
-            }
 
 
-            if (transaction.getAmount() != null) {
-
-                var amount: string | number | Amount = transaction.getAmount();
-
-                if (this.shouldFormatValues) {
-                    amount = Utils_.formatValue_(transaction.getAmount(), this.book.getDecimalSeparator(), this.book.getFractionDigits());
-                } else {
-                    amount = amount.toNumber()
-                }
-
-                if (this.isCreditOnTransaction_(transaction, account)) {
-                    line.push("");
-                    line.push(amount);
-                } else {
-                    line.push(amount);
-                    line.push("");
-                }
-            } else {
-                line.push("");
-                line.push("");
-            }
-
-            if (account.isPermanent()) {
-                if (transaction.getAccountBalance() != null) {
-                    var balance: string | number | Amount = transaction.getAccountBalance();
-                    if (this.shouldFormatValues) {
-                        balance = Utils_.formatValue_(balance, this.book.getDecimalSeparator(), this.book.getFractionDigits());
-                    } else {
-                        balance = balance.toNumber()
-                    }
-                    line.push(balance);
-                } else {
-                    line.push("");
-                }
-            }
-
-            if (this.shouldFormatDates) {
-                line.push(transaction.getCreatedAtFormatted());
-            } else {
-                line.push(transaction.getCreatedAt());
-            }
-
-            if (this.shouldAddProperties) {
-                this.addPropertiesToLine(line, transaction);
-            }
-
-            if (this.shouldAddIds) {
-                this.addRemoteIdsToLine(line, transaction);
-            }
-
-            if (this.shouldAddUrls) {
-                this.addUrlsToLine(line, transaction);
-            }
-
-            dataTable.push(line);
-        }
-        return dataTable;
+    private shouldShowBalances() {
+        const account = this.getAccount();
+        return account && account.isPermanent();
     }
 
     private addUrlsToLine(line: any[], transaction: Transaction) {
@@ -417,7 +312,7 @@ class TransactionsDataTableBuilder {
 
 
     private isCreditOnTransaction_(transaction: Transaction, account: Account) {
-        if (transaction.getCreditAccount() == null) {
+        if (account == null || transaction.getCreditAccount() == null) {
             return false;
         }
         return transaction.getCreditAccount().getId() == account.getId();

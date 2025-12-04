@@ -89,6 +89,26 @@ class Transaction extends ResourceProperty<bkper.Transaction> {
     }
 
     /**
+     * Gets the status of the transaction.
+     * 
+     * The status is determined by precedence: TRASHED > DRAFT > CHECKED/UNCHECKED
+     * 
+     * @returns The transaction status.
+     */
+    public getStatus(): TransactionStatus {
+        if (this.isTrashed()) {
+            return TransactionStatus.TRASHED;
+        }
+        if (!this.isPosted()) {
+            return TransactionStatus.DRAFT;
+        }
+        if (this.isChecked()) {
+            return TransactionStatus.CHECKED;
+        }
+        return TransactionStatus.UNCHECKED;
+    }
+
+    /**
      * @returns True if a transaction is locked by the book lock/closing date
      */
     public isLocked(): boolean {

@@ -1,10 +1,9 @@
 /**
-* A TransactionsDataTableBuilder is used to setup and build two-dimensional arrays containing transactions.
-* 
-* @public
-*/
+ * A TransactionsDataTableBuilder is used to setup and build two-dimensional arrays containing transactions.
+ *
+ * @public
+ */
 class TransactionsDataTableBuilder {
-
     private shouldFormatDates: boolean;
     private shouldFormatValues: boolean;
     private shouldAddUrls: boolean;
@@ -28,7 +27,7 @@ class TransactionsDataTableBuilder {
 
     /**
      * Defines whether the dates should be formatted, based on date patter of the [[Book]]
-     * 
+     *
      * @returns This builder with respective formatting option, for chaining.
      */
     public formatDates(format: boolean): TransactionsDataTableBuilder {
@@ -48,7 +47,7 @@ class TransactionsDataTableBuilder {
 
     /**
      * Defines whether include attachments and url links.
-     * 
+     *
      * @returns This builder with respective include attachment option, for chaining.
      */
     public includeUrls(include: boolean): TransactionsDataTableBuilder {
@@ -58,7 +57,7 @@ class TransactionsDataTableBuilder {
 
     /**
      * Defines whether include custom transaction properties.
-     * 
+     *
      * @returns This builder with respective include properties option, for chaining.
      */
     public includeProperties(include: boolean): TransactionsDataTableBuilder {
@@ -68,7 +67,7 @@ class TransactionsDataTableBuilder {
 
     /**
      * Defines whether include transaction ids.
-     * 
+     *
      * @returns This builder with respective include ids option, for chaining.
      */
     public includeIds(include: boolean): TransactionsDataTableBuilder {
@@ -96,11 +95,11 @@ class TransactionsDataTableBuilder {
     private getHeaderLine(): string[] {
         var headerLine: string[] = [];
 
-
         if (this.shouldAddIds) {
             headerLine.push("Transaction Id");
         }
 
+        headerLine.push("Status");
         headerLine.push("Date");
         headerLine.push("Origin");
         headerLine.push("Destination");
@@ -113,24 +112,23 @@ class TransactionsDataTableBuilder {
 
         if (this.shouldAddProperties) {
             for (const key of this.getPropertyKeys()) {
-                headerLine.push(key)
+                headerLine.push(key);
             }
         }
 
         if (this.shouldAddIds) {
             for (const remoteIdHeader of this.getRemoteIdHeaders()) {
-                headerLine.push(remoteIdHeader)
+                headerLine.push(remoteIdHeader);
             }
         }
 
         if (this.shouldAddUrls) {
             for (const attachmentHeader of this.getAttachmentHeaders()) {
-                headerLine.push(attachmentHeader)
+                headerLine.push(attachmentHeader);
             }
         }
         return headerLine;
     }
-
 
     /**
      * @returns A two-dimensional array containing all [[Transactions]].
@@ -155,12 +153,12 @@ class TransactionsDataTableBuilder {
 
     private getAttachmentHeaders(): string[] {
         if (this.attachmentHeaders == null) {
-            this.attachmentHeaders = []
+            this.attachmentHeaders = [];
             for (const transaction of this.getTransactions()) {
                 let urls = this.getUrls(transaction);
                 if (urls.length > this.attachmentHeaders.length) {
                     this.attachmentHeaders = [];
-                    urls.forEach(url => this.attachmentHeaders.push("Attachment"))
+                    urls.forEach((url) => this.attachmentHeaders.push("Attachment"));
                 }
             }
         }
@@ -168,12 +166,12 @@ class TransactionsDataTableBuilder {
     }
     private getRemoteIdHeaders(): string[] {
         if (this.remoteIdHeaders == null) {
-            this.remoteIdHeaders = []
+            this.remoteIdHeaders = [];
             for (const transaction of this.getTransactions()) {
                 let remoteIds = transaction.getRemoteIds();
                 if (remoteIds && remoteIds.length > this.remoteIdHeaders.length) {
                     this.remoteIdHeaders = [];
-                    remoteIds.forEach(remoteId => this.remoteIdHeaders.push("Remote Id"))
+                    remoteIds.forEach((remoteId) => this.remoteIdHeaders.push("Remote Id"));
                 }
             }
         }
@@ -182,12 +180,12 @@ class TransactionsDataTableBuilder {
 
     private getPropertyKeys(): string[] {
         if (this.propertyKeys == null) {
-            this.propertyKeys = []
+            this.propertyKeys = [];
             for (const transaction of this.getTransactions()) {
                 for (const key of transaction.getPropertyKeys()) {
                     if (this.propertyKeys.indexOf(key) <= -1) {
                         // does not contain
-                        this.propertyKeys.push(key)
+                        this.propertyKeys.push(key);
                     }
                 }
             }
@@ -197,17 +195,16 @@ class TransactionsDataTableBuilder {
     }
 
     private get2DArray_() {
-
         var dataTable = new Array();
 
-
         for (const transaction of this.getTransactions()) {
-
             var line = new Array();
 
             if (this.shouldAddIds) {
                 line.push(transaction.getId());
             }
+
+            line.push(transaction.getStatus());
 
             if (this.shouldFormatDates) {
                 line.push(transaction.getDateFormatted());
@@ -247,7 +244,7 @@ class TransactionsDataTableBuilder {
                     if (this.shouldFormatValues) {
                         balance = Utils_.formatValue_(balance, this.book.getDecimalSeparator(), this.book.getFractionDigits());
                     } else {
-                        balance = balance.toNumber()
+                        balance = balance.toNumber();
                     }
                     line.push(balance);
                 } else {
@@ -260,7 +257,6 @@ class TransactionsDataTableBuilder {
             } else {
                 line.push(transaction.getCreatedAt());
             }
-
 
             if (this.shouldAddProperties) {
                 this.addPropertiesToLine(line, transaction);
@@ -279,8 +275,6 @@ class TransactionsDataTableBuilder {
 
         return dataTable;
     }
-
-
 
     private shouldShowBalances() {
         const account = this.getAccount();
@@ -310,7 +304,6 @@ class TransactionsDataTableBuilder {
         }
     }
 
-
     private isCreditOnTransaction_(transaction: Transaction, account: Account) {
         if (account == null || transaction.getCreditAccount() == null) {
             return false;
@@ -329,7 +322,6 @@ class TransactionsDataTableBuilder {
         }
     }
 
-
     private getUrls(transaction: Transaction): string[] {
         var urls = transaction.getUrls();
         if (urls == null) {
@@ -337,13 +329,12 @@ class TransactionsDataTableBuilder {
         }
         let files = transaction.getFiles();
         if (files != null) {
-            urls = urls.concat(files.map(f => f.getUrl()))
+            urls = urls.concat(files.map((f) => f.getUrl()));
         }
         return urls;
     }
 
     /******************* DEPRECATED METHODS *******************/
-
 
     /**
      * @deprecated
@@ -372,6 +363,4 @@ class TransactionsDataTableBuilder {
     addUrls(): TransactionsDataTableBuilder {
         return this.includeUrls(true);
     }
-
 }
-

@@ -176,3 +176,33 @@ enum BotResponseType {
      */
     ERROR = "ERROR",
 }
+
+/**
+ * Enum that represents a Transaction status.
+ * 
+ * The status is determined by precedence: TRASHED > DRAFT > CHECKED/UNCHECKED
+ * 
+ * @public
+ */
+enum TransactionStatus {
+
+    /**
+     * Transaction is in trash
+     */
+    TRASHED = "TRASHED",
+
+    /**
+     * Transaction is not yet posted (draft)
+     */
+    DRAFT = "DRAFT",
+
+    /**
+     * Transaction is posted but not checked
+     */
+    UNCHECKED = "UNCHECKED",
+
+    /**
+     * Transaction is posted and checked
+     */
+    CHECKED = "CHECKED"
+}

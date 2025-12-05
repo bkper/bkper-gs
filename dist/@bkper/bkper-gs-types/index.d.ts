@@ -12,6 +12,8 @@ declare namespace Bkper {
      */
     export interface BkperApp {
 
+        TransactionStatus: typeof TransactionStatus;
+
         Permission: typeof Permission;
 
         Periodicity: typeof Periodicity;
@@ -2182,6 +2184,15 @@ declare namespace Bkper {
         getRemoteIds(): string[];
 
         /**
+         * Gets the status of the transaction.
+         *
+         * The status is determined by precedence: TRASHED > DRAFT > CHECKED/UNCHECKED
+         *
+         * @returns The transaction status.
+         */
+        getStatus(): TransactionStatus;
+
+        /**
          * @returns All #hashtags used on the transaction.
          */
         getTags(): string[];
@@ -2887,6 +2898,35 @@ declare namespace Bkper {
          * View transactions, accounts and balances.
          */
         VIEWER = "VIEWER",
+
+    }
+
+    /**
+     * Enum that represents a Transaction status.
+     *
+     * The status is determined by precedence: TRASHED > DRAFT > CHECKED/UNCHECKED
+     */
+    export enum TransactionStatus {
+
+        /**
+         * Transaction is posted and checked
+         */
+        CHECKED = "CHECKED",
+
+        /**
+         * Transaction is not yet posted (draft)
+         */
+        DRAFT = "DRAFT",
+
+        /**
+         * Transaction is in trash
+         */
+        TRASHED = "TRASHED",
+
+        /**
+         * Transaction is posted but not checked
+         */
+        UNCHECKED = "UNCHECKED",
 
     }
 

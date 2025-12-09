@@ -352,6 +352,13 @@ declare namespace Bkper {
         groups(include: boolean): AccountsDataTableBuilder;
 
         /**
+         * Defines whether include account ids.
+         *
+         * @returns This builder with respective include ids option, for chaining.
+         */
+        ids(include: boolean): AccountsDataTableBuilder;
+
+        /**
          * Defines whether include custom account properties.
          *
          * @returns This builder with respective include properties option, for chaining.
@@ -1946,6 +1953,13 @@ declare namespace Bkper {
          * @returns A two-dimensional array containing all [[Groups]].
          */
         build(): any[][];
+
+        /**
+         * Defines whether include group ids.
+         *
+         * @returns This builder with respective include ids option, for chaining.
+         */
+        ids(include: boolean): GroupsDataTableBuilder;
 
         /**
          * Defines whether include custom group properties.

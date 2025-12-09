@@ -8,12 +8,14 @@ class GroupsDataTableBuilder {
     private groups: Group[];
 
     private shouldAddProperties: boolean;
+    private shouldAddIds: boolean;
 
     private propertyKeys: string[];
 
     constructor(groups: Group[]) {
         this.groups = groups;
         this.shouldAddProperties = false;
+        this.shouldAddIds = false;
     }
 
     /**
@@ -23,6 +25,16 @@ class GroupsDataTableBuilder {
      */
     public properties(include: boolean): GroupsDataTableBuilder {
         this.shouldAddProperties = include;
+        return this;
+    }
+
+    /**
+     * Defines whether include group ids.
+     * 
+     * @returns This builder with respective include ids option, for chaining.
+     */
+    public ids(include: boolean): GroupsDataTableBuilder {
+        this.shouldAddIds = include;
         return this;
     }
 
@@ -82,6 +94,11 @@ class GroupsDataTableBuilder {
         groups.sort(this.COMPARATOR);
 
         let headers = [];
+
+        if (this.shouldAddIds) {
+            headers.push('Group Id');
+        }
+
         headers.push('Name');
         headers.push('Type');
         headers.push('Parent');
@@ -112,6 +129,11 @@ class GroupsDataTableBuilder {
 
     private buildGroupLine(group: Group): string[] {
         let line = new Array();
+
+        if (this.shouldAddIds) {
+            line.push(group.getId());
+        }
+
         let parentName = group.getParent() ? group.getParent().getName() : '';
         line.push(group.getName());
         line.push(this.getStringType(group));

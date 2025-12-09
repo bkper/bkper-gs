@@ -10,6 +10,7 @@ class AccountsDataTableBuilder {
     private shouldIncludeArchived: boolean;
     private shouldAddGroups: boolean;
     private shouldAddProperties: boolean;
+    private shouldAddIds: boolean;
 
     private propertyKeys: string[];
 
@@ -18,6 +19,7 @@ class AccountsDataTableBuilder {
         this.shouldIncludeArchived = false;
         this.shouldAddGroups = false;
         this.shouldAddProperties = false;
+        this.shouldAddIds = false;
     }
 
     /**
@@ -49,6 +51,16 @@ class AccountsDataTableBuilder {
      */
     public properties(include: boolean): AccountsDataTableBuilder {
         this.shouldAddProperties = include;
+        return this;
+    }
+
+    /**
+     * Defines whether include account ids.
+     * 
+     * @returns This builder with respective include ids option, for chaining.
+     */
+    public ids(include: boolean): AccountsDataTableBuilder {
+        this.shouldAddIds = include;
         return this;
     }
 
@@ -105,6 +117,11 @@ class AccountsDataTableBuilder {
         }
 
         let headers = [];
+
+        if (this.shouldAddIds) {
+            headers.push('Account Id');
+        }
+
         headers.push('Name');
         headers.push('Type');
 
@@ -130,6 +147,11 @@ class AccountsDataTableBuilder {
         for (const account of accounts) {
 
             let line = new Array();
+
+            if (this.shouldAddIds) {
+                line.push(account.getId());
+            }
+
             line.push(account.getName());
             line.push(account.getType());
 

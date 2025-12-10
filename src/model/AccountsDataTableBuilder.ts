@@ -92,15 +92,64 @@ class AccountsDataTableBuilder {
         return 3;
     }
 
-    private getMaxNumberOfGroups(): number {
-        let maxNumberOfGroups = 0;
-        for (const account of this.accounts) {
-            const groups = account.getGroups();
-            if (groups.length > maxNumberOfGroups) {
-                maxNumberOfGroups = groups.length;
+    /**
+     * Builds group columns for all accounts.
+     * 
+     * Each unique group gets its own dedicated column, ordered by depth (parents first),
+     * then alphabetically within each depth level. This ensures a specific group always
+     * appears in the same column across all accounts, enabling filtering.
+     * 
+     * @param accounts The accounts to build group columns for
+     * @returns Map of account ID to array of group names (all arrays have identical length)
+     */
+    private buildAllGroupColumns_(accounts: Account[]): Map<string, string[]> {
+        // Phase 1: Collect all unique groups and organize by account
+        const allGroups = new Map<string, Group>();
+        const accountGroupsByDepth = new Map<string, Map<number, Group[]>>();
+
+        for (const account of accounts) {
+            const groupsByDepth = new Map<number, Group[]>();
+            for (const group of account.getGroups()) {
+                // Collect unique groups
+                allGroups.set(group.getId(), group);
+
+                // Organize account's groups by depth
+                const depth = group.getDepth();
+                if (!groupsByDepth.has(depth)) {
+                    groupsByDepth.set(depth, []);
+                }
+                groupsByDepth.get(depth)!.push(group);
             }
+            accountGroupsByDepth.set(account.getId(), groupsByDepth);
         }
-        return maxNumberOfGroups;
+
+        // Phase 2: Sort all groups by depth, then alphabetically
+        const sortedGroups = Array.from(allGroups.values()).sort((a, b) => {
+            const depthDiff = a.getDepth() - b.getDepth();
+            if (depthDiff !== 0) {
+                return depthDiff;
+            }
+            return a.getNormalizedName().localeCompare(b.getNormalizedName());
+        });
+
+        // Phase 3: Build column arrays for each account
+        const result = new Map<string, string[]>();
+        for (const account of accounts) {
+            const columns: string[] = [];
+            const accountGroups = account.getGroups();
+            const accountGroupIds = new Set(accountGroups.map(g => g.getId()));
+
+            for (const group of sortedGroups) {
+                if (accountGroupIds.has(group.getId())) {
+                    columns.push(group.getName());
+                } else {
+                    columns.push('');
+                }
+            }
+            result.set(account.getId(), columns);
+        }
+
+        return result;
     }
 
     /**
@@ -125,8 +174,14 @@ class AccountsDataTableBuilder {
         headers.push('Name');
         headers.push('Type');
 
+        // Build group columns once if needed
+        let groupColumns: Map<string, string[]> | null = null;
         if (this.shouldAddGroups) {
-            for (let i = 0; i < this.getMaxNumberOfGroups(); i++) {
+            groupColumns = this.buildAllGroupColumns_(accounts);
+            const columnCount = groupColumns.size > 0
+                ? groupColumns.values().next().value.length
+                : 0;
+            for (let i = 0; i < columnCount; i++) {
                 headers.push('Group');
             }
         }
@@ -155,21 +210,9 @@ class AccountsDataTableBuilder {
             line.push(account.getName());
             line.push(account.getType());
 
-            if (this.shouldAddGroups) {
-                const groups = account.getGroups();
-                groups.sort((g1: Group, g2: Group) => {
-                    return g1.getNormalizedName().localeCompare(g2.getNormalizedName());
-                })
-                for (const group of groups) {
-                    line.push(group.getName());
-                }
-            }
-
-            if (this.shouldAddGroups && this.shouldAddProperties) {
-                const numOfBlankCells = headers.length - line.length;
-                for (let i = 0; i < numOfBlankCells; i++) {
-                    line.push('');
-                }
+            if (this.shouldAddGroups && groupColumns) {
+                const cols = groupColumns.get(account.getId()) || [];
+                line.push(...cols);
             }
 
             if (this.shouldAddProperties) {

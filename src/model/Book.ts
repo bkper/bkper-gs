@@ -136,12 +136,16 @@ class Book extends ResourceProperty<bkper.Book> {
         }
     }
 
-    private checkAccountsLoaded_(): void {
-        this.checkBookLoaded_()
+    private checkGroupsLoaded_(): void {
+        this.checkBookLoaded_();
         if (this.idGroupMap == null) {
             let groups = GroupService_.listGroups(this.getId());
             this.configureGroups_(groups);
         }
+    }
+
+    private checkAccountsLoaded_(): void {
+        this.checkGroupsLoaded_();
         if (this.idAccountMap == null) {
             let accounts = AccountService_.listAccounts(this.getId());
             this.configureAccounts_(accounts);
@@ -604,12 +608,37 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-     * @return All [[Accounts]] of this Book
+     * @return All [[Accounts]] of this Book, or filtered by group if specified
+     * 
+     * @param group Optional group name or id to filter accounts
      */
-    public getAccounts(): Account[] {
+    public getAccounts(group?: string): Account[] {
+        if (group == null) {
+            this.checkAccountsLoaded_();
+            return this.accounts;
+        }
 
-        this.checkAccountsLoaded_();
-        return this.accounts;
+        // Load groups only (not accounts) to resolve the group parameter
+        this.checkGroupsLoaded_();
+
+        // Resolve group by ID or name
+        const resolvedGroup = this.getGroup(group);
+        if (resolvedGroup == null) {
+            return [];
+        }
+
+        // If accounts already loaded, filter in-memory
+        if (this.idAccountMap != null) {
+            return resolvedGroup.getAccounts();
+        }
+
+        // Fetch only accounts for this group from API (don't cache)
+        const accountsPayload = AccountService_.listAccountsByGroup(this.getId(), resolvedGroup.getId());
+        const accounts = Utils_.wrapObjects(new Account(), accountsPayload);
+        for (const account of accounts) {
+            account.book = this;
+        }
+        return accounts;
     }
 
 
@@ -847,6 +876,8 @@ class Book extends ResourceProperty<bkper.Book> {
     /**
      * Create a [[AccountsDataTableBuilder]], to build two dimensional Array representations of [[Accounts]] dataset.
      * 
+     * @param group Optional group name or id to filter accounts
+     * 
      * @return Accounts data table builder.
      * 
      * Example:
@@ -855,10 +886,13 @@ class Book extends ResourceProperty<bkper.Book> {
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
      * 
      * var accountsDataTable = book.createAccountsDataTable().build();
+     * 
+     * // Or filter by group
+     * var filteredDataTable = book.createAccountsDataTable("Revenue").build();
      * ```
      */
-    public createAccountsDataTable(): AccountsDataTableBuilder {
-        let accounts = this.getAccounts();
+    public createAccountsDataTable(group?: string): AccountsDataTableBuilder {
+        let accounts = this.getAccounts(group);
         return new AccountsDataTableBuilder(accounts);
     }
 

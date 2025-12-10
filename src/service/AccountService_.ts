@@ -56,6 +56,15 @@ namespace AccountService_ {
 
     }
 
+    export function listAccountsByGroup(bookId: string, groupId: string): bkper.Account[] {
+        var responseJSON = new HttpBooksApiV5Request(`${bookId}/groups/${groupId}/accounts`).setMethod('get').fetch().getContentText();
+        var accountsPlain = JSON.parse(responseJSON).items;
+        if (accountsPlain == null) {
+            return [];
+        }
+        return accountsPlain;
+    }
+
 
 
 }

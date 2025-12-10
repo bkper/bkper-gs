@@ -1,6 +1,6 @@
 {
   "name": "@bkper/bkper-gs-types",
-  "version": "3.39.0",
+  "version": "3.40.0",
   "description": "Typescript definitions for BkperApp",
   "homepage": "https://bkper.com/docs/bkper-gs/",
   "repository": {

@@ -1,6 +1,7 @@
 
 let API_KEY_: string;
 let OAUTH_TOKEN_PROVIDER_: OAuthTokenProvider;
+let AGENT_ID_: string;
 
 /**
  * Interface to provide OAuth2 tokens upon calling the API.
@@ -47,6 +48,20 @@ function setApiKey(key: string | null | undefined): void {
  */
 function setOAuthTokenProvider(tokenProvider: OAuthTokenProvider) {
     OAUTH_TOKEN_PROVIDER_ = tokenProvider;
+}
+
+/**
+ * Sets the agent ID to identify the calling agent for attribution purposes.
+ * 
+ * This ID is sent via the `bkper-agent-id` header with each API request,
+ * allowing the server to attribute actions to the correct agent.
+ *
+ * @param agentId The agent identifier.
+ * 
+ * @public
+ */
+function setAgentId(agentId: string | null | undefined): void {
+    AGENT_ID_ = agentId;
 }
 
 
@@ -99,6 +114,10 @@ class HttpApiRequest {
 
         this.httpRequest.setHeader('Authorization', `Bearer ${OAUTH_TOKEN_PROVIDER_.getOAuthToken()}`);
         this.httpRequest.addParam('key', API_KEY_);
+        if (AGENT_ID_ == null) {
+            AGENT_ID_ = CachedProperties_.getCachedProperty(CacheService.getScriptCache(), PropertiesService.getScriptProperties(), 'BKPER_AGENT_ID') || 'bkper-app';
+        }
+        this.httpRequest.setHeader('bkper-agent-id', AGENT_ID_);
         if (this.httpRequest.getContentType() == null) {
             this.httpRequest.setContentType('application/json; charset=UTF-8')
         }

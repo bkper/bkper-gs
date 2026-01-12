@@ -58,6 +58,14 @@ declare namespace Bkper {
         normalizeName(name: string): string;
 
         /**
+         * Sets the agent ID to identify the calling agent for attribution purposes.
+         *
+         * This ID is sent via the `bkper-agent-id` header with each API request,
+         * allowing the server to attribute actions to the correct agent.
+         */
+        setAgentId(agentId: string | null): void;
+
+        /**
          * Sets the API key to identify the agent.
          *
          * API keys are intended for agent identification only, not for authentication. [Learn more](https://cloud.google.com/endpoints/docs/frameworks/java/when-why-api-key)
@@ -916,9 +924,12 @@ declare namespace Bkper {
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
          * 
          * var accountsDataTable = book.createAccountsDataTable().build();
+         * 
+         * // Or filter by group
+         * var filteredDataTable = book.createAccountsDataTable("Revenue").build();
          * ```
          */
-        createAccountsDataTable(): AccountsDataTableBuilder;
+        createAccountsDataTable(group?: string): AccountsDataTableBuilder;
 
         /**
          * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]] or [[Group]]
@@ -1009,9 +1020,9 @@ declare namespace Bkper {
         getAccount(idOrName: string): Account;
 
         /**
-         * @returns All [[Accounts]] of this Book
+         * @returns All [[Accounts]] of this Book, or filtered by group if specified
          */
-        getAccounts(): Account[];
+        getAccounts(group?: string): Account[];
 
         /**
          * Retrieve installed [[Apps]] for this Book
@@ -2943,6 +2954,8 @@ declare namespace Bkper {
         UNCHECKED = "UNCHECKED",
 
     }
+
+    export var AGENT_ID_: string;
 
     export var API_KEY_: string;
 

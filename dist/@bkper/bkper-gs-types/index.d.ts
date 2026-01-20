@@ -2957,6 +2957,8 @@ declare namespace Bkper {
 
     export var AGENT_ID_: string;
 
+    export var API_BASE_URL: "https://api.bkper.app";
+
     export var API_KEY_: string;
 
     export var OAUTH_TOKEN_PROVIDER_: OAuthTokenProvider;

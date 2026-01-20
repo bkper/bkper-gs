@@ -1,4 +1,6 @@
 
+const API_BASE_URL = "https://api.bkper.app";
+
 let API_KEY_: string;
 let OAUTH_TOKEN_PROVIDER_: OAuthTokenProvider;
 let AGENT_ID_: string;
@@ -70,7 +72,7 @@ class HttpApiRequest {
     private httpRequest: Bkper.HttpRequest;
 
     constructor(path: string) {
-        this.httpRequest = HttpRequestApp.newRequest(`https://app.bkper.com/_ah/api/bkper/${path}`);
+        this.httpRequest = HttpRequestApp.newRequest(`${API_BASE_URL}/${path}`);
     }
 
     public setMethod(method: GoogleAppsScript.URL_Fetch.HttpMethod) {
@@ -113,7 +115,7 @@ class HttpApiRequest {
         }
 
         this.httpRequest.setHeader('Authorization', `Bearer ${OAUTH_TOKEN_PROVIDER_.getOAuthToken()}`);
-        this.httpRequest.addParam('key', API_KEY_);
+        this.httpRequest.setHeader('bkper-api-key', API_KEY_);
         if (AGENT_ID_ == null) {
             AGENT_ID_ = CachedProperties_.getCachedProperty(CacheService.getScriptCache(), PropertiesService.getScriptProperties(), 'BKPER_AGENT_ID') || 'bkper-app';
         }

@@ -25,13 +25,15 @@ interface OAuthTokenProvider {
 }
 
 /**
- * Sets the API key to identify the agent.
+ * Sets the API key for dedicated quota limits.
  * 
- * API keys are intended for agent identification only, not for authentication. [Learn more](https://cloud.google.com/endpoints/docs/frameworks/java/when-why-api-key)
+ * API keys are optional - if not set, the Bkper API proxy provides a managed key with shared quota.
+ * Use your own API key for dedicated quota limits and project-level usage tracking.
  * 
- * See how to create your api key [here](https://cloud.google.com/docs/authentication/api-keys).
+ * API keys are for project identification only, not for authentication or agent attribution.
+ * Agent attribution is handled separately via `setAgentId()`.
  *
- * @param key The key from GCP API &  Services Credentials console.
+ * @param key The key from GCP API & Services Credentials console, or null/undefined to use shared quota.
  * 
  * @public
  */

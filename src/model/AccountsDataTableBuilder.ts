@@ -1,10 +1,9 @@
 /**
  * A AccountsDataTableBuilder is used to setup and build two-dimensional arrays containing accounts.
- * 
+ *
  * @public
  */
 class AccountsDataTableBuilder {
-
     private accounts: Account[];
 
     private shouldIncludeArchived: boolean;
@@ -32,10 +31,9 @@ class AccountsDataTableBuilder {
         return this;
     }
 
-
     /**
      * Defines whether include account groups.
-     * 
+     *
      * @returns This builder with respective include groups option, for chaining.
      */
     public groups(include: boolean): AccountsDataTableBuilder {
@@ -43,10 +41,9 @@ class AccountsDataTableBuilder {
         return this;
     }
 
-
     /**
      * Defines whether include custom account properties.
-     * 
+     *
      * @returns This builder with respective include properties option, for chaining.
      */
     public properties(include: boolean): AccountsDataTableBuilder {
@@ -56,7 +53,7 @@ class AccountsDataTableBuilder {
 
     /**
      * Defines whether include account ids.
-     * 
+     *
      * @returns This builder with respective include ids option, for chaining.
      */
     public ids(include: boolean): AccountsDataTableBuilder {
@@ -87,67 +84,71 @@ class AccountsDataTableBuilder {
             return 1;
         }
         if (type == AccountType.INCOMING) {
-            return 2
+            return 2;
         }
         return 3;
     }
 
+    private getMaxNumberOfGroups(): number {
+        let maxNumberOfGroups = 0;
+        for (const account of this.accounts) {
+            const groups = account.getGroups();
+            if (groups.length > maxNumberOfGroups) {
+                maxNumberOfGroups = groups.length;
+            }
+        }
+        return maxNumberOfGroups;
+    }
+
     /**
-     * Builds group columns for all accounts.
-     * 
-     * Each unique group gets its own dedicated column, ordered by depth (parents first),
-     * then alphabetically within each depth level. This ensures a specific group always
-     * appears in the same column across all accounts, enabling filtering.
-     * 
-     * @param accounts The accounts to build group columns for
-     * @returns Map of account ID to array of group names (all arrays have identical length)
+     * Sorts groups for an account in hierarchy-path order:
+     * 1. Hierarchical groups (those with parent or children) come first, ordered by:
+     *    - Root group name (alphabetically)
+     *    - Depth within the hierarchy (parent before child)
+     * 2. Free groups (no parent and no children) come last, sorted alphabetically
      */
-    private buildAllGroupColumns_(accounts: Account[]): Map<string, string[]> {
-        // Phase 1: Collect all unique groups and organize by account
-        const allGroups = new Map<string, Group>();
-        const accountGroupsByDepth = new Map<string, Map<number, Group[]>>();
+    private sortGroupsHierarchyPath_(groups: Group[]): Group[] {
+        // Partition into hierarchical vs free groups
+        const hierarchicalGroups: Group[] = [];
+        const freeGroups: Group[] = [];
 
-        for (const account of accounts) {
-            const groupsByDepth = new Map<number, Group[]>();
-            for (const group of account.getGroups()) {
-                // Collect unique groups
-                allGroups.set(group.getId(), group);
-
-                // Organize account's groups by depth
-                const depth = group.getDepth();
-                if (!groupsByDepth.has(depth)) {
-                    groupsByDepth.set(depth, []);
-                }
-                groupsByDepth.get(depth)!.push(group);
+        for (const group of groups) {
+            if (group.getParent() != null || group.hasChildren()) {
+                hierarchicalGroups.push(group);
+            } else {
+                freeGroups.push(group);
             }
-            accountGroupsByDepth.set(account.getId(), groupsByDepth);
         }
 
-        // Phase 2: Sort all groups by depth, then alphabetically
-        const sortedGroups = Array.from(allGroups.values()).sort((a, b) => {
-            const depthDiff = a.getDepth() - b.getDepth();
-            if (depthDiff !== 0) {
-                return depthDiff;
+        // Group hierarchical groups by their root
+        const byRoot = new Map<string, Group[]>();
+        for (const group of hierarchicalGroups) {
+            const root = group.getRoot();
+            const rootId = root.getId();
+            if (!byRoot.has(rootId)) {
+                byRoot.set(rootId, []);
             }
-            return a.getNormalizedName().localeCompare(b.getNormalizedName());
-        });
-
-        // Phase 3: Build column arrays for each account
-        const result = new Map<string, string[]>();
-        for (const account of accounts) {
-            const columns: string[] = [];
-            const accountGroups = account.getGroups();
-            const accountGroupIds = new Set(accountGroups.map(g => g.getId()));
-
-            for (const group of sortedGroups) {
-                if (accountGroupIds.has(group.getId())) {
-                    columns.push(group.getName());
-                } else {
-                    columns.push('');
-                }
-            }
-            result.set(account.getId(), columns);
+            byRoot.get(rootId)!.push(group);
         }
+
+        // Sort chains: first by root name alphabetically, then by depth within each chain
+        const sortedChains = Array.from(byRoot.entries())
+            .sort((a, b) => {
+                const rootA = a[1][0].getRoot();
+                const rootB = b[1][0].getRoot();
+                return rootA.getNormalizedName().localeCompare(rootB.getNormalizedName());
+            })
+            .map(([_, chainGroups]) => chainGroups.sort((a, b) => a.getDepth() - b.getDepth()));
+
+        // Sort free groups alphabetically
+        freeGroups.sort((a, b) => a.getNormalizedName().localeCompare(b.getNormalizedName()));
+
+        // Combine: hierarchical chains first, then free groups
+        const result: Group[] = [];
+        for (const chain of sortedChains) {
+            result.push(...chain);
+        }
+        result.push(...freeGroups);
 
         return result;
     }
@@ -156,7 +157,6 @@ class AccountsDataTableBuilder {
      * @returns A two-dimensional array containing all [[Accounts]].
      */
     public build(): any[][] {
-
         let table = new Array<Array<any>>();
 
         let accounts = this.accounts;
@@ -174,25 +174,19 @@ class AccountsDataTableBuilder {
         headers.push('Name');
         headers.push('Type');
 
-        // Build group columns once if needed
-        let groupColumns: Map<string, string[]> | null = null;
         if (this.shouldAddGroups) {
-            groupColumns = this.buildAllGroupColumns_(accounts);
-            const columnCount = groupColumns.size > 0
-                ? groupColumns.values().next().value.length
-                : 0;
-            for (let i = 0; i < columnCount; i++) {
+            for (let i = 0; i < this.getMaxNumberOfGroups(); i++) {
                 headers.push('Group');
             }
         }
 
         accounts.sort((a1: Account, a2: Account) => {
-            let ret = this.getTypeIndex(a1.getType()) - this.getTypeIndex(a2.getType())
+            let ret = this.getTypeIndex(a1.getType()) - this.getTypeIndex(a2.getType());
             if (ret == 0) {
                 ret = a1.getNormalizedName().localeCompare(a2.getNormalizedName());
             }
             return ret;
-        })
+        });
 
         let propertyKeys: string[] = [];
         if (this.shouldAddProperties) {
@@ -200,7 +194,6 @@ class AccountsDataTableBuilder {
         }
 
         for (const account of accounts) {
-
             let line = new Array();
 
             if (this.shouldAddIds) {
@@ -210,9 +203,18 @@ class AccountsDataTableBuilder {
             line.push(account.getName());
             line.push(account.getType());
 
-            if (this.shouldAddGroups && groupColumns) {
-                const cols = groupColumns.get(account.getId()) || [];
-                line.push(...cols);
+            if (this.shouldAddGroups) {
+                const groups = this.sortGroupsHierarchyPath_(account.getGroups());
+                for (const group of groups) {
+                    line.push(group.getName());
+                }
+            }
+
+            if (this.shouldAddGroups && this.shouldAddProperties) {
+                const numOfBlankCells = headers.length - line.length;
+                for (let i = 0; i < numOfBlankCells; i++) {
+                    line.push('');
+                }
             }
 
             if (this.shouldAddProperties) {
@@ -239,7 +241,6 @@ class AccountsDataTableBuilder {
         table = Utils_.convertInMatrix(table);
 
         return table;
-
     }
 
     /******************* DEPRECATED METHODS *******************/
@@ -261,5 +262,4 @@ class AccountsDataTableBuilder {
     includeProperties(include: boolean): AccountsDataTableBuilder {
         return this.properties(include);
     }
-
 }

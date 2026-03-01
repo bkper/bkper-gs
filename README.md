@@ -1,11 +1,11 @@
 ## bkper-gs
 
-```bkper-gs``` library provides a simple and secure way to access the [Bkper REST API][Bkper REST API] through [Google Apps Script][Google Apps Script] infrastructure.
+`bkper-gs` library provides a simple and secure way to access the [Bkper REST API][Bkper REST API] through [Google Apps Script][Google Apps Script] infrastructure.
 
 [![clasp](https://img.shields.io/badge/built%20with-clasp-4285f4.svg)](https://github.com/google/clasp)
 [![npm (scoped)](https://img.shields.io/npm/v/@bkper/bkper-gs-types?color=%235889e4&label=types)](https://www.npmjs.com/package/@bkper/bkper-gs-types)
 
-With ```bkper-gs``` you can build [Apps and Bots][Apps and Bots] to your Books to create bookkeeping and accounting solutions on Google Workspace, such as the Bkper [Add-on for Google Sheets][Add-on for Google Sheets], simple automations or advanced solutions, and you can manage your scripts in the [Dashboard][Dashboard].
+With `bkper-gs` you can build [Apps and Bots][Apps and Bots] to your Books to create bookkeeping and accounting solutions on Google Workspace, such as the Bkper [Add-on for Google Sheets][Add-on for Google Sheets], simple automations or advanced solutions, and you can manage your scripts in the [Dashboard][Dashboard].
 
 It works the same way your favorite Google Apps Script library works, providing a **BkperApp** entry point, like [CalendarApp][CalendarApp], [DocumentApp][DocumentApp], [SpreadsheetApp][SpreadsheetApp] and the like.
 
@@ -26,13 +26,19 @@ To use TypeScript in the development of an Apps Script project, see the [Develop
 
 ##### 1) Add the package:
 
+```bash tab="bun"
+bun add -d @bkper/bkper-gs-types
 ```
+
+```bash tab="npm"
 npm i -S @bkper/bkper-gs-types
 ```
 
-or
-
+```bash tab="pnpm"
+pnpm add -D @bkper/bkper-gs-types
 ```
+
+```bash tab="yarn"
 yarn add --dev @bkper/bkper-gs-types
 ```
 
@@ -58,8 +64,8 @@ To get the Book name:
 
 ```javascript
 function getBookName() {
-  var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
-  var bookName = book.getName();
+    var book = BkperApp.getBook('agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw');
+    var bookName = book.getName();
 }
 ```
 
@@ -69,8 +75,8 @@ To record a simple transaction:
 
 ```javascript
 function recordATransaction() {
-  var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
-  book.record("#gas 63.23");
+    var book = BkperApp.getBook('agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw');
+    book.record('#gas 63.23');
 }
 ```
 
@@ -78,17 +84,15 @@ You can also record transactions in batch by passing an Array of strings as the 
 
 ```javascript
 function batchRecordTransactions() {
+    var book = BkperApp.getBook('agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw');
 
-  var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
+    var transactions = new Array();
 
-  var transactions = new Array();
+    transactions.push('#breakfast 15.40');
+    transactions.push('#lunch 27.45');
+    transactions.push('#dinner 35.86');
 
-  transactions.push("#breakfast 15.40");
-  transactions.push("#lunch 27.45");
-  transactions.push("#dinner 35.86");
-
-  book.record(transactions);
-
+    book.record(transactions);
 }
 ```
 
@@ -102,17 +106,15 @@ When you retrieve transactions, the [getTransactions][getTransactions] method re
 
 ```javascript
 function listTransactions() {
+    var book = BkperApp.getBook('agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgKCtg6MLDA');
 
-  var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgKCtg6MLDA");
+    //GetTransactions returns an interator to deal with potencial large datasets
+    var transactionIterator = book.getTransactions("account:'Bank' after:01/04/2014");
 
-  //GetTransactions returns an interator to deal with potencial large datasets
-  var transactionIterator = book.getTransactions("account:'Bank' after:01/04/2014");
-
-  while (transactionIterator.hasNext()) {
-    var transaction = transactionIterator.next();
-    Logger.log(transaction.getDescription());
-  }
-
+    while (transactionIterator.hasNext()) {
+        var transaction = transactionIterator.next();
+        Logger.log(transaction.getDescription());
+    }
 }
 ```
 
@@ -126,21 +128,20 @@ You can access all Account objects, in a way similar to the left sidebar:
 
 ```javascript
 function listAccounts() {
-  //Open the book
-  var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw");
+    //Open the book
+    var book = BkperApp.getBook('agtzfmJrcGVyLWhyZHIOCxIGTGVkZ2VyGNKJAgw');
 
-  var accounts = book.getAccounts();
-  for (var i=0; i < accounts.length; i++) {
-    var account = accounts[i];
-    if (account.isPermanent() && account.isActive()) {
-      Logger.log(account.getName() + ": " + account.getBalance());
+    var accounts = book.getAccounts();
+    for (var i = 0; i < accounts.length; i++) {
+        var account = accounts[i];
+        if (account.isPermanent() && account.isActive()) {
+            Logger.log(account.getName() + ': ' + account.getBalance());
+        }
     }
-  }
 }
 ```
 
 ### See the [complete reference](https://bkper.com/docs/bkper-gs/)
-
 
 [Bkper]: https://bkper.com/
 [bkper.com]: https://bkper.com

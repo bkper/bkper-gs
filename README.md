@@ -26,12 +26,12 @@ To use TypeScript in the development of an Apps Script project, see the [Develop
 
 ##### 1) Add the package:
 
-```bash tab="bun"
-bun add -d @bkper/bkper-gs-types
-```
-
 ```bash tab="npm"
 npm i -S @bkper/bkper-gs-types
+```
+
+```bash tab="bun"
+bun add -d @bkper/bkper-gs-types
 ```
 
 ```bash tab="pnpm"

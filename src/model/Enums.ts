@@ -1,208 +1,197 @@
 /**
-* The Periodicity of the query. It may depend on the level of granularity you write the range params.
-* 
-* @public
-*/
+ * The Periodicity of the query. It may depend on the level of granularity you write the range params.
+ *
+ * @public
+ */
 enum Periodicity {
-
     /**
-     * Example: after:25/01/1983, before:04/03/2013, after:$d-30, before:$d, after:$d-15/$m 
+     * Example: after:25/01/1983, before:04/03/2013, after:$d-30, before:$d, after:$d-15/$m
      */
-    DAILY = "DAILY",
+    DAILY = 'DAILY',
 
     /**
      * Example: after:jan/2013, before:mar/2013, after:$m-1, before:$m
      */
-    MONTHLY = "MONTHLY",
+    MONTHLY = 'MONTHLY',
 
     /**
      * Example: on:2013, after:2013, $y
      */
-    YEARLY = "YEARLY"
+    YEARLY = 'YEARLY',
 }
 
 /**
  * Decimal separator of numbers on book
- * 
+ *
  * @public
  */
 enum DecimalSeparator {
-
     /**
      * ,
      */
-    COMMA = "COMMA",
+    COMMA = 'COMMA',
 
     /**
      * .
      */
-    DOT = "DOT"
+    DOT = 'DOT',
 }
-
 
 /**
  * Enum representing permissions of user in the Book
- * 
- * Learn more at [share article](https://help.bkper.com/en/articles/2569153-share-your-book-with-your-peers).
- * 
+ *
  * @public
  */
 
 enum Permission {
-
     /**
      * No permission
      */
-    NONE = "NONE",
+    NONE = 'NONE',
 
     /**
      * View transactions, accounts and balances.
      */
-    VIEWER = "VIEWER",
+    VIEWER = 'VIEWER',
 
     /**
      * Record and delete drafts only. Useful to collect data only
      */
-    RECORDER = "RECORDER",
+    RECORDER = 'RECORDER',
 
     /**
      * View transactions, accounts, record and delete drafts
      */
-    POSTER = "POSTER",
+    POSTER = 'POSTER',
 
     /**
      * Manage accounts, transactions, book configuration and sharing
      */
-    EDITOR = "EDITOR",
+    EDITOR = 'EDITOR',
 
     /**
      * Manage everything, including book visibility and deletion. Only one owner per book.
      */
-    OWNER = "OWNER"
+    OWNER = 'OWNER',
 }
 
 /**
  * Enum that represents account types.
- * 
+ *
  * @public
  */
 enum AccountType {
-
     /**
      * Asset account type
      */
-    ASSET = "ASSET",
+    ASSET = 'ASSET',
 
     /**
      * Liability account type
      */
-    LIABILITY = "LIABILITY",
+    LIABILITY = 'LIABILITY',
 
     /**
      * Incoming account type
      */
-    INCOMING = "INCOMING",
+    INCOMING = 'INCOMING',
 
     /**
      * Outgoing account type
      */
-    OUTGOING = "OUTGOING"
+    OUTGOING = 'OUTGOING',
 }
 
 /**
  * Enum that represents balance types.
- * 
+ *
  * @public
  */
 enum BalanceType {
-
     /**
      * Total balance
      */
-    TOTAL = "TOTAL",
+    TOTAL = 'TOTAL',
 
     /**
      * Period balance
      */
-    PERIOD = "PERIOD",
+    PERIOD = 'PERIOD',
 
     /**
      * Cumulative balance
      */
-    CUMULATIVE = "CUMULATIVE"
+    CUMULATIVE = 'CUMULATIVE',
 }
 
 /**
  * Enum that represents a Month.
- * 
+ *
  * @public
  */
 enum Month {
-
-    JANUARY = "JANUARY",
-    FEBRUARY = "FEBRUARY",
-    MARCH = "MARCH",
-    APRIL = "APRIL",
-    MAY = "MAY",
-    JUNE = "JUNE",
-    JULY = "JULY",
-    AUGUST = "AUGUST",
-    SEPTEMBER = "SEPTEMBER",
-    OCTOBER = "OCTOBER",
-    NOVEMBER = "NOVEMBER",
-    DECEMBER = "DECEMBER"
+    JANUARY = 'JANUARY',
+    FEBRUARY = 'FEBRUARY',
+    MARCH = 'MARCH',
+    APRIL = 'APRIL',
+    MAY = 'MAY',
+    JUNE = 'JUNE',
+    JULY = 'JULY',
+    AUGUST = 'AUGUST',
+    SEPTEMBER = 'SEPTEMBER',
+    OCTOBER = 'OCTOBER',
+    NOVEMBER = 'NOVEMBER',
+    DECEMBER = 'DECEMBER',
 }
 
 /**
  * Enum that represents a Bot Response type
- * 
+ *
  * @public
  */
 
 enum BotResponseType {
-
     /**
      * Info bot response
      */
-    INFO = "INFO",
+    INFO = 'INFO',
 
     /**
      * Warning bot response
      */
-    WARNING = "WARNING",
+    WARNING = 'WARNING',
 
     /**
      * Error bot response
      */
-    ERROR = "ERROR",
+    ERROR = 'ERROR',
 }
 
 /**
  * Enum that represents a Transaction status.
- * 
+ *
  * The status is determined by precedence: TRASHED > DRAFT > CHECKED/UNCHECKED
- * 
+ *
  * @public
  */
 enum TransactionStatus {
-
     /**
      * Transaction is in trash
      */
-    TRASHED = "TRASHED",
+    TRASHED = 'TRASHED',
 
     /**
      * Transaction is not yet posted (draft)
      */
-    DRAFT = "DRAFT",
+    DRAFT = 'DRAFT',
 
     /**
      * Transaction is posted but not checked
      */
-    UNCHECKED = "UNCHECKED",
+    UNCHECKED = 'UNCHECKED',
 
     /**
      * Transaction is posted and checked
      */
-    CHECKED = "CHECKED"
+    CHECKED = 'CHECKED',
 }

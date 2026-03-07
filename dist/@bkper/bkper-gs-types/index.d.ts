@@ -4,14 +4,12 @@
 /// <reference types="google-apps-script" />
 
 declare namespace Bkper {
-
     /**
      * The main entry point to interact with BkperApp
      *
      * Script ID: **1hMJszJGSUVZDB3vmsWrUZfRhY1UWbhS0SQ6Lzl06gm1zhBF3ioTM7mpJ**
      */
     export interface BkperApp {
-
         TransactionStatus: typeof TransactionStatus;
 
         Permission: typeof Permission;
@@ -32,9 +30,9 @@ declare namespace Bkper {
          * Gets the [[Book]] with the specified bookId from url param.
          *
          * This is the main Entry Point to start interacting with the [bkper-gs](https://github.com/bkper/bkper-gs) library.
-         * 
+         *
          * Example:
-         * 
+         *
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
          * book.record("#fuel for my Land Rover 126.50 28/01/2013");
@@ -70,7 +68,7 @@ declare namespace Bkper {
          *
          * API keys are optional - if not set, the Bkper API proxy provides a managed key with shared quota.
          * Use your own API key for dedicated quota limits and project-level usage tracking.
-         * 
+         *
          * API keys are for project identification only, not for authentication or agent attribution.
          * Agent attribution is handled separately via `setAgentId()`.
          */
@@ -82,18 +80,16 @@ declare namespace Bkper {
          * If none set, the default built-in [ScriptApp](https://developers.google.com/apps-script/reference/script/script-app#getoauthtoken) will be used.
          */
         setOAuthTokenProvider(tokenProvider: OAuthTokenProvider): void;
-
     }
 
     /**
      * This class defines an [Account](https://en.wikipedia.org/wiki/Account_(bookkeeping)) of a [[Book]].
      *
      * It mantains a balance of all amount [credited and debited](http://en.wikipedia.org/wiki/Debits_and_credits) in it by [[Transactions]].
-     * 
+     *
      * An Account can be grouped by [[Groups]].
      */
     export interface Account {
-
         /**
          * The underlying payload data for this resource
          */
@@ -138,7 +134,7 @@ declare namespace Bkper {
          * Gets the account description
          *
          * @deprecated Use properties instead
-         * 
+         *
          */
         getDescription(): string;
 
@@ -167,7 +163,7 @@ declare namespace Bkper {
          *
          * @returns Object with key/value pair properties
          */
-        getProperties(): {[key: string]: string};
+        getProperties(): { [key: string]: string };
 
         /**
          * Gets the property value for given keys. First property found will be retrieved.
@@ -194,7 +190,7 @@ declare namespace Bkper {
          *
          * @returns Object with key/value pair properties, excluding hidden properties
          */
-        getVisibleProperties(): {[key: string]: string};
+        getVisibleProperties(): { [key: string]: string };
 
         /**
          * Tell if the Account has any transaction already posted.
@@ -219,20 +215,20 @@ declare namespace Bkper {
          * Tell if the account has a Credit nature or Debit otherwise
          *
          * Credit accounts are just for representation purposes. It increase or decrease the absolute balance. It doesn't affect the overall balance or the behavior of the system.
-         * 
+         *
          * The absolute balance of credit accounts increase when it participate as a credit/origin in a transaction. Its usually for Accounts that increase the balance of the assets, like revenue accounts.
-         * 
+         *
          * ```
          *         Crediting a credit
          *   Thus ---------------------> account increases its absolute balance
          *         Debiting a debit
-         * 
-         * 
+         *
+         *
          *         Debiting a credit
          *   Thus ---------------------> account decreases its absolute balance
          *         Crediting a debit
          * ```
-         * 
+         *
          * As a rule of thumb, and for simple understanding, almost all accounts are Debit nature (NOT credit), except the ones that "offers" amount for the books, like revenue accounts.
          */
         isCredit(): boolean;
@@ -246,9 +242,9 @@ declare namespace Bkper {
          * Tell if the account is permanent.
          *
          * Permanent Accounts are the ones which final balance is relevant and keep its balances over time.
-         * 
+         *
          * They are also called [Real Accounts](http://en.wikipedia.org/wiki/Account_(accountancy)#Based_on_periodicity_of_flow)
-         * 
+         *
          * Usually represents assets or tangibles, capable of being perceived by the senses or the mind, like bank accounts, money, debts and so on.
          *
          * @returns True if its a permanent Account
@@ -298,7 +294,7 @@ declare namespace Bkper {
          *
          * @returns This resource, for chaining
          */
-        setProperties(properties: {[key: string]: string}): this;
+        setProperties(properties: { [key: string]: string }): this;
 
         /**
          * Sets a custom property in this resource.
@@ -320,7 +316,7 @@ declare namespace Bkper {
          *
          * @returns This resource, for chaining
          */
-        setVisibleProperties(properties: {[key: string]: string}): this;
+        setVisibleProperties(properties: { [key: string]: string }): this;
 
         /**
          * Sets a custom property in this resource, filtering out hidden properties.
@@ -334,14 +330,12 @@ declare namespace Bkper {
          * Perform update account, applying pending changes.
          */
         update(): Account;
-
     }
 
     /**
      * A AccountsDataTableBuilder is used to setup and build two-dimensional arrays containing accounts.
      */
     export interface AccountsDataTableBuilder {
-
         /**
          * Defines whether the archived accounts should included.
          *
@@ -374,7 +368,6 @@ declare namespace Bkper {
          * @returns This builder with respective include properties option, for chaining.
          */
         properties(include: boolean): AccountsDataTableBuilder;
-
     }
 
     /**
@@ -383,7 +376,6 @@ declare namespace Bkper {
      * It inherits methods from [big.js](http://mikemcl.github.io/big.js/) library
      */
     export interface Amount {
-
         /**
          * Returns an absolute Amount.
          */
@@ -433,7 +425,7 @@ declare namespace Bkper {
          * Modulo - the integer remainder of dividing this Amount by n.
          *
          * Similar to % operator
-         * 
+         *
          */
         mod(n: number | string | Amount): Amount;
 
@@ -466,14 +458,12 @@ declare namespace Bkper {
          * Returns a string representing the value of this Amount.
          */
         toString(): string;
-
     }
 
     /**
      * This class defines an App installed in a [[Book]].
      */
     export interface App {
-
         /**
          * The underlying payload data for this resource
          */
@@ -500,7 +490,6 @@ declare namespace Bkper {
          * @returns An immutable copy of the json payload
          */
         json(): bkper.App;
-
     }
 
     /**
@@ -509,7 +498,6 @@ declare namespace Bkper {
      * A Backlog is a list of pending bot tasks in a Book
      */
     export interface Backlog {
-
         /**
          * The underlying payload data for this resource
          */
@@ -526,14 +514,12 @@ declare namespace Bkper {
          * @returns An immutable copy of the json payload
          */
         json(): bkper.Backlog;
-
     }
 
     /**
      * Class that represents an [[Account]] or [[Group]] balance on a window of time (Day / Month / Year).
      */
     export interface Balance {
-
         /**
          * The underlying payload data for this resource
          */
@@ -577,15 +563,15 @@ declare namespace Bkper {
          * The Fuzzy Date of the balance, based on [[Periodicity]] of the [[BalancesReport]] query, composed by Year, Month and Day.
          *
          * The format is **YYYYMMDD**. Very usefull for ordering and indexing
-         * 
+         *
          * Month and Day can be 0 (zero), depending on the granularity of the [[Periodicity]].
-         * 
+         *
          * *Example:*
-         * 
+         *
          * **20180125** - 25, January, 2018 - DAILY Periodicity
-         * 
+         *
          * **20180100** - January, 2018 - MONTHLY Periodicity
-         * 
+         *
          * **20180000** - 2018 - YEARLY Periodicity
          */
         getFuzzyDate(): number;
@@ -628,14 +614,12 @@ declare namespace Bkper {
          * @returns An immutable copy of the json payload
          */
         json(): bkper.Balance;
-
     }
 
     /**
      * A BalancesDataTableBuilder is used to setup and build two-dimensional arrays containing balance information.
      */
     export interface BalancesDataTableBuilder {
-
         /**
          * Builds an two-dimensional array with the balances.
          */
@@ -709,19 +693,19 @@ declare namespace Bkper {
          * Defines whether should rows and columns should be transposed.
          *
          * For **TOTAL** [[BalanceType]], the **transposed** table looks like:
-         * 
+         *
          * ```
          *   _____________________________
          *  |  Expenses | Income  |  ...  |
          *  | -4568.23  | 5678.93 |  ...  |
          *  |___________|_________|_______|
-         * 
+         *
          * ```
          * Two rows, and each [[Account]] or [[Group]] per column.
-         * 
-         * 
+         *
+         *
          * For **PERIOD** or **CUMULATIVE** [[BalanceType]], the **transposed** table will be a time table, and the format looks like:
-         * 
+         *
          * ```
          *   _______________________________________________________________
          *  |            | Expenses   | Income     |     ...    |    ...    |
@@ -730,9 +714,9 @@ declare namespace Bkper {
          *  | 15/03/2014 | -2456.45   |  3567.87   |     ...    |    ...    |
          *  |     ...    |     ...    |     ...    |     ...    |    ...    |
          *  |____________|____________|____________|____________|___________|
-         * 
+         *
          * ```
-         * 
+         *
          * First column will be each [[Account]] or [[Group]], and one column for each Date.
          *
          * @returns This builder with respective transposed option, for chaining.
@@ -752,14 +736,12 @@ declare namespace Bkper {
          * @returns This builder with respective balance type, for chaining.
          */
         type(type: BalanceType): BalancesDataTableBuilder;
-
     }
 
     /**
      * Class representing a Balance Report, generated when calling [Book.getBalanceReport](#book_getbalancesreport)
      */
     export interface BalancesReport {
-
         /**
          * The underlying payload data for this resource
          */
@@ -806,7 +788,6 @@ declare namespace Bkper {
          * @returns An immutable copy of the json payload
          */
         json(): bkper.Balances;
-
     }
 
     /**
@@ -815,7 +796,6 @@ declare namespace Bkper {
      * It contains all [[Accounts]] where [[Transactions]] are recorded/posted;
      */
     export interface Book {
-
         /**
          * The underlying payload data for this resource
          */
@@ -827,7 +807,7 @@ declare namespace Bkper {
         addCollaborator(email: string, permission: Permission): void;
 
         /**
-         * Trigger [Balances Audit](https://help.bkper.com/en/articles/4412038-balances-audit) async process.
+         * Trigger Balances Audit async process.
          */
         audit(): void;
 
@@ -890,14 +870,14 @@ declare namespace Bkper {
          * Create an [[Account]] in this book.
          *
          * The type of account will be determined by the type of others Accounts in same group.
-         * 
+         *
          * If not specified, the type ASSET (permanent=true/credit=false) will be set.
-         * 
+         *
          * If all other accounts in same group is in another group, the account will also be added to the other group.
          *
          * @returns The created Account object
          *
-         * @deprecated 
+         * @deprecated
          */
         createAccount(name: string, group?: string, description?: string): Account;
 
@@ -905,13 +885,13 @@ declare namespace Bkper {
          * Create [[Accounts]] on the Book, in batch.
          *
          * The first column of the matrix will be used as the [[Account]] name.
-         * 
+         *
          * The other columns will be used to find a matching [[AccountType]].
-         * 
+         *
          * Names matching existent accounts will be skipped.
          *
-         * @deprecated 
-         * 
+         * @deprecated
+         *
          */
         createAccounts(accounts: string[][]): Account[];
 
@@ -919,14 +899,14 @@ declare namespace Bkper {
          * Create a [[AccountsDataTableBuilder]], to build two dimensional Array representations of [[Accounts]] dataset.
          *
          * @returns Accounts data table builder.
-         * 
+         *
          * Example:
-         * 
+         *
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
-         * 
+         *
          * var accountsDataTable = book.createAccountsDataTable().build();
-         * 
+         *
          * // Or filter by group
          * var filteredDataTable = book.createAccountsDataTable("Revenue").build();
          * ```
@@ -936,15 +916,13 @@ declare namespace Bkper {
         /**
          * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]] or [[Group]]
          *
-         * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
-         *
          * @returns The balances data table builder
-         * 
+         *
          * Example:
-         * 
+         *
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
-         * 
+         *
          * var balancesDataTable = book.createBalancesDataTable("account:'Credit card' after:7/2018 before:8/2018").build();
          * ```
          */
@@ -953,7 +931,7 @@ declare namespace Bkper {
         /**
          * Create [[Groups]] on the Book, in batch.
          *
-         * @deprecated 
+         * @deprecated
          */
         createGroups(groups: string[]): Group[];
 
@@ -961,12 +939,12 @@ declare namespace Bkper {
          * Create a [[GroupsDataTableBuilder]], to build two dimensional Array representations of [[Groups]] dataset.
          *
          * @returns Groups data table builder.
-         * 
+         *
          * Example:
-         * 
+         *
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
-         * 
+         *
          * var groupsDataTable = book.createGroupsDataTable().build();
          * ```
          */
@@ -975,15 +953,13 @@ declare namespace Bkper {
         /**
          * Create a [[TransactionsDataTableBuilder]] based on a query, to build two dimensional Array representations of [[Transactions]] dataset.
          *
-         * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
-         *
          * @returns Transactions data table builder.
-         * 
+         *
          * Example:
-         * 
+         *
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
-         * 
+         *
          * var transactionsDataTable = book.createTransactionsDataTable("account:'Bank Account' before:1/2019").build();
          * ```
          */
@@ -1010,7 +986,7 @@ declare namespace Bkper {
          *
          * @returns The value formated
          *
-         * @deprecated 
+         * @deprecated
          */
         formatValue(value: Amount): string;
 
@@ -1044,14 +1020,14 @@ declare namespace Bkper {
          * Create a [[BalancesReport]] based on query
          *
          * @returns The balances report
-         * 
+         *
          * Example:
-         * 
+         *
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
-         * 
+         *
          * var balancesReport = book.getBalancesReport("group:'Equity' after:7/2018 before:8/2018");
-         * 
+         *
          * var accountBalance = balancesReport.getBalancesContainer("Bank Account").getCumulativeBalance();
          * ```
          */
@@ -1082,7 +1058,12 @@ declare namespace Bkper {
          *
          * @returns The Events result as an iterator.
          */
-        getEvents(afterDate?: string, beforeDate?: string, onError?: boolean, resource?: Transaction | Account | Group): EventIterator;
+        getEvents(
+            afterDate?: string,
+            beforeDate?: string,
+            onError?: boolean,
+            resource?: Transaction | Account | Group
+        ): EventIterator;
 
         /**
          * Retrieve a [[File]] by id
@@ -1145,7 +1126,7 @@ declare namespace Bkper {
          */
         getPermission(): Permission;
 
-        getProperties(): {[key: string]: string};
+        getProperties(): { [key: string]: string };
 
         getProperty(...keys: string[]): string;
 
@@ -1154,7 +1135,7 @@ declare namespace Bkper {
         /**
          * @returns All saved queries from this book
          */
-        getSavedQueries(): {id?: string, query?: string, title?: string}[];
+        getSavedQueries(): { id?: string; query?: string; title?: string }[];
 
         /**
          * @returns The time zone of the Book
@@ -1191,17 +1172,15 @@ declare namespace Bkper {
         /**
          * Get Book transactions based on a query.
          *
-         * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
-         *
          * @returns The Transactions result as an iterator.
-         * 
+         *
          * Example:
-         * 
+         *
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-         * 
+         *
          * var transactions = book.getTransactions("account:CreditCard after:28/01/2013 before:29/01/2013");
-         * 
+         *
          * while (transactions.hasNext()) {
          *  var transaction = transactions.next();
          *  Logger.log(transaction.getDescription());
@@ -1210,7 +1189,7 @@ declare namespace Bkper {
          */
         getTransactions(query?: string): TransactionIterator;
 
-        getVisibleProperties(): {[key: string]: string};
+        getVisibleProperties(): { [key: string]: string };
 
         /**
          * Gets an immutable copy of the JSON payload for this resource.
@@ -1223,11 +1202,11 @@ declare namespace Bkper {
          * Instantiate a new [[Account]]
          *
          * @returns The new Account, for chainning.
-         * 
+         *
          * Example:
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-         * 
+         *
          * book.newAccount()
          *  .setName('Some New Account')
          *  .setType('INCOMING')
@@ -1242,11 +1221,11 @@ declare namespace Bkper {
          * Instantiate a new [[File]]
          *
          * @returns The new File, for chainning.
-         * 
+         *
          * Example:
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-         * 
+         *
          * book.newFile()
          *  .setBlob(UrlFetchApp.fetch('https://bkper.com/images/index/integrations4.png').getBlob())
          *  .create();
@@ -1258,11 +1237,11 @@ declare namespace Bkper {
          * Instantiate a new [[Group]]
          *
          * @returns The new Group, for chainning.
-         * 
+         *
          * Example:
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-         * 
+         *
          * book.newGroup()
          *  .setName('Some New Group')
          *  .setProperty('key', 'value')
@@ -1275,12 +1254,12 @@ declare namespace Bkper {
          * Instantiate a new [[Transaction]]
          *
          * @returns The new Transaction, for chainning.
-         * 
+         *
          * Example:
-         * 
+         *
          * ```js
          * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-         * 
+         *
          * book.newTransaction()
          *  .setDate('2013-01-25')
          *  .setDescription("Filling tank of my truck")
@@ -1288,9 +1267,9 @@ declare namespace Bkper {
          *  .to('Gas')
          *  .setAmount(126.50)
          *  .create();
-         * 
+         *
          * ```
-         * 
+         *
          */
         newTransaction(): Transaction;
 
@@ -1313,7 +1292,7 @@ declare namespace Bkper {
         /**
          * Parse a value string according to [[DecimalSeparator]] and fraction digits of the Book.
          *
-         * @deprecated 
+         * @deprecated
          */
         parseValue(value: string): Amount;
 
@@ -1321,14 +1300,14 @@ declare namespace Bkper {
          * Record [[Transactions]] on the Book.
          *
          * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
-         * 
+         *
          * Example:
-         * 
+         *
          * ```js
          * book.record("#gas 63.23");
          * ```
          *
-         * @deprecated 
+         * @deprecated
          */
         record(transactions: string | any[] | any[][], timeZone?: string): void;
 
@@ -1393,7 +1372,7 @@ declare namespace Bkper {
          */
         setPeriodStartMonth(month: Month): Book;
 
-        setProperties(properties: {[key: string]: string}): this;
+        setProperties(properties: { [key: string]: string }): this;
 
         setProperty(key: string, value: string): this;
 
@@ -1404,7 +1383,7 @@ declare namespace Bkper {
          */
         setTimeZone(timeZone: string): Book;
 
-        setVisibleProperties(properties: {[key: string]: string}): this;
+        setVisibleProperties(properties: { [key: string]: string }): this;
 
         setVisibleProperty(key: string, value: string | null): this;
 
@@ -1414,14 +1393,12 @@ declare namespace Bkper {
          * @returns This Book, for chainning.
          */
         update(): Book;
-
     }
 
     /**
      * This class defines a Bot Response associated to an [[Event]].
      */
     export interface BotResponse {
-
         /**
          * The underlying payload data for this resource
          */
@@ -1448,14 +1425,12 @@ declare namespace Bkper {
          * @returns An immutable copy of the json payload
          */
         json(): bkper.BotResponse;
-
     }
 
     /**
      * This class defines a Collection of [[Books]].
      */
     export interface Collection {
-
         /**
          * The underlying payload data for this resource
          */
@@ -1496,7 +1471,6 @@ declare namespace Bkper {
          * @returns The updated Collection object
          */
         update(): Collection;
-
     }
 
     /**
@@ -1505,7 +1479,6 @@ declare namespace Bkper {
      * An event is an object that represents an action (such as posting or deleting a [[Transaction]]) made by an actor (such as a user or a [Bot](https://bkper.com/apps) acting on behalf of a user).
      */
     export interface Event {
-
         /**
          * The underlying payload data for this resource
          */
@@ -1527,19 +1500,18 @@ declare namespace Bkper {
          * @returns An immutable copy of the json payload
          */
         json(): bkper.Event;
-
     }
 
     /**
      * An iterator that allows scripts to iterate over a potentially large collection of Events.
      *
      * Example:
-     * 
+     *
      * ```js
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-     * 
+     *
      * var eventIterator = book.getEvents('2023-10-01', '2023-11-01', true);
-     * 
+     *
      * while (eventIterator.hasNext()) {
      *  var event = eventIterator.next();
      *  Logger.log(event);
@@ -1547,7 +1519,6 @@ declare namespace Bkper {
      * ```
      */
     export interface EventIterator {
-
         /**
          * Gets the Book that originated the iterator
          *
@@ -1559,7 +1530,7 @@ declare namespace Bkper {
          * Gets a token that can be used to resume this iteration at a later time.
          *
          * This method is useful if processing an iterator in one execution would exceed the maximum execution time.
-         * 
+         *
          * Continuation tokens are generally valid short period of time.
          *
          * @returns The continuation token
@@ -1582,7 +1553,6 @@ declare namespace Bkper {
          * Sets a continuation token from a previous paused iteration.
          */
         setContinuationToken(continuationToken: string): void;
-
     }
 
     /**
@@ -1591,7 +1561,6 @@ declare namespace Bkper {
      * A File can be attached to a [[File]] or used to import data.
      */
     export interface File {
-
         /**
          * The underlying payload data for this resource
          */
@@ -1639,7 +1608,7 @@ declare namespace Bkper {
          *
          * @returns Object with key/value pair properties
          */
-        getProperties(): {[key: string]: string};
+        getProperties(): { [key: string]: string };
 
         /**
          * Gets the property value for given keys. First property found will be retrieved.
@@ -1671,7 +1640,7 @@ declare namespace Bkper {
          *
          * @returns Object with key/value pair properties, excluding hidden properties
          */
-        getVisibleProperties(): {[key: string]: string};
+        getVisibleProperties(): { [key: string]: string };
 
         /**
          * Gets an immutable copy of the JSON payload for this resource.
@@ -1713,7 +1682,7 @@ declare namespace Bkper {
          *
          * @returns This resource, for chaining
          */
-        setProperties(properties: {[key: string]: string}): this;
+        setProperties(properties: { [key: string]: string }): this;
 
         /**
          * Sets a custom property in this resource.
@@ -1728,7 +1697,7 @@ declare namespace Bkper {
          *
          * @returns This resource, for chaining
          */
-        setVisibleProperties(properties: {[key: string]: string}): this;
+        setVisibleProperties(properties: { [key: string]: string }): this;
 
         /**
          * Sets a custom property in this resource, filtering out hidden properties.
@@ -1737,18 +1706,16 @@ declare namespace Bkper {
          * @returns This resource, for chaining
          */
         setVisibleProperty(key: string, value: string | null): this;
-
     }
 
     /**
      * This class defines a Group of [[Accounts]].
      *
      * Accounts can be grouped by different meaning, like Expenses, Revenue, Assets, Liabilities and so on
-     * 
+     *
      * Its useful to keep organized and for high level analysis.
      */
     export interface Group {
-
         /**
          * The underlying payload data for this resource
          */
@@ -1813,7 +1780,7 @@ declare namespace Bkper {
          *
          * @returns Object with key/value pair properties
          */
-        getProperties(): {[key: string]: string};
+        getProperties(): { [key: string]: string };
 
         /**
          * Gets the property value for given keys. First property found will be retrieved.
@@ -1845,7 +1812,7 @@ declare namespace Bkper {
          *
          * @returns Object with key/value pair properties, excluding hidden properties
          */
-        getVisibleProperties(): {[key: string]: string};
+        getVisibleProperties(): { [key: string]: string };
 
         /**
          * @returns True if this group has any account in it
@@ -1925,7 +1892,7 @@ declare namespace Bkper {
          *
          * @returns This resource, for chaining
          */
-        setProperties(properties: {[key: string]: string}): this;
+        setProperties(properties: { [key: string]: string }): this;
 
         /**
          * Sets a custom property in this resource.
@@ -1940,7 +1907,7 @@ declare namespace Bkper {
          *
          * @returns This resource, for chaining
          */
-        setVisibleProperties(properties: {[key: string]: string}): this;
+        setVisibleProperties(properties: { [key: string]: string }): this;
 
         /**
          * Sets a custom property in this resource, filtering out hidden properties.
@@ -1954,14 +1921,12 @@ declare namespace Bkper {
          * Perform update group, applying pending changes.
          */
         update(): Group;
-
     }
 
     /**
      * A GroupsDataTableBuilder is used to setup and build two-dimensional arrays containing groups.
      */
     export interface GroupsDataTableBuilder {
-
         /**
          * @returns A two-dimensional array containing all [[Groups]].
          */
@@ -1980,7 +1945,6 @@ declare namespace Bkper {
          * @returns This builder with respective include properties option, for chaining.
          */
         properties(include: boolean): GroupsDataTableBuilder;
-
     }
 
     /**
@@ -1989,7 +1953,6 @@ declare namespace Bkper {
      * A Transaction is the main entity on the [Double Entry](http://en.wikipedia.org/wiki/Double-entry_bookkeeping_system) [Bookkeeping](http://en.wikipedia.org/wiki/Bookkeeping) system.
      */
     export interface Transaction {
-
         /**
          * The underlying payload data for this resource
          */
@@ -2046,7 +2009,7 @@ declare namespace Bkper {
          * Gets the balance that the [[Account]] has at that day, when listing transactions of that Account.
          *
          * Evolved balances is returned when searching for transactions of a permanent [[Account]].
-         * 
+         *
          * Only comes with the last posted transaction of the day.
          */
         getAccountBalance(raw?: boolean): Amount;
@@ -2108,7 +2071,7 @@ declare namespace Bkper {
 
         /**
          * @returns The debit account. The same as destination account.
-         * 
+         *
          */
         getDebitAccount(): Account;
 
@@ -2187,7 +2150,7 @@ declare namespace Bkper {
          *
          * @returns Object with key/value pair properties
          */
-        getProperties(): {[key: string]: string};
+        getProperties(): { [key: string]: string };
 
         /**
          * Gets the property value for given keys. First property found will be retrieved.
@@ -2235,7 +2198,7 @@ declare namespace Bkper {
          *
          * @returns Object with key/value pair properties, excluding hidden properties
          */
-        getVisibleProperties(): {[key: string]: string};
+        getVisibleProperties(): { [key: string]: string };
 
         /**
          * Check if the transaction has the specified tag.
@@ -2287,14 +2250,14 @@ declare namespace Bkper {
         /**
          * Remove the transaction, sending to trash.
          *
-         * @deprecated 
+         * @deprecated
          */
         remove(): Transaction;
 
         /**
          * Restore the transaction from trash.
          *
-         * @deprecated 
+         * @deprecated
          */
         restore(): Transaction;
 
@@ -2345,7 +2308,7 @@ declare namespace Bkper {
          *
          * @returns This resource, for chaining
          */
-        setProperties(properties: {[key: string]: string}): this;
+        setProperties(properties: { [key: string]: string }): this;
 
         /**
          * Sets a custom property in this resource.
@@ -2367,7 +2330,7 @@ declare namespace Bkper {
          *
          * @returns This resource, for chaining
          */
-        setVisibleProperties(properties: {[key: string]: string}): this;
+        setVisibleProperties(properties: { [key: string]: string }): this;
 
         /**
          * Sets a custom property in this resource, filtering out hidden properties.
@@ -2403,19 +2366,18 @@ declare namespace Bkper {
          * Upddate transaction, applying pending changes.
          */
         update(): Transaction;
-
     }
 
     /**
      * An iterator that allows scripts to iterate over a potentially large collection of transactions.
      *
      * Example:
-     * 
+     *
      * ```js
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-     * 
+     *
      * var transactionIterator = book.getTransactions("account:CreditCard after:28/01/2013 before:29/01/2013");
-     * 
+     *
      * while (transactionIterator.hasNext()) {
      *  var transaction = transactions.next();
      *  Logger.log(transaction.getDescription());
@@ -2423,7 +2385,6 @@ declare namespace Bkper {
      * ```
      */
     export interface TransactionIterator {
-
         /**
          * @returns The account, when filtering by a single account.
          */
@@ -2438,7 +2399,7 @@ declare namespace Bkper {
          * Gets a token that can be used to resume this iteration at a later time.
          *
          * This method is useful if processing an iterator in one execution would exceed the maximum execution time.
-         * 
+         *
          * Continuation tokens are generally valid short period of time.
          */
         getContinuationToken(): string;
@@ -2457,14 +2418,12 @@ declare namespace Bkper {
          * Sets a continuation token from previous paused iteration
          */
         setContinuationToken(continuationToken: string): void;
-
     }
 
     /**
      * A TransactionsDataTableBuilder is used to setup and build two-dimensional arrays containing transactions.
      */
     export interface TransactionsDataTableBuilder {
-
         /**
          * @returns A two-dimensional array containing all [[Transactions]].
          */
@@ -2509,7 +2468,6 @@ declare namespace Bkper {
          * @returns This builder with respective include attachment option, for chaining.
          */
         includeUrls(include: boolean): TransactionsDataTableBuilder;
-
     }
 
     /**
@@ -2518,7 +2476,6 @@ declare namespace Bkper {
      * The container is composed of a list of [[Balances]] for a window of time, as well as its period and cumulative totals.
      */
     export interface BalancesContainer {
-
         /**
          * Adds an [[Account]] container to a [[Group]] container.
          *
@@ -2671,7 +2628,7 @@ declare namespace Bkper {
         /**
          * Gets the custom properties stored in this Account or Group.
          */
-        getProperties(): {[key: string]: string};
+        getProperties(): { [key: string]: string };
 
         /**
          * Gets the property value for given keys. First property found will be retrieved
@@ -2692,9 +2649,9 @@ declare namespace Bkper {
          * Gets the credit nature of the BalancesContainer, based on [[Account]] or [[Group]].
          *
          * For [[Account]], the credit nature will be the same as the one from the Account
-         * 
+         *
          * For [[Group]], the credit nature will be the same, if all accounts containing on it has the same credit nature. False if mixed.
-         * 
+         *
          */
         isCredit(): boolean;
 
@@ -2712,9 +2669,9 @@ declare namespace Bkper {
          * Tell if this balance container is permament, based on the [[Account]] or [[Group]].
          *
          * Permanent are the ones which final balance is relevant and keep its balances over time.
-         * 
+         *
          * They are also called [Real Accounts](http://en.wikipedia.org/wiki/Account_(accountancy)#Based_on_periodicity_of_flow)
-         * 
+         *
          * Usually represents assets or liabilities, capable of being perceived by the senses or the mind, like bank accounts, money, debts and so on.
          *
          * @returns True if its a permanent Account
@@ -2727,205 +2684,186 @@ declare namespace Bkper {
          * **NOTE**: Only for Group balance containers.
          */
         removeBalancesContainer(container: BalancesContainer): BalancesContainer;
-
     }
 
     /**
      * Interface to provide OAuth2 tokens upon calling the API.
      *
      * Implement your own if you need to use one other than the default built-in [ScriptApp](https://developers.google.com/apps-script/reference/script/script-app#getoauthtoken).
-     * 
+     *
      * Its specially usefull on environments where you can use the built-in ScriptApp services such as [Custom Functions in Google Sheets](https://developers.google.com/apps-script/guides/sheets/functions).
-     * 
+     *
      * Learn more how to [OAuth 2 library](https://github.com/gsuitedevs/apps-script-oauth2) for Google Apps Script
      */
     export interface OAuthTokenProvider {
-
         /**
          * A valid OAuth2 access token with **email** scope authorized.
          */
         getOAuthToken(): string;
-
     }
 
     /**
      * Enum that represents account types.
      */
     export enum AccountType {
-
         /**
          * Asset account type
          */
-        ASSET = "ASSET",
+        ASSET = 'ASSET',
 
         /**
          * Incoming account type
          */
-        INCOMING = "INCOMING",
+        INCOMING = 'INCOMING',
 
         /**
          * Liability account type
          */
-        LIABILITY = "LIABILITY",
+        LIABILITY = 'LIABILITY',
 
         /**
          * Outgoing account type
          */
-        OUTGOING = "OUTGOING",
-
+        OUTGOING = 'OUTGOING',
     }
 
     /**
      * Enum that represents balance types.
      */
     export enum BalanceType {
-
         /**
          * Cumulative balance
          */
-        CUMULATIVE = "CUMULATIVE",
+        CUMULATIVE = 'CUMULATIVE',
 
         /**
          * Period balance
          */
-        PERIOD = "PERIOD",
+        PERIOD = 'PERIOD',
 
         /**
          * Total balance
          */
-        TOTAL = "TOTAL",
-
+        TOTAL = 'TOTAL',
     }
 
     /**
      * Enum that represents a Bot Response type
      */
     export enum BotResponseType {
-
         /**
          * Error bot response
          */
-        ERROR = "ERROR",
+        ERROR = 'ERROR',
 
         /**
          * Info bot response
          */
-        INFO = "INFO",
+        INFO = 'INFO',
 
         /**
          * Warning bot response
          */
-        WARNING = "WARNING",
-
+        WARNING = 'WARNING',
     }
 
     /**
      * Decimal separator of numbers on book
      */
     export enum DecimalSeparator {
-
         /**
          * ,
          */
-        COMMA = "COMMA",
+        COMMA = 'COMMA',
 
         /**
          * .
          */
-        DOT = "DOT",
-
+        DOT = 'DOT',
     }
 
     /**
      * Enum that represents a Month.
      */
     export enum Month {
+        APRIL = 'APRIL',
 
-        APRIL = "APRIL",
+        AUGUST = 'AUGUST',
 
-        AUGUST = "AUGUST",
+        DECEMBER = 'DECEMBER',
 
-        DECEMBER = "DECEMBER",
+        FEBRUARY = 'FEBRUARY',
 
-        FEBRUARY = "FEBRUARY",
+        JANUARY = 'JANUARY',
 
-        JANUARY = "JANUARY",
+        JULY = 'JULY',
 
-        JULY = "JULY",
+        JUNE = 'JUNE',
 
-        JUNE = "JUNE",
+        MARCH = 'MARCH',
 
-        MARCH = "MARCH",
+        MAY = 'MAY',
 
-        MAY = "MAY",
+        NOVEMBER = 'NOVEMBER',
 
-        NOVEMBER = "NOVEMBER",
+        OCTOBER = 'OCTOBER',
 
-        OCTOBER = "OCTOBER",
-
-        SEPTEMBER = "SEPTEMBER",
-
+        SEPTEMBER = 'SEPTEMBER',
     }
 
     /**
      * The Periodicity of the query. It may depend on the level of granularity you write the range params.
      */
     export enum Periodicity {
-
         /**
          * Example: after:25/01/1983, before:04/03/2013, after:$d-30, before:$d, after:$d-15/$m
          */
-        DAILY = "DAILY",
+        DAILY = 'DAILY',
 
         /**
          * Example: after:jan/2013, before:mar/2013, after:$m-1, before:$m
          */
-        MONTHLY = "MONTHLY",
+        MONTHLY = 'MONTHLY',
 
         /**
          * Example: on:2013, after:2013, $y
          */
-        YEARLY = "YEARLY",
-
+        YEARLY = 'YEARLY',
     }
 
     /**
      * Enum representing permissions of user in the Book
-     *
-     * Learn more at [share article](https://help.bkper.com/en/articles/2569153-share-your-book-with-your-peers).
      */
     export enum Permission {
-
         /**
          * Manage accounts, transactions, book configuration and sharing
          */
-        EDITOR = "EDITOR",
+        EDITOR = 'EDITOR',
 
         /**
          * No permission
          */
-        NONE = "NONE",
+        NONE = 'NONE',
 
         /**
          * Manage everything, including book visibility and deletion. Only one owner per book.
          */
-        OWNER = "OWNER",
+        OWNER = 'OWNER',
 
         /**
          * View transactions, accounts, record and delete drafts
          */
-        POSTER = "POSTER",
+        POSTER = 'POSTER',
 
         /**
          * Record and delete drafts only. Useful to collect data only
          */
-        RECORDER = "RECORDER",
+        RECORDER = 'RECORDER',
 
         /**
          * View transactions, accounts and balances.
          */
-        VIEWER = "VIEWER",
-
+        VIEWER = 'VIEWER',
     }
 
     /**
@@ -2934,37 +2872,34 @@ declare namespace Bkper {
      * The status is determined by precedence: TRASHED > DRAFT > CHECKED/UNCHECKED
      */
     export enum TransactionStatus {
-
         /**
          * Transaction is posted and checked
          */
-        CHECKED = "CHECKED",
+        CHECKED = 'CHECKED',
 
         /**
          * Transaction is not yet posted (draft)
          */
-        DRAFT = "DRAFT",
+        DRAFT = 'DRAFT',
 
         /**
          * Transaction is in trash
          */
-        TRASHED = "TRASHED",
+        TRASHED = 'TRASHED',
 
         /**
          * Transaction is posted but not checked
          */
-        UNCHECKED = "UNCHECKED",
-
+        UNCHECKED = 'UNCHECKED',
     }
 
     export var AGENT_ID_: string;
 
-    export var API_BASE_URL: "https://api.bkper.app";
+    export var API_BASE_URL: 'https://api.bkper.app';
 
     export var API_KEY_: string;
 
     export var OAUTH_TOKEN_PROVIDER_: OAuthTokenProvider;
-
 }
 
 declare var BkperApp: Bkper.BkperApp;

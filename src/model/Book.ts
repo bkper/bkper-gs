@@ -1,16 +1,15 @@
 /// <reference path="ResourceProperty.ts" />
 
 /**
-*
-* A Book represents [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
-*
-* It contains all [[Accounts]] where [[Transactions]] are recorded/posted;
-* 
-* @public
-*/
+ *
+ * A Book represents [General Ledger](https://en.wikipedia.org/wiki/General_ledger) for a company or business, but can also represent a [Ledger](https://en.wikipedia.org/wiki/Ledger) for a project or department
+ *
+ * It contains all [[Accounts]] where [[Transactions]] are recorded/posted;
+ *
+ * @public
+ */
 class Book extends ResourceProperty<bkper.Book> {
-
-    private id: string
+    private id: string;
     private accounts: Account[];
     private groups: Group[];
     private collection: Collection;
@@ -75,7 +74,7 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Same as bookId param
-     * 
+     *
      * @return The id of this Book
      */
     public getId(): string {
@@ -91,9 +90,9 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-     * 
+     *
      * Sets the name of the Book.
-     * 
+     *
      * @returns This Book, for chainning.
      */
     public setName(name: string): Book {
@@ -110,9 +109,9 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-     * 
+     *
      * Sets the number of fraction digits (decimal places) supported by this Book
-     * 
+     *
      * @returns This Book, for chainning.
      */
     public setFractionDigits(fractionDigits: number): Book {
@@ -160,7 +159,7 @@ class Book extends ResourceProperty<bkper.Book> {
         return this.payload.permission as Permission;
     }
 
-    /** 
+    /**
      * @return The collection of this book
      */
     public getCollection(): Collection {
@@ -171,7 +170,6 @@ class Book extends ResourceProperty<bkper.Book> {
         return this.collection;
     }
 
-
     /**
      * @return The date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
      */
@@ -181,9 +179,9 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-     * 
+     *
      * Sets the date pattern of the Book. Current: dd/MM/yyyy | MM/dd/yyyy | yyyy/MM/dd
-     * 
+     *
      * @returns This Book, for chainning.
      */
     public setDatePattern(datePattern: string): Book {
@@ -192,12 +190,12 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-     * 
+     *
      * Adds a collaborator to the Book.
-     * 
+     *
      * @param email The collaborator email
      * @param permission The collaborator [[Permission]]
-     * 
+     *
      */
     public addCollaborator(email: string, permission: Permission): void {
         let collaborator: bkper.Collaborator = { email: email, permission: permission };
@@ -205,11 +203,11 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-     * 
+     *
      * Removes a collaborator from the Book.
-     * 
+     *
      * @param email The collaborator email
-     * 
+     *
      */
     public removeCollaborator(email: string): void {
         return BookService_.removeCollaborator(this, email);
@@ -224,16 +222,15 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-     * 
+     *
      * Sets the decimal separator of the Book
-     * 
+     *
      * @returns This Book, for chainning.
      */
     public setDecimalSeparator(decimalSeparator: DecimalSeparator): Book {
         this.payload.decimalSeparator = decimalSeparator;
         return this;
     }
-
 
     /**
      * @return The time zone of the Book
@@ -244,9 +241,9 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-     * 
+     *
      * Sets the time zone of the Book
-     * 
+     *
      * @returns This Book, for chainning.
      */
     public setTimeZone(timeZone: string): Book {
@@ -271,14 +268,14 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-     * 
+     *
      * Sets the lock date of the Book in ISO format yyyy-MM-dd.
-     * 
+     *
      * @returns This Book, for chainning.
      */
     public setLockDate(lockDate: string | null): Book {
         if (lockDate == null) {
-            lockDate = "1900-00-00";
+            lockDate = '1900-00-00';
         }
         this.payload.lockDate = lockDate;
         return this;
@@ -293,20 +290,18 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-     * 
+     *
      * Sets the closing date of the Book in ISO format yyyy-MM-dd.
-     * 
+     *
      * @returns This Book, for chainning.
      */
     public setClosingDate(closingDate: string | null): Book {
         if (closingDate == null) {
-            closingDate = "1900-00-00";
+            closingDate = '1900-00-00';
         }
         this.payload.closingDate = closingDate;
         return this;
     }
-
-
 
     /**
      * @returns The start month when YEAR period set
@@ -318,7 +313,7 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Sets the start month when YEAR period set
-     * 
+     *
      * @returns This Book, for chainning.
      */
     public setPeriodStartMonth(month: Month): Book {
@@ -326,9 +321,8 @@ class Book extends ResourceProperty<bkper.Book> {
         return this;
     }
 
-
     /**
-     * @return The total number of posted transactions 
+     * @return The total number of posted transactions
      */
     public getTotalTransactions(): number {
         this.checkBookLoaded_();
@@ -359,39 +353,37 @@ class Book extends ResourceProperty<bkper.Book> {
         return +this.payload.lastUpdateMs;
     }
 
-
     /**
      * Formats a date according to date pattern of the Book.
-     * 
+     *
      * @param  date The date to format as string.
      * @param  timeZone The output timezone of the result. Default to script's timeZone
-     * 
+     *
      * @return The date formated
      */
     public formatDate(date: Date, timeZone?: string): string {
-        if (timeZone == null || timeZone.trim() == "") {
+        if (timeZone == null || timeZone.trim() == '') {
             timeZone = this.getTimeZone();
         }
         return Utils_.formatDate(date, this.getDatePattern(), timeZone);
     }
 
     /**
-     * Parse a date string according to date pattern and timezone of the Book. 
-     * 
+     * Parse a date string according to date pattern and timezone of the Book.
+     *
      * Also parse ISO yyyy-mm-dd format.
-     * 
+     *
      * @return The date parsed
      */
     public parseDate(date: string): Date {
         return Utils_.parseDate(date, this.getDatePattern(), this.getTimeZoneOffset());
     }
 
-
     /**
      * Formats an amount according to [[DecimalSeparator]] and fraction digits of the Book.
-     * 
+     *
      * @param amount The amount to be formatted.
-     * 
+     *
      * @return The value formated
      */
     public formatAmount(amount: Amount): string {
@@ -400,19 +392,18 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Parse an amount string according to [[DecimalSeparator]] and fraction digits of the Book.
-     * 
+     *
      * @return The Amount parsed
      */
     public parseAmount(value: string): Amount {
         return Utils_.parseValue(value, this.getDecimalSeparator());
     }
 
-
     /**
      * Rounds an amount according to the number of fraction digits of the Book
-     * 
+     *
      * @param amount The amount to be rounded
-     * 
+     *
      * @returns The Amount rounded
      */
     public round(amount: Amount): Amount {
@@ -421,15 +412,18 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Batch create [[Transactions]] on the Book.
-     * 
+     *
      * @param transactions The transactions to be created
-     * 
+     *
      * @returns The Transactions created
      */
     public batchCreateTransactions(transactions: Transaction[]): Transaction[] {
         let transactionPayloads: bkper.Transaction[] = [];
         transactions.forEach(tx => transactionPayloads.push(tx.payload));
-        transactionPayloads = TransactionService_.createTransactionsBatch(this.getId(), transactionPayloads);
+        transactionPayloads = TransactionService_.createTransactionsBatch(
+            this.getId(),
+            transactionPayloads
+        );
         transactions = Utils_.wrapObjects(new Transaction(), transactionPayloads);
         this.configureTransactions_(transactions);
         this.clearCache();
@@ -438,74 +432,79 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Batch update [[Transactions]] on the Book.
-     * 
+     *
      * @param transactions The transactions to be updated
-     * 
+     *
      * @param updateChecked True to also update checked transactions
-     * 
+     *
      */
     public batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): void {
         let transactionsPayload: bkper.Transaction[] = [];
         transactions.forEach(tx => transactionsPayload.push(tx.payload));
-        TransactionService_.updateTransactionsBatch(this.getId(), transactionsPayload, updateChecked);
+        TransactionService_.updateTransactionsBatch(
+            this.getId(),
+            transactionsPayload,
+            updateChecked
+        );
         this.clearCache();
     }
 
     /**
      * Batch check [[Transactions]] on the Book.
-     * 
+     *
      * @param transactions The transactions to be checked
-     * 
+     *
      */
     public batchCheckTransactions(transactions: Transaction[]): void {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach(tx => transactionPayloads.push(tx.payload))
+        transactions.forEach(tx => transactionPayloads.push(tx.payload));
         TransactionService_.checkTransactionsBatch(this.getId(), transactionPayloads);
     }
 
     /**
      * Batch uncheck [[Transactions]] on the Book.
-     * 
+     *
      * @param transactions The transactions to be unchecked
-     * 
+     *
      */
     public batchUncheckTransactions(transactions: Transaction[]): void {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach(tx => transactionPayloads.push(tx.payload))
+        transactions.forEach(tx => transactionPayloads.push(tx.payload));
         TransactionService_.uncheckTransactionsBatch(this.getId(), transactionPayloads);
     }
 
     /**
-     * Batch trash [[Transactions]] on the Book. 
-     * 
+     * Batch trash [[Transactions]] on the Book.
+     *
      * @param transactions The transactions to be trashed
-     * 
+     *
      * @param trashChecked True to also trash checked transactions
-     * 
+     *
      */
     public batchTrashTransactions(transactions: Transaction[], trashChecked?: boolean): void {
         let transactionPayloads: bkper.Transaction[] = [];
-        transactions.forEach(tx => transactionPayloads.push(tx.payload))
+        transactions.forEach(tx => transactionPayloads.push(tx.payload));
         TransactionService_.trashTransactionsBatch(this.getId(), transactionPayloads, trashChecked);
     }
 
-
     /**
-     * Trigger [Balances Audit](https://help.bkper.com/en/articles/4412038-balances-audit) async process.
+     * Trigger Balances Audit async process.
      */
     public audit(): void {
         BookService_.audit(this);
     }
 
-
     /**
      * Resumes a transaction iteration using a continuation token from a previous iterator.
-     * 
+     *
      * @param continuationToken continuation token from a previous transaction iterator
-     * 
+     *
      * @return a collection of transactions that remained in a previous iterator when the continuation token was generated
      */
-    public continueTransactionIterator(query: string, continuationToken: string): TransactionIterator {
+    public continueTransactionIterator(
+        query: string,
+        continuationToken: string
+    ): TransactionIterator {
         var transactionIterator = new TransactionIterator(this, query);
         transactionIterator.setContinuationToken(continuationToken);
         return transactionIterator;
@@ -537,14 +536,14 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Instantiate a new [[Transaction]]
-     * 
+     *
      * @return The new Transaction, for chainning.
-     * 
+     *
      * Example:
-     * 
+     *
      * ```js
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-     * 
+     *
      * book.newTransaction()
      *  .setDate('2013-01-25')
      *  .setDescription("Filling tank of my truck")
@@ -552,9 +551,9 @@ class Book extends ResourceProperty<bkper.Book> {
      *  .to('Gas')
      *  .setAmount(126.50)
      *  .create();
-     * 
+     *
      * ```
-     * 
+     *
      */
     public newTransaction(): Transaction {
         let transaction = Utils_.wrapObject(new Transaction(), {});
@@ -564,13 +563,13 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Instantiate a new [[Account]]
-     * 
+     *
      * @return The new Account, for chainning.
-     * 
+     *
      * Example:
      * ```js
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-     * 
+     *
      * book.newAccount()
      *  .setName('Some New Account')
      *  .setType('INCOMING')
@@ -588,13 +587,13 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Instantiate a new [[Group]]
-     * 
+     *
      * @return The new Group, for chainning.
-     * 
+     *
      * Example:
      * ```js
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-     * 
+     *
      * book.newGroup()
      *  .setName('Some New Group')
      *  .setProperty('key', 'value')
@@ -609,7 +608,7 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * @return All [[Accounts]] of this Book, or filtered by group if specified
-     * 
+     *
      * @param group Optional group name or id to filter accounts
      */
     public getAccounts(group?: string): Account[] {
@@ -633,7 +632,10 @@ class Book extends ResourceProperty<bkper.Book> {
         }
 
         // Fetch only accounts for this group from API (don't cache)
-        const accountsPayload = AccountService_.listAccountsByGroup(this.getId(), resolvedGroup.getId());
+        const accountsPayload = AccountService_.listAccountsByGroup(
+            this.getId(),
+            resolvedGroup.getId()
+        );
         const accounts = Utils_.wrapObjects(new Account(), accountsPayload);
         for (const account of accounts) {
             account.book = this;
@@ -641,16 +643,14 @@ class Book extends ResourceProperty<bkper.Book> {
         return accounts;
     }
 
-
     /**
      * Gets an [[Account]] object
-     * 
+     *
      * @param idOrName The id or name of the Account
-     * 
+     *
      * @returns The matching Account object
      */
     public getAccount(idOrName: string): Account {
-
         if (idOrName == null) {
             return null;
         }
@@ -670,19 +670,21 @@ class Book extends ResourceProperty<bkper.Book> {
         return account;
     }
 
-
     /**
      * Create [[Accounts]] on the Book, in batch.
-     * 
+     *
      * @return The Accounts created
      */
     public batchCreateAccounts(accounts: Account[]): Account[] {
-        let accountsPayloads: bkper.Account[] = []
+        let accountsPayloads: bkper.Account[] = [];
         for (const account of accounts) {
             accountsPayloads.push(account.payload);
         }
         if (accountsPayloads.length > 0) {
-            let createdAccountsPlain = AccountService_.createAccounts(this.getId(), accountsPayloads);
+            let createdAccountsPlain = AccountService_.createAccounts(
+                this.getId(),
+                accountsPayloads
+            );
             let createdAccounts = Utils_.wrapObjects(new Account(), createdAccountsPlain);
             this.clearCache();
             for (var i = 0; i < createdAccounts.length; i++) {
@@ -693,8 +695,6 @@ class Book extends ResourceProperty<bkper.Book> {
         }
         return [];
     }
-
-
 
     private configureAccounts_(accounts: bkper.Account[]): void {
         this.accounts = Utils_.wrapObjects(new Account(), accounts);
@@ -709,13 +709,12 @@ class Book extends ResourceProperty<bkper.Book> {
                 for (const accountGroup of account.payload.groups) {
                     let group: Group = this.idGroupMap[accountGroup.id];
                     if (group) {
-                        group.addAccount(account)
+                        group.addAccount(account);
                     }
                 }
             }
         }
     }
-
 
     /**
      * @return All [[Groups]] of this Book
@@ -727,12 +726,14 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Create [[Groups]] on the Book, in batch.
-     * 
+     *
      * @return The Groups created
      */
     public batchCreateGroups(groups: Group[]): Group[] {
         if (groups.length > 0) {
-            let groupsSave: bkper.Group[] = groups.map(g => { return g.payload });
+            let groupsSave: bkper.Group[] = groups.map(g => {
+                return g.payload;
+            });
             let groupsPlain = GroupService_.createGroups(this.getId(), groupsSave);
             let createdGroups = Utils_.wrapObjects(new Group(), groupsPlain);
 
@@ -774,13 +775,12 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Gets a [[Group]] object
-     * 
+     *
      * @param idOrName The id or name of the Group
-     * 
+     *
      * @returns The matching Group object
      */
     public getGroup(idOrName: string): Group {
-
         if (idOrName == null) {
             return null;
         }
@@ -812,16 +812,14 @@ class Book extends ResourceProperty<bkper.Book> {
         }
         for (var i = 0; i < this.groups.length; i++) {
             var group = this.groups[i];
-            group.buildGroupTree_(this.idGroupMap)
+            group.buildGroupTree_(this.idGroupMap);
         }
-
     }
-
 
     /**
      * @return All saved queries from this book
      */
-    public getSavedQueries(): { id?: string, query?: string, title?: string }[] {
+    public getSavedQueries(): { id?: string; query?: string; title?: string }[] {
         if (this.savedQueries == null) {
             this.savedQueries = SavedQueryService_.getSavedQueries(this.getId());
         }
@@ -831,18 +829,18 @@ class Book extends ResourceProperty<bkper.Book> {
     /**
      *
      * Create a [[BalancesReport]] based on query
-     * 
+     *
      * @param query The balances report query
-     * 
+     *
      * @return The balances report
-     * 
+     *
      * Example:
-     * 
+     *
      * ```js
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
-     * 
+     *
      * var balancesReport = book.getBalancesReport("group:'Equity' after:7/2018 before:8/2018");
-     * 
+     *
      * var accountBalance = balancesReport.getBalancesContainer("Bank Account").getCumulativeBalance();
      * ```
      */
@@ -853,18 +851,16 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Create a [[BalancesDataTableBuilder]] based on a query, to create two dimensional Array representation of balances of [[Account]] or [[Group]]
-     * 
-     * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
-     * 
+     *
      * @param query The balances report query
-     * 
+     *
      * @return The balances data table builder
-     * 
+     *
      * Example:
-     * 
+     *
      * ```js
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
-     * 
+     *
      * var balancesDataTable = book.createBalancesDataTable("account:'Credit card' after:7/2018 before:8/2018").build();
      * ```
      */
@@ -875,18 +871,18 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Create a [[AccountsDataTableBuilder]], to build two dimensional Array representations of [[Accounts]] dataset.
-     * 
+     *
      * @param group Optional group name or id to filter accounts
-     * 
+     *
      * @return Accounts data table builder.
-     * 
+     *
      * Example:
-     * 
+     *
      * ```js
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
-     * 
+     *
      * var accountsDataTable = book.createAccountsDataTable().build();
-     * 
+     *
      * // Or filter by group
      * var filteredDataTable = book.createAccountsDataTable("Revenue").build();
      * ```
@@ -898,14 +894,14 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Create a [[GroupsDataTableBuilder]], to build two dimensional Array representations of [[Groups]] dataset.
-     * 
+     *
      * @return Groups data table builder.
-     * 
+     *
      * Example:
-     * 
+     *
      * ```js
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
-     * 
+     *
      * var groupsDataTable = book.createGroupsDataTable().build();
      * ```
      */
@@ -916,18 +912,16 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Create a [[TransactionsDataTableBuilder]] based on a query, to build two dimensional Array representations of [[Transactions]] dataset.
-     * 
-     * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
-     * 
+     *
      * @param query The flter query.
-     * 
+     *
      * @return Transactions data table builder.
-     * 
-     * Example: 
-     * 
+     *
+     * Example:
+     *
      * ```js
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgPXjx7oKDA");
-     * 
+     *
      * var transactionsDataTable = book.createTransactionsDataTable("account:'Bank Account' before:1/2019").build();
      * ```
      */
@@ -938,15 +932,13 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Get Book transactions based on a query.
-     * 
-     * See [Query Guide](https://help.bkper.com/en/articles/2569178-search-query-guide) to learn more
-     *  
+     *
      * @param query The query string.
-     * 
+     *
      * @return The Transactions result as an iterator.
-     * 
+     *
      * Example:
-     * 
+     *
      * ```js
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
      *
@@ -963,19 +955,19 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-    * Retrieve the number of transactions based on a query.
-    * 
-    * @param query The query string.
-    * 
-    * @return The number of matching Transactions
-    */
+     * Retrieve the number of transactions based on a query.
+     *
+     * @param query The query string.
+     *
+     * @return The number of matching Transactions
+     */
     public countTransactions(query?: string): number {
         return TransactionService_.countTransactions(this.getId(), query).total;
     }
 
     /**
      * Retrieve a [[Transaction]] by id
-     * 
+     *
      * @return The matching Transaction object
      */
     public getTransaction(id: string): Transaction {
@@ -987,13 +979,13 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Instantiate a new [[File]]
-     * 
+     *
      * @return The new File, for chainning.
-     * 
+     *
      * Example:
      * ```js
      * var book = BkperApp.getBook("agtzfmJrcGVyLWhyZHITCxIGTGVkZ2VyGICAgIDggqALDA");
-     * 
+     *
      * book.newFile()
      *  .setBlob(UrlFetchApp.fetch('https://bkper.com/images/index/integrations4.png').getBlob())
      *  .create();
@@ -1007,7 +999,7 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Retrieve installed [[Apps]] for this Book
-     * 
+     *
      * @returns The Apps objects
      */
     public getApps(): App[] {
@@ -1027,7 +1019,7 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Retrieve the pending events [[Backlog]] for this Book
-     * 
+     *
      * @returns The Backlog object
      */
     public getBacklog(): Backlog {
@@ -1037,15 +1029,20 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Get Book events based on search parameters.
-     * 
+     *
      * @param afterDate The start date (inclusive) for the events search range
      * @param beforeDate The end date (exclusive) for the events search range
      * @param onError True to search only for events on error
      * @param resource The event's resource ([[Transaction]], [[Account]] or [[Group]])
-     * 
+     *
      * @return The Events result as an iterator.
      */
-    public getEvents(afterDate?: string, beforeDate?: string, onError?: boolean, resource?: Transaction | Account | Group): EventIterator {
+    public getEvents(
+        afterDate?: string,
+        beforeDate?: string,
+        onError?: boolean,
+        resource?: Transaction | Account | Group
+    ): EventIterator {
         let formattedAfterDate = '';
         if (afterDate) {
             formattedAfterDate = Utils_.toRFC3339Date(this.parseDate(afterDate));
@@ -1060,7 +1057,13 @@ class Book extends ResourceProperty<bkper.Book> {
             formattedBeforeDate = Utils_.toRFC3339Date(this.parseDate(beforeDate));
         }
         const resourceId = resource !== undefined ? resource.getId() : null;
-        return new EventIterator(this, formattedAfterDate, formattedBeforeDate, onError, resourceId);
+        return new EventIterator(
+            this,
+            formattedAfterDate,
+            formattedBeforeDate,
+            onError,
+            resourceId
+        );
     }
 
     getMostRecentLockDate_(): string | null {
@@ -1082,9 +1085,9 @@ class Book extends ResourceProperty<bkper.Book> {
         }
     }
 
-    /** 
+    /**
      * Retrieve a [[File]] by id
-     * 
+     *
      * @return The matching File object
      */
     public getFile(id: string): File {
@@ -1095,7 +1098,7 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Perform update Book, applying pending changes.
-     * 
+     *
      * @returns This Book, for chainning.
      */
     public update(): Book {
@@ -1103,15 +1106,14 @@ class Book extends ResourceProperty<bkper.Book> {
         return this;
     }
 
-
     //DEPRECATED
     /**
      * Formats a value according to [[DecimalSeparator]] and fraction digits of the Book.
-     * 
+     *
      * @param value The value to be formatted.
-     * 
+     *
      * @return The value formated
-     * 
+     *
      * @deprecated
      */
     public formatValue(value: Amount): string {
@@ -1120,7 +1122,7 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Parse a value string according to [[DecimalSeparator]] and fraction digits of the Book.
-     * 
+     *
      * @deprecated
      */
     public parseValue(value: string): Amount {
@@ -1128,16 +1130,16 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-     * Create an [[Account]] in this book. 
-     * 
-     * The type of account will be determined by the type of others Accounts in same group. 
-     * 
+     * Create an [[Account]] in this book.
+     *
+     * The type of account will be determined by the type of others Accounts in same group.
+     *
      * If not specified, the type ASSET (permanent=true/credit=false) will be set.
-     * 
+     *
      * If all other accounts in same group is in another group, the account will also be added to the other group.
-     * 
+     *
      * @returns The created Account object
-     * 
+     *
      * @deprecated
      */
     public createAccount(name: string, group?: string, description?: string): Account {
@@ -1161,22 +1163,22 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
-   * Record [[Transactions]] on the Book. 
-   * 
-   * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
-   * 
-   * Example: 
-   * 
-   * ```js
-   * book.record("#gas 63.23");
-   * ```
-   * 
-   * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
-   * @param timeZone The time zone to format dates.
-   * @deprecated
-   */
+     * Record [[Transactions]] on the Book.
+     *
+     * The text is usually amount and description, but it can also can contain an informed Date in full format (dd/mm/yyyy - mm/dd/yyyy).
+     *
+     * Example:
+     *
+     * ```js
+     * book.record("#gas 63.23");
+     * ```
+     *
+     * @param transactions The text/array/matrix containing transaction records, one per line/row. Each line/row records one transaction.
+     * @param timeZone The time zone to format dates.
+     * @deprecated
+     */
     public record(transactions: string | any[] | any[][], timeZone?: string): void {
-        if (timeZone == null || timeZone.trim() == "") {
+        if (timeZone == null || timeZone.trim() == '') {
             timeZone = this.getTimeZone();
         }
         TransactionService_.record(this, transactions, timeZone);
@@ -1185,27 +1187,26 @@ class Book extends ResourceProperty<bkper.Book> {
 
     /**
      * Create [[Accounts]] on the Book, in batch.
-     * 
+     *
      * The first column of the matrix will be used as the [[Account]] name.
-     * 
+     *
      * The other columns will be used to find a matching [[AccountType]].
-     * 
+     *
      * Names matching existent accounts will be skipped.
-     * 
+     *
      * @deprecated
-     * 
+     *
      */
     public createAccounts(accounts: string[][]): Account[] {
-
-        let accountsPayloads: bkper.Account[] = []
+        let accountsPayloads: bkper.Account[] = [];
 
         for (let i = 0; i < accounts.length; i++) {
-            const row = accounts[i]
+            const row = accounts[i];
             const account: bkper.Account = {
                 name: row[0],
                 type: AccountType.ASSET,
-                groups: []
-            }
+                groups: [],
+            };
 
             if (this.getAccount(account.name)) {
                 //Account already created. Skip.
@@ -1226,11 +1227,14 @@ class Book extends ResourceProperty<bkper.Book> {
                 }
             }
 
-            accountsPayloads.push(account)
+            accountsPayloads.push(account);
         }
 
         if (accountsPayloads.length > 0) {
-            let createdAccountsPlain = AccountService_.createAccounts(this.getId(), accountsPayloads);
+            let createdAccountsPlain = AccountService_.createAccounts(
+                this.getId(),
+                accountsPayloads
+            );
             let createdAccounts = Utils_.wrapObjects(new Account(), createdAccountsPlain);
             this.clearCache();
             for (var i = 0; i < createdAccounts.length; i++) {
@@ -1268,7 +1272,9 @@ class Book extends ResourceProperty<bkper.Book> {
      */
     public createGroups(groups: string[]): Group[] {
         if (groups.length > 0) {
-            let groupsSave: bkper.Group[] = groups.map(groupName => { return { name: groupName } });
+            let groupsSave: bkper.Group[] = groups.map(groupName => {
+                return { name: groupName };
+            });
             let groupsPlain = GroupService_.createGroups(this.getId(), groupsSave);
             let createdGroups = Utils_.wrapObjects(new Group(), groupsPlain);
 
@@ -1283,5 +1289,4 @@ class Book extends ResourceProperty<bkper.Book> {
         }
         return [];
     }
-
 }

@@ -1,18 +1,64 @@
+2026
+----
+
+**April 2026**
+* Added `Book.mergeTransactions()`
+
+**February 2026**
+* `AccountsDataTableBuilder` now sorts groups per account by hierarchy path (root then depth) when `includeGroups()` is enabled
+
+**January 2026**
+* Added `Bkper.setAgentId()`
+* API requests now send a `bkper-agent-id` header to attribute actions to the calling agent
+* `Bkper.setApiKey()` is now optional and used only to assign a dedicated quota - agent attribution is handled via `Bkper.setAgentId()`
+
 2025
 ----
 
-**October 2025**
-* Added custom properties support to [File](https://bkper.com/docs/bkper-gs/classes/Bkper.File.html) - store and retrieve metadata on uploaded files
-* Files attached to transactions are now created internally when transaction is persisted
+**December 2025**
+* Added `TransactionStatus` enum
+* Added `Transaction.getStatus()`
+* Added `AccountsDataTableBuilder.ids()`
+* Added `GroupsDataTableBuilder.ids()`
+* `Book.getAccounts()` now accepts an optional group parameter to filter accounts by group
+* `Book.createAccountsDataTable()` now accepts an optional group parameter to filter accounts by group
+* `TransactionsDataTableBuilder` output now always uses Origin, Destination and Amount columns, regardless of whether a single account is being filtered
+* `TransactionsDataTableBuilder` now includes a Status column for each transaction
+* Renamed transaction id column header to "Transaction Id" in `TransactionsDataTableBuilder`
 
-**August 2025**
-* Added [BalancesReport.getBalancesUrl()](https://bkper.com/docs/bkper-gs/classes/Bkper.BalancesReport.html#getBalancesUrl) to fetch balances directly from Cloud Storage for improved performance
+**November 2025**
+* Added `Account.getVisibleProperties()`
+* Added `Account.setVisibleProperty()`
+* Added `Account.setVisibleProperties()`
+* Added `Book.getVisibleProperties()`
+* Added `Book.setVisibleProperty()`
+* Added `Book.setVisibleProperties()`
+* Added `File.getVisibleProperties()`
+* Added `File.setVisibleProperty()`
+* Added `File.setVisibleProperties()`
+* Added `Group.getVisibleProperties()`
+* Added `Group.setVisibleProperty()`
+* Added `Group.setVisibleProperties()`
+* Added `Transaction.getVisibleProperties()`
+* Added `Transaction.setVisibleProperty()`
+* Added `Transaction.setVisibleProperties()`
+
+**October 2025**
+* Added `File.getProperties()`
+* Added `File.getPropertyKeys()`
+* Added `File.getProperty()`
+* Added `File.setProperty()`
+* Added `File.setProperties()`
+* Added `File.deleteProperty()`
+* Files attached to transactions are now created internally when the transaction is persisted
 
 **July 2025**
-* Released version 3.37.0
-* Fixed [BalancesDataTableBuilder](https://bkper.com/docs/bkper-gs/classes/Bkper.BalancesDataTableBuilder.html) to only expand all groups when filtering by group
-* Updated [BalancesDataTableBuilder.formatDate()](https://bkper.com/docs/bkper-gs/classes/Bkper.BalancesDataTableBuilder.html#formatDate) to use ISO YYYY-MM-DD format
-* Reverted time table transpose behavior in [BalancesDataTableBuilder.transpose()](https://bkper.com/docs/bkper-gs/classes/Bkper.BalancesDataTableBuilder.html#transpose)
+* `BalancesDataTableBuilder` now formats dates in ISO YYYY-MM-DD format when `formatDate()` is enabled
+* Reverted time table transpose behavior in `BalancesDataTableBuilder.transpose()`
+* `BalancesDataTableBuilder` now only expands all groups when the query is filtered by group
+
+**June 2025**
+* Balances time table no longer indents group names when the output is transposed
 
 
 2024

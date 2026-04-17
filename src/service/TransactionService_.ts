@@ -113,6 +113,19 @@ namespace TransactionService_ {
 
     }
 
+    export function mergeTransactions(bookId: string, transactions: bkper.Transaction[]): bkper.TransactionOperation {
+
+        let transactionList: bkper.TransactionList = { items: transactions };
+        let payload = JSON.stringify(transactionList);
+
+        let responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/merge`)
+            .setMethod('patch')
+            .setPayload(payload)
+            .fetch()
+            .getContentText();
+        return JSON.parse(responseJSON) as bkper.TransactionOperation;
+    }
+
     export function getTransaction(bookId: string, id: string): bkper.Transaction {
         var responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/${id}`).setMethod('get').fetch().getContentText();
         return JSON.parse(responseJSON) as bkper.Transaction;

@@ -488,6 +488,28 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
+     * Merge two [[Transactions]] into one.
+     *
+     * The merged transaction is created synchronously. Cleanup of the two
+     * originals is scheduled asynchronously by the backend.
+     *
+     * @param transaction1 - The first transaction to merge
+     * @param transaction2 - The second transaction to merge
+     *
+     * @returns The merged Transaction
+     */
+    public mergeTransactions(transaction1: Transaction, transaction2: Transaction): Transaction {
+        let operation = TransactionService_.mergeTransactions(
+            this.getId(),
+            [transaction1.payload, transaction2.payload]
+        );
+        let transaction = Utils_.wrapObject(new Transaction(), operation.transaction || {});
+        this.configureTransaction_(transaction);
+        this.clearCache();
+        return transaction;
+    }
+
+    /**
      * Trigger Balances Audit async process.
      */
     public audit(): void {

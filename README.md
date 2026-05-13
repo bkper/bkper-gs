@@ -9,7 +9,7 @@ With `bkper-gs` you can build [Apps and Bots][Apps and Bots] to your Books to cr
 
 It works the same way your favorite Google Apps Script library works, providing a **BkperApp** entry point, like [CalendarApp][CalendarApp], [DocumentApp][DocumentApp], [SpreadsheetApp][SpreadsheetApp] and the like.
 
-See the [complete reference](https://bkper.com/docs/bkper-gs/)
+See the [complete reference](https://bkper.com/docs/api/bkper-gs/)
 
 ### Setup
 
@@ -141,21 +141,21 @@ function listAccounts() {
 }
 ```
 
-### See the [complete reference](https://bkper.com/docs/bkper-gs/)
+### See the [complete reference](https://bkper.com/docs/api/bkper-gs/)
 
 [Bkper]: https://bkper.com/
 [bkper.com]: https://bkper.com
 [Apps and Bots]: https://bkper.com/docs
-[Bkper REST API]: http://bkper.com/docs/#rest-api
+[Bkper REST API]: https://bkper.com/docs/api/rest
 [Google Apps Script]: https://developers.google.com/apps-script/reference/
 [Dashboard]: https://script.google.com/home
-[Book]: https://bkper.com/docs/bkper-gs/#book
-[Account]: https://bkper.com/docs/bkper-gs/#account
-[Transaction]: https://bkper.com/docs/bkper-gs/#transaction
-[TransactionIterator]: https://bkper.com/docs/bkper-gs/#transactioniterator
-[record]: https://bkper.com/docs/bkper-gs/#book_record
-[getTransactions]: https://bkper.com/docs/bkper-gs/#book_gettransactions
-[getBook]: https://bkper.com/docs/bkper-gs/#bkperapp_getbook
+[Book]: https://bkper.com/docs/api/bkper-gs/#book
+[Account]: https://bkper.com/docs/api/bkper-gs/#account
+[Transaction]: https://bkper.com/docs/api/bkper-gs/#transaction
+[TransactionIterator]: https://bkper.com/docs/api/bkper-gs/#transactioniterator
+[record]: https://bkper.com/docs/api/bkper-gs/#book_record
+[getTransactions]: https://bkper.com/docs/api/bkper-gs/#book_gettransactions
+[getBook]: https://bkper.com/docs/api/bkper-gs/#bkperapp_getbook
 [CalendarApp]: https://developers.google.com/apps-script/reference/calendar/calendar-app
 [DocumentApp]: https://developers.google.com/apps-script/reference/document/document-app
 [SpreadsheetApp]: https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app

@@ -11,4 +11,15 @@ namespace FileService_ {
         return JSON.parse(responseJSON) as bkper.File;
     }
 
+    export function listFiles(book: Book, limit: number, cursor?: string): bkper.FileList {
+        var request = new HttpBooksApiV5Request(`${book.getId()}/files`);
+        request.addParam('limit', limit);
+        if (cursor != null) {
+            request.setHeader('cursor', cursor);
+        }
+
+        var responseJSON = request.fetch().getContentText();
+        return JSON.parse(responseJSON) as bkper.FileList;
+    }
+
 }

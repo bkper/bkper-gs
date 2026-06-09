@@ -1088,6 +1088,13 @@ declare namespace Bkper {
         getFile(id: string): File;
 
         /**
+         * Gets all files uploaded to this Book.
+         *
+         * @returns A FileIterator to iterate over files
+         */
+        getFiles(): FileIterator;
+
+        /**
          * @returns The number of fraction digits (decimal places) supported by this Book
          */
         getFractionDigits(): number;
@@ -1741,6 +1748,38 @@ declare namespace Bkper {
          * @returns This resource, for chaining
          */
         setVisibleProperty(key: string, value: string | null): this;
+
+    }
+
+    /**
+     * An iterator that allows scripts to iterate over a potentially large collection of files.
+     */
+    export interface FileIterator {
+
+        /**
+         * Gets the Book that originate the iterator
+         */
+        getBook(): Book;
+
+        /**
+         * Gets a token that can be used to resume this iteration at a later time.
+         */
+        getContinuationToken(): string;
+
+        /**
+         * Determines whether calling next() will return a file.
+         */
+        hasNext(): boolean;
+
+        /**
+         * Gets the next file in the collection of files.
+         */
+        next(): File;
+
+        /**
+         * Sets a continuation token from previous paused iteration.
+         */
+        setContinuationToken(continuationToken: string): void;
 
     }
 

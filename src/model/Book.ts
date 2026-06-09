@@ -1119,6 +1119,15 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
+     * Gets all files uploaded to this Book.
+     *
+     * @return A FileIterator to iterate over files
+     */
+    public getFiles(): FileIterator {
+        return new FileIterator(this);
+    }
+
+    /**
      * Perform update Book, applying pending changes.
      *
      * @returns This Book, for chainning.

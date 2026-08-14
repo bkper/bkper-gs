@@ -869,8 +869,10 @@ declare namespace Bkper {
 
         /**
          * Batch update [[Transactions]] on the Book.
+         *
+         * @returns The updated draft Transactions
          */
-        batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): void;
+        batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): Transaction[];
 
         /**
          * Resumes a transaction iteration using a continuation token from a previous iterator.

@@ -99,18 +99,20 @@ namespace TransactionService_ {
 
     }
 
-    export function updateTransactionsBatch(bookId: string, transactions: bkper.Transaction[], updateChecked?: boolean): void {
+    export function updateTransactionsBatch(bookId: string, transactions: bkper.Transaction[], updateChecked?: boolean): bkper.Transaction[] {
 
         let transactionList: bkper.TransactionList = { items: transactions };
         let payload = JSON.stringify(transactionList);
 
-        new HttpBooksApiV5Request(`${bookId}/transactions/batch`)
+        let responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/batch`)
             .setMethod('put')
             .setPayload(payload)
             .addParam('updateChecked', updateChecked)
             .fetch()
-            ;
+            .getContentText();
 
+        transactionList = JSON.parse(responseJSON);
+        return transactionList != null && transactionList.items != null ? transactionList.items : [];
     }
 
     export function mergeTransactions(bookId: string, transactions: bkper.Transaction[]): bkper.TransactionOperation {

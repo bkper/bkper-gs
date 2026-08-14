@@ -437,16 +437,20 @@ class Book extends ResourceProperty<bkper.Book> {
      *
      * @param updateChecked True to also update checked transactions
      *
+     * @returns The updated draft Transactions
      */
-    public batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): void {
+    public batchUpdateTransactions(transactions: Transaction[], updateChecked?: boolean): Transaction[] {
         let transactionsPayload: bkper.Transaction[] = [];
         transactions.forEach(tx => transactionsPayload.push(tx.payload));
-        TransactionService_.updateTransactionsBatch(
+        transactionsPayload = TransactionService_.updateTransactionsBatch(
             this.getId(),
             transactionsPayload,
             updateChecked
         );
+        transactions = Utils_.wrapObjects(new Transaction(), transactionsPayload);
+        this.configureTransactions_(transactions);
         this.clearCache();
+        return transactions;
     }
 
     /**

@@ -1,6 +1,9 @@
 2026
 ----
 
+**August 2026**
+* Added `Book.getTransactionsByIds()` to retrieve complete transactions by ID in sequential batches of up to 200
+
 **June 2026**
 * Added `Book.getFiles()`
 * Added `FileIterator`

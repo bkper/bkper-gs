@@ -1211,6 +1211,15 @@ declare namespace Bkper {
          */
         getTransactions(query?: string): TransactionIterator;
 
+        /**
+         * Retrieve complete [[Transactions]] by id.
+         *
+         * Requests are sent sequentially in batches of up to 200 IDs.
+         *
+         * @returns The matching Transactions in input order
+         */
+        getTransactionsByIds(ids: string[]): Transaction[];
+
         getVisibleProperties(): {[key: string]: string};
 
         /**

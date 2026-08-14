@@ -1000,6 +1000,45 @@ class Book extends ResourceProperty<bkper.Book> {
     }
 
     /**
+     * Retrieve complete [[Transactions]] by id.
+     *
+     * Requests are sent sequentially in batches of up to 200 IDs.
+     *
+     * @param ids The transaction IDs
+     * @return The matching Transactions in input order
+     */
+    public getTransactionsByIds(ids: string[]): Transaction[] {
+        if (ids == null) {
+            throw new Error('Transaction IDs are required.');
+        }
+
+        const distinctIds = new Set<string>();
+        const normalizedIds: string[] = [];
+        for (const id of ids) {
+            if (id == null || typeof id != 'string' || id.trim() == '') {
+                throw new Error('Transaction IDs must be non-blank strings.');
+            }
+            const normalizedId = id.trim();
+            if (distinctIds.has(normalizedId)) {
+                throw new Error(`Duplicate transaction ID: ${normalizedId}`);
+            }
+            distinctIds.add(normalizedId);
+            normalizedIds.push(normalizedId);
+        }
+
+        const transactions: Transaction[] = [];
+        for (let index = 0; index < normalizedIds.length; index += 200) {
+            const payloads = TransactionService_.getTransactionsByIds(
+                this.getId(),
+                normalizedIds.slice(index, index + 200)
+            );
+            const chunk = Utils_.wrapObjects(new Transaction(), payloads);
+            transactions.push(...this.configureTransactions_(chunk));
+        }
+        return transactions;
+    }
+
+    /**
      * Instantiate a new [[File]]
      *
      * @return The new File, for chainning.

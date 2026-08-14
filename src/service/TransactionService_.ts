@@ -131,6 +131,19 @@ namespace TransactionService_ {
         return JSON.parse(responseJSON) as bkper.Transaction;
     }
 
+    export function getTransactionsByIds(bookId: string, ids: string[]): bkper.Transaction[] {
+        const transactionList: bkper.TransactionList = {
+            items: ids.map(id => ({ id: id }))
+        };
+        const responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/load/batch`)
+            .setMethod('post')
+            .setPayload(JSON.stringify(transactionList))
+            .fetch()
+            .getContentText();
+        const result = JSON.parse(responseJSON) as bkper.TransactionList;
+        return result != null && result.items != null ? result.items : [];
+    }
+
     export function countTransactions(bookId: string, query: string): bkper.Count {
         let responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/count`).setMethod('get').addParam('query', query).fetch().getContentText();
         return JSON.parse(responseJSON);

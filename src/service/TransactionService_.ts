@@ -137,7 +137,7 @@ namespace TransactionService_ {
         const transactionList: bkper.TransactionList = {
             items: ids.map(id => ({ id: id }))
         };
-        const responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/load/batch`)
+        const responseJSON = new HttpBooksApiV5Request(`${bookId}/transactions/load`)
             .setMethod('post')
             .setPayload(JSON.stringify(transactionList))
             .fetch()
